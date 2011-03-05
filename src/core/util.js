@@ -3,10 +3,9 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-
 var
 
-Object_toString = Object.prototype.toString,
+Object_toString = Object.prototype.toString;
 
 
 /**
@@ -16,7 +15,7 @@ Object_toString = Object.prototype.toString,
  * @param {Object} extender (null and undefined is acceptable)
  * @return {Object} extendee
  */
-ext = LeftJS.ext = function(one, another) {
+function ext(one, another) {
   if (another == null) {
     another = {};
   }
@@ -26,8 +25,7 @@ ext = LeftJS.ext = function(one, another) {
   }
 
   return one;
-},
-
+}
 
 /**
  * Checks if the given value is a string
@@ -35,9 +33,9 @@ ext = LeftJS.ext = function(one, another) {
  * @param {mixed} something
  * @return {boolean} check result
  */
-isString = LeftJS.isString = function(value) {
+function isString(value) {
   return typeof(value) === 'string';
-},
+}
 
 /**
  * Checks if the given value is a number
@@ -45,9 +43,9 @@ isString = LeftJS.isString = function(value) {
  * @param {mixed} something
  * @return {boolean} check result
  */
-isNumber = LeftJS.isNumber = function(value) {
+function isNumber(value) {
   return typeof(value) === 'number';
-},
+}
 
 /**
  * Checks if the given value is a function
@@ -55,9 +53,9 @@ isNumber = LeftJS.isNumber = function(value) {
  * @param {mixed} some value
  * @return {boolean} check result
  */
-isFunction = LeftJS.isFunction = function(value) {
+function isFunction(value) {
   return typeof(value) === 'function';
-},
+}
 
 /**
  * Checks if the given value is an array
@@ -65,9 +63,9 @@ isFunction = LeftJS.isFunction = function(value) {
  * @param {mixed} some value
  * @return {boolean} check result
  */
-isArray = LeftJS.isArray = function(value) {
+function isArray(value) {
   return Object_toString.call(value) === '[object Array]';
-},
+}
 
 /**
  * Checks if the given value is a plain object
@@ -75,6 +73,6 @@ isArray = LeftJS.isArray = function(value) {
  * @param {mixed} some value
  * @return {boolean} check result
  */
-isObject = LeftJS.isObject = function(value) {
+function isObject(value) {
   return Object_toString.call(value) === '[object Object]';
 }
