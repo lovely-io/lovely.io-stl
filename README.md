@@ -1,8 +1,9 @@
-# Left.JS
+# Left.js
 
-`Left.JS` is kinda [RightJS](http://rightjs.org) but without naughty things
+`Left.js` is kinda [RightJS](http://rightjs.org) but without naughty things
 
-Well, sort of :)
+Well, kind of :)
+
 
 ## License & Copyright
 
