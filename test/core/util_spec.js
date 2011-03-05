@@ -46,12 +46,12 @@ vows.describe('Core Utils').addBatch({
   }),
 
   "isArray(value)": assertTypeCheck('isArray', {
-    ok:   [[], new Array()],
+    ok:   [[]],
     fail: ['', 1, 2.2, true, false, null, undefined, {}, function() {}]
   }),
 
   "isObject(value)": assertTypeCheck('isObject', {
-    ok:   [{}, new Object],
+    ok:   [{}],
     fail: ['', 1, 2.2, true, false, null, undefined, [], function() {}]
   })
 
@@ -65,19 +65,25 @@ vows.describe('Core Utils').addBatch({
  * @return void
  */
 function assertTypeCheck(name, options) {
-  return {
-    topic: function() { return LeftJS[name]; },
+  var def = {
+    topic: function() { return LeftJS[name]; }
+  };
 
-    "should return 'true' for correct values": function(method) {
-      for (var i=0; i < options.ok.length; i++) {
-        assert.isTrue(method(options.ok[i]), "Fails with: "+ util.inspect(options.ok[i]));
+  for (var i=0; i < options.ok.length; i++) {
+    (function(value) {
+      def["should return 'true' for: "+ util.inspect(value)] = function(method) {
+        assert.isTrue(method(value));
       }
-    },
-
-    "should return 'false' for wrong values": function(method) {
-      for (var i=0; i < options.fail.length; i++) {
-        assert.isFalse(method(options.fail[i]), "Fails with: "+ util.inspect(options.fail[i]));
-      }
-    }
+    })(options.ok[i]);
   }
+
+  for (var i=0; i < options.fail.length; i++) {
+    (function(value) {
+      def["should return 'false' for: "+ util.inspect(value)] = function(method) {
+        assert.isFalse(method(value));
+      }
+    })(options.fail[i]);
+  }
+
+  return def;
 }
