@@ -4,9 +4,18 @@
  * Copyright (C) 2011 Nikolay Nemshilov
  */
 var
+Object_toString = Object.prototype.toString,
+Array_slice     = Array.prototype.slice;
 
-Object_toString = Object.prototype.toString;
-
+/**
+ * Converts iterables into arrays
+ *
+ * @param {mixed} iterable
+ * @return {Array} array
+ */
+function A(it) {
+  return Array_slice.call(it, 0);
+}
 
 /**
  * Extends one object with another
@@ -76,3 +85,4 @@ function isArray(value) {
 function isObject(value) {
   return Object_toString.call(value) === '[object Object]';
 }
+

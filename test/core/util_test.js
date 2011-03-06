@@ -53,7 +53,18 @@ vows.describe('Core Utils').addBatch({
   "isObject(value)": assertTypeCheck('isObject', {
     ok:   [{}],
     fail: ['', 1, 2.2, true, false, null, undefined, [], function() {}]
-  })
+  }),
+
+  "A(iterable)": {
+    topic: function() { return LeftJS.A; },
+
+    "should convert arguments into arrays": function(A) {
+      var array = A((function() { return arguments; })(1, 2, 3));
+
+      assert.isArray   (array);
+      assert.deepEqual ([1,2,3], array);
+    }
+  }
 
 }).export(module);
 

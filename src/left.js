@@ -22,6 +22,7 @@ var LeftJS = function() {
   return ext(LeftJS, {
     version:    '%{version}',
 
+    A:          A,
     ext:        ext,
     isString:   isString,
     isNumber:   isNumber,
