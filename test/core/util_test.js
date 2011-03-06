@@ -9,7 +9,7 @@ vows   = require('vows'),
 assert = require('assert'),
 util   = require('util'),
 
-LeftJS = require('../left').LeftJS;
+LeftJS = require('../init').LeftJS;
 
 vows.describe('Core Utils').addBatch({
   "ext(a,b)": {

@@ -1,21 +1,27 @@
 /**
- * LeftJS main object
+ * LeftJS is as left as you can imagine
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var LeftJS = function(something) {
+var LeftJS = function() {
 
-};
-
-require('core/util');
+  require('core/util');
 
 
-// global functions
-LeftJS.ext        = ext;
-LeftJS.isString   = isString;
-LeftJS.isNumber   = isNumber;
-LeftJS.isFunction = isFunction;
-LeftJS.isArray    = isArray;
-LeftJS.isObject   = isObject;
+  // the main object definition
+  return ext(function(something) {
 
-LeftJS.version = '%{version}';
+  }, {
+    version:    '%{version}',
+
+    // globaly available things
+    ext:        ext,
+    isString:   isString,
+    isNumber:   isNumber,
+    isFunction: isFunction,
+    isArray:    isArray,
+    isObject:   isObject
+  });
+
+}();
+
