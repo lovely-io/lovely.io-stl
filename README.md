@@ -1,6 +1,9 @@
 # Left.js
 
-`Left.js` is kinda [RightJS](http://rightjs.org) but without naughty things
+`Left.js` is a clean take on [RightJS](http://rightjs.org)
+
+The main goal is to get rid of all the naughty things and make the
+good parts better.
 
 Well, kind of :)
 
