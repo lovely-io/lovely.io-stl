@@ -8,13 +8,20 @@ var LeftJS = function() {
   require('core/util');
 
 
-  // the main object definition
-  return ext(function(something) {
+  /**
+   * the main object definition
+   *
+   * @param {mixed} something
+   * @return {mixed} something else
+   */
+  function LeftJS(something) {
 
-  }, {
+  }
+
+  // attaching globally accessible functions
+  return ext(LeftJS, {
     version:    '%{version}',
 
-    // globaly available things
     ext:        ext,
     isString:   isString,
     isNumber:   isNumber,
