@@ -6,6 +6,7 @@
 var LeftJS = function() {
 
   require('core/util');
+  require('core/class');
 
 
   /**
@@ -15,7 +16,7 @@ var LeftJS = function() {
    * @return {mixed} something else
    */
   function LeftJS(something) {
-
+    // TODO: converting something into something else
   }
 
   // attaching globally accessible functions
@@ -28,8 +29,10 @@ var LeftJS = function() {
     isNumber:   isNumber,
     isFunction: isFunction,
     isArray:    isArray,
-    isObject:   isObject
+    isObject:   isObject,
+    Class:      Class
   });
 
 }();
+
 
