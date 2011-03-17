@@ -1,11 +1,23 @@
-# Left.js
+# LeftJS
 
-`Left.js` is a clean take on [RightJS](http://rightjs.org)
+`LeftJS` is a clean take on the [RightJS](http://rightjs.org) framework
 
-The main goal is to get rid of all the naughty things and make the
-good parts better.
+It is not a fork, it is more like R&D for the future major version of
+RightJS. The goal is to play with some new ideas in a clean environment.
 
-Well, kind of :)
+The targets are the following:
+
+ * Get rid of all the global variables
+ * Make no JavaScript core extensions (will go in a plugin)
+ * Create a console based testing/building environment
+ * Make more civilized collections handling interface
+ * Review the utility functions collection
+ * Focus on the modern browsers: Safari, Chrome, FF4
+ * Zero tolerance for old browser hacks in the core
+
+Basically the aim is to create a super-lightweight and clean version of
+RightJS and see where it gets us.
+
 
 
 ## License & Copyright
