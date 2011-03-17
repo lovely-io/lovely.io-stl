@@ -7,6 +7,7 @@ var LeftJS = function() {
 
   require('core/util');
   require('core/class');
+  require('core/list');
 
 
   /**
@@ -30,7 +31,8 @@ var LeftJS = function() {
     isFunction: isFunction,
     isArray:    isArray,
     isObject:   isObject,
-    Class:      Class
+    Class:      Class,
+    List:       List
   });
 
 }();
