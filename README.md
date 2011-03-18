@@ -18,6 +18,14 @@ The targets are the following:
 Basically the aim is to create a super-lightweight and clean version of
 RightJS and see where it gets us.
 
+## How To...
+
+You'll need `node`, `npm` and then `jake` and `vows` packages installed
+
+    jake build
+    jake test
+    jake test:spec
+
 
 
 ## License & Copyright
