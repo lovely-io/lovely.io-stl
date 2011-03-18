@@ -16,7 +16,8 @@ The targets are the following:
  * Zero tolerance for old browser hacks in the core
 
 Basically the aim is to create a super-lightweight and clean version of
-RightJS and see where it gets us.
+RightJS and see where it will get us.
+
 
 ## How To...
 
