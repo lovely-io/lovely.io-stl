@@ -14,7 +14,7 @@ describe("List", {
     },
 
     'should link the original iterable by a reference': function(list) {
-      assert.strictEqual (list._, this.array);
+      assert.same (list._, this.array);
     }
   },
 
@@ -40,7 +40,7 @@ describe("List", {
     },
 
     'should return the list object back': function(list) {
-      assert.strictEqual (list, this.list);
+      assert.same (list, this.list);
     }
   },
 
@@ -134,7 +134,7 @@ describe("List", {
     },
 
     'should make a clone of the list not refer it by a link': function(array) {
-      assert.notStrictEqual (array, this.list._);
+      assert.notSame (array, this.list._);
     }
   },
 
@@ -147,8 +147,8 @@ describe("List", {
     'should make a new list': ensure_new_list,
 
     'should clone the data': function(list) {
-      assert.deepEqual      (list._, this.original._);
-      assert.notStrictEqual (list._, this.original._);
+      assert.deepEqual (list._, this.original._);
+      assert.notSame   (list._, this.original._);
     }
   }
 }, module);
@@ -160,6 +160,6 @@ describe("List", {
  * @return void
  */
 function ensure_new_list(list) {
-  assert.instanceOf     (list, List);
-  assert.notStrictEqual (list, this.original);
+  assert.instanceOf (list, List);
+  assert.notSame    (list, this.original);
 }

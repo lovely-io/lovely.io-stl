@@ -95,11 +95,11 @@ describe('Class', {
       },
 
       "should refer '.parent' to the parent class": function(Klass) {
-        assert.strictEqual(Klass.parent, this.ParentKlass);
+        assert.same(Klass.parent, this.ParentKlass);
       },
 
       "should keep the parent's 'method'": function(Klass) {
-        assert.strictEqual(Klass.prototype.method, this.ParentKlass.prototype.method);
+        assert.same(Klass.prototype.method, this.ParentKlass.prototype.method);
       }
     },
 
@@ -113,7 +113,7 @@ describe('Class', {
       },
 
       "should refer '.parent' to the parent class": function(Klass) {
-        assert.strictEqual(Klass.parent, this.ParentKlass);
+        assert.same(Klass.parent, this.ParentKlass);
       },
 
       "should replace the parent class method": function(Klass) {

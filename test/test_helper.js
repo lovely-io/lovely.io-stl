@@ -31,6 +31,9 @@ global.util    = require('util');
 global.vows    = require('vows');
 global.assert  = require('assert');
 
+assert.same    = assert.strictEqual;
+assert.notSame = assert.notStrictEqual;
+
 /**
  * A simple shortcut over the Vows to make
  * a single batch descriptions
