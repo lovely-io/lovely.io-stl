@@ -27,7 +27,7 @@ ext(List.prototype, {
    * @return {List} this
    */
   each: function() {
-    call_Array(Array_forEach, this, arguments);
+    List_call(Array_forEach, this, arguments);
     return this;
   },
 
@@ -40,7 +40,7 @@ ext(List.prototype, {
    * @return {List} new
    */
   map: function() {
-    return new List(call_Array(Array_map, this, arguments));
+    return new List(List_call(Array_map, this, arguments));
   },
 
   /**
@@ -51,7 +51,41 @@ ext(List.prototype, {
    * @return {List} new
    */
   filter: function() {
-    return new List(call_Array(Array_filter, this, arguments));
+    return new List(List_call(Array_filter, this, arguments));
+  },
+
+  /**
+   * Creates a new list that has no matching items in it
+   *
+   * @param {mixed} method name or a callback function
+   * @param {mixed} scope object or the method param
+   * @return {List} new
+   */
+  reject: function() {
+    return new List(List_call(Array_reject, this, arguments));
+  },
+
+  /**
+   * Creates a new list without the specified items
+   *
+   * @param {mixed} item
+   * .....
+   * @return {List} new
+   */
+  without: function() {
+    var filter = A(arguments);
+    return this.reject(function(item) {
+      return filter.indexOf(item) !== -1;
+    });
+  },
+
+  /**
+   * Creates a new list that doesn't have 'null' and 'undefined' values
+   *
+   * @return {List} new
+   */
+  compact: function() {
+    return this.without(null, undefined);
   },
 
   /**
@@ -70,6 +104,15 @@ ext(List.prototype, {
    */
   clone: function() {
     return new List(A(this._));
+  },
+
+  /**
+   * Debugability improover
+   *
+   * @return {String} representation
+   */
+  toString: function() {
+    return '#<List ['+ this._ +']>';
   }
 });
 
@@ -81,8 +124,14 @@ Array_forEach = Array_proto.forEach,
 Array_map     = Array_proto.map,
 Array_filter  = Array_proto.filter;
 
+function Array_reject(callback, scope) {
+  return Array_filter.call(this, function() {
+    return !callback.apply(scope, arguments);
+  });
+}
+
 
 // calls the array method on the list with the arguments
-function call_Array(method, list, args) {
+function List_call(method, list, args) {
   return method.apply(list._, args);
 }

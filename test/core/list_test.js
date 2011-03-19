@@ -83,6 +83,58 @@ describe("List", {
     }
   },
 
+  '#reject(callback)': {
+    topic: function() {
+      this.original = new List([1,2,3,4,5]);
+
+      return this.original.reject(function(item) {
+        return item % 2;
+      });
+    },
+
+    'should create a new List': function(list) {
+      assert.instanceOf     (list, List);
+      assert.notStrictEqual (list, this.original);
+    },
+
+    'should filter out all matching elements': function(list) {
+      assert.deepEqual (list._, [2,4]);
+    }
+  },
+
+  '#without(a,b,c)': {
+    topic: function() {
+      this.original = new List([1,2,3,4,5]);
+
+      return this.original.without(1,2,4);
+    },
+
+    'should create a new List': function(list) {
+      assert.instanceOf     (list, List);
+      assert.notStrictEqual (list, this.original);
+    },
+
+    'should filter out listed values': function(list) {
+      assert.deepEqual (list._, [3,5]);
+    }
+  },
+
+  '#compact()': {
+    topic: function() {
+      this.original = new List([null, '', undefined, 0, 1]);
+      return this.original.compact();
+    },
+
+    'should create a new List': function(list) {
+      assert.instanceOf     (list, List);
+      assert.notStrictEqual (list, this.original);
+    },
+
+    'should filter out nulls and undefineds': function(list) {
+      assert.deepEqual (list._, ['', 0, 1]);
+    }
+  },
+
   '#toArray()': {
     topic: function() {
       this.list = new List([1,2,3,4,5]);
