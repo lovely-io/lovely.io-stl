@@ -3,14 +3,11 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var
+require('../test_helper');
 
-vows   = require('vows'),
-assert = require('assert'),
+var List = LeftJS.List;
 
-List   = require('../init').LeftJS.List;
-
-vows.describe("List").addBatch({
+describe("List", {
   'constructor': {
     topic: function() {
       return new List(this.array = [1,2,3,4,5]);
@@ -121,4 +118,4 @@ vows.describe("List").addBatch({
       assert.notStrictEqual (list._, this.original._);
     }
   }
-}).export(module);
+}, module);

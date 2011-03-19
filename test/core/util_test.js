@@ -3,15 +3,9 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var
+require('../test_helper');
 
-vows   = require('vows'),
-assert = require('assert'),
-util   = require('util'),
-
-LeftJS = require('../init').LeftJS;
-
-vows.describe('Core Utils').addBatch({
+describe('Core Utils', {
   "ext(a,b)": {
     topic: function() { return LeftJS.ext; },
 
@@ -66,7 +60,7 @@ vows.describe('Core Utils').addBatch({
     }
   }
 
-}).export(module);
+}, module);
 
 /**
  * A shortcut for the type check functions testing

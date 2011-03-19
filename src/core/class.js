@@ -15,7 +15,7 @@ function Class(parent, params) {
   }
 
   if (parent) {
-    var Parent       = function() {};
+    function Parent() {}
     Parent.prototype = parent.prototype;
     Class.prototype  = new Parent();
     Class.parent     = parent;

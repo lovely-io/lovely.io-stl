@@ -3,14 +3,9 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var
+require('../test_helper');
 
-vows   = require('vows'),
-assert = require('assert'),
-
-LeftJS = require('../init').LeftJS;
-
-vows.describe('Class').addBatch({
+describe('Class', {
 
   "new Class({..})": {
     topic: function() {
@@ -139,4 +134,5 @@ vows.describe('Class').addBatch({
       }
     }
   }
-}).export(module);
+
+}, module);

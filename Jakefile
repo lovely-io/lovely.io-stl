@@ -10,7 +10,7 @@ task('build', [], function() {
 
   require('fs').writeFileSync(
     'build/left.js',
-    require('./test/init').Src
+    require('./test/test_helper').Src
   );
 });
 
