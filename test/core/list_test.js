@@ -18,6 +18,39 @@ describe("List", {
     }
   },
 
+  '#first()': {
+    topic: function() {
+      this.list = new List([1,2,3,4,5]);
+      return this.list.first();
+    },
+
+    'should return the first item on the list': function(item) {
+      assert.same(item, this.list._[0]);
+    }
+  },
+
+  '#last()': {
+    topic: function() {
+      this.list = new List([1,2,3,4,5]);
+      return this.list.last();
+    },
+
+    'should return the last item on the list': function(item) {
+      assert.same(item, this.list._[this.list._.length - 1]);
+    }
+  },
+
+  '#size()': {
+    topic: function() {
+      this.list  = new List([1,2,3,4,5]);
+      return this.list.size();
+    },
+
+    'should return the list size': function(size) {
+      assert.same(size, this.list._.length);
+    }
+  },
+
   '#each(callback)': {
     topic: function() {
       var items   = this.items   = [];

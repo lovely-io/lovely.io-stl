@@ -20,6 +20,28 @@ ext(List.prototype, {
   _: undefined,
 
   /**
+   * Returns the first items on the list
+   *
+   * @return {mixed} the first item or `undefined`
+   */
+  first: function() {
+    return this._[0];
+  },
+
+  /**
+   * Returns the last item on the list
+   *
+   * @return {mixed} the last item or `undefined`
+   */
+  last: function() {
+    return this._[this._.length - 1];
+  },
+
+  size: function() {
+    return this._.length;
+  },
+
+  /**
    * The standard `forEaech` equivalent
    *
    * @param {mixed} method name or a callback function
