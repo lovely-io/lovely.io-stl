@@ -25,7 +25,8 @@ ext(List.prototype, {
    * @return {mixed} the first item or `undefined`
    */
   first: function() {
-    return this._[0];
+    return arguments.length === 0 ? this._[0] :
+      this.filter.apply(this, arguments).first();
   },
 
   /**
@@ -34,9 +35,15 @@ ext(List.prototype, {
    * @return {mixed} the last item or `undefined`
    */
   last: function() {
-    return this._[this._.length - 1];
+    return arguments.length === 0 ? this._[this._.length - 1] :
+      this.filter.apply(this, arguments).last();
   },
 
+  /**
+   * Returns the size of the list
+   *
+   * @return {Number} list size
+   */
   size: function() {
     return this._.length;
   },

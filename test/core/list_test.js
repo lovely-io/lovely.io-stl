@@ -18,25 +18,55 @@ describe("List", {
     }
   },
 
-  '#first()': {
+  '#first': {
     topic: function() {
-      this.list = new List([1,2,3,4,5]);
-      return this.list.first();
+      return this.list = new List([1,2,3,4,5]);
     },
 
-    'should return the first item on the list': function(item) {
-      assert.same(item, this.list._[0]);
+    '\b()': {
+      topic: function(list) {
+        return list.first();
+      },
+
+      'should return the first item on the list': function(item) {
+        assert.same(item, this.list._[0]);
+      }
+    },
+
+    '\b(callback)': {
+      topic: function(list) {
+        return list.first(function(item) { return item % 2 == 0; });
+      },
+
+      'should return the first item that match the callback': function(item) {
+        assert.same(item, 2);
+      }
     }
   },
 
-  '#last()': {
+  '#last': {
     topic: function() {
-      this.list = new List([1,2,3,4,5]);
-      return this.list.last();
+      return this.list = new List([1,2,3,4,5]);
     },
 
-    'should return the last item on the list': function(item) {
-      assert.same(item, this.list._[this.list._.length - 1]);
+    '\b()': {
+      topic: function(list) {
+        return list.last();
+      },
+
+      'should return the last item on the list': function(item) {
+        assert.same(item, this.list._[this.list._.length - 1]);
+      }
+    },
+
+    '\b(callback)': {
+      topic: function(list) {
+        return list.last(function(item) { return item % 2 == 0; });
+      },
+
+      'should return the last matching item': function(item) {
+        assert.same(item, 4);
+      }
     }
   },
 
