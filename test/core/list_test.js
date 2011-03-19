@@ -53,10 +53,7 @@ describe("List", {
       })
     },
 
-    'should make a new list': function(result) {
-      assert.instanceOf     (result, List);
-      assert.notStrictEqual (result, this.original);
-    },
+    'should make a new list': ensure_new_list,
 
     'should pack all the mapping results': function(result) {
       assert.deepEqual      (result._, [2,4,6,8,10]);
@@ -72,11 +69,7 @@ describe("List", {
       })
     },
 
-    'should create a new List': function(result) {
-      assert.instanceOf     (result, List);
-      assert.notStrictEqual (result, this.original);
-
-    },
+    'should create a new List': ensure_new_list,
 
     'should pack it with filtered data': function(result) {
       assert.deepEqual      (result._, [1,3,5]);
@@ -92,10 +85,7 @@ describe("List", {
       });
     },
 
-    'should create a new List': function(list) {
-      assert.instanceOf     (list, List);
-      assert.notStrictEqual (list, this.original);
-    },
+    'should create a new List': ensure_new_list,
 
     'should filter out all matching elements': function(list) {
       assert.deepEqual (list._, [2,4]);
@@ -109,10 +99,7 @@ describe("List", {
       return this.original.without(1,2,4);
     },
 
-    'should create a new List': function(list) {
-      assert.instanceOf     (list, List);
-      assert.notStrictEqual (list, this.original);
-    },
+    'should create a new List': ensure_new_list,
 
     'should filter out listed values': function(list) {
       assert.deepEqual (list._, [3,5]);
@@ -125,10 +112,7 @@ describe("List", {
       return this.original.compact();
     },
 
-    'should create a new List': function(list) {
-      assert.instanceOf     (list, List);
-      assert.notStrictEqual (list, this.original);
-    },
+    'should create a new List': ensure_new_list,
 
     'should filter out nulls and undefineds': function(list) {
       assert.deepEqual (list._, ['', 0, 1]);
@@ -160,10 +144,7 @@ describe("List", {
       return this.original.clone();
     },
 
-    'should make a new list': function(list) {
-      assert.instanceOf     (list, List);
-      assert.notStrictEqual (list, this.original);
-    },
+    'should make a new list': ensure_new_list,
 
     'should clone the data': function(list) {
       assert.deepEqual      (list._, this.original._);
@@ -171,3 +152,14 @@ describe("List", {
     }
   }
 }, module);
+
+/**
+ * Shortcut to ensure that a new list was created
+ *
+ * @param {List} list
+ * @return void
+ */
+function ensure_new_list(list) {
+  assert.instanceOf     (list, List);
+  assert.notStrictEqual (list, this.original);
+}
