@@ -49,6 +49,36 @@ ext(List.prototype, {
   },
 
   /**
+   * Returns an item by an index
+   *
+   * @param {Number} index
+   * @return {mixed} value by the index or 'undefined'
+   */
+  item: function(index) {
+    return this._[index];
+  },
+
+  /**
+   * Returns the left index of the item in the list
+   *
+   * @param {mixed} item
+   * @return {Number} index
+   */
+  indexOf: function(item) {
+    return this._.indexOf(item);
+  },
+
+  /**
+   * Returns the right index of the item on the list
+   *
+   * @param {mixed} item
+   * @return {Number} index
+   */
+  lastIndexOf: function(item) {
+    return this._.lastIndexOf(item);
+  },
+
+  /**
    * The standard `forEaech` equivalent
    *
    * @param {mixed} method name or a callback function

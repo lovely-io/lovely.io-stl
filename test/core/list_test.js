@@ -81,6 +81,42 @@ describe("List", {
     }
   },
 
+  '#item()': {
+    topic: function() {
+      this.list  = new List([1,2,3,4,5]);
+      this.index = 2;
+      return this.list.item(this.index);
+    },
+
+    'should return an item at that index': function(item) {
+      assert.same(item, this.list._[this.index]);
+    }
+  },
+
+  '#indexOf': {
+    topic: function() {
+      this.list = new List([1,2,3,4,5]);
+      this.item = 2;
+      return this.list.indexOf(this.item);
+    },
+
+    'should return left index for the item': function(index) {
+      assert.equal(index, this.list._.indexOf(this.item));
+    }
+  },
+
+  '#lastIndexOf': {
+    topic: function() {
+      this.list = new List([1,2,3,4,5]);
+      this.item = 2;
+      return this.list.lastIndexOf(this.item);
+    },
+
+    'should return the right index for the item': function(index) {
+      assert.equal(index, this.list._.lastIndexOf(this.item));
+    }
+  },
+
   '#each(callback)': {
     topic: function() {
       var items   = this.items   = [];
