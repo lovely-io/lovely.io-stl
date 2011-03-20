@@ -6,12 +6,20 @@
 
 desc('Builds the script');
 task('build', [], function() {
+  var disc   = require('fs');
+  var packer = require('uglify-js');
+  var source = require('./test/test_helper').Src;
+  var build  = packer.compress(source);
+
+  // copying the header over
+  build = source.match(/\/\*[\s\S]+?\*\/\s/m)[0] + build;
+
   system('mkdir -p build/');
 
-  require('fs').writeFileSync(
-    'build/left.js',
-    require('./test/test_helper').Src
-  );
+  disc.writeFileSync('build/left.js', build);
+  disc.writeFileSync('build/left-src.js', source);
+
+  system('gzip -c build/left.js > build/left.js.gz');
 });
 
 
