@@ -8,6 +8,7 @@ var LeftJS = function() {
   require('core/util');
   require('core/class');
   require('core/list');
+  require('core/hash');
 
 
   /**
@@ -32,7 +33,8 @@ var LeftJS = function() {
     isArray:    isArray,
     isObject:   isObject,
     Class:      Class,
-    List:       List
+    List:       List,
+    Hash:       Hash
   });
 
 }();
