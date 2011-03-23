@@ -90,15 +90,7 @@ ext(Hash.prototype, {
    * @return {Hash} clone
    */
   clone: function() {
-    var key, object = this._, data = {};
-
-    for (key in object) {
-      if (object.hasOwnProperty(key)) {
-        data[key] = object[key];
-      }
-    }
-
-    return new Hash(data);
+    return this.merge();
   },
 
   /**
@@ -119,5 +111,75 @@ ext(Hash.prototype, {
     }
 
     return result;
+  },
+
+  /**
+   * Creates a new hash by filtering out the original one
+   *
+   * @param {Function} callback
+   * @param {Object} optional scope
+   * @return {Hash} new
+   */
+  filter: function(callback, scope) {
+    var key, object = this._, data = {};
+
+    for (key in object) {
+      if (object.hasOwnProperty(key)) {
+        if (callback.call(scope, key, object[key], this)) {
+          data[key] = object[key];
+        }
+      }
+    }
+
+    return new Hash(data);
+  },
+
+  /**
+   * Creates a new hash by rejecting some values out the original one
+   *
+   * @param {Function} callback
+   * @param {Object} optional scope
+   * @return {Hash} new
+   */
+  reject: function(callback, scope) {
+    var key, object = this._, data = {};
+
+    for (key in object) {
+      if (object.hasOwnProperty(key)) {
+        if (!callback.call(scope, key, object[key], this)) {
+          data[key] = object[key];
+        }
+      }
+    }
+
+    return new Hash(data);
+  },
+
+  /**
+   * Creates a new Hash by merging the content of the current
+   * hash with all the incomming ones
+   *
+   * @param {Object} or {Hash} to merge
+   * ....
+   * @return {Hash} new
+   */
+  merge: function() {
+    var list = A(arguments), key, object = this._, data = {};
+
+    while (object !== undefined) {
+      if (object instanceof Hash) {
+        object = object._;
+      }
+
+      for (key in object) {
+        if (object.hasOwnProperty(key)) {
+          data[key] = object[key];
+        }
+      }
+
+      object = list.shift();
+    }
+
+    return new Hash(data);
   }
 });

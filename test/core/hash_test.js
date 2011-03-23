@@ -151,5 +151,63 @@ describe('Hash', {
         ['a', 1], ['b', 2]
       ]);
     }
+  },
+
+  '#filter(callback)': {
+    topic: function() {
+      this.original = new Hash({a:1, b:2, c:3});
+
+      return this.original.filter(function(key, value) {
+        return key === 'a' || key === 'c';
+      });
+    },
+
+    "should create a new Hash object": function(hash) {
+      assert.instanceOf (hash, Hash);
+      assert.notSame    (hash, this.original);
+    },
+
+    "should filter the related object": function(hash) {
+      assert.deepEqual (hash._, {a:1, c:3});
+    }
+  },
+
+  '#reject(callback)': {
+    topic: function() {
+      this.original = new Hash({a:1, b:2, c:3});
+
+      return this.original.reject(function(key, value) {
+        return key === 'a' || key === 'c';
+      });
+    },
+
+    "should create a new Hash object": function(hash) {
+      assert.instanceOf (hash, Hash);
+      assert.notSame    (hash, this.original);
+    },
+
+    "should filter the related object": function(hash) {
+      assert.deepEqual (hash._, {b:2});
+    }
+  },
+
+  '#merge(o1, o2,..)': {
+    topic: function() {
+      this.original = new Hash({a:3});
+      return this.original.merge(
+        {a:1, b:3},
+        new Foo({b:2, c:4}), // checking prototypes filtering
+        new Hash({c:3})      // checking Hashes processing
+      );
+    },
+
+    "should create a new Hash object": function(hash) {
+      assert.instanceOf (hash, Hash);
+      assert.notSame    (hash, this.original);
+    },
+
+    "should merge the objects": function(hash) {
+      assert.deepEqual (hash._, {a:1, b:2, c:3});
+    }
   }
 }, module);
