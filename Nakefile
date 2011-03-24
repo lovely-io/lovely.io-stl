@@ -3,9 +3,9 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
+var nake = require('nake');
 
-desc('Builds the script');
-task('build', [], function() {
+nake.task('build', 'Build the script', function() {
   var disc   = require('fs');
   var packer = require('uglify-js');
   var source = require('./test/test_helper').Src;
@@ -23,14 +23,12 @@ task('build', [], function() {
 });
 
 
-desc('Runs the tests');
-task('test', [], function() {
+nake.task('test', 'Run the tests', function() {
   system('vows test/*/*_test.js');
 });
 
-namespace('test', function() {
-  desc('Runs the tests with spec output');
-  task('spec', [], function() {
+nake.namespace('test', function() {
+  nake.task('spec', 'Run the tests with spec output', function() {
     system('vows test/*/*_test.js --spec');
   })
 });
