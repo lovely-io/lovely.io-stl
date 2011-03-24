@@ -66,6 +66,15 @@ ext(Hash.prototype, {
   },
 
   /**
+   * Creates a complete clone of the the Hash
+   *
+   * @return {Hash} clone
+   */
+  clone: function() {
+    return this.merge();
+  },
+
+  /**
    * Loops through every key-value pair in the list
    *
    * @param {Function} callback
@@ -77,20 +86,11 @@ ext(Hash.prototype, {
 
     for (key in object) {
       if (object.hasOwnProperty(key)) {
-        callback.call(scope, key, object[key], this);
+        callback.call(scope, key, object[key], object);
       }
     }
 
     return this;
-  },
-
-  /**
-   * Creates a complete clone of the the Hash
-   *
-   * @return {Hash} clone
-   */
-  clone: function() {
-    return this.merge();
   },
 
   /**
@@ -106,7 +106,7 @@ ext(Hash.prototype, {
 
     for (key in object) {
       if (object.hasOwnProperty(key)) {
-        result.push(callback.call(scope, key, object[key], this));
+        result.push(callback.call(scope, key, object[key], object));
       }
     }
 
@@ -125,7 +125,7 @@ ext(Hash.prototype, {
 
     for (key in object) {
       if (object.hasOwnProperty(key)) {
-        if (callback.call(scope, key, object[key], this)) {
+        if (callback.call(scope, key, object[key], object)) {
           data[key] = object[key];
         }
       }
@@ -146,7 +146,7 @@ ext(Hash.prototype, {
 
     for (key in object) {
       if (object.hasOwnProperty(key)) {
-        if (!callback.call(scope, key, object[key], this)) {
+        if (!callback.call(scope, key, object[key], object)) {
           data[key] = object[key];
         }
       }
@@ -181,5 +181,52 @@ ext(Hash.prototype, {
     }
 
     return new Hash(data);
+  }
+});
+
+/**
+ * Class level methods. Unlike the prototype methods
+ * those always return plain objects instead of Hash instances
+ *
+ * Basically the idea is to provide a quick interface to handle
+ * plain objects without bothering with converting things into
+ * hashes back and forth
+ */
+ext(Hash, {
+  keys: function(object) {
+    return new Hash(object).keys();
+  },
+
+  values: function(object) {
+    return new Hash(object).values();
+  },
+
+  empty: function(object) {
+    return new Hash(object).empty();
+  },
+
+  clone: function(object) {
+    return new Hash(object).clone()._;
+  },
+
+  each: function(object, callback, scope) {
+    return new Hash(object).each(callback, scope)._;
+  },
+
+  map: function(object, callback, scope) {
+    return new Hash(object).map(callback, scope);
+  },
+
+  filter: function(object, callback, scope) {
+    return new Hash(object).filter(callback, scope)._;
+  },
+
+  reject: function(object, callback, scope) {
+    return new Hash(object).reject(callback, scope)._;
+  },
+
+  merge: function() {
+    var args = A(arguments), hash = new Hash(args.shift());
+    return hash.merge.apply(hash, args)._;
   }
 });

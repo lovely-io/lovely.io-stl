@@ -25,7 +25,7 @@ Foo.prototype.hoo = 'hoo';
 
 
 describe('Hash', {
-  'initialization': {
+  '#initialization': {
     topic: function() {
       this.object = {};
       return new Hash(this.object);
@@ -106,7 +106,7 @@ describe('Hash', {
       var hash = new Hash({a:1, b:2}), result = [],
 
       ret = hash.each(function(key, value, hash) {
-        result.push([key, value, hash._]);
+        result.push([key, value, hash]);
       });
 
       assert.same      (ret, hash);
@@ -134,7 +134,7 @@ describe('Hash', {
       var hash = {a:1, b:2},
 
       result = new Hash(hash).map(function (key, value, hash) {
-        return [key, value, hash._];
+        return [key, value, hash];
       });
 
       assert.deepEqual (result, [
@@ -143,12 +143,13 @@ describe('Hash', {
     },
 
     "should skip prototype key-value pairs": function() {
-      var result = new Hash(new Foo({a:1, b:2})).map(function(key, value) {
-        return [key, value];
+      var data   = {a: 1, b:2};
+      var result = new Hash(new Foo(data)).map(function(key, value, hash) {
+        return [key, value, hash];
       });
 
       assert.deepEqual (result, [
-        ['a', 1], ['b', 2]
+        ['a', 1, data], ['b', 2, data]
       ]);
     }
   },
@@ -208,6 +209,99 @@ describe('Hash', {
 
     "should merge the objects": function(hash) {
       assert.deepEqual (hash._, {a:1, b:2, c:3});
+    }
+  },
+
+  '.keys': {
+    "should return keys of an object": function() {
+      assert.deepEqual (['a', 'b'], Hash.keys({a:1, b:2}));
+    }
+  },
+
+  '.values': {
+    "should return values of an object": function() {
+      assert.deepEqual ([1,2], Hash.values({a: 1, b:2}));
+    }
+  },
+
+  '.empty': {
+    "should check if an object is empty": function() {
+      assert.isTrue  (Hash.empty({}));
+      assert.isFalse (Hash.empty({a: 1}));
+    }
+  },
+
+  ".clone": {
+    "should clone an object": function() {
+      var object = {a: 1};
+      var clone  = Hash.clone(object);
+
+      assert.deepEqual (clone, object);
+      assert.notSame   (clone, object);
+    }
+  },
+
+  ".each": {
+    topic: function() {
+      this.args = [];
+      this.obj  = {a: 1, b: 2};
+      return Hash.each(this.obj, function(key, value, object) {
+        this.args.push([key, value, object]);
+      }, this);
+    },
+
+    "should run through every key-value pair in the object": function() {
+      assert.deepEqual (this.args, [
+        ['a', 1, this.obj], ['b', 2, this.obj]
+      ]);
+    },
+
+    "should return the object itself back": function(result) {
+      assert.same (result, this.obj);
+    }
+  },
+
+  ".map": {
+    "should map the results of callbacks on every key-value pairs": function() {
+      var result = Hash.map({a: 1, b: 2}, function(key, value) {
+        return key + "-" + value;
+      });
+
+      assert.deepEqual (result, ["a-1", "b-2"]);
+    }
+  },
+
+  ".filter": {
+    "should create a filtered object": function() {
+      var hash = {a: 1, b: 2, c: 3};
+      var data = Hash.filter(hash, function(key, value) { return value % 2; });
+
+      assert.notSame   (data, hash);
+      assert.deepEqual (data, {a:1, c:3});
+    }
+  },
+
+  ".reject": {
+    "should create a new object without rejected pairs": function() {
+      var hash = {a: 1, b: 2, c: 3};
+      var data = Hash.reject(hash, function(key, value) { return value % 2; });
+
+      assert.notSame   (data, hash);
+      assert.deepEqual (data, {b:2});
+    }
+  },
+
+  ".merge": {
+    "should merge objects and hashes and make a new object": function() {
+      var object = {a:1, b:3};
+      var result = Hash.merge(
+        object,
+        new Foo({b:2, c:4}), // checking prototypes filtering
+        new Hash({c:3})      // checking Hashes processing
+      );
+
+      assert.notSame   (result, object);
+      assert.deepEqual (result, {a: 1, b: 2, c: 3});
     }
   }
 }, module);
