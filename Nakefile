@@ -1,5 +1,9 @@
 /**
- * The `jake` tasks
+ * The `nake` tasks
+ *
+ * USAGE:
+ *   npm install nake
+ *   nake --list
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
