@@ -7,12 +7,65 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-function Hash(object) {
-  this._ = object;
-}
+var Hash = new Class({
+  /**
+   * Class level methods. Unlike the prototype methods
+   * those always return plain objects instead of Hash instances
+   *
+   * Basically the idea is to provide a quick interface to handle
+   * plain objects without bothering to manually convert things into
+   * hashes back and forth
+   */
+  extend: {
+    keys: function(object) {
+      return new Hash(object).keys();
+    },
 
-ext(Hash.prototype, {
+    values: function(object) {
+      return new Hash(object).values();
+    },
+
+    empty: function(object) {
+      return new Hash(object).empty();
+    },
+
+    clone: function(object) {
+      return new Hash(object).clone()._;
+    },
+
+    each: function(object, callback, scope) {
+      return new Hash(object).each(callback, scope)._;
+    },
+
+    map: function(object, callback, scope) {
+      return new Hash(object).map(callback, scope);
+    },
+
+    filter: function(object, callback, scope) {
+      return new Hash(object).filter(callback, scope)._;
+    },
+
+    reject: function(object, callback, scope) {
+      return new Hash(object).reject(callback, scope)._;
+    },
+
+    merge: function() {
+      var args = A(arguments), hash = new Hash(args.shift());
+      return hash.merge.apply(hash, args)._;
+    }
+  },
+
   _: undefined,
+
+  /**
+   * basic constructor
+   *
+   * @param {Object} some object
+   * @return void
+   */
+  initialize: function(object) {
+    this._ = object;
+  },
 
   /**
    * Returns the list of keys in the object
@@ -182,51 +235,5 @@ ext(Hash.prototype, {
 
     return new Hash(data);
   }
-});
 
-/**
- * Class level methods. Unlike the prototype methods
- * those always return plain objects instead of Hash instances
- *
- * Basically the idea is to provide a quick interface to handle
- * plain objects without bothering with converting things into
- * hashes back and forth
- */
-ext(Hash, {
-  keys: function(object) {
-    return new Hash(object).keys();
-  },
-
-  values: function(object) {
-    return new Hash(object).values();
-  },
-
-  empty: function(object) {
-    return new Hash(object).empty();
-  },
-
-  clone: function(object) {
-    return new Hash(object).clone()._;
-  },
-
-  each: function(object, callback, scope) {
-    return new Hash(object).each(callback, scope)._;
-  },
-
-  map: function(object, callback, scope) {
-    return new Hash(object).map(callback, scope);
-  },
-
-  filter: function(object, callback, scope) {
-    return new Hash(object).filter(callback, scope)._;
-  },
-
-  reject: function(object, callback, scope) {
-    return new Hash(object).reject(callback, scope)._;
-  },
-
-  merge: function() {
-    var args = A(arguments), hash = new Hash(args.shift());
-    return hash.merge.apply(hash, args)._;
-  }
 });

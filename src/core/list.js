@@ -12,12 +12,18 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-function List(items) {
-  this._ = items;
-}
-
-ext(List.prototype, {
+var List = new Class({
   _: undefined,
+
+  /**
+   * Basic constructor
+   *
+   * @param {mixed} iterable list
+   * @return void
+   */
+  initialize: function(items) {
+    this._ = items;
+  },
 
   /**
    * Returns the first items on the list
@@ -148,21 +154,21 @@ ext(List.prototype, {
   },
 
   /**
-   * Converts the list into an instance or {Array}
-   *
-   * @return {Array} new
-   */
-  toArray: function() {
-    return A(this._);
-  },
-
-  /**
    * Clones the list with all the internal data
    *
    * @return {List} new
    */
   clone: function() {
     return new List(A(this._));
+  },
+
+  /**
+   * Converts the list into an instance or {Array}
+   *
+   * @return {Array} new
+   */
+  toArray: function() {
+    return A(this._);
   },
 
   /**
