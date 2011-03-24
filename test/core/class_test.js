@@ -5,11 +5,13 @@
  */
 require('../test_helper');
 
+var Class = LeftJS.Class;
+
 describe('Class', {
 
   "new Class({..})": {
     topic: function() {
-      return new LeftJS.Class({
+      return new Class({
         getName: function() {
           return this.name;
         },
@@ -56,7 +58,7 @@ describe('Class', {
 
   'new Class({initialize: ...})': {
     topic: function() {
-      return new LeftJS.Class({
+      return new Class({
         initialize: function(a, b) {
           this.name = a + '-' + b;
         }
@@ -70,7 +72,7 @@ describe('Class', {
     },
 
     "should return the constructor's result if sent": function() {
-      var Klass = new LeftJS.Class({
+      var Klass = new Class({
         initialize: function() {
           return ['some-other-data'];
         }
@@ -82,16 +84,16 @@ describe('Class', {
 
   'new Class': {
     topic: function() {
-      return this.ParentKlass = new LeftJS.Class({
-        method: function() {
-          return 'parent';
+      return this.ParentKlass = new Class({
+        method: function(data) {
+          return data || 'parent';
         }
       });
     },
 
     '(Parent)': {
       topic: function(Parent) {
-        return new LeftJS.Class(Parent);
+        return new Class(Parent);
       },
 
       "should refer '.parent' to the parent class": function(Klass) {
@@ -105,7 +107,7 @@ describe('Class', {
 
     '(Parent, {...})': {
       topic: function(Parent) {
-        return new LeftJS.Class(Parent, {
+        return new Class(Parent, {
           method: function() {
             return 'child';
           }
@@ -132,6 +134,51 @@ describe('Class', {
 
         assert.equal(klass.method(), 'child');
       }
+    },
+
+    '(Parent, {...}) and $super calls': {
+      topic: function(Parent) {
+        return new Class(Parent, {
+          method: function() {
+            return this.$super('parent-data + ') + 'child-data';
+          }
+        });
+      },
+
+      "should preform a proper super-call": function(Klass) {
+        assert.equal(
+          new Klass().method(),
+          'parent-data + child-data'
+        );
+      }
+    }
+  },
+
+  'new Class() with shared modules': {
+    topic: function() {
+      this.ext = {a:function() {}, b:function() {}};
+      this.inc = {c:function() {}, d:function() {}};
+
+      return new Class({
+        include: this.inc,
+        extend:  this.ext
+      });
+    },
+
+    "should extend the class-level with the 'extend' module": function(Klass) {
+      assert.same (Klass.a, this.ext.a);
+      assert.same (Klass.b, this.ext.b);
+
+      assert.isFalse ('c' in Klass);
+      assert.isFalse ('d' in Klass);
+    },
+
+    "should extend the prototype with the 'include' module": function(Klass) {
+      assert.same (Klass.prototype.c, this.inc.c);
+      assert.same (Klass.prototype.d, this.inc.d);
+
+      assert.isFalse ('a' in Klass.prototype);
+      assert.isFalse ('b' in Klass.prototype);
     }
   }
 

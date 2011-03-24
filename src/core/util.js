@@ -86,3 +86,15 @@ function isObject(value) {
   return Object_toString.call(value) === '[object Object]';
 }
 
+// private
+
+/**
+ * Checks if the value is an array then returns it,
+ * otherways make an one cell array with that value
+ *
+ * @param {mixed} some value
+ * @return {Array} array
+ */
+function ensure_Array(value) {
+  return isArray(value) ? value : [value];
+}
