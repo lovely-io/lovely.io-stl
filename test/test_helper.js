@@ -16,7 +16,7 @@ src = fs.readFileSync(dir + 'left.js').toString();
 
 src = src.replace(/require\(['"](.+?)['"]\);/mg, function(m, filename) {
   return fs.readFileSync(dir + filename + '.js')
-    .toString().replace(/($|\n)/g, '$1  ');
+    .toString().replace(/($|\n)/g, '$1  ') + "\n\n";
 });
 
 eval(src);

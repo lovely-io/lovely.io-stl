@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var LeftJS = function() {
+var LeftJS = function(undefined) {
 
   require('core/util');
   require('core/class');
