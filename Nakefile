@@ -8,6 +8,7 @@
  * Copyright (C) 2011 Nikolay Nemshilov
  */
 var nake = require('nake');
+nake.Quiet = true;
 
 nake.task('build', 'Build the script', function() {
   var disc   = require('fs');
