@@ -21,11 +21,11 @@ RightJS and see where it will get us.
 
 ## How To...
 
-You'll need `node`, `npm` and then `jake` and `vows` packages installed
+You'll need `node`, `npm` and then `nake` and `vows` packages installed
 
-    jake build
-    jake test
-    jake test:spec
+    nake build
+    nake test
+    nake test:spec
 
 
 
