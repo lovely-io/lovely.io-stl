@@ -12,9 +12,14 @@ nake.Quiet = true;
 
 nake.task('build', 'Build the script', function() {
   var disc   = require('fs');
-  var packer = require('uglify-js');
+  var ugly   = require('uglify-js');
   var source = require('./test/test_helper').Src;
-  var build  = packer.compress(source);
+
+  var build  = ugly.parser.parse(source);
+
+  build = ugly.uglify.ast_mangle(build);
+  build = ugly.uglify.ast_squeeze(build);
+  build = ugly.uglify.gen_code(build);
 
   // copying the header over
   build = source.match(/\/\*[\s\S]+?\*\/\s/m)[0] + build;
