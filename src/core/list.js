@@ -70,8 +70,8 @@ var List = new Class({
    * @param {mixed} item
    * @return {Number} index
    */
-  indexOf: function(item) {
-    return this._.indexOf(item);
+  indexOf: function() {
+    return List_call(Array_proto.indexOf, this, arguments);
   },
 
   /**
@@ -80,8 +80,8 @@ var List = new Class({
    * @param {mixed} item
    * @return {Number} index
    */
-  lastIndexOf: function(item) {
-    return this._.lastIndexOf(item);
+  lastIndexOf: function() {
+    return List_call(Array_proto.lastIndexOf, this, arguments);
   },
 
   /**
@@ -92,7 +92,7 @@ var List = new Class({
    * @return {List} this
    */
   each: function() {
-    List_call(Array_forEach, this, arguments);
+    List_call(Array_proto.forEach, this, arguments);
     return this;
   },
 
@@ -105,7 +105,7 @@ var List = new Class({
    * @return {List} new
    */
   map: function() {
-    return new List(List_call(Array_map, this, arguments));
+    return new List(List_call(Array_proto.map, this, arguments));
   },
 
   /**
@@ -116,7 +116,7 @@ var List = new Class({
    * @return {List} new
    */
   filter: function() {
-    return new List(List_call(Array_filter, this, arguments));
+    return new List(List_call(Array_proto.filter, this, arguments));
   },
 
   /**
@@ -172,7 +172,7 @@ var List = new Class({
   },
 
   /**
-   * Debugability improover
+   * Debugability improver
    *
    * @return {String} representation
    */
@@ -182,19 +182,13 @@ var List = new Class({
 });
 
 // private
-var
-
-Array_proto   = [],
-Array_forEach = Array_proto.forEach,
-Array_map     = Array_proto.map,
-Array_filter  = Array_proto.filter;
+var Array_proto = Array.prototype;
 
 function Array_reject(callback, scope) {
-  return Array_filter.call(this, function() {
+  return Array_proto.filter.call(this, function() {
     return !callback.apply(scope, arguments);
   });
 }
-
 
 // calls the array method on the list with the arguments
 function List_call(method, list, args) {
