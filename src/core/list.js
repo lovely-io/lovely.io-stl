@@ -51,26 +51,6 @@ var List = new Class(Array, {
   },
 
   /**
-   * Returns the left index of the item in the list
-   *
-   * @param {mixed} item
-   * @return {Number} index
-   */
-  indexOf: function(item) {
-    return Array_proto.indexOf.call(this, item);
-  },
-
-  /**
-   * Returns the right index of the item on the list
-   *
-   * @param {mixed} item
-   * @return {Number} index
-   */
-  lastIndexOf: function(item) {
-    return Array_proto.lastIndexOf.call(this, item);
-  },
-
-  /**
    * The standard `forEaech` equivalent
    *
    * @param {mixed} method name or a callback function

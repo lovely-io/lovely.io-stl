@@ -86,22 +86,6 @@ describe("List", {
     }
   },
 
-  '#indexOf': {
-    topic: list.indexOf(2),
-
-    'should return left index for the item': function(index) {
-      assert.equal(index, array.indexOf(2));
-    }
-  },
-
-  '#lastIndexOf': {
-    topic: list.lastIndexOf(2),
-
-    'should return the right index for the item': function(index) {
-      assert.equal(index, array.lastIndexOf(2));
-    }
-  },
-
   '#each(callback)': {
     topic: function() {
       this.items   = [];
@@ -212,6 +196,76 @@ describe("List", {
     'should clone the data': function(result) {
       assert.deepEqual (A(result), A(list));
       assert.notSame   (result, list);
+    }
+  },
+
+  '#indexOf': {
+    topic: list.indexOf(2),
+
+    'should return left index for the item': function(index) {
+      assert.equal(index, array.indexOf(2));
+    }
+  },
+
+  '#lastIndexOf': {
+    topic: list.lastIndexOf(2),
+
+    'should return the right index for the item': function(index) {
+      assert.equal(index, array.lastIndexOf(2));
+    }
+  },
+
+  '#push': {
+    topic: function() {
+      var list = new List([1,2,3]);
+      list.push(4);
+      return list;
+    },
+
+    'should push the item into the list': function(list) {
+      assert.listEqual (list, [1,2,3,4]);
+    }
+  },
+
+  '#pop': {
+    topic: function() {
+      this.list = new List([1,2,3,4]);
+      return this.list.pop();
+    },
+
+    "should return the last item out of the list": function(item) {
+      assert.equal (item, 4);
+    },
+
+    "should subtract the list": function() {
+      assert.listEqual (this.list, [1,2,3]);
+    }
+  },
+
+  '#shift': {
+    topic: function() {
+      this.list = new List([1,2,3,4]);
+      return this.list.shift();
+    },
+
+    'should return the first item': function(item) {
+      assert.equal (item, 1);
+    },
+
+    'should subtract the list itself': function() {
+      assert.listEqual (this.list, [2,3,4]);
+    }
+  },
+
+  '#unshift': {
+    topic: function() {
+      var list = new List([2,3,4]);
+      list.unshift(1);
+      return list;
+    },
+
+    'should unshift the item into the list': function(list) {
+      assert.listEqual (list, [1,2,3,4]);
     }
   }
 }, module);
