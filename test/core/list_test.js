@@ -9,12 +9,32 @@ var List  = LeftJS.List;
 var array = [1,2,3,4,5];
 var list  = new List(array);
 
+var A     = LeftJS.A;
+
+function ensure_new_list(object) {
+  assert.instanceOf (object, List);
+  assert.notSame    (object, list);
+}
+
+assert.listEqual = function(list, array) {
+  assert.instanceOf (list, List);
+  assert.deepEqual  (A(list), A(array));
+}
+
 describe("List", {
   'constructor': {
     topic: list,
 
-    'should link the original iterable by a reference': function(list) {
-      assert.same (list._, array);
+    'should copy the array into itself': function(list) {
+      assert.listEqual(list, array);
+    },
+
+    "should make an instance of 'List'": function(list) {
+      assert.instanceOf(list, List);
+    },
+
+    "should inherit the Array": function(list) {
+      assert.instanceOf(list, Array);
     }
   },
 
@@ -23,7 +43,7 @@ describe("List", {
       topic: list.first(),
 
       'should return the first item on the list': function(item) {
-        assert.same(item, list._[0]);
+        assert.same(item, list[0]);
       }
     },
 
@@ -43,7 +63,7 @@ describe("List", {
       topic: list.last(),
 
       'should return the last item on the list': function(item) {
-        assert.same(item, list._[list._.length - 1]);
+        assert.same(item, list[list.length - 1]);
       }
     },
 
@@ -62,15 +82,7 @@ describe("List", {
     topic: list.size(),
 
     'should return the list size': function(size) {
-      assert.same(size, list._.length);
-    }
-  },
-
-  '#item()': {
-    topic: list.item(2),
-
-    'should return an item at that index': function(item) {
-      assert.same(item, list._[2]);
+      assert.same(size, list.length);
     }
   },
 
@@ -78,7 +90,7 @@ describe("List", {
     topic: list.indexOf(2),
 
     'should return left index for the item': function(index) {
-      assert.equal(index, list._.indexOf(2));
+      assert.equal(index, array.indexOf(2));
     }
   },
 
@@ -86,7 +98,7 @@ describe("List", {
     topic: list.lastIndexOf(2),
 
     'should return the right index for the item': function(index) {
-      assert.equal(index, list._.lastIndexOf(2));
+      assert.equal(index, array.lastIndexOf(2));
     }
   },
 
@@ -122,7 +134,7 @@ describe("List", {
     'should make a new list': ensure_new_list,
 
     'should pack all the mapping results': function(list) {
-      assert.deepEqual (list._, [2,4,6,8,10]);
+      assert.listEqual (list, [2,4,6,8,10]);
     }
   },
 
@@ -134,7 +146,7 @@ describe("List", {
     'should create a new List': ensure_new_list,
 
     'should pack it with filtered data': function(list) {
-      assert.deepEqual (list._, [1,3,5]);
+      assert.listEqual (list, [1,3,5]);
     }
   },
 
@@ -146,7 +158,7 @@ describe("List", {
     'should create a new List': ensure_new_list,
 
     'should filter out all matching elements': function(list) {
-      assert.deepEqual (list._, [2,4]);
+      assert.listEqual (list, [2,4]);
     }
   },
 
@@ -156,7 +168,7 @@ describe("List", {
     'should create a new List': ensure_new_list,
 
     'should filter out listed values': function(list) {
-      assert.deepEqual (list._, [3,5]);
+      assert.listEqual (list, [3,5]);
     }
   },
 
@@ -172,7 +184,7 @@ describe("List", {
     },
 
     'should filter out nulls and undefineds': function(list) {
-      assert.deepEqual (list._, ['', 0, 1]);
+      assert.listEqual (list, ['', 0, 1]);
     }
   },
 
@@ -184,11 +196,11 @@ describe("List", {
     },
 
     'should feed it with the original data': function(array) {
-      assert.deepEqual (array, list._);
+      assert.deepEqual (array, A(list));
     },
 
     'should make a clone of the list not refer it by a link': function(array) {
-      assert.notSame (array, list._);
+      assert.notSame (array, A(list));
     }
   },
 
@@ -198,19 +210,8 @@ describe("List", {
     'should make a new list': ensure_new_list,
 
     'should clone the data': function(result) {
-      assert.deepEqual (result._, list._);
-      assert.notSame   (result._, list._);
+      assert.deepEqual (A(result), A(list));
+      assert.notSame   (result, list);
     }
   }
 }, module);
-
-/**
- * Shortcut to ensure that a new list was created
- *
- * @param {List} list
- * @return void
- */
-function ensure_new_list(object) {
-  assert.instanceOf (object, List);
-  assert.notSame    (object, list);
-}

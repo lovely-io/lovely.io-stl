@@ -6,14 +6,10 @@
  * features, so that we could iterate through anything in a civilize
  * maner without tempering with the JavaScript core.
  *
- * NOTE: this unit _does not_ provide access to the individual
- *       elements via the `[index]` calls and it also doesn't
- *       clone the original iterable object!
- *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var List = new Class({
-  _: undefined,
+var List = new Class(Array, {
+  length: 0,
 
   /**
    * Basic constructor
@@ -22,7 +18,7 @@ var List = new Class({
    * @return void
    */
   initialize: function(items) {
-    this._ = items;
+    Array_proto.splice.apply(this, [0,0].concat(A(items)));
   },
 
   /**
@@ -31,7 +27,7 @@ var List = new Class({
    * @return {mixed} the first item or `undefined`
    */
   first: function() {
-    return arguments.length === 0 ? this._[0] :
+    return arguments.length === 0 ? this[0] :
       this.filter.apply(this, arguments).first();
   },
 
@@ -41,7 +37,7 @@ var List = new Class({
    * @return {mixed} the last item or `undefined`
    */
   last: function() {
-    return arguments.length === 0 ? this._[this._.length - 1] :
+    return arguments.length === 0 ? this[this.length - 1] :
       this.filter.apply(this, arguments).last();
   },
 
@@ -51,17 +47,7 @@ var List = new Class({
    * @return {Number} list size
    */
   size: function() {
-    return this._.length;
-  },
-
-  /**
-   * Returns an item by an index
-   *
-   * @param {Number} index
-   * @return {mixed} value by the index or 'undefined'
-   */
-  item: function(index) {
-    return this._[index];
+    return this.length;
   },
 
   /**
@@ -70,8 +56,8 @@ var List = new Class({
    * @param {mixed} item
    * @return {Number} index
    */
-  indexOf: function() {
-    return List_call(Array_proto.indexOf, this, arguments);
+  indexOf: function(item) {
+    return Array_proto.indexOf.call(this, item);
   },
 
   /**
@@ -80,8 +66,8 @@ var List = new Class({
    * @param {mixed} item
    * @return {Number} index
    */
-  lastIndexOf: function() {
-    return List_call(Array_proto.lastIndexOf, this, arguments);
+  lastIndexOf: function(item) {
+    return Array_proto.lastIndexOf.call(this, item);
   },
 
   /**
@@ -159,7 +145,7 @@ var List = new Class({
    * @return {List} new
    */
   clone: function() {
-    return new List(A(this._));
+    return new List(A(this));
   },
 
   /**
@@ -168,7 +154,7 @@ var List = new Class({
    * @return {Array} new
    */
   toArray: function() {
-    return A(this._);
+    return A(this);
   },
 
   /**
@@ -177,9 +163,10 @@ var List = new Class({
    * @return {String} representation
    */
   toString: function() {
-    return '#<List ['+ this._ +']>';
+    return '#<List ['+ A(this) +']>';
   }
 });
+
 
 // private
 var Array_proto = Array.prototype;
@@ -192,5 +179,5 @@ function Array_reject(callback, scope) {
 
 // calls the array method on the list with the arguments
 function List_call(method, list, args) {
-  return method.apply(list._, args);
+  return method.apply(list, args);
 }
