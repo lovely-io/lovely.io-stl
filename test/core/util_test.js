@@ -58,6 +58,28 @@ describe('Core Utils', {
       assert.isArray   (array);
       assert.deepEqual ([1,2,3], array);
     }
+  },
+
+  "L(iterable)": {
+    topic: function() { return LeftJS.L },
+
+    "should make a List": function(L) {
+      var l = L([1,2,3]);
+
+      assert.instanceOf (l, LeftJS.List);
+      assert.deepEqual  (l.toArray(), [1,2,3]);
+    }
+  },
+
+  "H(object)": {
+    topic: function() { return LeftJS.H },
+
+    "should make a Hash": function(H) {
+      var hash = H({a:1});
+
+      assert.instanceOf (hash, LeftJS.Hash);
+      assert.deepEqual  (hash.toObject(), {a:1});
+    }
   }
 
 }, module);

@@ -26,6 +26,8 @@ var LeftJS = function(undefined) {
     version:    '%{version}',
 
     A:          A,
+    L:          L,
+    H:          H,
     ext:        ext,
     isString:   isString,
     isNumber:   isNumber,

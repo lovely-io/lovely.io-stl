@@ -18,6 +18,26 @@ function A(it) {
 }
 
 /**
+ * Converts iterables into LeftJS.List instances
+ *
+ * @param {mixed} iterable
+ * @return {List} list
+ */
+function L(it) {
+  return new List(it);
+}
+
+/**
+ * A shortcut to create {Hash} instances
+ *
+ * @param {Object} object
+ * @return {Hash} hash
+ */
+function H(object) {
+  return new Hash(object);
+}
+
+/**
  * Extends one object with another
  *
  * @param {Object} extendee

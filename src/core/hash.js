@@ -234,6 +234,15 @@ var Hash = new Class({
     }
 
     return new Hash(data);
+  },
+
+  /**
+   * Converts the Hash into a plain object
+   *
+   * @return {Object} plain object
+   */
+  toObject: function() {
+    return this._;
   }
 
 });
