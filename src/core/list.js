@@ -51,6 +51,17 @@ var List = new Class(Array, {
   },
 
   /**
+   * Returns a slice of the list
+   *
+   * @param {Number} start index
+   * @param {Number} end index
+   * @return {List} new slice
+   */
+  slice: function() {
+    return new List(Array_proto.slice.apply(this, arguments));
+  },
+
+  /**
    * The standard `forEaech` equivalent
    *
    * @param {mixed} method name or a callback function

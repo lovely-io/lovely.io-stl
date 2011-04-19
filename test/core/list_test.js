@@ -267,5 +267,15 @@ describe("List", {
     'should unshift the item into the list': function(list) {
       assert.listEqual (list, [1,2,3,4]);
     }
+  },
+
+  '#slice': {
+    topic: list.slice(2),
+
+    'should make a new list': ensure_new_list,
+
+    'should slice the original list': function(list) {
+      assert.listEqual(list, [3,4,5]);
+    }
   }
 }, module);
