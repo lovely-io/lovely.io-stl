@@ -38,7 +38,7 @@ describe('Class', {
         keys.push(key);
       }
 
-      assert.deepEqual(keys, ['getName', 'setName']);
+      assert.deepEqual(keys, ['getName', 'setName', 'initialize']);
     },
 
     'should allow to make instances of it': function(Klass) {

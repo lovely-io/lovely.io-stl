@@ -12,8 +12,7 @@ function Class(parent, params, Klass) {
   params || (params = {});
   parent || (parent = Class); // <- Class is the default parent!
   Klass  || (Klass  = function Klass() {
-    return 'initialize' in this ?
-      this.initialize.apply(this, arguments) : this;
+    return this.initialize.apply(this, arguments);
   });
 
   // handling the inheritance
@@ -24,14 +23,20 @@ function Class(parent, params, Klass) {
 
   // loading shared modules
   ext(Klass, Class)
-    .extend.apply( Klass, params.extend  ? ensure_Array(params.extend)  : [])
-    .include.apply(Klass, params.include ? ensure_Array(params.include) : []);
+    .extend.apply( Klass, ensure_Array(params.extend  || []))
+    .include.apply(Klass, ensure_Array(params.include || []));
 
   delete(params.extend);
   delete(params.include);
 
   // loading the main properties
-  return Klass.include(params);
+  Klass.include(params);
+
+  if (!('initialize' in Klass.prototype)) {
+    Klass.prototype.initialize = function() {};
+  }
+
+  return Klass;
 }
 
 /**
