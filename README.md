@@ -21,11 +21,13 @@ RightJS and see where it will get us.
 
 ## How To...
 
-You'll need `node`, `npm` and then `nake` and `vows` packages installed
+You'll need `node`, `npm` and then the `nake`, `vows`, `jshint` and
+`uglify-js` packages installed. Then just run one of those
 
     nake build
     nake test
     nake test:spec
+    nake check
 
 
 
