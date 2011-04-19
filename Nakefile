@@ -43,8 +43,8 @@ nake.namespace('test', function() {
   })
 });
 
-nake.task('check', function() {
-  var check = require('jshint').JSHINT;
+nake.task('check', 'Checks the source code with JSHint', function() {
+  var check = require('jshint').JSHINT, report = '';
 
   check(require('./test/test_helper').Src, {
     boss:  true,
@@ -53,8 +53,7 @@ nake.task('check', function() {
 
   if (check.errors.length) {
     check.errors.forEach(function(error) {
-      var report = "\n", j=0, pointer='';
-      for (; j < error.character-1; j++) { pointer += '-'; }
+      for (var j=0, pointer=''; j < error.character-1; j++) { pointer += '-'; }
 
       report += "\u001B[35m"+ error.reason +"\u001B[0m ";
 
@@ -64,13 +63,13 @@ nake.task('check', function() {
         report += "\u001B[33m"+ pointer + "^\u001B[0m";
       }
 
-      console.log(report);
+      report += "\n\n";
     });
-
-    console.log("\n");
   } else {
-    console.log("\u001B[32m - JSLint check successfully passed\u001B[0m");
+    report = "\u001B[32m - JSLint check successfully passed\u001B[0m";
   }
+
+  console.log(report);
 });
 
 
