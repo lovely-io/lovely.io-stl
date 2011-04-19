@@ -17,10 +17,10 @@ function Class(parent, params, Klass) {
   });
 
   // handling the inheritance
-  function Parent() {}
-  Parent.prototype = parent.prototype;
-  Klass.prototype  = new Parent();
-  Klass.parent     = parent;
+  function Super() {}
+  Super.prototype = parent.prototype;
+  Klass.prototype = new Super();
+  Klass.__super__ = parent;
 
   // loading shared modules
   ext(Klass, Class)
@@ -57,7 +57,7 @@ ext(Class, {
       module = arguments[i] || {};
 
       for (key in module) {
-        parent = this.parent;
+        parent = this.__super__;
         super_method = false;
 
         while (parent) {
@@ -67,7 +67,7 @@ ext(Class, {
             }
             break;
           }
-          parent = parent.parent;
+          parent = parent.__super__;
         }
 
         this.prototype[key] = super_method ? function(method, super_method) {

@@ -96,8 +96,8 @@ describe('Class', {
         return new Class(Parent);
       },
 
-      "should refer '.parent' to the parent class": function(Klass) {
-        assert.same(Klass.parent, this.ParentKlass);
+      "should refer '.__super__' to the parent class": function(Klass) {
+        assert.same(Klass.__super__, this.ParentKlass);
       },
 
       "should keep the parent's 'method'": function(Klass) {
@@ -114,8 +114,8 @@ describe('Class', {
         });
       },
 
-      "should refer '.parent' to the parent class": function(Klass) {
-        assert.same(Klass.parent, this.ParentKlass);
+      "should refer '.__super__' to the parent class": function(Klass) {
+        assert.same(Klass.__super__, this.ParentKlass);
       },
 
       "should replace the parent class method": function(Klass) {
