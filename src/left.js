@@ -9,6 +9,7 @@ var LeftJS = function(undefined) {
   require('core/class');
   require('core/list');
   require('core/hash');
+  require('core/load');
 
 
   /**
@@ -18,7 +19,7 @@ var LeftJS = function(undefined) {
    * @return {mixed} something else
    */
   function LeftJS(something) {
-    // TODO: converting something into something else
+    load.apply(this, arguments);
   }
 
   // attaching globally accessible functions
@@ -36,7 +37,8 @@ var LeftJS = function(undefined) {
     isObject:   isObject,
     Class:      Class,
     List:       List,
-    Hash:       Hash
+    Hash:       Hash,
+    modules:    loaded_modules
   });
 
 }();
