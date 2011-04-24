@@ -19,6 +19,8 @@ src = src.replace(/require\(['"](.+?)['"]\);/mg, function(m, filename) {
     .toString().replace(/($|\n)/g, '$1  ') + "\n\n";
 });
 
+fs.writeFileSync(process.cwd() + "/build/left-src.js", src);
+
 eval(src);
 
 exports.LeftJS = LeftJS;
@@ -45,4 +47,64 @@ assert.notSame = assert.notStrictEqual;
  */
 global.describe = function(thing, batch, module) {
   vows.describe(thing).addBatch(batch).export(module);
+}
+
+// making a little local server with 'express' to load the fixtures into the zombie
+var express = require('express');
+var server  = express.createServer();
+
+server.use(express.bodyParser());
+server.use(express.cookieParser());
+
+server.get('/', function(req, resp) {
+  resp.send('<html><body>Hello</body></html>');
+});
+
+server.get('/left.js', function(req, resp) {
+  resp.send(src); // The LeftJS source
+});
+
+global.server = server;
+
+/**
+ * A shortcut to dynamically define the server responses
+ *
+ * @param {Object} routes and responses
+ * @return {undefined}
+ */
+global.server_respond = function(defs) {
+  for (var route in defs) {
+    (function(route, response) {
+      server.get(route, function(req, resp) {
+        resp.send(response);
+      });
+    })(route, defs[route]);
+  }
+}
+
+// a global zombie-browser reference
+global.Browser = require('zombie').Browser;
+
+/**
+ * Our own shortcut for the browser load
+ * so that you didn't need to carry around
+ * the domain-name, port and things
+ *
+ * @param {String} relative url address
+ * @param {Function} vows async callback
+ */
+Browser.open = function(url, callback) {
+  server.listen(3000);
+
+  var browser = new Browser();
+
+  browser.alerts = [];
+  browser.onalert(function(message) {
+    browser.alerts.push(message);
+  });
+
+  browser.visit('http://localhost:3000' + url, function(err, browser) {
+    if (err) throw err;
+    browser.wait(callback);
+  });
 }

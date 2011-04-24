@@ -27,7 +27,6 @@ nake.task('build', 'Build the script', function() {
   system('mkdir -p build/');
 
   disc.writeFileSync('build/left.js', build);
-  disc.writeFileSync('build/left-src.js', source);
 
   system('gzip -c build/left.js > build/left.js.gz');
 });
