@@ -5,27 +5,23 @@
  */
 var LeftJS = function(undefined) {
 
+  require('core/left');
   require('core/util');
   require('core/class');
   require('core/list');
   require('core/hash');
-  require('core/load');
 
 
-  /**
-   * the main object definition
-   *
-   * @param {mixed} something
-   * @return {mixed} something else
-   */
-  function LeftJS(something) {
-    load.apply(this, arguments);
-  }
-
-  // attaching globally accessible functions
+  // exporting the globally visible objects
   return ext(LeftJS, {
-    version:    '%{version}',
+    version:     '%{version}',
 
+    // the loader default options
+    modules:     {}, // the loaded modules index
+    baseUrl:     '', // default base url address
+    waitSeconds: 8,  // timeout before give up on a module
+
+    // globally accessible functions
     A:          A,
     L:          L,
     H:          H,
@@ -37,8 +33,7 @@ var LeftJS = function(undefined) {
     isObject:   isObject,
     Class:      Class,
     List:       List,
-    Hash:       Hash,
-    modules:    loaded_modules
+    Hash:       Hash
   });
 
 }();

@@ -1,5 +1,5 @@
 /**
- * This thing handles the modules and dependencies loading
+ * The top function, handles async modules loading/definition
  *
  * Basic Usage:
  *
@@ -15,9 +15,7 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var loaded_modules = {};
-
-function load() {
+function LeftJS() {
   var args     = A(arguments),
       options  = isObject(args[0])   ? args.shift() : {},
       module   = isString(args[0])   ? args.shift() : null,
@@ -28,13 +26,13 @@ function load() {
 
   // setting up the options
   'baseUrl'     in options || (options.baseUrl     = find_base_url());
-  'waitSeconds' in options || (options.waitSeconds = load.waitSeconds);
+  'waitSeconds' in options || (options.waitSeconds = LeftJS.waitSeconds);
 
   deadline.setTime(deadline.getTime() + options.waitSeconds * 1000);
 
   // inserting the actual scripts on the page
   for (var i=0, script; i < modules.length; i++) {
-    if (!(modules[i] in loaded_modules)) {
+    if (!(modules[i] in LeftJS.modules)) {
       script = document.createElement('script');
 
       script.src   = options.baseUrl + modules[i] + ".js";
@@ -49,8 +47,8 @@ function load() {
     var packages=[], i=0, result;
 
     for (; i < modules.length; i++) {
-      if (modules[i] in loaded_modules) {
-        packages[i] = loaded_modules[modules[i]];
+      if (modules[i] in LeftJS.modules) {
+        packages[i] = LeftJS.modules[modules[i]];
       } else if (new Date() < deadline) {
         return setTimeout(arguments.callee, 20);
       } else {
@@ -63,7 +61,7 @@ function load() {
 
     // registering the module if needed
     if (module && result) {
-      loaded_modules[module] = result;
+      LeftJS.modules[module] = result;
     }
   })();
 }
@@ -84,9 +82,5 @@ function find_base_url() {
     }
   }
 
-  return load.baseUr;
+  return LeftJS.baseUrl;
 }
-
-// default loader options
-load.baseUrl     = '';
-load.waitSeconds = 8;

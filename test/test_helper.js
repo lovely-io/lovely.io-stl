@@ -12,7 +12,7 @@ sys = require('sys'),
 // packing and initializing LeftJS
 dir = process.cwd() + "/src/",
 
-src = fs.readFileSync(dir + 'left.js').toString();
+src = fs.readFileSync(dir + 'core.js').toString();
 
 src = src.replace(/require\(['"](.+?)['"]\);/mg, function(m, filename) {
   return fs.readFileSync(dir + filename + '.js')
