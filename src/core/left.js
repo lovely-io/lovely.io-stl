@@ -32,13 +32,15 @@ function LeftJS() {
 
   // inserting the actual scripts on the page
   for (var i=0, script; i < modules.length; i++) {
-    if (!(modules[i] in LeftJS.modules)) {
+    if (!(modules[i] in LeftJS.modules || modules[i] in LeftJS.loading)) {
       script = document.createElement('script');
 
       script.src   = options.baseUrl + modules[i] + ".js";
       script.async = true;
 
       header.appendChild(script);
+
+      LeftJS.loading[modules[i]] = script;
     }
   }
 
@@ -62,6 +64,7 @@ function LeftJS() {
     // registering the module if needed
     if (module && result) {
       LeftJS.modules[module] = result;
+      delete(LeftJS.loading[module]);
     }
   })();
 }

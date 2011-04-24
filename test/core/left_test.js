@@ -51,15 +51,29 @@ server_respond({
     '});',
 
   '/module5.js':
+
     'LeftJS("module5", function() {                                 '+
     '  alert("Initializing: module5");                              '+
     '  return "module5";                                            '+
-    '});'
+    '});',
+
+  '/double.html':
+
+    '<html><head>                                                   '+
+    '  <script src="/left.js"></script>                             '+
+    '  <script>                                                     '+
+    '    LeftJS(["module5", "module5"], function(m1, m2) {          '+
+    '    alert("Received: "+ m1);                                   '+
+    '    alert("Received: "+ m2);                                   '+
+    '    alert("Done!");                                            '+
+    '  });                                                          '+
+    '  </script>                                                    '+
+    '</head></html>',
 });
 
 
-describe('Load', {
-  'loading': {
+describe('LeftJS', {
+  'modules loading': {
     topic: function() {
       Browser.open('/load.html', this.callback);
     },
@@ -76,6 +90,21 @@ describe('Load', {
         'Initializing: module2',
         'Received: module1',
         'Received: module2',
+        'Done!'
+      ]);
+    }
+  },
+
+  'double loading': {
+    topic: function() {
+      Browser.open('/double.html', this.callback);
+    },
+
+    'should not load the same module twice': function(browser) {
+      assert.deepEqual(browser.alerts, [
+        'Initializing: module5',
+        'Received: module5',
+        'Received: module5',
         'Done!'
       ]);
     }

@@ -18,6 +18,7 @@ var LeftJS = function(undefined) {
 
     // the loader default options
     modules:     {}, // the loaded modules index
+    loading:     {}, // the currently loading modules
     baseUrl:     '', // default base url address
     waitSeconds: 8,  // timeout before give up on a module
 

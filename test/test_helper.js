@@ -94,7 +94,10 @@ global.Browser = require('zombie').Browser;
  * @param {Function} vows async callback
  */
 Browser.open = function(url, callback) {
-  server.listen(3000);
+  if (!server.active) {
+    server.listen(3000);
+    server.active = true;
+  }
 
   var browser = new Browser();
 
