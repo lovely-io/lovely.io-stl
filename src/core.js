@@ -20,6 +20,7 @@ var LeftJS = function(undefined) {
     modules:     {}, // the loaded modules index
     loading:     {}, // the currently loading modules
     baseUrl:     '', // default base url address
+    localUrl:    '', // default local modules url address
     waitSeconds: 8,  // timeout before give up on a module
 
     // globally accessible functions

@@ -17,16 +17,19 @@
  */
 function LeftJS() {
   var args     = A(arguments),
-      options  = isObject(args[0])   ? args.shift() : {},
       module   = isString(args[0])   ? args.shift() : null,
+      options  = isObject(args[0])   ? args.shift() : {},
       modules  = isArray(args[0])    ? args.shift() : [],
       callback = isFunction(args[0]) ? args.shift() : function() {},
       header   = document.getElementsByTagName('head')[0],
-      deadline = new Date();
+      deadline = new Date(); // the hang up time
 
   // setting up the options
   'baseUrl'     in options || (options.baseUrl     = find_base_url());
+  'localUrl'    in options || (options.localUrl    = LeftJS.localUrl || options.baseUrl);
   'waitSeconds' in options || (options.waitSeconds = LeftJS.waitSeconds);
+
+  options.localUrl[options.localUrl.length - 1] == '/' || (options.localUrl += '/');
 
   deadline.setTime(deadline.getTime() + options.waitSeconds * 1000);
 
@@ -35,14 +38,18 @@ function LeftJS() {
     if (!(modules[i] in LeftJS.modules || modules[i] in LeftJS.loading)) {
       script = document.createElement('script');
 
-      script.src   = options.baseUrl + modules[i] + ".js";
       script.async = true;
+      script.src   = (modules[i][0] === '/' ? '' : (
+        modules[i][0] === '.' ? options.localUrl : options.baseUrl
+      )) + modules[i].replace(/^\.\//, '') + ".js";
 
       header.appendChild(script);
-
-      LeftJS.loading[modules[i]] = script;
     }
+
+    modules[i] = modules[i].replace(/^[\.\/]+/, '');
+    LeftJS.loading[modules[i]] = true;
   }
+
 
   // waiting for the modules to load
   (function() {
@@ -62,7 +69,7 @@ function LeftJS() {
     result = callback.apply(null, packages);
 
     // registering the module if needed
-    if (module && result) {
+    if (module) {
       LeftJS.modules[module] = result;
       delete(LeftJS.loading[module]);
     }

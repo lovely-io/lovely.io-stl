@@ -69,11 +69,54 @@ server_respond({
     '  });                                                          '+
     '  </script>                                                    '+
     '</head></html>',
+
+  '/local.html':
+
+    '<html><head>                                                   '+
+    '  <script src="/left.js"></script>                             '+
+    '  <script>                                                     '+
+    '    LeftJS(                                                    '+
+    '      {localUrl: "/myscripts/"},                               '+
+    '      ["module1", "./module6", "/module8"],                    '+
+    '      function(m1, m6, m8) {                                   '+
+    '        alert("Received: "+ m1);                               '+
+    '        alert("Received: "+ m6);                               '+
+    '        alert("Received: "+ m8);                               '+
+    '        alert("Done!");                                        '+
+    '      }                                                        '+
+    '    );                                                         '+
+    '  </script>                                                    '+
+    '</head></html>',
+
+  '/myscripts/module6.js':
+
+    'LeftJS("module6",                                              '+
+    '  {localUrl: "/other/scripts"},                                '+
+    '  ["./module7"], function(m7) {                                '+
+    '    alert("Received: "+ m7);                                   '+
+    '    alert("Initializing: module6");                            '+
+    '    return "module6";                                          '+
+    '  }                                                            '+
+    ');',
+
+  '/other/scripts/module7.js':
+
+    'LeftJS("module7", function() {                                 '+
+    '  alert("Initializing: module7");                              '+
+    '  return "module7";                                            '+
+    '});',
+
+  '/module8.js':
+
+    'LeftJS("module8", function() {                                 '+
+    '  alert("Initializing: module8");                              '+
+    '  return "module8";                                            '+
+    '});'
 });
 
 
 describe('LeftJS', {
-  'modules loading': {
+  'standard modules loading': {
     topic: function() {
       Browser.open('/load.html', this.callback);
     },
@@ -95,7 +138,7 @@ describe('LeftJS', {
     }
   },
 
-  'double loading': {
+  'double loading attempt': {
     topic: function() {
       Browser.open('/double.html', this.callback);
     },
@@ -105,6 +148,30 @@ describe('LeftJS', {
         'Initializing: module5',
         'Received: module5',
         'Received: module5',
+        'Done!'
+      ]);
+    }
+  },
+
+  'local modules loading': {
+    topic: function() {
+      Browser.open('/local.html', this.callback);
+    },
+
+    'should load local modules': function(browser) {
+      assert.deepEqual(browser.alerts, [
+        'Initializing: module8',
+        'Initializing: module3',
+        'Initializing: module4',
+        'Initializing: module7',
+        'Received: module3',
+        'Received: module4',
+        'Initializing: module1',
+        'Received: module7',
+        'Initializing: module6',
+        'Received: module1',
+        'Received: module6',
+        'Received: module8',
         'Done!'
       ]);
     }
