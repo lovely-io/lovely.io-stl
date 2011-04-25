@@ -11,7 +11,7 @@ function Class(parent, params, Klass) {
 
   params || (params = {});
   parent || (parent = Class); // <- Class is the default parent!
-  Klass  || (Klass  = function Klass() {
+  Klass  || (Klass  = function Class() {
     return this.initialize.apply(this, arguments);
   });
 
