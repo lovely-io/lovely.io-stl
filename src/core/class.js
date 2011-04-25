@@ -75,12 +75,7 @@ ext(Class, {
           parent = parent.__super__;
         }
 
-        this.prototype[key] = super_method ? function(method, super_method) {
-          return function() {
-            this.$super = super_method;
-            return method.apply(this, arguments);
-          };
-        }(module[key], super_method) : module[key];
+        this.prototype[key] = Class_make_method(module[key], super_method);
       }
     }
 
@@ -102,3 +97,11 @@ ext(Class, {
     return this;
   }
 });
+
+// rewraps the supermethod when needed
+function Class_make_method(method, super_method) {
+  return super_method ? function() {
+    this.$super = super_method;
+    return method.apply(this, arguments);
+  } : method;
+}
