@@ -21,6 +21,40 @@ assert.listEqual = function(list, array) {
   assert.deepEqual  (A(list), A(array));
 }
 
+// just a dummy class to test calls-by-name
+var Foo = new LeftJS.Class({
+  value: null,
+
+  initialize: function(v) {
+    this.value = v;
+  },
+
+  getValue: function() {
+    return this.value;
+  },
+
+  addValue: function(v) {
+    return this.value += v;
+  },
+
+  even: function() {
+    return this.value % 2 === 0;
+  }
+});
+
+// making a list of Foo stuff to test various things
+var FooList = new LeftJS.Class(List, {
+  initialize: function() {
+    this.$super([
+      new Foo(1),
+      new Foo(2),
+      new Foo(3),
+      new Foo(4)
+    ]);
+  }
+});
+
+
 describe("List", {
   'constructor': {
     topic: list,
@@ -110,6 +144,15 @@ describe("List", {
     }
   },
 
+  '#each("name", "arg")': {
+    topic: new FooList().each("addValue", 2),
+
+    'should add 2 to every value on the list': function(list) {
+      assert.instanceOf (list, FooList);
+      assert.listEqual  (list.map(function(i) { return i.value; }), [3,4,5,6]);
+    }
+  },
+
   '#map(callback)': {
     topic: list.map(function(item) {
       return item * 2;
@@ -119,6 +162,38 @@ describe("List", {
 
     'should pack all the mapping results': function(list) {
       assert.listEqual (list, [2,4,6,8,10]);
+    }
+  },
+
+  '#map("attr_name")': {
+    topic: new FooList().map("value"),
+
+    "should map the 'value' properties of the list": function(list) {
+      assert.listEqual (list, [1,2,3,4]);
+    }
+  },
+
+  '#map("method_name")': {
+    topic: new FooList().map('getValue'),
+
+    "should map the results of the 'getValue()' calls on the list the list": function(list) {
+      assert.listEqual (list, [1,2,3,4]);
+    }
+  },
+
+  '#map("method_name", "argument")': {
+    topic: new FooList().map('addValue', 3),
+
+    "should map the results of the 'addValue(3)' method calls": function(list) {
+      assert.listEqual (list, [4,5,6,7]);
+    }
+  },
+
+  '#map("method_name", "arg1", "arg2")': {
+    topic: new List(['boo', 'hoo']).map('replace', 'oo', 'aa'),
+
+    "should map the result of calls": function(list) {
+      assert.listEqual (list, ['baa', 'haa']);
     }
   },
 
@@ -134,6 +209,14 @@ describe("List", {
     }
   },
 
+  '#filter("method_name")': {
+    topic: new FooList().filter('even'),
+
+    "should filter the list by the method name calls": function(list) {
+      assert.listEqual (list.map('value'), [2,4]);
+    }
+  },
+
   '#reject(callback)': {
     topic: list.reject(function(item) {
       return item % 2;
@@ -143,6 +226,14 @@ describe("List", {
 
     'should filter out all matching elements': function(list) {
       assert.listEqual (list, [2,4]);
+    }
+  },
+
+  '#reject("method_name")': {
+    topic: new FooList().reject("even"),
+
+    "should reject values based on the name call": function(list) {
+      assert.listEqual (list.map('value'), [1,3]);
     }
   },
 

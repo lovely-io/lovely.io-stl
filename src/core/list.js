@@ -170,5 +170,20 @@ function Array_reject(callback, scope) {
 
 // calls the array method on the list with the arguments
 function List_call(method, list, args) {
+  // handling the calls by name
+  if (typeof(args[0]) === 'string') {
+    var call_args = A(args), attr_name = call_args.shift();
+
+    if (list[0] != null && typeof(list[0][attr_name]) === 'function') {
+      args = [function(item) {
+        return item[attr_name].apply(item, call_args);
+      }];
+    } else {
+      args = [function(item) {
+        return item[attr_name];
+      }];
+    }
+  }
+
   return method.apply(list, args);
 }
