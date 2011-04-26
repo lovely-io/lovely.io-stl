@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS('sugar', ['dom'], function() {
+LeftJS('sugar', ['dom', 'lang'], function() {
 
   require('sugar/element');
   require('sugar/string');
