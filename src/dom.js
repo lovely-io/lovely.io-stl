@@ -47,6 +47,7 @@ LeftJS('dom', function() {
 
   // exporting the main classes
   ext(LeftJS, {
+    $:        $,
     Browser:  Browser,
     Wrapper:  Wrapper,
     Document: Document,

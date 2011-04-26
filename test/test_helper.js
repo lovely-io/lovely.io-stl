@@ -11,7 +11,7 @@ sys = require('sys'),
 
 // packing and initializing LeftJS
 dir = process.cwd() + "/src/",
-modules = ['core', 'dom', 'old', 'form', 'ajax'],
+modules = ['core', 'dom', 'old', 'form', 'ajax', 'lang', 'sugar', 'legacy'],
 sources = {}, i = 0, src;
 
 for (; i < modules.length; i++) {
