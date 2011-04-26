@@ -66,9 +66,16 @@ server.get('/', function(req, resp) {
   resp.send('<html><body>Hello</body></html>');
 });
 
-server.get('/left.js', function(req, resp) {
-  resp.send(sources.core); // The LeftJS source
-});
+for (var module in sources) {
+  server.get(
+    '/'+ (module === 'core' ? 'left' : module) + '.js',
+    (function(source) {
+      return function(req, resp) {
+        resp.send(source);
+      }
+    })(sources[module])
+  );
+}
 
 global.server = server;
 
