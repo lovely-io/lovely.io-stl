@@ -19,8 +19,8 @@ var LeftJS = function(undefined) {
     // the loader default options
     modules:     {}, // the loaded modules index
     loading:     {}, // the currently loading modules
-    baseUrl:     '', // default base url address
-    localUrl:    '', // default local modules url address
+    baseUrl:     '', // default base url address for local modules
+    hostUrl:     '', // default host url address for LeftJS modules
     waitSeconds: 8,  // timeout before give up on a module
 
     // globally accessible functions

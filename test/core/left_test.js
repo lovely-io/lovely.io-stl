@@ -76,8 +76,8 @@ server_respond({
     '  <script src="/left.js"></script>                             '+
     '  <script>                                                     '+
     '    LeftJS(                                                    '+
-    '      {localUrl: "/myscripts/"},                               '+
-    '      ["module1", "./module6", "/module8"],                    '+
+    '      {baseUrl: "/my/scripts/"},                               '+
+    '      ["module1", "./module6", "../../module8"],               '+
     '      function(m1, m6, m8) {                                   '+
     '        alert("Received: "+ m1);                               '+
     '        alert("Received: "+ m6);                               '+
@@ -88,10 +88,10 @@ server_respond({
     '  </script>                                                    '+
     '</head></html>',
 
-  '/myscripts/module6.js':
+  '/my/scripts/module6.js':
 
     'LeftJS("module6",                                              '+
-    '  {localUrl: "/other/scripts"},                                '+
+    '  {baseUrl: "/other/scripts"},                                 '+
     '  ["./module7"], function(m7) {                                '+
     '    alert("Received: "+ m7);                                   '+
     '    alert("Initializing: module6");                            '+
@@ -126,11 +126,11 @@ describe('LeftJS', {
         'Initializing: module3',
         'Initializing: module4',
         'Initializing: module5',
+        'Received: module5',
+        'Initializing: module2',
         'Received: module3',
         'Received: module4',
         'Initializing: module1',
-        'Received: module5',
-        'Initializing: module2',
         'Received: module1',
         'Received: module2',
         'Done!'
@@ -164,11 +164,11 @@ describe('LeftJS', {
         'Initializing: module3',
         'Initializing: module4',
         'Initializing: module7',
+        'Received: module7',
+        'Initializing: module6',
         'Received: module3',
         'Received: module4',
         'Initializing: module1',
-        'Received: module7',
-        'Initializing: module6',
         'Received: module1',
         'Received: module6',
         'Received: module8',

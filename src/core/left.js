@@ -25,29 +25,35 @@ function LeftJS() {
       deadline = new Date(); // the hang up time
 
   // setting up the options
-  'baseUrl'     in options || (options.baseUrl     = find_base_url());
-  'localUrl'    in options || (options.localUrl    = LeftJS.localUrl || options.baseUrl);
+  'hostUrl'     in options || (options.hostUrl     = LeftJS.hostUrl || find_host_url());
+  'baseUrl'     in options || (options.baseUrl     = LeftJS.baseUrl || options.hostUrl);
   'waitSeconds' in options || (options.waitSeconds = LeftJS.waitSeconds);
 
-  options.localUrl[options.localUrl.length - 1] == '/' || (options.localUrl += '/');
+  options.hostUrl[options.hostUrl.length - 1] === '/' || (options.hostUrl += '/');
+  options.baseUrl[options.baseUrl.length - 1] === '/' || (options.baseUrl += '/');
 
   deadline.setTime(deadline.getTime() + options.waitSeconds * 1000);
 
   // inserting the actual scripts on the page
-  for (var i=0, script; i < modules.length; i++) {
+  for (var i=0, script, url; i < modules.length; i++) {
+    url = (modules[i][0] === '.' ?
+      options.baseUrl : options.hostUrl
+    ) + modules[i] + ".js";
+
+    // stripping out the '../' and './' things to get the clean module name
+    modules[i] = modules[i].replace(/^[\.\/]+/, '');
+
     if (!(modules[i] in LeftJS.modules || modules[i] in LeftJS.loading)) {
       script = document.createElement('script');
 
+      script.src   = url;
       script.async = true;
-      script.src   = (modules[i][0] === '/' ? '' : (
-        modules[i][0] === '.' ? options.localUrl : options.baseUrl
-      )) + modules[i].replace(/^\.\//, '') + ".js";
+      script.type  = "text/javascript";
 
       header.appendChild(script);
-    }
 
-    modules[i] = modules[i].replace(/^[\.\/]+/, '');
-    LeftJS.loading[modules[i]] = true;
+      LeftJS.loading[modules[i]] = script;
+    }
   }
 
 
@@ -77,11 +83,11 @@ function LeftJS() {
 }
 
 /**
- * Searches for the scripts main directory
+ * Searches for the LeftJS hosting url from the scripts 'src' attribute
  *
  * @return {String} location
  */
-function find_base_url() {
+function find_host_url() {
   var scripts = document.getElementsByTagName('script'),
       re = /(.*?(^|\/))(left(\-src)?\.js)/,
       i = 0, match;
@@ -92,5 +98,5 @@ function find_base_url() {
     }
   }
 
-  return LeftJS.baseUrl;
+  return LeftJS.hostUrl;
 }
