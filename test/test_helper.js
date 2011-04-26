@@ -11,20 +11,26 @@ sys = require('sys'),
 
 // packing and initializing LeftJS
 dir = process.cwd() + "/src/",
+modules = ['core', 'dom', 'old', 'form', 'ajax'],
+sources = {}, i = 0, src;
 
-src = fs.readFileSync(dir + 'core.js').toString();
+for (; i < modules.length; i++) {
+  src = fs.readFileSync(dir + modules[i] + '.js').toString();
+  src = src.replace(/require\(['"](.+?)['"]\);/mg, function(m, filename) {
+    return fs.readFileSync(dir + filename + '.js')
+      .toString().replace(/($|\n)/g, '$1  ') + "\n\n";
+  });
 
-src = src.replace(/require\(['"](.+?)['"]\);/mg, function(m, filename) {
-  return fs.readFileSync(dir + filename + '.js')
-    .toString().replace(/($|\n)/g, '$1  ') + "\n\n";
-});
+  sources[modules[i]] = src;
 
-fs.writeFileSync(process.cwd() + "/build/left-src.js", src);
+  fs.writeFileSync(process.cwd() + "/build/"+ modules[i] + "-src.js", src);
 
-eval(src);
+  if (modules[i] == 'core') {
+    eval(src);
+  }
+}
 
-exports.LeftJS = LeftJS;
-exports.Src    = src;
+exports.Source = sources;
 
 
 // globalizing those ones so we didn't need to reinit them all the time
@@ -61,7 +67,7 @@ server.get('/', function(req, resp) {
 });
 
 server.get('/left.js', function(req, resp) {
-  resp.send(src); // The LeftJS source
+  resp.send(sources.core); // The LeftJS source
 });
 
 global.server = server;

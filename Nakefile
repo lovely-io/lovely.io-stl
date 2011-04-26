@@ -13,22 +13,26 @@ nake.Quiet = true;
 nake.task('build', 'Build the script', function() {
   var disc   = require('fs');
   var ugly   = require('uglify-js');
-  var source = require('./test/test_helper').Src;
+  var source = require('./test/test_helper').Source;
 
-  var build  = ugly.parser.parse(source);
+  var module, build;
 
-  build = ugly.uglify.ast_mangle(build);
-  build = ugly.uglify.ast_squeeze(build);
-  build = ugly.uglify.gen_code(build);
+  for (module in source) {
+    build = ugly.parser.parse(source[module]);
 
-  // copying the header over
-  build = source.match(/\/\*[\s\S]+?\*\/\s/m)[0] + build;
+    build = ugly.uglify.ast_mangle(build);
+    build = ugly.uglify.ast_squeeze(build);
+    build = ugly.uglify.gen_code(build);
 
-  system('mkdir -p build/');
+    // copying the header over
+    build = source[module].match(/\/\*[\s\S]+?\*\/\s/m)[0] + build;
 
-  disc.writeFileSync('build/left.js', build);
+    system('mkdir -p build/');
 
-  system('gzip -c build/left.js > build/left.js.gz');
+    disc.writeFileSync('build/'+ module +'.js', build);
+
+    system('gzip -c build/'+ module +'.js > build/'+ module +'.js.gz');
+  }
 });
 
 
@@ -43,32 +47,38 @@ nake.namespace('test', function() {
 });
 
 nake.task('check', 'Checks the source code with JSHint', function() {
-  var check = require('jshint').JSHINT, report = '';
+  var check  = require('jshint').JSHINT,
+      source = require('./test/test_helper').Source,
+      report = '', module;
 
-  check(require('./test/test_helper').Src, {
-    boss:   true,
-    curly:  true,
-    expr:   true
-  });
-
-  if (check.errors.length) {
-    check.errors.forEach(function(error) {
-      if (error && error.id === '(error)') {
-        for (var j=0, pointer=''; j < error.character-1; j++) { pointer += '-'; }
-
-        report += "\u001B[35m"+ error.reason +"\u001B[0m ";
-
-        if (error.evidence) {
-          report += "Line: "+ error.line + ", Char: "+ error.character + "\n";
-          report += ""+ error.evidence + "\n";
-          report += "\u001B[33m"+ pointer + "^\u001B[0m";
-        }
-
-        report += "\n\n";
-      }
+  for (module in source) {
+    check(source[module], {
+      boss:   true,
+      curly:  true,
+      expr:   true
     });
-  } else {
-    report = "\u001B[32m - JSLint check successfully passed\u001B[0m";
+
+    if (check.errors.length) {
+      report += "\n\u001B[31m - FAILED: "+ module + ".js\u001B[0m\n"
+
+      check.errors.forEach(function(error) {
+        if (error && error.id === '(error)') {
+          for (var j=0, pointer=''; j < error.character-1; j++) { pointer += '-'; }
+
+          report += "   \u001B[35m"+ error.reason +"\u001B[0m ";
+
+          if (error.evidence) {
+            report += "Line: "+ error.line + ", Char: "+ error.character + "\n";
+            report += "   "+ error.evidence + "\n";
+            report += "   \u001B[33m"+ pointer + "^\u001B[0m";
+          }
+        }
+      });
+      report += "\n\n";
+
+    } else {
+      report += "\u001B[32m - OK: "+ module + ".js\u001B[0m\n";
+    }
   }
 
   console.log(report);
