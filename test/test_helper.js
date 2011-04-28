@@ -15,6 +15,7 @@ modules = ['core', 'dom', 'old', 'form', 'ajax', 'lang', 'sugar', 'legacy'],
 sources = {}, i = 0, src;
 
 for (; i < modules.length; i++) {
+  dir = process.cwd() + (modules[i] === 'core' ? '/src/' : '/stl/');
   src = fs.readFileSync(dir + modules[i] + '.js').toString();
   src = src.replace(/require\(['"](.+?)['"]\);/mg, function(m, filename) {
     return fs.readFileSync(dir + filename + '.js')
