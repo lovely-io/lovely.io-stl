@@ -17,7 +17,7 @@ sources = {}, i = 0, src;
 for (; i < modules.length; i++) {
   dir = process.cwd() + (modules[i] === 'core' ? '/src/' : '/stl/');
   src = fs.readFileSync(dir + modules[i] + '.js').toString();
-  src = src.replace(/require\(['"](.+?)['"]\);/mg, function(m, filename) {
+  src = src.replace(/include\(['"]\.\/(.+?)['"]\);/mg, function(m, filename) {
     return fs.readFileSync(dir + filename + '.js')
       .toString().replace(/($|\n)/g, '$1  ') + "\n\n";
   });

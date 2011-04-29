@@ -5,8 +5,8 @@
  */
 LeftJS('sugar', ['dom', 'lang'], function() {
 
-  require('sugar/element');
-  require('sugar/string');
+  include('./sugar/element');
+  include('./sugar/string');
 
   return {
     version: '%{version}'

@@ -7,13 +7,13 @@ LeftJS('dom', function() {
   var ext   = LeftJS.ext,
       Class = LeftJS.Class;
 
-  require('dom/browser');
-  require('dom/wrapper');
-  require('dom/document');
-  require('dom/element');
-  require('dom/window');
-  require('dom/event');
-  require('dom/search');
+  include('./dom/browser');
+  include('./dom/wrapper');
+  include('./dom/document');
+  include('./dom/element');
+  include('./dom/window');
+  include('./dom/event');
+  include('./dom/search');
 
   /**
    * The main function of the DOM API, it can take several types of arguments

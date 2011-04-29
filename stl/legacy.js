@@ -5,7 +5,7 @@
  */
 LeftJS('legacy', ['dom', 'form', 'ajax', 'sugar'], function() {
 
-  require('legacy/globals');
+  include('./legacy/globals');
 
   return {
     version: '%{version}'

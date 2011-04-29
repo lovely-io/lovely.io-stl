@@ -7,9 +7,9 @@ LeftJS('ajax', function() {
   var ext   = LeftJS.ext,
       Class = LeftJS.Class;
 
-  require('ajax/ajax');
-  require('ajax/jsonp');
-  require('ajax/iframe');
+  include('./ajax/ajax');
+  include('./ajax/jsonp');
+  include('./ajax/iframe');
 
   LeftJS.Ajax = Ajax;
 
