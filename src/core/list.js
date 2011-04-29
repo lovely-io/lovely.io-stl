@@ -19,8 +19,12 @@ var List = new Class(Array, {
    */
   initialize: function(items) {
     Array_proto.splice.apply(this, [0,0].concat(A(items)));
-  },
+  }
+});
 
+// using direct prototype extension so that it didn't
+// try to overload the existing Array methods
+ext(List.prototype, {
   /**
    * Returns the first items on the list
    *
