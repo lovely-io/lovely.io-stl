@@ -212,6 +212,27 @@ describe('Hash', {
     }
   },
 
+  '#merge(o1, o2, ..) - deep': {
+    topic: function() {
+      this.o1 = {a: {b: {c: 'd'}, e: 'f'}};
+      this.o2 = {a: {b: {c: 'd', e: 'f'}}};
+
+      return new Hash({}).merge(this.o1, this.o2);
+    },
+
+    "should perform a deep merge of the data": function(hash) {
+      assert.deepEqual (hash._, {a: {b: {c: 'd', e: 'f'}, e: 'f'}});
+    },
+
+    "should delink the keys": function(hash) {
+      var o = hash._, o1 = this.o1, o2 = this.o2;
+
+      assert.isTrue(
+        o.a !== o1.a && o.a !== o2.a && o.a.b !== o1.a.b && o.a.b !== o2.a.b
+      );
+    }
+  },
+
   '.keys': {
     "should return keys of an object": function() {
       assert.deepEqual (['a', 'b'], Hash.keys({a:1, b:2}));

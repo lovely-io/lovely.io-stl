@@ -217,20 +217,21 @@ var Hash = new Class({
    * @return {Hash} new
    */
   merge: function() {
-    var list = A(arguments), key, object = this._, data = {};
+    var args = A(arguments), data = {}, object, key;
 
-    while (object !== undefined) {
-      if (object instanceof Hash) {
-        object = object._;
-      }
+    args.unshift(this._); // starting with hash own data
+
+    while (args.length > 0) {
+      object = args.shift();
+      object instanceof Hash && (object = object._);
 
       for (key in object) {
         if (object.hasOwnProperty(key)) {
-          data[key] = object[key];
+          data[key] = isObject(object[key]) ? Hash.merge(
+            key in data ? data[key] : {}, object[key]
+          ) : object[key];
         }
       }
-
-      object = list.shift();
     }
 
     return new Hash(data);
