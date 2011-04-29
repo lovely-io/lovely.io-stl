@@ -6,6 +6,7 @@
 var LeftJS = function(undefined) {
 
   include('./core/left');
+  include('./core/lang');
   include('./core/util');
   include('./core/class');
   include('./core/list');
