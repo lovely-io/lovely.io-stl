@@ -5,7 +5,18 @@
  */
 var
 Object_toString = Object.prototype.toString,
-Array_slice     = Array.prototype.slice;
+Array_slice     = Array.prototype.slice,
+Function_bind   = Function.prototype.bind || function() {
+  var args = A(arguments), context = args.shift(), method = this;
+  return function() {
+    return method.apply(context, args.concat(A(arguments)));
+  };
+},
+String_trim     = String.prototype.trim || function() {
+  var str = this.replace(/^\s\s*/, ''), i = str.length, re = /\s/;
+  while (re.test(str.charAt(--i))) {}
+  return str.slice(0, i + 1);
+};
 
 /**
  * Converts iterables into arrays
@@ -54,6 +65,31 @@ function ext(one, another) {
   }
 
   return one;
+}
+
+/**
+ * Binds the function with the context
+ *
+ * @param {Function} function
+ * @param {Object} context
+ * @param {mixed} argument
+ * .....
+ * @return {Function} proxy
+ */
+function bind() {
+  var args = A(arguments);
+  return Function_bind.apply(args.shift(), args);
+}
+
+/**
+ * Trims the exessive spaces from the beginning
+ * and the end of the string
+ *
+ * @param {String} original string
+ * @return {String} trimmed string
+ */
+function trim(string) {
+  return String_trim.call(string);
 }
 
 /**

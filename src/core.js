@@ -6,7 +6,6 @@
 var LeftJS = function(undefined) {
 
   include('./core/left');
-  include('./core/lang');
   include('./core/util');
   include('./core/class');
   include('./core/list');
@@ -29,6 +28,8 @@ var LeftJS = function(undefined) {
     L:          L,
     H:          H,
     ext:        ext,
+    bind:       bind,
+    trim:       trim,
     isString:   isString,
     isNumber:   isNumber,
     isFunction: isFunction,
