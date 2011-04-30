@@ -4,6 +4,18 @@
  * Copyright (C) 2011 Nikolay Nemshilov
  */
 var Search = new Class(LeftJS.List, {
+  extend: {
+    /**
+     * Registers pseudo-selectors
+     *
+     * @param {String} pseudo name
+     * @return {Search} self
+     */
+    addPseudo: function(name, callback) {
+      // TODO make my day!
+      return this;
+    }
+  },
 
   initialize: function(css_rule, context) {
     context == null && (context = document);
@@ -13,6 +25,9 @@ var Search = new Class(LeftJS.List, {
     // TODO handle '#just-an-id'
 
     this.$super(context.querySelectorAll(css_rule));
+    this.each(function(element, i) {
+      this[i] = wrap(element);
+    });
   }
 
 });
