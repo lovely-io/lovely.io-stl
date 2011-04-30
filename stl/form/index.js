@@ -8,8 +8,8 @@ LeftJS('form', ['dom'], function($) {
       Class   = LeftJS.Class,
       Element = LeftJS.Element;
 
-  include('./form/form');
-  include('./form/input');
+  require('src/form');
+  require('src/input');
 
   // setting up the dynamic typecasting for the form-elements
   ext(Element.Wrappers, {

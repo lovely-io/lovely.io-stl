@@ -3,9 +3,9 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS('legacy', ['dom', 'form', 'ajax', 'sugar'], function() {
+LeftJS('right', ['dom', 'form', 'ajax', 'sugar'], function() {
 
-  include('./legacy/globals');
+  require('src/globals');
 
   return {
     version: '%{version}'

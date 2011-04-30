@@ -6,10 +6,10 @@
 LeftJS('lang', function() {
   var ext = LeftJS.ext;
 
-  include('./lang/array');
-  include('./lang/string');
-  include('./lang/number');
-  include('./lang/function');
+  require('src/array');
+  require('src/string');
+  require('src/number');
+  require('src/function');
 
   return {
     version: '%{version}'

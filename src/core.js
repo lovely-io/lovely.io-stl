@@ -5,11 +5,11 @@
  */
 var LeftJS = function(undefined) {
 
-  include('./core/left');
-  include('./core/util');
-  include('./core/class');
-  include('./core/list');
-  include('./core/hash');
+  require('core/left');
+  require('core/util');
+  require('core/class');
+  require('core/list');
+  require('core/hash');
 
 
   // exporting the globally visible objects

@@ -11,13 +11,13 @@ sys = require('sys'),
 
 // packing and initializing LeftJS
 dir = process.cwd() + "/src/",
-modules = ['core', 'dom', 'old', 'form', 'ajax', 'lang', 'sugar', 'legacy'],
+modules = ['core', 'dom', 'old', 'form', 'ajax', 'lang', 'sugar', 'right'],
 sources = {}, i = 0, src;
 
 for (; i < modules.length; i++) {
-  dir = process.cwd() + (modules[i] === 'core' ? '/src/' : '/stl/');
-  src = fs.readFileSync(dir + modules[i] + '.js').toString();
-  src = src.replace(/include\(['"]\.\/(.+?)['"]\);/mg, function(m, filename) {
+  dir = process.cwd() + (modules[i] === 'core' ? '/src' : ('/stl/' + modules[i])) + '/';
+  src = fs.readFileSync(dir + (modules[i] === 'core' ? 'core' : 'index') + '.js').toString();
+  src = src.replace(/require\(['"](.+?)['"]\);/mg, function(m, filename) {
     return fs.readFileSync(dir + filename + '.js')
       .toString().replace(/($|\n)/g, '$1  ') + "\n\n";
   });

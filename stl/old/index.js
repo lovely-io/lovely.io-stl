@@ -8,9 +8,9 @@
  */
 LeftJS('old', ['dom'], function() {
 
-  include('./old/util');
-  include('./old/list');
-  include('./old/search');
+  require('src/util');
+  require('src/list');
+  require('src/search');
 
   return {
     version: '%{version}'
