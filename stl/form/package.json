@@ -1,0 +1,6 @@
+{
+  name:        'form',
+  version:     '0.0.0',
+  description: 'Standard forms handling module',
+  author:      'Nikolay Nemshilov'
+}

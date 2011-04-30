@@ -1,0 +1,6 @@
+{
+  name:        'sugar',
+  version:     '0.0.0',
+  description: 'Syntax sugar module',
+  author:      'Nikolay Nemshilov'
+}

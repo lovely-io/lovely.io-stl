@@ -1,0 +1,6 @@
+{
+  name:        'ajax',
+  version:     '0.0.0',
+  description: 'Standard AJAX support module',
+  author:      'Nikolay Nemshilov'
+}
