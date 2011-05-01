@@ -20,8 +20,6 @@ function compile() {
       .toString().replace(/($|\n)/g, '$1  ') + "\n\n";
   });
 
-  // TODO inline CSS in here
-
   // adding the package options
   var options = JSON.parse(fs.readFileSync(process.cwd() + "/package.json").toString());
 
