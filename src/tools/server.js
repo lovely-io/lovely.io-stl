@@ -12,7 +12,7 @@ var server  = express.createServer();
 var minify  = false;
 
 // dynamically serving the main module script
-server.get('/index.js', function(req, res) {
+server.get('/main.js', function(req, res) {
   res.send(minify ? source.minify() : source.build());
 });
 

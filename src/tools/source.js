@@ -12,7 +12,7 @@ var fs = require('fs');
  * @return {String} raw source code
  */
 function compile() {
-  var source = fs.readFileSync(process.cwd() + "/index.js").toString();
+  var source = fs.readFileSync(process.cwd() + "/main.js").toString();
 
   // inserting the related files
   source = source.replace(/(\n\s+)include\(['"](.+?)['"]\);/mg, function(m, spaces, filename) {
@@ -58,7 +58,7 @@ function minify() {
  */
 function inline_css() {
   try {
-    style = fs.readFileSync(process.cwd() + '/index.css').toString();
+    style = fs.readFileSync(process.cwd() + '/main.css').toString();
 
     // preserving IE hacks
     style = style

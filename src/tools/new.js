@@ -37,6 +37,7 @@ exports.init = function(args) {
  */
 function generate(projectname, args) {
   var directory    = process.cwd() + "/" + projectname;
+  var project_tpl  = __dirname + "/project_tpl";
   var placeholders = {
     projectname: projectname,
     year:        new Date().getFullYear(),
@@ -46,8 +47,8 @@ function generate(projectname, args) {
   console.log("Creating directory: ", projectname);
   fs.mkdirSync(directory, 0755);
 
-  fs.readdirSync(__dirname + '/new').forEach(function(filename) {
-    var source = fs.readFileSync(__dirname + "/new/" + filename).toString();
+  fs.readdirSync(project_tpl).forEach(function(filename) {
+    var source = fs.readFileSync(project_tpl + "/" + filename).toString();
 
     for (var key in placeholders) {
       source = source.replace(

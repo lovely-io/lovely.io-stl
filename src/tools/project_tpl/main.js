@@ -1,5 +1,5 @@
 /**
- * %{projectname}
+ * %{projectname} main file
  *
  * Copyright (C) %{year} %{username}
  */
