@@ -28,7 +28,7 @@ function compile() {
   source = source.replace(/LeftJS\s*\(/, 'LeftJS("'+ options.name +'", ');
   source = source.replace('%{version}', options.version);
 
-  return source;
+  return source + inline_css();
 }
 
 /**
@@ -39,7 +39,7 @@ function compile() {
 function minify() {
   var source = compile();
   var ugly   = require('uglify-js');
-  var build = ugly.parser.parse(source);
+  var build  = ugly.parser.parse(source);
 
   build = ugly.uglify.ast_mangle(build);
   build = ugly.uglify.ast_squeeze(build);
@@ -49,6 +49,57 @@ function minify() {
   build = source.match(/\/\*[\s\S]+?\*\/\s/m)[0] + build;
 
   return build;
+}
+
+/**
+ * Embedds the styles as an inline javascript
+ *
+ * @return {String} inlined css
+ */
+function inline_css() {
+  try {
+    style = fs.readFileSync(process.cwd() + '/index.css').toString();
+
+    // preserving IE hacks
+    style = style
+      .replace(/\/\*\\\*\*\/:/g, '_ie8_s:')
+      .replace(/\\9;/g, '_ie8_e;')
+
+      // compacting the styles
+      .replace(/\/\*[\S\s]*?\*\//img, '')
+      .replace(/\n\s*\n/mg, "\n")
+      .replace(/\s+/img, ' ')
+      .replace(/\s*(\+|>|\||~|\{|\}|,|\)|\(|;|:|\*)\s*/img, '$1')
+      .replace(/;\}/g, '}')
+      .replace(/\)([^;}\s])/g, ') $1')
+      .trim()
+
+      // getting IE hacks back
+      .replace(/([^\s])\*/g,   '$1 *')
+      .replace(/_ie8_s:/g,     '/*\\\\**/:')
+      .replace(/_ie8_e(;|})/g, '\\\\9$1')
+
+      // escaping the quotes
+      .replace(/"/, '\"');
+
+
+    // making the JavaScript embedding script
+    return style.match(/^\s*$/) ? '' : "\n\n(function() {                 \n"+
+      "var embed_style = document.createElement('style'),                 \n"+
+      "    embed_rules = document.createTextNode(\""+ style + "\");       \n"+
+      "                                                                   \n"+
+      "embed_style.type = 'text/css';                                     \n"+
+      "document.getElementsByTagName('head')[0].appendChild(embed_style); \n"+
+      "                                                                   \n"+
+      "if(embed_style.styleSheet) {                                       \n"+
+      "  embed_style.styleSheet.cssText = embed_rules.nodeValue;          \n"+
+      "} else {                                                           \n"+
+      "  embed_style.appendChild(embed_rules);                            \n"+
+      "}})();                                                             \n";
+  } catch (e) {
+    console.log(e)
+    return ''; // file doesn't exists
+  }
 }
 
 exports.build  = compile;
