@@ -1,0 +1,8 @@
+{
+  "name":        "%{projectname}",
+  "version":     "0.0.0",
+  "description": "My super lovely module",
+  "author":      "%{username}",
+  "tags":        "super, lovely",
+  "license":     "MIT"
+}

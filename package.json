@@ -1,0 +1,19 @@
+{
+  "name":        "leftjs",
+  "description": "Absolutely lovely stuff",
+  "author":      "Nikolay Nemshilov <nemshilov@gmail.com>",
+  "license": {
+    "type": "MIT",
+    "url":  "https://github.com/MadRabbit/left.js/raw/master/LICENSE"
+  },
+  "repository": {
+    "type": "git",
+    "url":  "https://github.com/MadRabbit/left.js"
+  },
+  "dependencies": {
+    "uglify-js": "1",
+    "jshint":    "1",
+    "express":   "1"
+  },
+  "bin":  "./bin/left.js",
+}
