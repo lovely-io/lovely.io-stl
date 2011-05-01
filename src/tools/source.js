@@ -58,10 +58,10 @@ function minify() {
  */
 function inline_css() {
   try {
-    style = fs.readFileSync(process.cwd() + '/main.css').toString();
+    style = fs.readFileSync(process.cwd() + '/main.css')
+      .toString()
 
-    // preserving IE hacks
-    style = style
+      // preserving IE hacks
       .replace(/\/\*\\\*\*\/:/g, '_ie8_s:')
       .replace(/\\9;/g, '_ie8_e;')
 
@@ -84,18 +84,20 @@ function inline_css() {
 
 
     // making the JavaScript embedding script
-    return style.match(/^\s*$/) ? '' : "\n\n(function() {                 \n"+
-      "var embed_style = document.createElement('style'),                 \n"+
-      "    embed_rules = document.createTextNode(\""+ style + "\");       \n"+
-      "                                                                   \n"+
-      "embed_style.type = 'text/css';                                     \n"+
-      "document.getElementsByTagName('head')[0].appendChild(embed_style); \n"+
-      "                                                                   \n"+
-      "if(embed_style.styleSheet) {                                       \n"+
-      "  embed_style.styleSheet.cssText = embed_rules.nodeValue;          \n"+
-      "} else {                                                           \n"+
-      "  embed_style.appendChild(embed_rules);                            \n"+
-      "}})();                                                             \n";
+    return style.match(/^\s*$/) ? '' : "\n\n// embedded css-styles    \n"+
+      "(function(document) {                                          \n"+
+      "  var style = document.createElement('style'),                 \n"+
+      "      rules = document.createTextNode(\""+ style + "\");       \n"+
+      "                                                               \n"+
+      "  style.type = 'text/css';                                     \n"+
+      "  document.getElementsByTagName('head')[0].appendChild(style); \n"+
+      "                                                               \n"+
+      "  if(style.styleSheet) {                                       \n"+
+      "    style.styleSheet.cssText = rules.nodeValue;                \n"+
+      "  } else {                                                     \n"+
+      "    style.appendChild(rules);                                  \n"+
+      "  }                                                            \n"+
+      "})(document);                                                  \n";
   } catch (e) {
     console.log(e)
     return ''; // file doesn't exists
