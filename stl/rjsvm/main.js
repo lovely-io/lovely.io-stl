@@ -3,9 +3,9 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS('right', ['dom', 'form', 'ajax', 'sugar'], function() {
+LeftJS(['dom', 'form', 'ajax', 'sugar'], function() {
 
-  require('src/globals');
+  include('src/globals');
 
   return {
     version: '%{version}'

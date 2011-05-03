@@ -3,10 +3,10 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS('sugar', ['dom', 'lang'], function() {
+LeftJS(['dom', 'lang'], function() {
 
-  require('src/element');
-  require('src/string');
+  include('src/element');
+  include('src/string');
 
   return {
     version: '%{version}'

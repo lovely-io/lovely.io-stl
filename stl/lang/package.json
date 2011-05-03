@@ -1,6 +1,8 @@
 {
-  name:        'lang',
-  version:     '0.0.0',
-  description: 'Standard JavaScript core extensions',
-  author:      'Nikolay Nemshilov'
+  "name":        "lang",
+  "version":     "0.0.0",
+  "description": "Standard JavaScript core extensions",
+  "author":      "Nikolay Nemshilov",
+  "tags":        "core, lang",
+  "license":     "MIT"
 }

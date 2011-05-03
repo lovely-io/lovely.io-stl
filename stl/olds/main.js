@@ -6,11 +6,11 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS('old', ['dom'], function() {
+LeftJS(['dom'], function() {
 
-  require('src/util');
-  require('src/list');
-  require('src/search');
+  include('src/util');
+  include('src/list');
+  include('src/search');
 
   return {
     version: '%{version}'

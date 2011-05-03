@@ -3,13 +3,13 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS('form', ['dom'], function($) {
+LeftJS(['dom'], function($) {
   var ext     = LeftJS.ext,
       Class   = LeftJS.Class,
       Element = LeftJS.Element;
 
-  require('src/form');
-  require('src/input');
+  include('src/form');
+  include('src/input');
 
   // setting up the dynamic typecasting for the form-elements
   ext(Element.Wrappers, {

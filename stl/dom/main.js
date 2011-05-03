@@ -3,17 +3,17 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS('dom', function() {
+LeftJS(function() {
   var ext   = LeftJS.ext,
       Class = LeftJS.Class;
 
-  require('src/browser');
-  require('src/wrapper');
-  require('src/document');
-  require('src/element');
-  require('src/window');
-  require('src/event');
-  require('src/search');
+  include('src/browser');
+  include('src/wrapper');
+  include('src/document');
+  include('src/element');
+  include('src/window');
+  include('src/event');
+  include('src/search');
 
   /**
    * The main function of the DOM API, it can take several types of arguments

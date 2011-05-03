@@ -3,13 +3,13 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS('lang', function() {
+LeftJS(function() {
   var ext = LeftJS.ext;
 
-  require('src/array');
-  require('src/string');
-  require('src/number');
-  require('src/function');
+  include('src/array');
+  include('src/string');
+  include('src/number');
+  include('src/function');
 
   return {
     version: '%{version}'

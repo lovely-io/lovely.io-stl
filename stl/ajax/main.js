@@ -3,13 +3,13 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS('ajax', function() {
+LeftJS(function() {
   var ext   = LeftJS.ext,
       Class = LeftJS.Class;
 
-  require('src/ajax');
-  require('src/jsonp');
-  require('src/iframe');
+  include('src/ajax');
+  include('src/jsonp');
+  include('src/iframe');
 
   LeftJS.Ajax = Ajax;
 
