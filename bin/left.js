@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require('../src/tools').init(process.argv.slice(2));
+require('../src/cli/tools').init(process.argv.slice(2));
