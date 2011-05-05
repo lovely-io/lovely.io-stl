@@ -11,7 +11,7 @@ sys = require('sys'),
 src = require('../../../cli/tools/source');
 
 // packing and initializing LeftJS
-eval(src = src.build(process.cwd() + "/src/stl/core"));
+eval(src = src.build(__dirname + "/../"));
 
 // globalizing those ones so we didn't need to reinit them all the time
 global.LeftJS  = LeftJS;
