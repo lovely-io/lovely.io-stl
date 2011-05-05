@@ -6,10 +6,16 @@
 var source = require('./source');
 var check  = require('jshint').JSHINT;
 
-exports.init = function() {
+/**
+ * Runs the JSHint check on the source code
+ *
+ * @param {String} optional package directory location
+ * @return void
+ */
+exports.init = function(directory) {
   var report;
 
-  check(source.build(), {
+  check(source.build(directory), {
     boss:   true,
     curly:  true,
     expr:   true
