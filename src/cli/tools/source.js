@@ -14,6 +14,7 @@ var fs = require('fs');
  */
 function compile(directory) {
   directory || (directory = process.cwd());
+  directory = directory.replace(/\/$/, '');
 
   var source = fs.readFileSync(directory + "/main.js").toString();
 
@@ -35,10 +36,11 @@ function compile(directory) {
 /**
  * Minifies the source code
  *
+ * @param {String} optional package directory file
  * @return {String} minified source code
  */
-function minify() {
-  var source = compile();
+function minify(directory) {
+  var source = compile(directory);
   var ugly   = require('uglify-js');
   var build  = ugly.parser.parse(source);
 

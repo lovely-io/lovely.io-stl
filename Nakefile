@@ -10,29 +10,21 @@
 var nake = require('nake');
 nake.Quiet = true;
 
-nake.task('build', 'Build the script', function() {
-  var disc   = require('fs');
-  var ugly   = require('uglify-js');
-  var source = require('./test/test_helper').Source;
+nake.task('build', 'Build the scripts', function() {
+  var fs  = require('fs');
+  var src = require('./src/cli/tools/source');
+  var dir = __dirname + '/src/stl/';
 
-  var module, build;
+  system('mkdir -p build/');
 
-  for (module in source) {
-    build = ugly.parser.parse(source[module]);
+  fs.readdirSync(dir).forEach(function(name) {
+    console.log(" - ", name);
 
-    build = ugly.uglify.ast_mangle(build);
-    build = ugly.uglify.ast_squeeze(build);
-    build = ugly.uglify.gen_code(build);
+    fs.writeFileSync('build/' + name + '-src.js', src.build(dir + name));
+    fs.writeFileSync('build/' + name + '.js', src.minify(dir + name));
 
-    // copying the header over
-    build = source[module].match(/\/\*[\s\S]+?\*\/\s/m)[0] + build;
-
-    system('mkdir -p build/');
-
-    disc.writeFileSync('build/'+ module +'.js', build);
-
-    system('gzip -c build/'+ module +'.js > build/'+ module +'.js.gz');
-  }
+    system('gzip -c build/'+ name +'.js > build/'+ name +'.js.gz');
+  });
 });
 
 

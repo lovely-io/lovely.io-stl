@@ -2,7 +2,7 @@
   "name":        "rjsvm",
   "version":     "0.0.0",
   "description": "RightJS emulation module",
-  "author":      "Nikolay Nemshilov".
+  "author":      "Nikolay Nemshilov",
   "tags":        "emulator",
   "license":     "MIT"
 }
