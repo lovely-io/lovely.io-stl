@@ -9,24 +9,27 @@ var fs = require('fs');
 /**
  * Builds the actual source code of the current project
  *
+ * @param {String} optional package directory file
  * @return {String} raw source code
  */
-function compile() {
-  var source = fs.readFileSync(process.cwd() + "/main.js").toString();
+function compile(directory) {
+  directory || (directory = process.cwd());
+
+  var source = fs.readFileSync(directory + "/main.js").toString();
 
   // inserting the related files
   source = source.replace(/(\n\s+)include\(['"](.+?)['"]\);/mg, function(m, spaces, filename) {
-    return spaces + fs.readFileSync(process.cwd() + '/' + filename + '.js')
+    return spaces + fs.readFileSync(directory + '/' + filename + '.js')
       .toString().replace(/($|\n)/g, '$1  ') + "\n\n";
   });
 
   // adding the package options
-  var options = JSON.parse(fs.readFileSync(process.cwd() + "/package.json").toString());
+  var options = JSON.parse(fs.readFileSync(directory + "/package.json").toString());
 
   source = source.replace(/LeftJS\s*\(/, 'LeftJS("'+ options.name +'", ');
   source = source.replace('%{version}', options.version);
 
-  return source + inline_css();
+  return source + inline_css(directory);
 }
 
 /**
@@ -52,11 +55,12 @@ function minify() {
 /**
  * Embedds the styles as an inline javascript
  *
+ * @param {String} package directory root
  * @return {String} inlined css
  */
-function inline_css() {
+function inline_css(directory) {
   try {
-    style = fs.readFileSync(process.cwd() + '/main.css')
+    style = fs.readFileSync(directory + '/main.css')
       .toString()
 
       // preserving IE hacks
@@ -97,7 +101,6 @@ function inline_css() {
       "  }                                                            \n"+
       "})(document);                                                  \n";
   } catch (e) {
-    console.log(e)
     return ''; // file doesn't exists
   }
 }

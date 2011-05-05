@@ -9,7 +9,7 @@ server_respond({
   '/load.html':
 
     '<html><head>                                                   '+
-    '  <script src="/left.js"></script>                             '+
+    '  <script src="/core.js"></script>                             '+
     '  <script>                                                     '+
     '    LeftJS(["module1", "module2"], function(m1, m2) {          '+
     '    alert("Received: "+ m1);                                   '+
@@ -60,7 +60,7 @@ server_respond({
   '/double.html':
 
     '<html><head>                                                   '+
-    '  <script src="/left.js"></script>                             '+
+    '  <script src="/core.js"></script>                             '+
     '  <script>                                                     '+
     '    LeftJS(["module5", "module5"], function(m1, m2) {          '+
     '    alert("Received: "+ m1);                                   '+
@@ -73,7 +73,7 @@ server_respond({
   '/local.html':
 
     '<html><head>                                                   '+
-    '  <script src="/left.js"></script>                             '+
+    '  <script src="/core.js"></script>                             '+
     '  <script>                                                     '+
     '    LeftJS(                                                    '+
     '      {baseUrl: "/my/scripts/"},                               '+

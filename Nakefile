@@ -37,12 +37,12 @@ nake.task('build', 'Build the script', function() {
 
 
 nake.task('test', 'Run the tests', function() {
-  system('vows test/*/*_test.js');
+  system('vows src/stl/*/test/*/*_test.js');
 });
 
 nake.namespace('test', function() {
   nake.task('spec', 'Run the tests with spec output', function() {
-    system('vows test/*/*_test.js --spec');
+    system('vows src/stl/*/test/*/*_test.js --spec');
   })
 });
 
