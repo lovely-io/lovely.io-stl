@@ -1,6 +1,7 @@
 {
   "name":        "lovely",
-  "description": "Lovely JavaScript platform",
+  "version":     "0.0.0",
+  "description": "Lovely JavaScript Development Platform",
   "author":      "Nikolay Nemshilov <nemshilov@gmail.com>",
   "license": {
     "type": "MIT",
@@ -11,9 +12,9 @@
     "url":  "https://github.com/MadRabbit/lovely.io"
   },
   "dependencies": {
-    "uglify-js": "1",
-    "jshint":    "1",
-    "express":   "1"
+    "uglify-js": ">=1.0.0",
+    "jshint":    ">=0.2.0",
+    "express":   ">=2.2.2"
   },
-  "bin":  "./bin/lovely",
+  "bin":  "./bin/lovely"
 }
