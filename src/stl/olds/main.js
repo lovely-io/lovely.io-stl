@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS(['dom'], function() {
+Lovely(['dom'], function() {
 
   include('src/util');
   include('src/list');

@@ -1,11 +1,11 @@
 /**
- * The DOM management module for LeftJS
+ * The DOM management module for Lovely IO
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS(function() {
-  var ext   = LeftJS.ext,
-      Class = LeftJS.Class;
+Lovely(function() {
+  var ext   = Lovely.ext,
+      Class = Lovely.Class;
 
   include('src/browser');
   include('src/wrapper');
@@ -19,22 +19,22 @@ LeftJS(function() {
    * The main function of the DOM API, it can take several types of arguments
    *
    * Search:
-   *   $('some#css.rule'[, optionally a context]) -> LeftJS.Search
+   *   $('some#css.rule'[, optionally a context]) -> Lovely.Search
    *
    * Creation:
-   *   $('<div>bla bla bla</div>') -> LeftJS.Search
+   *   $('<div>bla bla bla</div>') -> Lovely.Search
    *
    * DOM-Ready:
-   *   $(function() { // dom-ready content // }); -> LeftJS.Document
+   *   $(function() { // dom-ready content // }); -> Lovely.Document
    *
    * DOM-Wrapper:
-   *   $(element)  -> LeftJS.Element
-   *   $(document) -> LeftJS.Document
-   *   $(window)   -> LeftJS.Window
+   *   $(element)  -> Lovely.Element
+   *   $(document) -> Lovely.Document
+   *   $(window)   -> Lovely.Window
    *   ...
    *
    * @param {String|Function|Element|Document} stuff
-   * @return {LeftJS.Search|LeftJS.Wrapper} result
+   * @return {Lovely.Search|Lovely.Wrapper} result
    */
   function $(value, context) {
     switch (typeof(value)) {
@@ -46,7 +46,7 @@ LeftJS(function() {
   }
 
   // exporting the main classes
-  ext(LeftJS, {
+  ext(Lovely, {
     $:        $,
     Browser:  Browser,
     Wrapper:  Wrapper,
@@ -58,7 +58,7 @@ LeftJS(function() {
   });
 
   // loading up the 'old' module to support the old browsers
-  Browser.OLD && LeftJS(['old']);
+  Browser.OLD && Lovely(['old']);
 
   // returning the module
   return ext($, {

@@ -5,7 +5,7 @@
  */
 require('../test_helper');
 
-var Class = LeftJS.Class;
+var Class = Lovely.Class;
 
 describe('Class', {
 

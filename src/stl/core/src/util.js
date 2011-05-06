@@ -1,5 +1,5 @@
 /**
- * Utility functions for LeftJS
+ * Utility functions for Lovely IO
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
@@ -29,7 +29,7 @@ function A(it) {
 }
 
 /**
- * Converts iterables into LeftJS.List instances
+ * Converts iterables into Lovely.List instances
  *
  * @param {mixed} iterable
  * @return {List} list

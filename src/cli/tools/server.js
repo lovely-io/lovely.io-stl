@@ -36,7 +36,7 @@ exports.init = function(args) {
   switch (args[0]) {
     case 'help':
       console.log(
-        "leftjs server [port]"
+        "lovely server [port]"
       );
       break;
 

@@ -11,10 +11,10 @@ exports.init = function(args) {
     case undefined:
       console.log(
         "Try:\n\n" +
-        "  leftjs new projectname\n" +
-        "  leftjs server\n" +
-        "  leftjs build\n"  +
-        "  leftjs check"
+        "  lovely new projectname\n" +
+        "  lovely server\n" +
+        "  lovely build\n"  +
+        "  lovely check"
       );
       break;
 

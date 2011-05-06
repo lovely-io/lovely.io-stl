@@ -7,7 +7,7 @@ require('../test_helper');
 
 describe('Core Utils', {
   "ext(a,b)": {
-    topic: function() { return LeftJS.ext; },
+    topic: function() { return Lovely.ext; },
 
     'should extend one object with another': function(ext) {
       var a = {a: 1}, b = {b: 2}, c = ext(a, b);
@@ -30,13 +30,13 @@ describe('Core Utils', {
 
       return function() {
         result.context = this;
-        result.args    = LeftJS.A(arguments);
+        result.args    = Lovely.A(arguments);
       }
     },
 
     '\r(context)': {
       topic: function(original) {
-        return LeftJS.bind(original, this.context = {});
+        return Lovely.bind(original, this.context = {});
       },
 
       "should execute the original in the prebinded context": function(callback) {
@@ -63,7 +63,7 @@ describe('Core Utils', {
 
     '\r(context, arg1, arg2,..)': {
       topic: function(original) {
-        return LeftJS.bind(original, this.context = {}, 1,2,3);
+        return Lovely.bind(original, this.context = {}, 1,2,3);
       },
 
       "should pass the prebinded arguments into the original function": function(callback) {
@@ -83,7 +83,7 @@ describe('Core Utils', {
   },
 
   'trim(string)': {
-    topic: LeftJS.trim("  boo hoo!\n\t "),
+    topic: Lovely.trim("  boo hoo!\n\t "),
 
     "should trim the excessive spaces out": function(string) {
       assert.equal (string, "boo hoo!");
@@ -116,7 +116,7 @@ describe('Core Utils', {
   }),
 
   "A(iterable)": {
-    topic: function() { return LeftJS.A; },
+    topic: function() { return Lovely.A; },
 
     "should convert arguments into arrays": function(A) {
       var array = A((function() { return arguments; })(1, 2, 3));
@@ -127,23 +127,23 @@ describe('Core Utils', {
   },
 
   "L(iterable)": {
-    topic: function() { return LeftJS.L },
+    topic: function() { return Lovely.L },
 
     "should make a List": function(L) {
       var l = L([1,2,3]);
 
-      assert.instanceOf (l, LeftJS.List);
+      assert.instanceOf (l, Lovely.List);
       assert.deepEqual  (l.toArray(), [1,2,3]);
     }
   },
 
   "H(object)": {
-    topic: function() { return LeftJS.H },
+    topic: function() { return Lovely.H },
 
     "should make a Hash": function(H) {
       var hash = H({a:1});
 
-      assert.instanceOf (hash, LeftJS.Hash);
+      assert.instanceOf (hash, Lovely.Hash);
       assert.deepEqual  (hash.toObject(), {a:1});
     }
   }
@@ -159,7 +159,7 @@ describe('Core Utils', {
  */
 function assertTypeCheck(name, options) {
   var def = {
-    topic: function() { return LeftJS[name]; }
+    topic: function() { return Lovely[name]; }
   };
 
   for (var i=0; i < options.ok.length; i++) {

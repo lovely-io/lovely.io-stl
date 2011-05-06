@@ -11,7 +11,7 @@ server_respond({
     '<html><head>                                                   '+
     '  <script src="/core.js"></script>                             '+
     '  <script>                                                     '+
-    '    LeftJS(["module1", "module2"], function(m1, m2) {          '+
+    '    Lovely(["module1", "module2"], function(m1, m2) {          '+
     '    alert("Received: "+ m1);                                   '+
     '    alert("Received: "+ m2);                                   '+
     '    alert("Done!");                                            '+
@@ -21,7 +21,7 @@ server_respond({
 
   '/module1.js':
 
-    'LeftJS("module1", ["module3", "module4"], function(m3, m4) {   '+
+    'Lovely("module1", ["module3", "module4"], function(m3, m4) {   '+
     '  alert("Received: "+ m3);                                     '+
     '  alert("Received: "+ m4);                                     '+
     '  alert("Initializing: module1");                              '+
@@ -30,7 +30,7 @@ server_respond({
 
   '/module2.js':
 
-    'LeftJS("module2", ["module5"], function(m5) {                  '+
+    'Lovely("module2", ["module5"], function(m5) {                  '+
     '  alert("Received: "+ m5);                                     '+
     '  alert("Initializing: module2");                              '+
     '  return "module2";                                            '+
@@ -38,21 +38,21 @@ server_respond({
 
   '/module3.js':
 
-    'LeftJS("module3", function() {                                 '+
+    'Lovely("module3", function() {                                 '+
     '  alert("Initializing: module3");                              '+
     '  return "module3";                                            '+
     '});',
 
   '/module4.js':
 
-    'LeftJS("module4", function() {                                 '+
+    'Lovely("module4", function() {                                 '+
     '  alert("Initializing: module4");                              '+
     '  return "module4";                                            '+
     '});',
 
   '/module5.js':
 
-    'LeftJS("module5", function() {                                 '+
+    'Lovely("module5", function() {                                 '+
     '  alert("Initializing: module5");                              '+
     '  return "module5";                                            '+
     '});',
@@ -62,11 +62,11 @@ server_respond({
     '<html><head>                                                   '+
     '  <script src="/core.js"></script>                             '+
     '  <script>                                                     '+
-    '    LeftJS(["module5", "module5"], function(m1, m2) {          '+
-    '    alert("Received: "+ m1);                                   '+
-    '    alert("Received: "+ m2);                                   '+
-    '    alert("Done!");                                            '+
-    '  });                                                          '+
+    '    Lovely(["module5", "module5"], function(m1, m2) {          '+
+    '      alert("Received: "+ m1);                                 '+
+    '      alert("Received: "+ m2);                                 '+
+    '      alert("Done!");                                          '+
+    '    });                                                        '+
     '  </script>                                                    '+
     '</head></html>',
 
@@ -75,7 +75,7 @@ server_respond({
     '<html><head>                                                   '+
     '  <script src="/core.js"></script>                             '+
     '  <script>                                                     '+
-    '    LeftJS(                                                    '+
+    '    Lovely(                                                    '+
     '      {baseUrl: "/my/scripts/"},                               '+
     '      ["module1", "./module6", "../../module8"],               '+
     '      function(m1, m6, m8) {                                   '+
@@ -90,7 +90,7 @@ server_respond({
 
   '/my/scripts/module6.js':
 
-    'LeftJS("module6",                                              '+
+    'Lovely("module6",                                              '+
     '  {baseUrl: "/other/scripts"},                                 '+
     '  ["./module7"], function(m7) {                                '+
     '    alert("Received: "+ m7);                                   '+
@@ -101,21 +101,21 @@ server_respond({
 
   '/other/scripts/module7.js':
 
-    'LeftJS("module7", function() {                                 '+
+    'Lovely("module7", function() {                                 '+
     '  alert("Initializing: module7");                              '+
     '  return "module7";                                            '+
     '});',
 
   '/module8.js':
 
-    'LeftJS("module8", function() {                                 '+
+    'Lovely("module8", function() {                                 '+
     '  alert("Initializing: module8");                              '+
     '  return "module8";                                            '+
     '});'
 });
 
 
-describe('LeftJS', {
+describe('Lovely', {
   'standard modules loading': {
     topic: function() {
       Browser.open('/load.html', this.callback);

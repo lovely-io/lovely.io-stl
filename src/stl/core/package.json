@@ -1,7 +1,7 @@
 {
   "name":        "core",
   "version":     "0.0.0",
-  "description": "LeftJS main module",
+  "description": "Lovely IO main module",
   "author":      "Nikolay Nemshilov",
   "tags":        "core",
   "license":     "MIT"

@@ -27,7 +27,7 @@ function compile(directory) {
   // adding the package options
   var options = JSON.parse(fs.readFileSync(directory + "/package.json").toString());
 
-  source = source.replace(/LeftJS\s*\(/, 'LeftJS("'+ options.name +'", ');
+  source = source.replace(/Lovely\s*\(/, 'Lovely("'+ options.name +'", ');
   source = source.replace('%{version}', options.version);
 
   return source + inline_css(directory);

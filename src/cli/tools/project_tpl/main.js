@@ -3,7 +3,7 @@
  *
  * Copyright (C) %{year} %{username}
  */
-LeftJS([/* dependencies */], function(/* module names */) {
+Lovely([/* dependencies */], function(/* module names */) {
   //include('src/%{projectname}');
 
   return {

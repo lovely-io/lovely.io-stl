@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var Search = new Class(LeftJS.List, {
+var Search = new Class(Lovely.List, {
   extend: {
     /**
      * Registers pseudo-selectors

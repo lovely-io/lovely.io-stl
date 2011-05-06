@@ -1,9 +1,9 @@
 /**
- * The old RightJS API support module for LeftJS
+ * The old RightJS API support module for Lovely IO
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS(['dom', 'form', 'ajax', 'sugar'], function() {
+Lovely(['dom', 'form', 'ajax', 'sugar'], function() {
 
   include('src/globals');
 

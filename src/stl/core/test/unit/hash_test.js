@@ -5,7 +5,7 @@
  */
 require('../test_helper');
 
-var Hash = LeftJS.Hash;
+var Hash = Lovely.Hash;
 
 /**
  * A dummy class to check the prototype

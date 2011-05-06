@@ -5,11 +5,11 @@
  */
 require('../test_helper');
 
-var List  = LeftJS.List;
+var List  = Lovely.List;
 var array = [1,2,3,4,5];
 var list  = new List(array);
 
-var A     = LeftJS.A;
+var A     = Lovely.A;
 
 function ensure_new_list(object) {
   assert.instanceOf (object, List);
@@ -22,7 +22,7 @@ assert.listEqual = function(list, array) {
 }
 
 // just a dummy class to test calls-by-name
-var Foo = new LeftJS.Class({
+var Foo = new Lovely.Class({
   value: null,
 
   initialize: function(v) {
@@ -43,7 +43,7 @@ var Foo = new LeftJS.Class({
 });
 
 // making a list of Foo stuff to test various things
-var FooList = new LeftJS.Class(List, {
+var FooList = new Lovely.Class(List, {
   initialize: function() {
     this.$super([
       new Foo(1),

@@ -1,5 +1,5 @@
 /**
- * The magic list of LeftJS
+ * The magic list of Lovely IO
  *
  * The goal in here is to provide a quick, steady and inheritable
  * JavaScript 1.7 Array like interface with some additional

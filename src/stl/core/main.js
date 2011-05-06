@@ -1,11 +1,11 @@
 /**
- * LeftJS is as left as you can imagine
+ * Lovely is as left as you can imagine
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var LeftJS = function(undefined) {
+var Lovely = function(undefined) {
 
-  include('src/left');
+  include('src/lovely');
   include('src/util');
   include('src/class');
   include('src/list');
@@ -13,14 +13,14 @@ var LeftJS = function(undefined) {
 
 
   // exporting the globally visible objects
-  return ext(LeftJS, {
+  return ext(Lovely, {
     version:     '%{version}',
 
     // the loader default options
     modules:     {}, // the loaded modules index
     loading:     {}, // the currently loading modules
     baseUrl:     '', // default base url address for local modules
-    hostUrl:     '', // default host url address for LeftJS modules
+    hostUrl:     '', // default host url address for Lovely modules
     waitSeconds: 8,  // timeout before give up on a module
 
     // globally accessible functions

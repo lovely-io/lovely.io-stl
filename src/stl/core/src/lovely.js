@@ -3,19 +3,19 @@
  *
  * Basic Usage:
  *
- *    LeftJS(['module1', 'module2'], function(module1, module2) {
+ *    Lovely(['module1', 'module2'], function(module1, module2) {
  *      // do stuff
  *    });
  *
  * Modules Definition:
  *
- *    LeftJS('module-name', ['dep1', 'dep2'], function(dep1, dep2) {
+ *    Lovely('module-name', ['dep1', 'dep2'], function(dep1, dep2) {
  *      return { module: 'definition' };
  *    });
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-function LeftJS() {
+function Lovely() {
   var args     = A(arguments),
       module   = isString(args[0])   ? args.shift() : null,
       options  = isObject(args[0])   ? args.shift() : {},
@@ -25,9 +25,9 @@ function LeftJS() {
       deadline = new Date(); // the hang up time
 
   // setting up the options
-  'hostUrl'     in options || (options.hostUrl     = LeftJS.hostUrl || find_host_url());
-  'baseUrl'     in options || (options.baseUrl     = LeftJS.baseUrl || options.hostUrl);
-  'waitSeconds' in options || (options.waitSeconds = LeftJS.waitSeconds);
+  'hostUrl'     in options || (options.hostUrl     = Lovely.hostUrl || find_host_url());
+  'baseUrl'     in options || (options.baseUrl     = Lovely.baseUrl || options.hostUrl);
+  'waitSeconds' in options || (options.waitSeconds = Lovely.waitSeconds);
 
   options.hostUrl[options.hostUrl.length - 1] === '/' || (options.hostUrl += '/');
   options.baseUrl[options.baseUrl.length - 1] === '/' || (options.baseUrl += '/');
@@ -43,7 +43,7 @@ function LeftJS() {
     // stripping out the '../' and './' things to get the clean module name
     modules[i] = modules[i].replace(/^[\.\/]+/, '');
 
-    if (!(modules[i] in LeftJS.modules || modules[i] in LeftJS.loading)) {
+    if (!(modules[i] in Lovely.modules || modules[i] in Lovely.loading)) {
       script = document.createElement('script');
 
       script.src   = url;
@@ -52,7 +52,7 @@ function LeftJS() {
 
       header.appendChild(script);
 
-      LeftJS.loading[modules[i]] = script;
+      Lovely.loading[modules[i]] = script;
     }
   }
 
@@ -62,8 +62,8 @@ function LeftJS() {
     var packages=[], i=0, result;
 
     for (; i < modules.length; i++) {
-      if (modules[i] in LeftJS.modules) {
-        packages[i] = LeftJS.modules[modules[i]];
+      if (modules[i] in Lovely.modules) {
+        packages[i] = Lovely.modules[modules[i]];
       } else if (new Date() < deadline) {
         return setTimeout(arguments.callee, 20);
       } else {
@@ -76,14 +76,14 @@ function LeftJS() {
 
     // registering the module if needed
     if (module) {
-      LeftJS.modules[module] = result;
-      delete(LeftJS.loading[module]);
+      Lovely.modules[module] = result;
+      delete(Lovely.loading[module]);
     }
   })();
 }
 
 /**
- * Searches for the LeftJS hosting url from the scripts 'src' attribute
+ * Searches for the Lovely hosting url from the scripts 'src' attribute
  *
  * @return {String} location
  */
@@ -98,5 +98,5 @@ function find_host_url() {
     }
   }
 
-  return LeftJS.hostUrl;
+  return Lovely.hostUrl;
 }

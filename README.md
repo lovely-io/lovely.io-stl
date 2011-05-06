@@ -1,4 +1,4 @@
-# LeftJS
+# Lovely IO
 
 `LeftJS` is a clean take on the [RightJS](http://rightjs.org) framework
 

@@ -1,12 +1,12 @@
 /**
- * The forms handling module for LeftJS
+ * The forms handling module for Lovely IO
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS(['dom'], function($) {
-  var ext     = LeftJS.ext,
-      Class   = LeftJS.Class,
-      Element = LeftJS.Element;
+Lovely(['dom'], function($) {
+  var ext     = Lovely.ext,
+      Class   = Lovely.Class,
+      Element = Lovely.Element;
 
   include('src/form');
   include('src/input');
@@ -20,7 +20,7 @@ LeftJS(['dom'], function($) {
   });
 
   // exporting the globals
-  ext(LeftJS, {
+  ext(Lovely, {
     Form:  Form,
     Input: Input
   });

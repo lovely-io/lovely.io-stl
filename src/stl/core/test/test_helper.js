@@ -1,5 +1,5 @@
 /**
- * Node.js envinronment initializer for Left.js
+ * Node.js envinronment initializer for Lovely IO
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
@@ -10,11 +10,11 @@ sys = require('sys'),
 
 src = require('../../../cli/tools/source');
 
-// packing and initializing LeftJS
+// packing and initializing Lovely core
 eval(src = src.build(__dirname + "/../"));
 
 // globalizing those ones so we didn't need to reinit them all the time
-global.LeftJS  = LeftJS;
+global.Lovely  = Lovely;
 global.util    = require('util');
 global.vows    = require('vows');
 global.assert  = require('assert');

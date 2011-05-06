@@ -1,17 +1,17 @@
 /**
- * The AJAX support module for LeftJS
+ * The AJAX support module for Lovely
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-LeftJS(function() {
-  var ext   = LeftJS.ext,
-      Class = LeftJS.Class;
+Lovely(function() {
+  var ext   = Lovely.ext,
+      Class = Lovely.Class;
 
   include('src/ajax');
   include('src/jsonp');
   include('src/iframe');
 
-  LeftJS.Ajax = Ajax;
+  Lovely.Ajax = Ajax;
 
   return ext(Ajax, {
     version: '%{version}'

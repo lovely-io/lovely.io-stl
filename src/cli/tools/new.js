@@ -10,7 +10,7 @@ exports.init = function(args) {
     case 'help':
     case undefined:
       console.log(
-        "leftjs new projectname"
+        "lovely new projectname"
       );
       break;
 

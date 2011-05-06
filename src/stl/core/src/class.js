@@ -1,5 +1,5 @@
 /**
- * `Class` is the main classes handler for LeftJS
+ * `Class` is the main classes handler for Lovely
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
