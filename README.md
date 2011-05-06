@@ -1,22 +1,21 @@
 # Lovely IO
 
-`LeftJS` is a clean take on the [RightJS](http://rightjs.org) framework
+`Lovely IO` is a javascript development platform based on [RightJS](http://rightjs.org)
+It is not exactly a framework, but rather a collection of micro-frameworks
+based on modules from [RightJS](http://rightjs.org)
 
-It is not a fork, it is more like R&D for the future major version of
-RightJS. The goal is to play with some new ideas in a clean environment.
+The goal of the project is to create a platform/environment for JavaScript
+development that will help you to have grand old time while you do your job
 
-The targets are the following:
+The targets are about the following
 
- * Get rid of all the global variables
- * Make no JavaScript core extensions (will go in a plugin)
- * Create a console based testing/building environment
- * Make more civilized collections handling interface
- * Review the utility functions collection
- * Focus on the modern browsers: Safari, Chrome, FF4
- * Zero tolerance for old browser hacks in the core
+ * Real modularity
+ * AMD based modules serving
+ * Automatic dependencies handling
+ * Community available hosting
 
-Basically the aim is to create a super-lightweight and clean version of
-RightJS and see where it will get us.
+Well, kinda like that.
+Watch for the actual release :)
 
 
 ## How To...
