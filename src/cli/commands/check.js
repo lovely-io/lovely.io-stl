@@ -3,8 +3,6 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-var source = require('./source');
-var check  = require('jshint').JSHINT;
 
 /**
  * Runs the JSHint check on the source code
@@ -13,9 +11,11 @@ var check  = require('jshint').JSHINT;
  * @return void
  */
 exports.init = function(directory) {
+  var source = require('../source');
+  var check  = require('jshint').JSHINT;
   var report;
 
-  check(source.build(directory), {
+  check(source.compile(directory), {
     boss:   true,
     curly:  true,
     expr:   true
@@ -41,8 +41,15 @@ exports.init = function(directory) {
     });
 
   } else {
-    report = "\u001B[32m - Successfully passed\u001B[0m";
+    report = " ✓ \u001B[32mSuccessfully passed\u001B[0m";
   }
 
   console.log(report);
 };
+
+exports.help = function(args) {
+  console.log(
+    "Checks the project source code against JSHint\n\n" +
+    "Usage: lovely check"
+  );
+}

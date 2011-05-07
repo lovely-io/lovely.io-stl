@@ -13,15 +13,15 @@ nake.Quiet = true;
 nake.task('build', 'Build the scripts', function() {
   var fs  = require('fs');
   var dir = __dirname + '/src/stl/';
-  var src = require('./src/cli/tools/source');
+  var src = require('./src/cli/source');
 
   system('mkdir -p build/');
 
   fs.readdirSync(dir).forEach(function(name) {
     console.log(" - ", name);
 
-    fs.writeFileSync('build/' + name + '-src.js', src.build(dir + name));
-    fs.writeFileSync('build/' + name + '.js', src.minify(dir + name));
+    fs.writeFileSync('build/' + name + '-src.js', src.compile(dir + name));
+    fs.writeFileSync('build/' + name + '.js',     src.minify(dir + name));
 
     system('gzip -c build/'+ name +'.js > build/'+ name +'.js.gz');
   });
@@ -41,10 +41,10 @@ nake.namespace('test', function() {
 nake.task('check', 'Checks the source code with JSHint', function() {
   var fs   = require('fs');
   var dir  = __dirname + '/src/stl/';
-  var lint = require('./src/cli/tools/check').init;
+  var lint = require('./src/cli/commands/check').init;
 
   fs.readdirSync(dir).forEach(function(name) {
-    console.log(" - ", name);
+    console.log(name);
     lint(dir + name);
   });
 });

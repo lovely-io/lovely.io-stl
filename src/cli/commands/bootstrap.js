@@ -45,13 +45,12 @@ function bootstrap(base_dir) {
  * @return void
  */
 exports.init = function(args) {
-  switch (args[0]) {
-    case 'help':
-      console.log('lovely bootstrap [base_dir]');
-      break;
-
-    default:
-      bootstrap(args[1]);
-  }
-
+  bootstrap(args[0]);
 };
+
+exports.help = function(args) {
+  console.log(
+    "Bootstraps the LovelyIO infrastructure\n\n" +
+    "Usage: lovely bootstrap [base-directory]"
+  );
+}

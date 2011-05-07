@@ -1,5 +1,5 @@
 /**
- * This module handling the source code compilation
+ * This module handles source code compilation
  * for a standard project
  *
  * Copyright (C) 2011 Nikolay Nemshilov
@@ -107,5 +107,5 @@ function inline_css(directory) {
   }
 }
 
-exports.build  = compile;
-exports.minify = minify;
+exports.compile = compile;
+exports.minify  = minify;

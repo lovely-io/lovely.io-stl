@@ -8,10 +8,10 @@ var
 fs  = require('fs'),
 sys = require('sys'),
 
-src = require('../../../cli/tools/source');
+src = require('../../../cli/source');
 
 // packing and initializing Lovely core
-eval(src = src.build(__dirname + "/../"));
+eval(src = src.compile(__dirname + "/../"));
 
 // globalizing those ones so we didn't need to reinit them all the time
 global.Lovely  = Lovely;

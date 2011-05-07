@@ -23,3 +23,10 @@ exports.init = function(args) {
 
   console.log("Done");
 }
+
+exports.help = function(args) {
+  console.log(
+    "Removes all the LovelyIO infrastructure from your disk\n\n" +
+    "Usage: lovely implode"
+  );
+}
