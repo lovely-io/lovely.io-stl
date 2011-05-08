@@ -39,8 +39,7 @@ function bootstrap(base_dir) {
   fs.readdirSync(stl_dir).forEach(function(name) {
     system('cd '+ stl_dir + name + "; ../../bin/lovely install");
   });
-
-  console.log("Done");
+  console.log("» \u001B[32mDone\u001B[0m ");
 }
 
 
