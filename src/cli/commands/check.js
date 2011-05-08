@@ -41,7 +41,7 @@ exports.init = function(args) {
     });
 
   } else {
-    report = " ✓ \u001B[32mOK\u001B[0m '"+ module + "'";
+    report = "✓ \u001B[32mOK\u001B[0m » "+ module;
   }
 
   console.log(report);
