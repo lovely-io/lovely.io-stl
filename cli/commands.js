@@ -29,7 +29,22 @@ global.system   = function(cmd, callback) {
       callback && callback();
     }
   );
-}
+};
+
+/**
+ * Makes a string of certain size by adding spaces at the end
+ *
+ * @param {String} string
+ * @param {Number} desired length
+ * @return {String} of that length
+ */
+global.ljust = function(str, length) {
+  while (str.length < length) {
+    str += ' ';
+  }
+
+  return str;
+};
 
 
 exports.init = function(args) {
