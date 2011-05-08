@@ -12,13 +12,13 @@ nake.Quiet = true;
 
 nake.task('build', 'Build the scripts', function() {
   var fs  = require('fs');
-  var dir = __dirname + '/src/stl/';
-  var src = require('./src/cli/source');
+  var dir = __dirname + '/stl/';
+  var src = require('./cli/source');
 
   system('mkdir -p build/');
 
   fs.readdirSync(dir).forEach(function(name) {
-    console.log(" - ", name);
+    console.log(" »", name);
 
     fs.writeFileSync('build/' + name + '-src.js', src.compile(dir + name));
     fs.writeFileSync('build/' + name + '.js',     src.minify(dir + name));
@@ -29,21 +29,21 @@ nake.task('build', 'Build the scripts', function() {
 
 
 nake.task('test', 'Run the tests', function() {
-  system('vows src/stl/*/test/*/*_test.js');
+  system('vows stl/*/test/*/*_test.js');
 });
 
 nake.namespace('test', function() {
   nake.task('spec', 'Run the tests with spec output', function() {
-    system('vows src/stl/*/test/*/*_test.js --spec');
+    system('vows stl/*/test/*/*_test.js --spec');
   })
 });
 
 nake.task('check', 'Checks the source code with JSHint', function() {
   var fs   = require('fs');
-  var dir  = __dirname + '/src/stl/';
+  var dir  = __dirname + '/stl/';
 
   fs.readdirSync(dir).forEach(function(name) {
-    system('cd '+ dir + name + '; ../../../bin/lovely check');
+    system('cd '+ dir + name + '; ../../bin/lovely check');
   });
 });
 
