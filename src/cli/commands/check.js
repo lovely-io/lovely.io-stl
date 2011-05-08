@@ -7,22 +7,22 @@
 /**
  * Runs the JSHint check on the source code
  *
- * @param {String} optional package directory location
+ * @param {Array} arguments
  * @return void
  */
-exports.init = function(directory) {
-  var source = require('../source');
+exports.init = function(args) {
   var check  = require('jshint').JSHINT;
+  var module = require('../package').parse(process.cwd() + '/package.json').name;
   var report;
 
-  check(source.compile(directory), {
+  check(require('../source').compile(), {
     boss:   true,
     curly:  true,
     expr:   true
   });
 
   if (check.errors.length) {
-    report = "\u001B[31m - Source check failed: \u001B[0m\n\n"
+    report = "\u001B[31m - Source check failed for '"+ module +"': \u001B[0m\n\n"
 
     check.errors.forEach(function(error) {
       if (error && error.id === '(error)') {
@@ -41,7 +41,7 @@ exports.init = function(directory) {
     });
 
   } else {
-    report = " ✓ \u001B[32mSuccessfully passed\u001B[0m";
+    report = " ✓ \u001B[32mOK\u001B[0m '"+ module + "'";
   }
 
   console.log(report);

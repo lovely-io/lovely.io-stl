@@ -41,11 +41,9 @@ nake.namespace('test', function() {
 nake.task('check', 'Checks the source code with JSHint', function() {
   var fs   = require('fs');
   var dir  = __dirname + '/src/stl/';
-  var lint = require('./src/cli/commands/check').init;
 
   fs.readdirSync(dir).forEach(function(name) {
-    console.log(name);
-    lint(dir + name);
+    system('cd '+ dir + name + '; ../../../bin/lovely check');
   });
 });
 
@@ -60,7 +58,7 @@ nake.task('check', 'Checks the source code with JSHint', function() {
 function system(cmd) {
   require('child_process').exec(cmd,
     function(error, stdout) {
-      if (stdout || error) {
+      if (stdout) {
         console.log(stdout || error.message);
       }
     }
