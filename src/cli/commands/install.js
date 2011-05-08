@@ -17,16 +17,18 @@ exports.init = function(args) {
   location[location.length - 1] == '/' || (location += '/');
   location += package.name + '/' + package.version;
 
-  system('mkdir -p '+ location, function() {
-    system('cp -r '+ dir +'/* '+ location, function() {
+  system('rm -rf '+ location, function() {
+    system('mkdir -p '+ location, function() {
+      system('cp -r '+ dir +'/* '+ location, function() {
 
-      // making a build
-      location += '/build/';
-      fs.mkdirSync(location, 0755);
+        // making a build
+        location += '/build/';
+        fs.mkdirSync(location, 0755);
 
-      location += package.name;
-      fs.writeFileSync(location + '.js',     source.minify(dir));
-      fs.writeFileSync(location + '-src.js', source.compile(dir));
+        location += package.name;
+        fs.writeFileSync(location + '.js',     source.minify(dir));
+        fs.writeFileSync(location + '-src.js', source.compile(dir));
+      });
     });
   });
 };

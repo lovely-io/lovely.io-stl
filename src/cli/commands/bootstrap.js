@@ -34,6 +34,12 @@ function bootstrap(base_dir) {
     );
   }
 
+  console.log("Installing STL packages");
+  var stl_dir = __dirname + '/../../stl/';
+  fs.readdirSync(stl_dir).forEach(function(name) {
+    system('cd '+ stl_dir + name + "; ../../../bin/lovely install");
+  });
+
   console.log("Done");
 }
 
