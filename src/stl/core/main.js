@@ -1,5 +1,5 @@
 /**
- * Lovely is as left as you can imagine
+ * Lovely IO core module
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
