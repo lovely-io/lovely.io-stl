@@ -19,7 +19,7 @@ exports.init = function(args) {
 
   system('gzip -c '+ location +'.js > '+ location +'.js.gz');
 
-  console.log("» Compiling: "+ package.name + " \u001B[32mDone\u001B[0m ");
+  console.log("» Compiling: "+ package.name + " Done".green);
 };
 
 exports.help = function(args) {

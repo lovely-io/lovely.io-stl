@@ -9,14 +9,14 @@ var stdin = process.stdin, stdout = process.stdout;
 function ask_for(intro, format, callback) {
   stdin.resume();
 
-  stdout.write(intro + " » ");
+  stdout.write(intro + " » ".grey);
   stdin.once('data', function(data) {
     data = data.toString().trim();
 
     if (format.test(data)) {
       callback(data);
     } else {
-      stdout.write("\u001B[31mIt should match: \u001B[0m" + format + "\n");
+      stdout.write("It should match: ".red + format.toString().yellow + "\n");
       ask_for(intro, format, callback);
     }
   });
@@ -39,7 +39,7 @@ exports.init = function(args) {
           "\nSo, your name is: "+ realname +
           "\nyour email is:    "+ email    +
           "\nand username is:  "+ username +
-          "\n\nProceed? (y/n) » "
+          "\n\nProceed? ("+ "y/n".yellow + ")" + " » ".grey
         );
 
         stdin.once('data', function(data) {
