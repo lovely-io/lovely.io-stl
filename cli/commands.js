@@ -3,17 +3,7 @@
  *
  * Copyright (C) 2011 Nikolay Nemshilov
  */
-
-// parsing the ~/.lovelyrc file
-var fs = require('fs');
-var options = {};
-
-fs.readFileSync(process.env.HOME + "/.lovelyrc").toString()
-  .replace(/(\w+)\s*=\s*([^\n]+)/g, function(m, key, value) {
-    options[key] = value;
-  });
-
-global.lovelyrc = options;
+require('./config');
 
 /**
  * A shortcut to make the system calls

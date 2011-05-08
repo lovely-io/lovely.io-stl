@@ -14,7 +14,6 @@ function bootstrap(base_dir) {
   var fs       = require('fs');
   var path     = require('path');
   var home_dir = process.env.HOME;
-  var rc_file  = home_dir + '/.lovelyrc';
 
   base_dir || (base_dir = home_dir + "/.lovely/");
 
@@ -25,14 +24,9 @@ function bootstrap(base_dir) {
     fs.mkdirSync(base_dir, 0755);
   }
 
-  console.log("Initial RC file at: ", rc_file)
-  if (path.existsSync(rc_file)) {
-    console.log(" - Already exists");
-  } else {
-    fs.writeFileSync(rc_file,
-      'base = '+ base_dir
-    );
-  }
+  console.log("Initial RC file at: ~/.lovelyrc");
+  lovelyrc.base = base_dir;
+  lovelyrc.host = 'http://cdn.lovely.io';
 
   console.log("Installing STL packages");
   var stl_dir = __dirname + '/../../stl/';
