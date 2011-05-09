@@ -7,6 +7,15 @@
 lovelyrc = global.lovelyrc = {};
 location = "#{process.env.HOME}/.lovelyrc";
 options  = {}; # a local copy fo the options
+params   =
+  user:   'your lovely.io username'
+  name:   'your full name (for code generators)'
+  email:  'your email address'
+  base:   'local lovely packages library location'
+  host:   'the main lovely.io hosting location'
+  port:   'development server default port'
+  secret: 'lovely.io authentication token'
+
 
 #
 # Making magic setters
@@ -16,7 +25,7 @@ options  = {}; # a local copy fo the options
 # the ~/.lovelyrc file when the parameters
 # are changed.
 #
-for key in ['user', 'name', 'email', 'base', 'host', 'secret', 'port']
+for key of params
   do (key) ->
     lovelyrc.__defineSetter__ key, (value) ->
       options[key] = value
@@ -33,15 +42,16 @@ for key in ['user', 'name', 'email', 'base', 'host', 'secret', 'port']
 save_options = ->
   str = "# Lovely IO config (auto-generated)\n\n"
 
-  for key of options
-      str += "#{key} = #{options[key]}\n"
+  for key, value of options
+      str += "#{key} = #{value} ".ljust(48) + "# #{params[key]}\n"
 
   require('fs').writeFileSync(location, str)
+
 
 #
 # reading the current set of options if available
 #
 if require('path').existsSync(location)
   src = require('fs').readFileSync(location).toString()
-  src.replace /(\w+)\s*=\s*([^\n]+)/g, (m, key, value) ->
-      options[key] = value
+  src.replace /(\w+)\s*=\s*([^#\n]+)/g, (m, key, value) ->
+    options[key] = value.trim()

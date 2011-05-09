@@ -28,6 +28,7 @@ bootstrap = (base_dir) ->
   lovelyrc.base = base_dir
   lovelyrc.host = 'http://cdn.lovely.io'
   lovelyrc.port = '3000'
+  lovelyrc.name = 'Vasily Pupkin'
 
   print "Installing STL packages"
   stl_dir = "#{__dirname}/../../stl/"
