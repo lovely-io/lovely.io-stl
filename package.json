@@ -12,9 +12,10 @@
     "url":  "https://github.com/MadRabbit/lovely.io"
   },
   "dependencies": {
-    "uglify-js": ">=1.0.0",
-    "jshint":    ">=0.2.0",
-    "express":   ">=2.2.2"
+    "uglify-js":     ">=1.0.0",
+    "jshint":        ">=0.2.0",
+    "express":       ">=2.2.2",
+    "coffee-script": ">=1.0.0"
   },
   "bin":  "./bin/lovely"
 }
