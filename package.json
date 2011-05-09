@@ -15,7 +15,8 @@
     "uglify-js":     ">=1.0.0",
     "jshint":        ">=0.2.0",
     "express":       ">=2.2.2",
-    "coffee-script": ">=1.0.0"
+    "coffee-script": ">=1.0.0",
+    "stylus":        ">=0.1.0"
   },
   "bin":  "./bin/lovely"
 }
