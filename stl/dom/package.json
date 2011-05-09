@@ -3,6 +3,5 @@
   "version":     "0.0.0",
   "description": "Standard DOM manipulation module",
   "author":      "Nikolay Nemshilov",
-  "tags":        "dom",
   "license":     "MIT"
 }
