@@ -63,7 +63,16 @@ minify = (directory)->
 #
 inline_css = (directory) ->
   try
-    style = fs.readFileSync("#{directory}/main.css").toString()
+    format = path.existsSync("#{directory}/main.styl")
+    format = if format then 'styl' else 'css'
+
+    style  = fs.readFileSync("#{directory}/main.#{format}").toString()
+
+    if format is 'styl'
+      require('stylus').render style, (err, src) ->
+        if err then console.log(err) else style = src
+
+    style = style
 
     # preserving IE hacks
     .replace(/\/\*\\\*\*\/:/g, '_ie8_s:')
@@ -89,6 +98,7 @@ inline_css = (directory) ->
 
     # making the JavaScript embedding script
     if style.match(/^\s*$/) then '' else """
+
       // embedded css-styles
       (function(document) {
         var style = document.createElement('style'),

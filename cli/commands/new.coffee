@@ -15,7 +15,8 @@ fs = require('fs')
 generate = (projectname, args) ->
   directory    = "#{process.cwd()}/#{projectname}"
   project_tpl  = "#{__dirname}/../project_tpl"
-  use_coffee   = args.indexOf('--no-coffee') == -1;
+  use_coffee   = args.indexOf('--no-coffee') == -1
+  use_stylus   = args.indexOf('--no-stylus') == -1
   placeholders =
     projectname: projectname,
     year:        new Date().getFullYear(),
@@ -26,8 +27,10 @@ generate = (projectname, args) ->
 
   # just checking if the file should be copied over
   suitable = (filename) ->
-    (use_coffee  and filename != 'main.js') or
-    (!use_coffee and filename != 'main.coffee')
+    ((use_coffee and filename != 'main.js')      or
+    (!use_coffee and filename != 'main.coffee')) and
+    ((use_stylus and filename != 'main.css')     or
+    (!use_stylus and filename != 'main.styl'))
 
   for filename in fs.readdirSync(project_tpl)
     if suitable(filename)
@@ -68,5 +71,6 @@ exports.help = (args) ->
 
   Options:
       --no-coffee         don't use coffee-script
+      --no-stylus         don't use stylus for css
 
   """
