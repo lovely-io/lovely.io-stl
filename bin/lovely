@@ -1,3 +1,4 @@
 #!/usr/bin/env node
 
+require('coffee-script');
 require('../cli/commands').init(process.argv.slice(2));
