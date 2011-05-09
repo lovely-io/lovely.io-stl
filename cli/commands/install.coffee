@@ -7,18 +7,17 @@
 exports.init = (args) ->
   fs       = require('fs')
   path     = require('path')
-  dir      = process.cwd()
   location = lovelyrc.base
   source   = require('../source')
-  package  = require('../package').parse("#{dir}/package.json")
+  package  = require('../package')
 
   location[location.length - 1] == '/' || (location += '/')
   location += "#{package.name}/#{package.version}"
 
   system "rm -rf #{location}", ->
     system "mkdir -p #{location}", ->
-      system "cd #{dir}; ../../bin/lovely build", ->
-        system "cp -r #{dir}/* #{location}"
+      system "../../bin/lovely build", ->
+        system "cp -r ./* #{location}"
 
 
 exports.help = (args) ->

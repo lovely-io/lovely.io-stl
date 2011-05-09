@@ -9,14 +9,12 @@ fs = require('fs')
 #
 # Builds the actual source code of the current project
 #
-# @param {String} optional package directory file
 # @return {String} raw source code
 #
-compile = (directory) ->
-  directory or= process.cwd()
-  directory = directory.replace(/\/$/, '')
-
-  source = fs.readFileSync("#{directory}/main.js").toString()
+compile = ->
+  directory = process.cwd()
+  options   = require('./package')
+  source    = fs.readFileSync("#{directory}/main.js").toString()
 
   # inserting the related files
   source = source.replace /(\n\s+)include\(['"](.+?)['"]\);/mg, (m, spaces, filename) ->
@@ -24,8 +22,6 @@ compile = (directory) ->
     .toString().replace(/($|\n)/g, '$1  ') + "\n\n"
 
   # adding the package options
-  options = require('./package').parse("#{directory}/package.json")
-
   source = source.replace(/Lovely\s*\(\s*\[/, "Lovely('#{options.name}', [")
   source = source.replace('%{version}', options.version)
 
@@ -36,11 +32,10 @@ compile = (directory) ->
 #
 # Minifies the source code
 #
-# @param {String} optional package directory file
 # @return {String} minified source code
 #
-minify = (directory) ->
-  source = compile(directory)
+minify = ->
+  source = compile()
   ugly   = require('uglify-js')
   build  = ugly.parser.parse(source)
 

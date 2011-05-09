@@ -8,7 +8,7 @@ exports.init = (args) ->
   path     = require('path')
   source   = require('../source')
   location = process.cwd()
-  package  = require('../package').parse("#{location}/package.json")
+  package  = require('../package')
 
   location +=  "/build/"
   path.existsSync(location) || fs.mkdirSync(location, 0755)

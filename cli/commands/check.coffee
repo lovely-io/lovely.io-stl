@@ -12,7 +12,7 @@
 #
 exports.init = (args) ->
   check  = require('jshint').JSHINT;
-  module = require('../package').parse("#{process.cwd()}/package.json").name;
+  module = require('../package').name;
 
   check(require('../source').compile(), {
     boss:   true,

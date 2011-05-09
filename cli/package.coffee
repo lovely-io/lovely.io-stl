@@ -29,12 +29,12 @@ validate = (data) ->
 
 
 #
-# Parses the package
+# Parsing the current package
 #
-exports.parse = (filename) ->
-  data = require("fs").readFileSync(filename)
-  data = JSON.parse(data.toString())
+data = require("fs").readFileSync("#{process.cwd()}/package.json")
+data = JSON.parse(data.toString())
 
-  validate data
+validate data
 
-  data
+for key, value of data
+  exports[key] = value
