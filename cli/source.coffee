@@ -4,7 +4,8 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-fs = require('fs')
+fs   = require('fs')
+path = require('path')
 
 #
 # Builds the actual source code of the current project
@@ -15,12 +16,17 @@ fs = require('fs')
 compile = (directory)->
   directory or= process.cwd()
   options   = require('./package').read(directory)
-  source    = fs.readFileSync("#{directory}/main.js").toString()
+  format    = path.existsSync("#{directory}/main.coffee")
+  format    = if format then 'coffee' else 'js'
+  source    = fs.readFileSync("#{directory}/main.#{format}").toString()
 
   # inserting the related files
-  source = source.replace /(\n\s+)include\(['"](.+?)['"]\);/mg, (m, spaces, filename) ->
-    spaces + fs.readFileSync("#{directory}/#{filename}.js")
+  source = source.replace /(\n\s+)include[\(| ]+['"](.+?)['"][\)]*/mg, (m, spaces, filename) ->
+    spaces + fs.readFileSync("#{directory}/#{filename}.#{format}")
     .toString().replace(/($|\n)/g, '$1  ') + "\n\n"
+
+  # converting coffee into javascript if needed
+  source = require('coffee-script').compile(source, {bare: true}) if format is 'coffee'
 
   # adding the package options
   source = source.replace(/Lovely\s*\(\s*\[/, "Lovely('#{options.name}', [")

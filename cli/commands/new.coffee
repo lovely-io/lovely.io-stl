@@ -15,6 +15,7 @@ fs = require('fs')
 generate = (projectname, args) ->
   directory    = "#{process.cwd()}/#{projectname}"
   project_tpl  = "#{__dirname}/../project_tpl"
+  use_coffee   = args.indexOf('--no-coffee') == -1;
   placeholders =
     projectname: projectname,
     year:        new Date().getFullYear(),
@@ -23,17 +24,22 @@ generate = (projectname, args) ->
   print "Creating directory: #{projectname}"
   fs.mkdirSync(directory, 0755)
 
+  # just checking if the file should be copied over
+  suitable = (filename) ->
+    (use_coffee  and filename != 'main.js') or
+    (!use_coffee and filename != 'main.coffee')
+
   for filename in fs.readdirSync(project_tpl)
-    source = fs.readFileSync("#{project_tpl}/#{filename}").toString()
+    if suitable(filename)
+      source = fs.readFileSync("#{project_tpl}/#{filename}").toString()
 
-    for key of placeholders
-      source = source.replace(
-        new RegExp('%\\{'+ key + '\\}', 'g'), placeholders[key]
-      )
+      for key of placeholders
+        source = source.replace(
+          new RegExp('%\\{'+ key + '\\}', 'g'), placeholders[key]
+        )
 
-    print " - #{filename}"
-    fs.writeFileSync("#{directory}/#{filename}", source)
-
+      print " - #{filename}"
+      fs.writeFileSync("#{directory}/#{filename}", source)
 
 
 exports.init = (args) ->
@@ -59,5 +65,8 @@ exports.help = (args) ->
 
   Usage:
       lovely new <project-name>
+
+  Options:
+      --no-coffee         don't use coffee-script
 
   """

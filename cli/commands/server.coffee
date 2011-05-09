@@ -21,15 +21,15 @@ exports.init = (args) ->
     # TODO make the modules hookable form here
     res.send req.params.module
 
+  server.get '/favicon.ico', (req, res) ->
+    res.send '' # just keeping it happy
+
   # listening all the pages in the user project
   server.get '/:page?', (req, res) ->
     minify = req.query.minify is 'true'
     res.send fs.readFileSync(
       "#{process.cwd()}/#{req.params.page || 'index'}.html"
     )
-
-  server.get '/favicon.ico', (req, res) ->
-    res.send '' # just keeping it happy
 
   server.listen(port)
 
