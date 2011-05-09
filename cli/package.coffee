@@ -27,14 +27,23 @@ validate = (data) ->
       errors.join("\n");
     process.exit()
 
+#
+# Reads the package data out fo the given dreictory
+#
+exports.read = read = (directory) ->
+  data = require("fs").readFileSync("#{directory}/package.json")
+  data = JSON.parse(data.toString())
+
+  validate(data)
+
+  data
 
 #
 # Parsing the current package
 #
-data = require("fs").readFileSync("#{process.cwd()}/package.json")
-data = JSON.parse(data.toString())
+try
+  for key, value of read(process.cwd())
+    exports[key] = value
 
-validate data
-
-for key, value of data
-  exports[key] = value
+catch e
+  # file does not exists

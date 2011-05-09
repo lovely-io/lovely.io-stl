@@ -9,11 +9,12 @@ fs = require('fs')
 #
 # Builds the actual source code of the current project
 #
+# @param {String} package directory root
 # @return {String} raw source code
 #
-compile = ->
-  directory = process.cwd()
-  options   = require('./package')
+compile = (directory)->
+  directory or= process.cwd()
+  options   = require('./package').read(directory)
   source    = fs.readFileSync("#{directory}/main.js").toString()
 
   # inserting the related files
@@ -32,10 +33,11 @@ compile = ->
 #
 # Minifies the source code
 #
+# @param {String} package directory root
 # @return {String} minified source code
 #
-minify = ->
-  source = compile()
+minify = (directory)->
+  source = compile(directory)
   ugly   = require('uglify-js')
   build  = ugly.parser.parse(source)
 
