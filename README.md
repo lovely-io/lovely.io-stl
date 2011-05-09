@@ -22,14 +22,14 @@ Watch for the actual release :)
 
 You'll need `node`, `npm` and then install the following packages
 
-    npm install nake vows jshint uglify-js express zombie
+    npm install coffee-script vows jshint uglify-js express zombie
 
 After that just run one of those
 
-    nake build
-    nake test
-    nake test:spec
-    nake check
+    cake build
+    cake test
+    cake test:spec
+    cake check
 
 
 
