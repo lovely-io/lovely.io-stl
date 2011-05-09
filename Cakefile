@@ -23,7 +23,7 @@ task 'test', 'Run the tests', ->
 
 
 task 'test:spec', 'Run the tests with the specs output', ->
-    system 'vows stl/*/test/*/*_test.js --spec'
+  system 'vows stl/*/test/*/*_test.js --spec'
 
 
 task 'check', 'Checks the source code with JSHint', ->
