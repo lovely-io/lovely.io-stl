@@ -15,18 +15,28 @@ path = require('path')
 #
 compile = (directory)->
   directory or= process.cwd()
-  options   = require('./package').read(directory)
-  format    = path.existsSync("#{directory}/main.coffee")
-  format    = if format then 'coffee' else 'js'
-  source    = fs.readFileSync("#{directory}/main.#{format}").toString()
+
+  options = require('./package').read(directory)
+  format  = path.existsSync("#{directory}/main.coffee")
+  format  = if format then 'coffee' else 'js'
+  source  = fs.readFileSync("#{directory}/main.#{format}").toString()
 
   # inserting the related files
-  source = source.replace /(\n\s+)include[\(| ]+['"](.+?)['"][\)]*/mg, (m, spaces, filename) ->
-    spaces + fs.readFileSync("#{directory}/#{filename}.#{format}")
-    .toString().replace(/($|\n)/g, '$1  ') + "\n\n"
+  source = source.replace /(\n([ \t]*))include[\(| ]+['"](.+?)['"][\)]*/mg,
+    (m, start, spaces, filename) ->
+      start + fs.readFileSync("#{directory}/#{filename}.#{format}")
+      .toString().replace(/($|\n)/g, '$1'+spaces) + "\n\n"
 
   # converting coffee into javascript if needed
-  source = require('coffee-script').compile(source, {bare: true}) if format is 'coffee'
+  if format is 'coffee'
+    source = """
+    /**
+     * lovely.io '#{options.name}' module v#{options.version}
+     *
+     * Copyright (C) #{new Date().getFullYear()} #{options.author}
+     */
+    #{require('coffee-script').compile(source)}
+    """
 
   # adding the package options
   source = source.replace(/Lovely\s*\(\s*\[/, "Lovely('#{options.name}', [")
@@ -52,7 +62,7 @@ minify = (directory)->
   build  = ugly.uglify.gen_code(build)
 
   # copying the header over
-  source.match(/\/\*[\s\S]+?\*\/\s/m)[0] + build
+  (source.match(/\/\*[\s\S]+?\*\/\s/m) || [''])[0] + build
 
 
 #

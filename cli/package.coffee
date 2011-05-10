@@ -31,6 +31,8 @@ validate = (data) ->
 # Reads the package data out fo the given dreictory
 #
 exports.read = read = (directory) ->
+  directory or= process.cwd()
+
   data = require("fs").readFileSync("#{directory}/package.json")
   data = JSON.parse(data.toString())
 
@@ -42,7 +44,7 @@ exports.read = read = (directory) ->
 # Parsing the current package
 #
 try
-  for key, value of read(process.cwd())
+  for key, value of read()
     exports[key] = value
 
 catch e
