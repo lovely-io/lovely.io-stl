@@ -21,10 +21,13 @@ describe 'Class', module,
       assert.isFunction Klass.prototype.getName
       assert.isFunction Klass.prototype.setName
 
+    'should refer to the class with prototype.constructor': (Klass) ->
+      assert.same Klass.prototype.constructor, Klass
+
     'should not have anything besides those names': (Klass) ->
       assert.deepEqual(
         (key for key of Klass.prototype),
-        ['getName', 'setName', 'initialize']
+        ['constructor', '$super', 'getName', 'setName', 'initialize']
       )
 
     'should allow to make instances of it': (Klass) ->

@@ -17,6 +17,8 @@ Class = (parent, params, Klass) ->
   Super.prototype = parent.prototype
   Klass.prototype = new Super()
   Klass.__super__ = parent
+  Klass.prototype.constructor = Klass  # instances class self-reference
+  Klass.prototype.$super      = null   # predefining the property for quicker access
 
   # loading shared modules
   ext(Klass, Class)
