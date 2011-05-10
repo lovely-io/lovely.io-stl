@@ -4,11 +4,12 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 
-include('src/lovely')
-include('src/util')
-include('src/class')
-include('src/list')
-include('src/hash')
+include 'src/lovely'
+include 'src/util'
+include 'src/class'
+include 'src/list'
+include 'src/hash'
+include 'src/options'
 
 # exporting the globally visible objects
 this.Lovely = ext Lovely,
@@ -35,4 +36,5 @@ this.Lovely = ext Lovely,
   isObject:   isObject,
   Class:      Class,
   List:       List,
-  Hash:       Hash
+  Hash:       Hash,
+  Options:    Options
