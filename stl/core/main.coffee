@@ -9,6 +9,7 @@ include 'src/util'
 include 'src/class'
 include 'src/list'
 include 'src/hash'
+include 'src/events'
 include 'src/options'
 
 # exporting the globally visible objects
@@ -37,4 +38,5 @@ this.Lovely = ext Lovely,
   Class:      Class,
   List:       List,
   Hash:       Hash,
+  Events:     Events,
   Options:    Options
