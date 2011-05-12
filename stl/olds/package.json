@@ -1,7 +1,0 @@
-{
-  "name":        "olds",
-  "version":     "0.0.0",
-  "description": "The old browsers support patch for the standard 'dom' module",
-  "author":      "Nikolay Nemshilov",
-  "license":     "MIT"
-}
