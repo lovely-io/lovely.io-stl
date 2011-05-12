@@ -3,9 +3,11 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Lovely ->
-  ext   = Lovely.ext
-  Class = Lovely.Class
+Lovely [], ->
+  ext      = Lovely.ext
+  Class    = Lovely.Class
+  window   = this
+  document = this.document
 
   include 'src/browser'
   include 'src/wrapper'
