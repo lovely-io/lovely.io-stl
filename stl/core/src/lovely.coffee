@@ -86,10 +86,10 @@ Lovely = ->
 #
 find_host_url = ->
   scripts = document.getElementsByTagName('script')
-  re = /(.*?(^|\/))(left(\-src)?\.js)/
+  re = /(.*?(^|\/))(lovely.io(:\d{4})?\/core\.js)/
 
   for script in scripts
-    if re.test(match = script.getAttribute('src') || '')
-      return match[1]
+    if match = (script.getAttribute('src') || '').match(re)
+      return match[0].replace(/core\.js$/, '')
 
   Lovely.hostUrl

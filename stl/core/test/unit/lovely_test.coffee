@@ -113,8 +113,38 @@ server_respond
   });
   """
 
+  "/relocated.html": """
+  <html><head>
+    <script src="/lovely.io/core.js"></script>
+    <script>
+      Lovely(['module11', 'module12'], function(m1, m2) {
+        alert("Received: "+ m1);
+        alert("Received: "+ m2);
+        alert("Done!");
+      });
+    </script>
+  </head></html>
+  """
+
+  "/lovely.io/core.js": require('../../../../cli/source').compile(__dirname + "/../../")
+
+  "/lovely.io/module11.js": """
+  Lovely('module11', function() {
+    alert("Initializing: m11");
+    return "m11";
+  });
+  """
+
+  "/lovely.io/module12.js": """
+  Lovely('module12', function() {
+    alert("Initializing: m12");
+    return "m12";
+  });
+  """
+
 
 describe 'Lovely', module,
+
   'standard modules loading':
     topic: -> Browser.open('/load.html', this.callback)
 
@@ -163,3 +193,16 @@ describe 'Lovely', module,
         'Received: module8',
         'Done!'
       ].sort()
+
+  'different host location':
+    topic: -> Browser.open('/relocated.html', @callback)
+
+    "should still load everything properly": (browser) ->
+      assert.deepEqual browser.alerts, [
+        'Initializing: m11',
+        'Initializing: m12',
+        'Received: m11',
+        'Received: m12',
+        'Done!'
+      ]
+
