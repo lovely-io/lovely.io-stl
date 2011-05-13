@@ -29,13 +29,19 @@ compile = (directory)->
 
   # converting coffee into javascript if needed
   if format is 'coffee'
+    source = require('coffee-script').compile(source)
+
+    # fixing coffee's void(0) hack back to `undefined`
+    source = source.replace(/^\(function\(\)\s*\{/, '(function(undefined) {')
+    source = source.replace(/([^a-z0-9\_]+)void\s+0([^a-z0-9]+)/ig, '$1undefined$2')
+
     source = """
     /**
      * lovely.io '#{options.name}' module v#{options.version}
      *
      * Copyright (C) #{new Date().getFullYear()} #{options.author}
      */
-    #{require('coffee-script').compile(source)}
+    #{source}
     """
 
   # adding the package options
