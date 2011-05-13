@@ -5,7 +5,7 @@
 #
 Form = new Class Element,
 
-  initialize: (options) ->
+  constructor: (options) ->
     this.$super 'form', options
 
   send: (options) ->

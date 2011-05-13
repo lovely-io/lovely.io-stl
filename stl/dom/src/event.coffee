@@ -4,4 +4,4 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Event = new Class Wrapper,
-  initialize: (raw) ->
+  constructor: (raw) ->

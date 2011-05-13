@@ -16,7 +16,7 @@ Search = new Class Lovely.List,
       return this
 
 
-  initialize: (css_rule, context) ->
+  constructor: (css_rule, context) ->
     `context == null` && (context = document)
     context instanceof Wrapper && (context = context._)
 

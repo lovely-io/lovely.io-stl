@@ -3,22 +3,23 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Class = (parent, params, Klass) ->
-  if !isFunction(parent)
+Class = (parent, params) ->
+  unless isFunction(parent)
     params = parent
     parent = null
 
   params or= {}
-  parent or= Class # <- Class is the default parent!
-  Klass  or= -> this.initialize.apply(this, arguments)
+  Klass = ->
+  Klass = params.constructor if params.hasOwnProperty('constructor')
 
-  # handling the inheritance
-  Super = ->
-  Super.prototype = parent.prototype
-  Klass.prototype = new Super()
-  Klass.__super__ = parent
+  if parent # handling the inheritance
+    Super = ->
+    Super.prototype = parent.prototype
+    Klass.prototype = new Super()
+    Klass.__super__ = parent
+    Klass.prototype.$super = parent # parent constructor reference
+
   Klass.prototype.constructor = Klass  # instances class self-reference
-  Klass.prototype.$super      = null   # predefining the property for quicker access
 
   # loading shared modules
   ext(Klass, Class)
@@ -27,14 +28,11 @@ Class = (parent, params, Klass) ->
 
   delete(params.extend)
   delete(params.include)
+  delete(params.constructor)
 
   # loading the main properties
   Klass.include(params)
 
-  if !('initialize' of Klass.prototype)
-    Klass.prototype.initialize = ->
-
-  return Klass
 
 #
 # the class-level utils to manipulate class properties
@@ -57,8 +55,8 @@ ext Class,
       module or= {}
 
       for key of module
-        parent = this.__super__;
-        super_method = false;
+        parent = this.__super__
+        super_method = false
 
         while parent
           if key of parent.prototype
@@ -86,7 +84,7 @@ ext Class,
     return this
 
 
-# rewraps the supermethod when needed
+# preserves the supermethod reference when exists
 Class_make_method = (method, super_method) ->
   if super_method then ->
     this.$super = super_method

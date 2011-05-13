@@ -28,7 +28,7 @@ Wrapper = new Class
   # @param {mixed} raw dom-unit
   # @return {Wrapper} this
   #
-  initialize: (dom_unit) ->
+  constructor: (dom_unit) ->
     this._ = Wrapper.Cache[uid(dom_unit)] = dom_unit
 
     this

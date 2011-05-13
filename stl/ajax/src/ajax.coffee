@@ -9,4 +9,4 @@ Ajax = new Class
       method:   'post'
       encoding: 'utf8'
 
-  initialize: (url, options) ->
+  constructor: (url, options) ->

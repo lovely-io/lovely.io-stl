@@ -46,7 +46,7 @@ Hash = new Class
   # @param {Object} some object
   # @return void
   #
-  initialize: (object) ->
+  constructor: (object) ->
     this._ = object
     this
 

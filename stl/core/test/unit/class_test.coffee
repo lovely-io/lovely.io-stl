@@ -26,8 +26,8 @@ describe 'Class', module,
 
     'should not have anything besides those names': (Klass) ->
       assert.deepEqual(
-        (key for key of Klass.prototype),
-        ['constructor', '$super', 'getName', 'setName', 'initialize']
+        key for key of Klass.prototype,
+        ['getName', 'setName']
       )
 
     'should allow to make instances of it': (Klass) ->
@@ -42,7 +42,7 @@ describe 'Class', module,
 
   'new Class({initialize: ...})':
     topic: -> new Class
-      initialize: (a, b) ->
+      constructor: (a, b) ->
         this.name = a + '-' + b
         this
 
@@ -50,7 +50,7 @@ describe 'Class', module,
       assert.equal 'boo-hoo', new Klass('boo', 'hoo').name
 
     "should return the constructor's result if sent": ->
-      Klass = new Class initialize: -> ['some-other-data']
+      Klass = new Class constructor: -> ['some-other-data']
 
       assert.deepEqual new Klass(), ['some-other-data']
 
@@ -59,9 +59,10 @@ describe 'Class', module,
   'new Class':
     topic: ->
       this.ParentKlass = new Class
+        constructor: -> this.prop = this.method(); this
         method: (data) -> data || 'parent'
 
-    '(Parent)':
+    '\b(Parent)':
       topic: (Parent) -> new Class(Parent)
 
       "should refer '.__super__' to the parent class": (Klass) ->
@@ -71,7 +72,7 @@ describe 'Class', module,
         assert.same Klass.prototype.method, this.ParentKlass.prototype.method
 
 
-    '(Parent, {...})':
+    '\b(Parent, {...})':
       topic: (Parent) ->
         new Class Parent, method: -> 'child'
 
@@ -91,13 +92,33 @@ describe 'Class', module,
         assert.equal new Klass().method(), 'child'
 
 
-    '(Parent, {...}) and $super calls':
+    '\b(Parent, {...}) and $super calls':
       topic: (Parent) ->
         new Class Parent,
           method: -> this.$super('parent-data + ') + 'child-data'
 
       "should preform a proper super-call": (Klass) ->
         assert.equal new Klass().method(), 'parent-data + child-data'
+
+    '\b(Parent, {constructor: ->})':
+      topic: (Parent) ->
+        new Class Parent,
+          constructor: ->
+            this.prop = this.$super().prop + ' + constructor'
+            this
+
+          method: ->
+            this.$super() + ' + child'
+
+      "should still refer the constructor to the correct class": (Klass) ->
+        assert.same Klass.prototype.constructor, Klass
+
+      "should correctly refer the __super__ property": (Klass) ->
+        assert.same Klass.__super__, this.ParentKlass
+
+      "should call everything in correct scopes": (Klass) ->
+        klass = new Klass()
+        assert.equal klass.prop, 'parent + child + constructor'
 
 
 

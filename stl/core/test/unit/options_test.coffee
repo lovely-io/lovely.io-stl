@@ -14,17 +14,17 @@ Simple  = new Class
   include: Options
   extend:
     Options:
-      one:     'thing',
+      one:     'thing'
       another: 'one'
 
-  initialize: (options) ->
+  constructor: (options) ->
     this.setOptions options
 
 
 
 # a subclass options usage
 SubSimple = new Class Simple,
-  initialize: (options) ->
+  constructor: (options) ->
     this.$super(options)
 
 
@@ -34,12 +34,12 @@ Deep = new Class
   include: Options
   extend:
     Options:
-      one: 'thing',
+      one: 'thing'
       another:
-        one: 1,
+        one: 1
         two: 2
 
-  initialize: (options) ->
+  constructor: (options) ->
     this.setOptions options
 
 

@@ -4,4 +4,4 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 JSONP = new Class
-  initialize: () ->
+  constructor: () ->

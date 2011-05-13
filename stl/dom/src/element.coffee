@@ -14,7 +14,7 @@ Element = new Class Wrapper,
   # @param {Object} new element options
   # @return {Element} instance
   #
-  initialize: (element, options) ->
+  constructor: (element, options) ->
     element = make_element(element, options) if typeof(element) is 'string'
 
     # handling dynamic typecasting

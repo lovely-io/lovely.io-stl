@@ -22,15 +22,15 @@ assert.listEqual = (list, array) ->
 # just a dummy class to test calls-by-name
 Foo = new Lovely.Class
   value:      null
-  initialize: (v) -> this.value = v
-  getValue:   ( ) -> this.value
-  addValue:   (v) -> this.value += v
-  even:       ( ) -> this.value % 2 is 0
+  constructor: (v) -> this.value = v
+  getValue:    ( ) -> this.value
+  addValue:    (v) -> this.value += v
+  even:        ( ) -> this.value % 2 is 0
 
 
 # making a list of Foo stuff to test various things
 FooList = new Lovely.Class List,
-  initialize: ->
+  constructor: ->
     this.$super([
       new Foo(1)
       new Foo(2)

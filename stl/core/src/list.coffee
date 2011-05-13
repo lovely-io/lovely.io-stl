@@ -17,7 +17,7 @@ List = new Class Array,
   # @param {mixed} iterable list
   # @return void
   #
-  initialize: (items) ->
+  constructor: (items) ->
     Array_proto.splice.apply(this, [0,0].concat(A(items)))
     this
 
@@ -161,9 +161,7 @@ List_call = (method, list, args) ->
     call_args = A(args)
     attr_name = call_args.shift()
 
-    args = []
-
-    if `list[0] != null` && typeof(list[0][attr_name]) is 'function'
+    if list.length isnt 0 and typeof(list[0][attr_name]) is 'function'
       args = [ (item) -> item[attr_name].apply(item, call_args) ]
     else
       args = [ (item) -> item[attr_name] ]

@@ -4,5 +4,5 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Input = new Class Element,
-  initialize: (options) ->
+  constructor: (options) ->
     this.$super 'input', options
