@@ -4,7 +4,7 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Browser_agent = navigator.userAgent
-console.log(Browser_agent)
+
 Browser =
   IE:           'attachEvent' in document && !/Opera/.test(Browser_agent)
   Opera:        /Opera/.test(Browser_agent)
@@ -13,13 +13,14 @@ Browser =
   MobileSafari: /Apple.*Mobile.*Safari/.test(Browser_agent)
   Konqueror:    /Konqueror/.test(Browser_agent)
 
-  # an internal marker for browsers that needs to load the 'olds' patch
-  OLD:          !document.querySelector
 
+# a couple of internal markers to handle old browsers
+Browser_IS_OLD = !document.querySelector
+Browser_OLD_IE = false  # IE < 9
 
 try
   document.createElement('<input/>')
-  Browser.OLD = true
+  Browser_IS_OLD = Browser_OLD_IE = true
 
 catch e
   # all normal browsers, including IE9 will fall on that

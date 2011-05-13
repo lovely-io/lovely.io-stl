@@ -24,9 +24,6 @@ describe 'Browser', module,
   "With a dummy browser":
     topic: -> load_as('Dummy', @callback)
 
-    "should say 'false' for Browser.OLD": (Browser) ->
-      assert.isFalse Browser.OLD
-
     "should say it's not an IE": (Browser) ->
       assert.isFalse Browser.IE
 

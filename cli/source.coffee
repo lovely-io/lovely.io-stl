@@ -61,6 +61,9 @@ minify = (directory)->
   build  = ugly.uglify.ast_squeeze(build)
   build  = ugly.uglify.gen_code(build)
 
+  # TODO: fix coffee's `void(0)` hacks
+  # TODO: fix `== 'string'` fuckups of uglify
+
   # copying the header over
   (source.match(/\/\*[\s\S]+?\*\/\s/m) || [''])[0] + build
 

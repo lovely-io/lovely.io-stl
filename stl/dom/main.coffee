@@ -8,6 +8,7 @@ Lovely [], ->
   Class    = Lovely.Class
   window   = this
   document = this.document
+  HTML     = document.documentElement
 
   include 'src/browser'
   include 'src/wrapper'
@@ -39,12 +40,15 @@ Lovely [], ->
   # @return {Lovely.Search|Lovely.Wrapper} result
   #
   $ = (value, context) ->
+    return value if value is null
+
     switch typeof(value)
       when 'string'   then return new Search(value, context)
       when 'function' then return $(document).on('ready', value)
       when 'object'   then return wrap(value)
 
     return value
+
 
   # exporting the main classes
   ext $,
@@ -56,8 +60,5 @@ Lovely [], ->
     Window:   Window
     Event:    Event
     Search:   Search
-
-  # loading up the 'old' module to support the old browsers
-  Lovely(['old']) if Browser.OLD
 
   return $
