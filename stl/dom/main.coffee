@@ -4,7 +4,10 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Lovely ->
+  A        = Lovely.A
   ext      = Lovely.ext
+  trim     = Lovely.trim
+  bind     = Lovely.bind
   Class    = Lovely.Class
   window   = this
   document = this.document
@@ -12,9 +15,14 @@ Lovely ->
 
   include 'src/browser'
   include 'src/wrapper'
+  include 'src/window'
   include 'src/document'
   include 'src/element'
-  include 'src/window'
+  include 'src/element/events'
+  include 'src/element/styles'
+  include 'src/element/commons'
+  include 'src/element/dimensions'
+  include 'src/element/manipulation'
   include 'src/event'
   include 'src/search'
 
