@@ -4,8 +4,6 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Element = new Class Wrapper,
-  extend:
-    Wrappers: {} # custom dom-wrappers registry
 
   #
   # Basic constructor

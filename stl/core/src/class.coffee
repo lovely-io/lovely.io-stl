@@ -9,7 +9,7 @@ Class = (parent, params) ->
     parent = null
 
   params or= {}
-  Klass = ->
+  Klass = -> this.$super.apply(this, arguments) if this.$super
   Klass = params.constructor if params.hasOwnProperty('constructor')
 
   if parent # handling the inheritance
@@ -17,7 +17,9 @@ Class = (parent, params) ->
     Super.prototype = parent.prototype
     Klass.prototype = new Super()
     Klass.__super__ = parent
-    Klass.prototype.$super = parent # parent constructor reference
+    Klass.prototype.$super = ->
+      this.$super = parent.__super__
+      parent.apply(this, arguments)
 
   Klass.prototype.constructor = Klass  # instances class self-reference
 

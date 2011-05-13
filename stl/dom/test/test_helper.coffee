@@ -9,7 +9,11 @@ src =
   core: Source.compile(__dirname + "/../../core/")
   dom:  Source.compile(__dirname + "/../")
 
-global.assert   = require('assert')
+global.assert  = require('assert')
+
+assert.same    = assert.strictEqual
+assert.notSame = assert.notStrictEqual
+
 
 #
 # A simple shortcut over the Vows to make

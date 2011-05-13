@@ -16,8 +16,8 @@ Wrapper = new Class
     # @return {Wrapper} suitable wrapper or `undefined`
     #
     Cast: (element) ->
-      if element.tagName of Element.Wrappers
-        return Element.Wrappers[element.tagName]
+      if element.tagName of Wrapper
+        return Wrapper[element.tagName]
       else return undefined
 
   _: undefined,
