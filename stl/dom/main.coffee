@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Lovely [], ->
+Lovely ->
   ext      = Lovely.ext
   Class    = Lovely.Class
   window   = this

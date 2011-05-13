@@ -44,8 +44,9 @@ compile = (directory)->
     #{source}
     """
 
-  # adding the package options
-  source = source.replace(/Lovely\s*\(\s*\[/, "Lovely('#{options.name}', [")
+  # adding the package dependencies
+  source = source.replace /(Lovely\s*\(\s*)(function)/,
+    "$1'#{options.name}', [#{"'"+key+"'" for key of options.dependencies}], $2"
   source = source.replace('%{version}', options.version)
 
   # inlining the styles where available

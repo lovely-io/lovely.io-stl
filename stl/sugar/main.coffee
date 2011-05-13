@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Lovely ['dom', 'lang'], ($, lang) ->
+Lovely ($, lang) ->
 
   include 'src/element'
   include 'src/string'
