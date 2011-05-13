@@ -6,7 +6,7 @@
 Browser_agent = navigator.userAgent
 
 Browser =
-  IE:           'attachEvent' in document && !/Opera/.test(Browser_agent)
+  IE:           'attachEvent' of document && !/Opera/.test(Browser_agent)
   Opera:        /Opera/.test(Browser_agent)
   Gecko:        /Gecko/.test(Browser_agent) && !/KHTML/.test(Browser_agent)
   WebKit:       /AppleWebKit/.test(Browser_agent)

@@ -45,7 +45,7 @@ Wrapper = new Class
 wrap = (value) ->
   key = uid(value) # trying to use an existing wrapper
 
-  if key in Wrapper.Cache
+  if key of Wrapper.Cache
     return Wrapper.Cache[key]
   else if value.nodeType is 1
     return new Element(value)
@@ -77,7 +77,7 @@ uid = (node) ->
 
 
 # using IE's native 'uniqNumber' sequencer when available
-if 'uniqNumber' in HTML
+if 'uniqNumber' of HTML
   uid = (node) ->
     if node.nodeType is 1
       return node.uniqNumber

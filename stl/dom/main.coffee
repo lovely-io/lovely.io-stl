@@ -60,5 +60,3 @@ Lovely [], ->
     Window:   Window
     Event:    Event
     Search:   Search
-
-  return $
