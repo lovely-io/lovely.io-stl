@@ -46,9 +46,9 @@ Hash = new Class
   # @param {Object} some object
   # @return void
   #
-  constructor: (object) ->
-    this._ = object
-    this
+  constructor: `function Hash(object) {
+    this._ = object;
+  }`
 
   #
   # Returns the list of keys in the object
