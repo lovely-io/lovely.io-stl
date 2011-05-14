@@ -90,4 +90,90 @@ Element.include
   # @return {String|Object|Element} style, styles or self reference
   #
   style: (name, value) ->
-    # TODO me
+    if typeof(name) is 'string'
+      if name.indexOf(':') isnt -1 # setting style as a string
+        return @style(Element_parse_style(name))
+
+      else if name.indexOf(' ') isnt -1 # reading multiple styles
+        return Element_read_styles(this, name)
+
+      else if value is undefined # reading a single style
+        return Element_clean_style(@_.style, name) or
+          Element_clean_style(Element_computed_styles(@_), name)
+
+      else # setting a style
+        if name is 'float'
+          name = if Browser_OLD_IE then 'styleFloat' else 'cssFloat'
+        else
+          name = camelize(name)
+
+        if name is 'opacity' and BROWSER_IE_OPACITY
+          @_.style.filter = "alpha(opacity=#{value * 100})"
+        else
+          @_.style[name] = value
+
+    else # assuming it's a hash to set
+      for value of name
+        @style value, name[value]
+
+    return @
+
+
+# private
+
+# reads specified element styles into a hash
+Element_read_styles = (element, names) ->
+  hash = {}
+
+  for name in names.split(/\s+/)
+    name = camelize(name)
+    hash[name] = element.style(name)
+
+  hash
+
+
+# parses a string style into a hash of styles
+Element_parse_style = (style) ->
+  hash = {}
+
+  for chunk in style.split(';')
+    unless /^\s+$/.test(chunk)
+      [name, value] = chunk.split(':')
+      hash[trim(name)] = trim(value)
+
+  hash
+
+
+# creates a clean version of a style value
+Element_clean_style = (style, name) ->
+  name = camelize(name)
+
+  if name is 'opacity'
+    return if BROWSER_IE_OPACITY then (
+      (/opacity=(\d+)/i.exec(style.filter || '') ||
+      ['', '100'])[1] / 100
+    )+'' else style[name].replace(',', '.')
+
+  else if name is 'float'
+    name = if Browser_OLD_IE then 'styleFloat' else 'cssFloat'
+
+  value = style[name]
+
+  # Opera returns named colors with quotes
+  value = value.replace(/"/g, '') if /color/i.test(name) && value
+
+  value
+
+
+# finding computed styles of a dom-element
+if 'currentStyle' of HTML
+  Element_computed_styles = (element) ->
+    element.computedStyle || {}
+else if 'runtimeStyle' of HTML
+  Element_computed_styles = (element) ->
+    element.runtimeStyle || {}
+else
+  Element_computed_styles = (element) ->
+    element.ownerDocument.defaultView.getComputedStyle(element, null)
+
+

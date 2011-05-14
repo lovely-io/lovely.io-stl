@@ -24,3 +24,12 @@ try
 
 catch e
   # all normal browsers, including IE9 will fall on that
+
+BROWSER_IE_OPACITY = !('opacity' of HTML.style) && 'filter' of HTML.style
+
+
+# camelizes dashed strings
+camelize = (string) ->
+  if string.indexOf('-') is -1 then string
+  else string.replace /\-([a-z])/g, (match, letter) ->
+    letter.toUpperCase()

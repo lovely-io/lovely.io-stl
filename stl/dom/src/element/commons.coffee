@@ -39,6 +39,9 @@ Element.include
         @_.removeAttribute(name)
         delete @_[name]
 
+      else if name is 'style' # bypassing the styles into the #style method
+        @style value
+
       else # setting an attribute
         element = @_
         element.setAttribute(name, value) unless name of element

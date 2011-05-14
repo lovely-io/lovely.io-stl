@@ -27,7 +27,7 @@ Element = new Class Wrapper,
           when 'id'    then this._.id        = options[key]
           when 'html'  then this._.innerHTML = options[key]
           when 'class' then this._.className = options[key]
-          when 'css'   then this.css           options[key]
+          when 'style' then this.style         options[key]
           when 'on'    then this.on            options[key]
           else              this.attr     key, options[key]
 
