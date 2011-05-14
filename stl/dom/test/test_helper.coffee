@@ -57,11 +57,49 @@ global.server = server
 # @param {Object} routes and responses
 # @return {undefined}
 #
-global.server_respond = (defs) ->
+global.server.respond = (defs) ->
   for route, response of defs
     do (route, response) ->
       server.get route, (req, resp) ->
         resp.send(response)
+
+#
+# A helper method to load stuff into
+# the browser and then access it from a test
+#
+# @param {String} url address
+# @param {Vows} test erference
+# @param {Function} optional callback
+# @return void
+#
+global.load = (url, test, callback)->
+  Browser.open url, (err, browser) ->
+    test.browser  = browser
+    test.window   = browser.window
+    test.document = browser.document
+    test.Lovely   = browser.window.Lovely
+    test.dom      = test.Lovely.modules.dom
+    test.Wrapper  = test.dom.Wrapper
+    test.Element  = test.dom.Element
+    test.Document = test.dom.Document
+    test.Window   = test.dom.Window
+    test.Event    = test.dom.Event
+
+    test.callback(err, if callback then callback.call(test, test.dom) else test.dom)
+
+#
+# Another shortcut. Loads up the url, finds
+# and element with the specified 'id' and wraps
+# it into the dom.Element object
+#
+# @param {String} url address
+# @param {Vows} test reference
+# @param {String} element's ID
+# @return void
+#
+global.load_element = (url, test, id) ->
+  load url, test, (dom)->
+    new dom.Element(this.document.getElementById(id))
 
 # a global zombie-browser reference
 global.Browser = require('zombie').Browser

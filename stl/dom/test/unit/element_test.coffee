@@ -5,17 +5,15 @@
 #
 require '../test_helper'
 
-load = (vow, callback) ->
-  Browser.open "/test.html", (err, browser) ->
-    vow.browser = browser
-    vow.Lovely  = browser.window.Lovely
-    vow.Wrapper = vow.Lovely.modules.dom.Wrapper
-    vow.Element = vow.Lovely.modules.dom.Element
-    vow.callback(err, if callback then callback.call(vow, vow.Element) else vow.Element)
+load_Element = (test, callback) ->
+  load "/test.html", test, (dom) ->
+    if callback then callback.call(test, dom.Element)
+    else dom.Element
+
 
 describe 'Element', module,
   "direct instance":
-    topic: -> load(this)
+    topic: -> load_Element(this)
 
     "should allow to create new elements": (Element) ->
       element = new Element('div')
@@ -38,7 +36,7 @@ describe 'Element', module,
 
 
   "inheritance usage":
-    topic: -> load this, (Element) ->
+    topic: -> load_Element this, (Element) ->
       new this.Lovely.Class Element,
         constructor: (tag, id, html) ->
           this.$super(tag, id: id, html: html)
@@ -61,7 +59,7 @@ describe 'Element', module,
       assert.equal element._.innerHTML, 'my-html'
 
   "dynamic typecasting":
-    topic: -> load this, (Element) ->
+    topic: -> load_Element this, (Element) ->
       this.Wrapper.TABLE = new this.Lovely.Class Element,
         constructor: (one, two) ->
           this.$super(one, two)

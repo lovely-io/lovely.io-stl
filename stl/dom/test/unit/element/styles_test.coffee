@@ -5,9 +5,7 @@
 #
 require '../../test_helper'
 
-server.get '/styles.html', (req, resp) ->
-  resp.send """
-  <!DOCTYPE html>
+server.respond '/styles.html': """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -25,28 +23,21 @@ server.get '/styles.html', (req, resp) ->
   </html>
   """
 
-load = (vow, callback) ->
-  Browser.open "/styles.html", (err, browser) ->
-    vow.browser = browser
-    vow.Lovely  = browser.window.Lovely
-    vow.Wrapper = vow.Lovely.modules.dom.Wrapper
-    vow.Element = vow.Lovely.modules.dom.Element
-    vow.callback(err, if callback then callback.call(vow, vow.Element) else vow.Element)
+get_element = (test) ->
+  load "/styles.html", test, (dom)->
+    # HACK: hacking the zombie over due to an issue with computed styles in there
+    this.document.defaultView.getComputedStyle = (element) ->
+      color: '#884422', backgroundColor: '#224488'
+
+    new dom.Element(this.document.getElementById('test'))
+
 
 describe "Element Styles", module,
 
   "#style":
-    topic: -> load this, (Element)->
-      element = this.browser.document.getElementById('test')
-
-      # HACK: hacking the zombie over due to an issue with computed styles in there
-      this.browser.document.defaultView.getComputedStyle = (element) ->
-        color: '#884422', backgroundColor: '#224488'
-
-      new Element(element)
 
     "\b('name')":
-      topic: (element) -> element
+      topic: -> get_element(this)
 
       "should read computed styles by name": (element) ->
         assert.equal element.style('color'), '#884422'
@@ -66,7 +57,7 @@ describe "Element Styles", module,
         assert.equal element.style('float'), 'right'
 
     "\b('name1 name2...')":
-      topic: (element) -> element
+      topic: -> get_element(this)
 
       "should read several styles into a hash": (element) ->
         element.style margin: '22px', padding: '23px'
@@ -82,7 +73,7 @@ describe "Element Styles", module,
 
 
     "\b('name', 'value')":
-      topic: (element) -> element
+      topic: -> get_element(this)
 
       "should allow to set the styles": (element) ->
         element.style('margin', '10px')
@@ -104,7 +95,7 @@ describe "Element Styles", module,
         assert.equal element._.style.cssFloat, 'left'
 
     "\b(name1: 'value1', name2: 'value2')":
-      topic: (element) -> element
+      topic: -> get_element(this)
 
       "should set all the styles from a hash": (element) ->
         element.style
@@ -123,7 +114,7 @@ describe "Element Styles", module,
         assert.same element.style(margin: '20px'), element
 
     "\b('name1:value1; name2:value2')":
-      topic: (element) -> element
+      topic: -> get_element(this)
 
       "should parse all the styles out of the string": (element) ->
         element.style 'margin: 30px; padding-right: 20px; '

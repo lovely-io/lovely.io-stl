@@ -5,8 +5,7 @@
 #
 require '../../test_helper'
 
-server.get "/commons.html", (req, resp) ->
-  resp.send """
+server.respond "/commons.html": """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -18,22 +17,15 @@ server.get "/commons.html", (req, resp) ->
   </html>
   """
 
-load = (vow, callback) ->
-  Browser.open "/commons.html", (err, browser) ->
-    vow.browser = browser
-    vow.Lovely  = browser.window.Lovely
-    vow.Wrapper = vow.Lovely.modules.dom.Wrapper
-    vow.Element = vow.Lovely.modules.dom.Element
-    vow.callback(err, if callback then callback.call(vow, vow.Element) else vow.Element)
+get_element = (test)->
+  load_element("/commons.html", test, 'test-attr')
 
 
 describe 'Element Commons', module,
   "#attr":
-    topic: -> load this, (Element)->
-      new Element(this.browser.document.getElementById('test-attr'))
 
     "\b('name')":
-      topic: (element) -> element
+      topic: -> get_element(this)
 
       "should read a property attribute": (element) ->
         assert.equal element.attr('id'), 'test-attr'
@@ -46,7 +38,7 @@ describe 'Element Commons', module,
 
 
     "\b('name', 'value')":
-      topic: (element) -> element
+      topic: -> get_element(this)
 
       "should return the element back": (element) ->
         assert.same element.attr('title', 'text'), element
@@ -61,7 +53,7 @@ describe 'Element Commons', module,
 
 
     "\b({name: 'value'})":
-      topic: (element) -> element
+      topic: -> get_element(this)
 
       "should return the element back afterwards": (element) ->
         assert.same element.attr(smth: 'value'), element
@@ -76,7 +68,7 @@ describe 'Element Commons', module,
 
 
     "\b('name', null)":
-      topic: (element) -> element
+      topic: -> get_element(this)
 
       "should remove the attribute": (element) ->
         element.attr('something', 'something')
