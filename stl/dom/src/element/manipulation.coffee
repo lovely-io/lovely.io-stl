@@ -96,6 +96,7 @@ Element.include
   #
   insert: (content, position) ->
     # TODO me
+    @
 
   #
   # Inserts this element into the given one at given position
@@ -105,4 +106,6 @@ Element.include
   # @return {Element} this
   #
   insertTo: (element, position) ->
+    element.appendChild @_
     # TODO me
+    @

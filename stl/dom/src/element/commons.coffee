@@ -59,7 +59,7 @@ Element.include
   # @return {Boolean} check result
   #
   hidden: ->
-    this.style('display') is 'none'
+    @style('display') is 'none'
 
   #
   # Checks if the element is visible
@@ -67,47 +67,55 @@ Element.include
   # @return {Boolean} check result
   #
   visible: ->
-    !this.hidden()
+    !@hidden()
 
   #
   # Hides an element (optionally with fx)
   #
-  # @param {String} optional fx-name
-  # @param {Object} fx-options
   # @return {Element} this
   #
-  hide: (fx_name, fx_options) ->
-    # TODO me
+  hide: ->
+    if @visible()
+      @_old_display = @style('display')
+      @_.style.display = 'none'
+
+    return @
 
   #
   # Shows an element (optionally with fx)
   #
-  # @param {String} optional fx-name
-  # @param {Object} fx-options
   # @return {Element} this
   #
-  show: (fx_name, fx_options) ->
-    # TODO me
+  show: ->
+    if @hidden()
+      element = @_
+      value   = @_old_display
+
+      if !value || value is 'none'
+        dummy = new Element(element.tagName).insertTo(HTML)
+        value = dummy.style('display') || 'none'
+        dummy.remove()
+
+      element.style.display = if value is 'none' then 'block' else value
+
+    return @
 
   #
   # Toggles an element's visual state (optionally with fx)
   #
-  # @param {String} optional fx-name
-  # @param {Object} fx-options
   # @return {Element} this
   #
-  toggle: (fx_name, fx_options) ->
-    # TODO me
+  toggle: ->
+    if @hidden() then @show() else @hide()
 
   #
   # hides all the sibling elements and shows this one (optionally with fx)
   #
-  # @param {String} optional fx-name
-  # @param {Object} fx-options
   # @return {Element} this
   #
-  radio: (fx_name, fx_options) ->
-    # TODO me
+  radio: ->
+    @siblings().each('hide')
+    @show()
 
   #
   # Returns the element's owner document reference
@@ -115,7 +123,7 @@ Element.include
   # @return {Document} wrapped owner document
   #
   document: ->
-    wrap this._.ownerDocument
+    wrap @_.ownerDocument
 
   #
   # Returns the element's owner window reference
@@ -124,4 +132,4 @@ Element.include
   #
   #
   window: ->
-    this.document().window()
+    @document().window()

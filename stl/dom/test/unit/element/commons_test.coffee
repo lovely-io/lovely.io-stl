@@ -12,23 +12,23 @@ server.respond "/commons.html": """
       <script src="/dom.js"></script>
     </head>
     <body>
-      <div id="test-attr" data-test="test"></div>
+      <div id="test" data-test="test"></div>
     </body>
   </html>
   """
 
-get_element = (test)->
-  load_element("/commons.html", test, 'test-attr')
+get_element = ->
+  load_element("/commons.html", this, 'test')
 
 
 describe 'Element Commons', module,
   "#attr":
 
     "\b('name')":
-      topic: -> get_element(this)
+      topic: get_element
 
       "should read a property attribute": (element) ->
-        assert.equal element.attr('id'), 'test-attr'
+        assert.equal element.attr('id'), 'test'
 
       "should read the 'data-test' attribute": (element) ->
         assert.equal element.attr('data-test'), 'test'
@@ -38,7 +38,7 @@ describe 'Element Commons', module,
 
 
     "\b('name', 'value')":
-      topic: -> get_element(this)
+      topic: get_element
 
       "should return the element back": (element) ->
         assert.same element.attr('title', 'text'), element
@@ -53,7 +53,7 @@ describe 'Element Commons', module,
 
 
     "\b({name: 'value'})":
-      topic: -> get_element(this)
+      topic: get_element
 
       "should return the element back afterwards": (element) ->
         assert.same element.attr(smth: 'value'), element
@@ -68,7 +68,7 @@ describe 'Element Commons', module,
 
 
     "\b('name', null)":
-      topic: -> get_element(this)
+      topic: get_element
 
       "should remove the attribute": (element) ->
         element.attr('something', 'something')
@@ -76,3 +76,74 @@ describe 'Element Commons', module,
 
         element.attr('something', null)
         assert.isNull element.attr('something')
+
+
+  "#hidden()":
+    topic: get_element
+
+    "should say 'true' when the element is hidden": (element)->
+      element._.style.display = 'none'
+      assert.isTrue element.hidden()
+
+    "should say 'false' when the element is visible": (element)->
+      element._.style.display = 'block'
+      assert.isFalse element.hidden()
+
+  "#visible()":
+    topic: get_element
+
+    "should say 'false' when the element is hidden": (element)->
+      element._.style.display = 'none'
+      assert.isFalse element.visible()
+
+    "should say 'true' when the element is visible": (element)->
+      element._.style.display = 'block'
+      assert.isTrue element.visible()
+
+  "#hide()":
+    topic: get_element
+
+    "should hide the element when it is visible": (element)->
+      element._.style.display = 'block'
+      element.hide()
+      assert.equal element._.style.display, 'none'
+
+    "should leave element hidden when it is not visible": (element)->
+      element._.style.display = 'none'
+      element.hide()
+      assert.equal element._.style.display, 'none'
+
+    "should return the element reference back": (element)->
+      assert.same element.hide(), element
+
+  "#show()":
+    topic: get_element
+
+    "should show an element if it's hidden": (element)->
+      element._.style.display = 'none'
+      element.show()
+      assert.equal element._.style.display, 'block'
+
+    "should leave a visible element visible": (element)->
+      element._.style.display = 'inline'
+      element.show()
+      assert.equal element._.style.display, 'inline'
+
+    "should return the element reference back": (element)->
+      assert.same element.show(), element
+
+  "#toggle()":
+    topic: get_element
+
+    "should show an element if it is hidden": (element)->
+      element._.style.display = 'none'
+      element.toggle()
+      assert.equal element._.style.display, 'block'
+
+    "should hide an element if it's visible": (element)->
+      element._.style.display = 'block'
+      element.toggle()
+      assert.equal element._.style.display, 'none'
+
+    "should return back a reference to the element": (element)->
+      assert.same element.toggle(), element
