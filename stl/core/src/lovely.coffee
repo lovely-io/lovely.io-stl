@@ -62,7 +62,7 @@ Lovely = ->
       if module of Lovely.modules
         packages.push(Lovely.modules[module])
       else if new Date() < deadline
-        return setTimeout(arguments.callee, 20)
+        return setTimeout(arguments.callee, 50)
       else
         return undefined # giving up on unreachable module
 

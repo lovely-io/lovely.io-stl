@@ -14,10 +14,10 @@ Element.include
   # The basic attributes handling method
   #
   # USAGE:
-  #     element.attr('name')              // -> getting attribute
-  #     element.attr('name', 'value')     // -> setting attribute
-  #     element.attr('name', undefined)   // -> removing attribute
-  #     element.attr('name') is undefined // -> checking attribute
+  #     element.attr('name')          // -> getting attribute
+  #     element.attr('name', 'value') // -> setting attribute
+  #     element.attr('name', null)    // -> removing attribute
+  #     element.attr('name') is null  // -> checking attribute
   #
   #     element.attr
   #       name1: 'value1'
@@ -29,7 +29,26 @@ Element.include
   # @return {String|Element} attribute value or element reference
   #
   attr: (name, value) ->
-    # TODO me
+    if typeof(name) is 'string'
+
+      if value is undefined # reading an attribute
+        value = @_[name] || @_.getAttribute(name)
+        return if value is '' then null else value
+
+      else if value is null # erazing an attribute
+        @_.removeAttribute(name)
+        delete @_[name]
+
+      else # setting an attribute
+        element = @_
+        element.setAttribute(name, value) unless name of element
+        element[name] = value
+
+    else # assuming it's a hash to set
+      for value of name
+        @attr(value, name[value])
+
+    return @
 
   #
   # Checks if the element is hidden

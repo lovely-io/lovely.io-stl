@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Element.insert
+Element.include
 
   #
   # Clones the element with all it's content
