@@ -12,18 +12,23 @@ Element.include
   #     element.size()             // -> x: NNN, y: NNN
   #     element.size(x:NNN, y:NNN) // -> element self
   #     element.size(x:NNN)        // -> element self
+  #     element.size(x, y)         // -> element self
+  #     element.size(null, y)      // -> element self
+  #     element.size(x, null)      // -> element self
   #
   # NOTE: this method will adjust the element size
   #       accordingly to provide the given size regardless
   #       to the paddings and internal element margins
   #
-  # @param {Object} size x:NNN, y:NNN in case of setting
+  # @param {Object|Number} size x:NNN, y:NNN or NNN for an x-size
+  # @param {Number} y-size in case of a two numbers call
   # @return {Element|Object} this element or it's size
   #
   size: (size) ->
     if size is undefined
       return x: this._.offsetWidth, y: this._.offsetHeight
     else
+      size  = Element_dimentions_hash(arguments)
       style = this._.style
 
       if 'x' of size
@@ -43,14 +48,19 @@ Element.include
   #     element.scrolls()             // -> x: NNN, y: NNN
   #     element.scrolls(x:NNN, y:NNN) // -> element self
   #     element.scrolls(x:NNN)        // -> element self
+  #     element.scrolls(x, y)         // -> element self
+  #     element.scrolls(x, null)      // -> element self
+  #     element.scrolls(null, y)      // -> element self
   #
-  # @param {Object} size x:NNN, y:NNN in case of setting
+  # @param {Object|Number} size x:NNN, y:NNN or NNN in case of setting
+  # @param {Number} y-scrolls in case of a two numbers call
   # @return {Element|Object} this element or the scrolling positions
   #
   scrolls: (scrolls) ->
     if scrolls is undefined
       return x: this._.scrollLeft, y: this._.scrollTop
     else
+      scrolls = Element_dimentions_hash(arguments)
       this._.scrollLeft = scrolls.x if 'x' of scrolls
       this._.scrollTop  = scrolls.y if 'y' of scrolls
       return this
@@ -62,8 +72,12 @@ Element.include
   #     element.position()             // -> x: NNN, y:NNN
   #     element.position(x:NNN, y:NNN) // -> element self
   #     element.position(x:NNN)        // -> element self
+  #     element.position(x, y)         // -> element self
+  #     element.position(x, null)      // -> element self
+  #     element.position(null, y)      // -> element self
   #
-  # @param {Object} absolute position x:NNN, y:NNN
+  # @param {Object|Number} absolute position x:NNN, y:NNN or NNN x-position
+  # @param {Number} y-position in case of a two numbers call
   # @return {Element|Object} this element of it's absolute position
   #
   position: (position) ->
@@ -77,18 +91,21 @@ Element.include
         y: rect.top  + scrolls.y - html.clientTop }
 
     else
+      position = Element_dimentions_hash(arguments)
       # TODO: implement me
       return this
 
   #
   # Checks if current element overlaps with the target position
   #
-  # @param {Object} x:NNN, y:NNN position
+  # @param {Object|Number} x:NNN, y:NNN position or NNN x-position
+  # @param {Number} y-position in case of a two numbers call
   # @return {Boolean} check result
   #
   overlaps: (target) ->
-    pos  = this.position()
-    size = this.size()
+    pos    = this.position()
+    size   = this.size()
+    target = Element_dimentions_hash(arguments)
 
     target.x >= pos.x and target.x <= (pos.x + size.x) and
     target.y >= pos.y and target.y <= (pos.y + size.y)
@@ -109,3 +126,17 @@ Element.include
       node = node.previousSibling
 
     index
+
+# private
+
+# converts arguments into a standard x-y hash
+Element_dimentions_hash = (args) ->
+  hash = {}
+
+  if args.length is 1
+    hash = args[0]
+  else
+    hash.x = args[0] unless args[0] is null
+    hash.y = args[1] unless args[1] is null
+
+  hash
