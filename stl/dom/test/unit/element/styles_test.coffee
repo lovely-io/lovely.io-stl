@@ -24,20 +24,19 @@ server.respond '/styles.html': """
   """
 
 get_element = (test) ->
-  load "/styles.html", test, (dom)->
+  load "/styles.html", this, (dom)->
     # HACK: hacking the zombie over due to an issue with computed styles in there
     this.document.defaultView.getComputedStyle = (element) ->
       color: '#884422', backgroundColor: '#224488'
 
     new dom.Element(this.document.getElementById('test'))
 
-
 describe "Element Styles", module,
 
   "#style":
 
     "\b('name')":
-      topic: -> get_element(this)
+      topic: get_element
 
       "should read computed styles by name": (element) ->
         assert.equal element.style('color'), '#884422'
@@ -57,7 +56,7 @@ describe "Element Styles", module,
         assert.equal element.style('float'), 'right'
 
     "\b('name1 name2...')":
-      topic: -> get_element(this)
+      topic: get_element
 
       "should read several styles into a hash": (element) ->
         element.style margin: '22px', padding: '23px'
@@ -73,7 +72,7 @@ describe "Element Styles", module,
 
 
     "\b('name', 'value')":
-      topic: -> get_element(this)
+      topic: get_element
 
       "should allow to set the styles": (element) ->
         element.style('margin', '10px')
@@ -95,7 +94,7 @@ describe "Element Styles", module,
         assert.equal element._.style.cssFloat, 'left'
 
     "\b(name1: 'value1', name2: 'value2')":
-      topic: -> get_element(this)
+      topic: get_element
 
       "should set all the styles from a hash": (element) ->
         element.style
@@ -114,7 +113,7 @@ describe "Element Styles", module,
         assert.same element.style(margin: '20px'), element
 
     "\b('name1:value1; name2:value2')":
-      topic: -> get_element(this)
+      topic: get_element
 
       "should parse all the styles out of the string": (element) ->
         element.style 'margin: 30px; padding-right: 20px; '
@@ -125,3 +124,70 @@ describe "Element Styles", module,
       "should return the element reference back": (element) ->
         assert.same element.style('margin:8px'), element
 
+
+
+  "#getClass()":
+    topic: get_element
+
+    "should return the element's className property": (element)->
+      element._.className = 'test1 test2'
+      assert.equal element.getClass(), 'test1 test2'
+
+  "#setClass('name')":
+    topic: get_element
+
+    "should set the entire 'className' property": (element)->
+      element.setClass('test3 test4')
+      assert.equal element._.className, 'test3 test4'
+
+    "should return the element back": (element) ->
+      assert.same element.setClass('one two'), element
+
+  "#addClass('name')":
+    topic: get_element
+
+    "should add a class name to the list": (element) ->
+      element._.className = 'one two'
+      element.addClass('three')
+      assert.equal element._.className, 'one two three'
+
+    "should not duplicate existing classes": (element) ->
+      element._.className = 'one two three'
+      element.addClass('two')
+      assert.equal element._.className, 'one two three'
+
+    "should return the element itself back": (element) ->
+      assert.same element.addClass('boo'), element
+
+  "#removeClass('name')":
+    topic: get_element
+
+    "should remove classes from the list": (element)->
+      element._.className = 'one two three'
+      element.removeClass('two')
+      assert.equal element._.className, 'one three'
+
+    "should not leave trailing spaces": (element)->
+      element._.className = 'one two three'
+      element.removeClass 'one'
+      element.removeClass 'three'
+      assert.equal element._.className, 'two'
+
+    "should return the element itself back": (element)->
+      assert.same element.removeClass('boo'), element
+
+  "#toggleClass('name')":
+    topic: get_element
+
+    "should add a class name when it is not on the list": (element)->
+      element._.className = 'one'
+      element.toggleClass 'two'
+      assert.equal element._.className, 'one two'
+
+    "should remove class when it is on the list": (element) ->
+      element._.className = 'one two'
+      element.toggleClass 'two'
+      assert.equal element._.className, 'one'
+
+    "should return reference to the element back": (element)->
+      assert.same element.toggleClass('boo'), element
