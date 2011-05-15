@@ -33,3 +33,15 @@ camelize = (string) ->
   if string.indexOf('-') is -1 then string
   else string.replace /\-([a-z])/g, (match, letter) ->
     letter.toUpperCase()
+
+# converts arguments into a standard x:NNN, y: NNN hash
+dimensions_hash = (args) ->
+  hash = {}
+
+  if args.length is 1
+    hash = args[0]
+  else
+    hash.x = args[0] unless args[0] is null
+    hash.y = args[1] unless args[1] is null
+
+  hash

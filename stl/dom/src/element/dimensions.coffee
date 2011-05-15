@@ -28,16 +28,16 @@ Element.include
     if size is undefined
       return x: this._.offsetWidth, y: this._.offsetHeight
     else
-      size  = Element_dimentions_hash(arguments)
+      size  = dimensions_hash(arguments)
       style = this._.style
 
       if 'x' of size
         style.width = size.x + 'px'
-        style.width = 2 * size.x + this._.offsetWidth + 'px'
+        style.width = 2 * size.x - this._.offsetWidth + 'px'
 
       if 'y' of size
         style.height = size.y + 'px'
-        style.height = 2 * size.y + this._.offsetHeight + 'px'
+        style.height = 2 * size.y - this._.offsetHeight + 'px'
 
       return this
 
@@ -60,7 +60,7 @@ Element.include
     if scrolls is undefined
       return x: this._.scrollLeft, y: this._.scrollTop
     else
-      scrolls = Element_dimentions_hash(arguments)
+      scrolls = dimensions_hash(arguments)
       this._.scrollLeft = scrolls.x if 'x' of scrolls
       this._.scrollTop  = scrolls.y if 'y' of scrolls
       return this
@@ -91,7 +91,7 @@ Element.include
         y: rect.top  + scrolls.y - html.clientTop }
 
     else
-      position = Element_dimentions_hash(arguments)
+      position = dimensions_hash(arguments)
       # TODO: implement me
       return this
 
@@ -105,7 +105,7 @@ Element.include
   overlaps: (target) ->
     pos    = this.position()
     size   = this.size()
-    target = Element_dimentions_hash(arguments)
+    target = dimensions_hash(arguments)
 
     target.x >= pos.x and target.x <= (pos.x + size.x) and
     target.y >= pos.y and target.y <= (pos.y + size.y)
@@ -126,17 +126,3 @@ Element.include
       node = node.previousSibling
 
     index
-
-# private
-
-# converts arguments into a standard x-y hash
-Element_dimentions_hash = (args) ->
-  hash = {}
-
-  if args.length is 1
-    hash = args[0]
-  else
-    hash.x = args[0] unless args[0] is null
-    hash.y = args[1] unless args[1] is null
-
-  hash
