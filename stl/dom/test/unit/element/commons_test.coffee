@@ -147,3 +147,25 @@ describe 'Element Commons', module,
 
     "should return back a reference to the element": (element)->
       assert.same element.toggle(), element
+
+
+  "#document()":
+    topic: get_element
+
+    "should return the owner document wrapper": (element)->
+      document = element.document()
+
+      assert.instanceOf document, this.Document
+      assert.same       document._, this.document
+
+    "should return the same wrapper all the time": (element)->
+      assert.same element.document(), element.document()
+
+  "#window()":
+    topic: get_element
+
+    "should return the owner window wrapper": (element)->
+      window = element.window()
+
+      assert.instanceOf window,   this.Window
+      assert.same       window._, this.window

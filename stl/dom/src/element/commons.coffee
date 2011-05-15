@@ -133,3 +133,4 @@ Element.include
   #
   window: ->
     @document().window()
+
