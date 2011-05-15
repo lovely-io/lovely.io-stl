@@ -53,7 +53,7 @@ wrap = (value) ->
     return new Event(value)
   else if value.nodeType is 9
     return new Document(value)
-  else if `value.window == window`
+  else if `value.window == value`
     return new Window(value)
 
 
