@@ -29,9 +29,8 @@ Wrapper = new Class
   # @return {Wrapper} this
   #
   constructor: (dom_unit) ->
-    this._ = Wrapper.Cache[uid(dom_unit)] = dom_unit
-
-    this
+    this._ = dom_unit
+    Wrapper.Cache[uid(dom_unit)] = this
 
 
 # private
@@ -55,7 +54,6 @@ wrap = (value) ->
     return new Document(value)
   else if `value.window == value`
     return new Window(value)
-
 
 
 # using a random UID_KEY so we didn't interfere with

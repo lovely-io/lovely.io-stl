@@ -24,7 +24,6 @@ describe "Document", module,
     topic: load_document
 
     "should return the owner window wrapper": (document)->
-      console.log document._.defaultView == this.window
       window = document.window()
 
       assert.instanceOf window, this.Window

@@ -68,3 +68,4 @@ Lovely ->
     Window:   Window
     Event:    Event
     Search:   Search
+    eval:     global_eval

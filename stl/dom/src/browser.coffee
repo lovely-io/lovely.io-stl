@@ -45,3 +45,21 @@ dimensions_hash = (args) ->
     hash.y = args[1] unless args[1] is null
 
   hash
+
+
+# extracts and evals scripts out of the content string
+extract_scripts = (content) ->
+  scripts = ""
+
+  content = content.replace /<script[^>]*>([\s\S]*?)<\/script>/img,
+    (match, source)-> scripts += source + "\n"
+
+  [content, scripts]
+
+
+# evals the script string in the global-scope
+global_eval = (script) ->
+  new Element('script', text: script).insertTo(HTML) if script
+
+# IE has a native global eval function
+global_eval = window.execScript if window.execScript
