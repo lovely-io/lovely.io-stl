@@ -42,7 +42,8 @@ Events =
           this._listeners.push
             e: event     # event name
             c: callback  # callback function reference
-            a: args      # remining arguments list
+            a: args      # remaining arguments list
+            n: typeof(arguments[1]) is 'string' # a marker if the callback was specified as a method-name
 
       when 'object'
         for event of events

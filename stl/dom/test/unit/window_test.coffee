@@ -5,14 +5,14 @@
 #
 require '../test_helper'
 
-load_window = ->
+window = ->
   load "/test.html", this, (dom)->
     new dom.Window(this.window)
 
 
 describe 'Window', module,
   'constructor':
-    topic: load_window
+    topic: window
 
     "should make an instance of 'Window' class": (window)->
       assert.instanceOf window, this.Window
@@ -20,21 +20,37 @@ describe 'Window', module,
     "should refer to the original window via '_'": (window)->
       assert.same window._, this.window
 
+  'events handling interface':
+    topic: window
+
+    "should copy #on from Element#on": (window)->
+      assert.same this.Window.prototype.on, this.Element.prototype.on
+
+    "should copy #no from Element#no": (window)->
+      assert.same this.Window.prototype.no, this.Element.prototype.no
+
+    "should copy #ones from Element#ones": (window)->
+      assert.same this.Window.prototype.ones, this.Element.prototype.ones
+
+    "should copy #emit from Element#emit": (window)->
+      assert.same this.Window.prototype.emit, this.Element.prototype.emit
+
+
   '#window':
-    topic: load_window
+    topic: window
 
     "should return itself with this method": (window)->
       assert.same window.window(), window
 
   '#size':
     "\b()":
-      topic: load_window
+      topic: window
 
       "should return the window sizes in a hash": (window)->
         assert.deepEqual window.size(), x: 1024, y: 768
 
     "\b(x:NNN, y:NNN)":
-      topic: load_window
+      topic: window
 
       "should set the new window inner size": (window)->
         size_x = []; size_y = []
@@ -55,13 +71,13 @@ describe 'Window', module,
 
   "#scrolls":
     "\b()":
-      topic: load_window
+      topic: window
 
       "should return the current scrolling position": (window) ->
         assert.deepEqual window.scrolls(), x: 0, y: 0
 
     "\b(x:NNN, y:NNN)":
-      topic: load_window
+      topic: window
 
       "should assign new scrolling position": (window) ->
         pos_x = null; pos_y = null

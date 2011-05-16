@@ -15,14 +15,14 @@ Lovely ->
 
   include 'src/browser'
   include 'src/wrapper'
-  include 'src/window'
-  include 'src/document'
   include 'src/element'
   include 'src/element/events'
   include 'src/element/styles'
   include 'src/element/commons'
   include 'src/element/dimensions'
   include 'src/element/manipulation'
+  include 'src/document'
+  include 'src/window'
   include 'src/event'
   include 'src/search'
 

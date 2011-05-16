@@ -4,6 +4,9 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Window = new Class Wrapper,
+  # copying the standard events handling interface from `Element.prototype`
+  include: Element_events
+
   #
   # A self-reference to have a common interface with
   # the rest of the wrappers
