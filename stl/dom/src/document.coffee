@@ -15,3 +15,7 @@ Document = new Class Wrapper,
   #
   window: ->
     wrap(@_.defaultView || @_.parentWindow)
+
+
+# quick current document wrapper access
+current_Document = new Document(document)

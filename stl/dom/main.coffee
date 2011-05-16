@@ -16,7 +16,9 @@ Lovely ->
   include 'src/document'
   include 'src/window'
   include 'src/event'
+  include 'src/event/mouseio'
   include 'src/search'
+
 
   #
   # The main function of the DOM API, it can take several types of arguments
