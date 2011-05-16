@@ -4,15 +4,7 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Lovely ->
-  A        = Lovely.A
-  ext      = Lovely.ext
-  trim     = Lovely.trim
-  bind     = Lovely.bind
-  Class    = Lovely.Class
-  window   = this
-  document = this.document
-  HTML     = document.documentElement
-
+  include 'src/utils'
   include 'src/browser'
   include 'src/wrapper'
   include 'src/element'
