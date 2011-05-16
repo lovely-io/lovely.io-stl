@@ -132,7 +132,7 @@ Element.include
 # some old browsers don't have the `getBoundingClientRect()` method
 # so we provide a manual calculations for that case
 #
-unless 'getBoundingClientRect' in HTML
+unless 'getBoundingClientRect' of HTML
   Element.include
     position: (position)->
       if position is undefined

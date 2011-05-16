@@ -20,6 +20,7 @@ Lovely ->
   include 'src/event/mouseio'
   include 'src/event/focusio'
   include 'src/event/formio'
+  include 'src/event/ready'
 
 
   #
