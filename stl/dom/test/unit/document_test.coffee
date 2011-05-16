@@ -23,9 +23,6 @@ describe "Document", module,
   'events handling interface':
     topic: document
 
-    "should copy #on from Element#on": (window)->
-      assert.same this.Document.prototype.on, this.Element.prototype.on
-
     "should copy #no from Element#no": (window)->
       assert.same this.Document.prototype.no, this.Element.prototype.no
 

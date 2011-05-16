@@ -17,7 +17,7 @@ no_event_support = (name, tag)->
   typeof(e[name]) isnt 'function'
 
 
-if no_event_support('onsubmit', 'form')
+if BROWSER_OLD_IE and no_event_support('onsubmit', 'form')
   #
   # Emulates the 'submit' event bubbling for IE browsers
   #
@@ -43,7 +43,7 @@ if no_event_support('onsubmit', 'form')
   document.attachEvent('onkeypress', submit_boobler)
 
 
-if no_event_support_for('onchange', 'input')
+if BROWSER_OLD_IE and no_event_support_for('onchange', 'input')
   #
   # Extracts the input field value
   #
