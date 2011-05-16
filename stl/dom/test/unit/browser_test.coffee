@@ -24,23 +24,8 @@ describe 'Browser', module,
   "With a dummy browser":
     topic: -> load_as('Dummy', @callback)
 
-    "should say it's not an IE": (Browser) ->
-      assert.isFalse Browser.IE
-
-    "should say it's not an Opera": (Browser) ->
-      assert.isFalse Browser.Opera
-
-    "should say it's not a Gecko": (Browser) ->
-      assert.isFalse Browser.Gecko
-
-    "should say it's not a WebKit": (Browser) ->
-      assert.isFalse Browser.WebKit
-
-    "should say it's not a MobileSafari": (Browser) ->
-      assert.isFalse Browser.Gecko
-
-    "should say it's not a Konqueror": (Browser) ->
-      assert.isFalse Browser.Konqueror
+    "should say it's 'Unknown'": (Browser) ->
+      assert.equal Browser, 'Unknown'
 
 ### due an issue with Zombie https://github.com/assaf/zombie/issues/134
 
@@ -48,41 +33,11 @@ describe 'Browser', module,
     topic: -> load_as('Opera', @callback)
 
     "should say it's an Opera": (Browser) ->
-      assert.isTrue Browser.Opera
-
-    "should say it's not an IE": (Browser) ->
-      assert.isFalse Browser.IE
-
-    "should say it's not a Gecko": (Browser) ->
-      assert.isFalse Browser.Gecko
-
-    "should say it's not a WebKit": (Browser) ->
-      assert.isFalse Browser.WebKit
-
-    "should say it's not a MobileSafari": (Browser) ->
-      assert.isFalse Browser.Gecko
-
-    "should say it's not a Konqueror": (Browser) ->
-      assert.isFalse Browser.Konqueror
+      assert.equal Browser, 'Opera'
 
   "With Gecko":
     topic: -> load_as("Gecko", @callback)
 
     "should say it's a Gecko": (Browser) ->
-      assert.isTrue Browser.Gecko
-
-    "should say it's not an IE": (Browser) ->
-      assert.isFalse Browser.IE
-
-    "should say it's not an Opera": (Browser) ->
-      assert.isFalse Browser.Opera
-
-    "should say it's not a WebKit": (Browser) ->
-      assert.isFalse Browser.WebKit
-
-    "should say it's not a MobileSafari": (Browser) ->
-      assert.isFalse Browser.Gecko
-
-    "should say it's not a Konqueror": (Browser) ->
-      assert.isFalse Browser.Konqueror
+      assert.equal Browser, 'Gecko'
 ###

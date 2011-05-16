@@ -3,15 +3,17 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
+Browser = 'Unknown'
+
+# a dummy browser guess by the userAgent parameter
 Browser_agent = navigator.userAgent
 
-Browser =
-  IE:           'attachEvent' of document && !/Opera/.test(Browser_agent)
-  Opera:        /Opera/.test(Browser_agent)
-  Gecko:        /Gecko/.test(Browser_agent) && !/KHTML/.test(Browser_agent)
-  WebKit:       /AppleWebKit/.test(Browser_agent)
-  MobileSafari: /Apple.*Mobile.*Safari/.test(Browser_agent)
-  Konqueror:    /Konqueror/.test(Browser_agent)
+Browser = 'IE'           if 'attachEvent' of document && !/Opera/.test(Browser_agent)
+Browser = 'Opera'        if /Opera/.test(Browser_agent)
+Browser = 'Gecko'        if /Gecko/.test(Browser_agent) && !/KHTML/.test(Browser_agent)
+Browser = 'WebKit'       if /AppleWebKit/.test(Browser_agent)
+Browser = 'MobileSafari' if /Apple.*Mobile.*Safari/.test(Browser_agent)
+Browser = 'Konqueror'    if /Konqueror/.test(Browser_agent)
 
 
 # a couple of internal markers to handle old browsers

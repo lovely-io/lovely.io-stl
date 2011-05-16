@@ -90,8 +90,8 @@ Element_make_listeners = (instance) ->
       hash.r = hash.e
 
       # adjusting the real event name for the current browser
-      hash.r = 'rightclick'     if hash.e is 'contextmenu' and Browser.Konqueror
-      hash.r = 'DOMMouseScroll' if hash.e is 'mousewheel'  and Browser.Gecko
+      hash.r = 'rightclick'     if hash.e is 'contextmenu' and Browser is 'Konqueror'
+      hash.r = 'DOMMouseScroll' if hash.e is 'mousewheel'  and Browser is 'Gecko'
 
       # making the event handler wrapper, basically it wraps
       # the event and calls the original function in a correct context
