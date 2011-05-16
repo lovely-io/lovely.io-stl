@@ -6,6 +6,7 @@
 Lovely ->
   include 'src/utils'
   include 'src/browser'
+  include 'src/search'
   include 'src/wrapper'
   include 'src/element'
   include 'src/element/events'
@@ -18,7 +19,7 @@ Lovely ->
   include 'src/event'
   include 'src/event/mouseio'
   include 'src/event/focusio'
-  include 'src/search'
+  include 'src/event/formio'
 
 
   #
