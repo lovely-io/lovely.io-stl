@@ -126,3 +126,28 @@ Element.include
       node = node.previousSibling
 
     index
+
+
+#
+# some old browsers don't have the `getBoundingClientRect()` method
+# so we provide a manual calculations for that case
+#
+unless 'getBoundingClientRect' in HTML
+  Element.include
+    position: (position)->
+      if position is undefined
+        element  = @_
+        top      = element.offsetTop
+        left     = element.offsetLeft
+        parent   = element.offsetParent
+
+        while parent
+          top  += parent.offsetTop
+          left += parent.offsetLeft
+
+          parent = parent.offsetParent
+
+        return x: left, y: top
+
+      else
+        return this.$super(position)
