@@ -4,6 +4,7 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Lovely ->
+
   include 'src/utils'
   include 'src/browser'
   include 'src/search'
@@ -17,6 +18,7 @@ Lovely ->
   include 'src/document'
   include 'src/window'
   include 'src/event'
+  include 'src/event/delegation'
   include 'src/event/mouseio'
   include 'src/event/focusio'
   include 'src/event/formio'

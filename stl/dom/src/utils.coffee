@@ -10,6 +10,7 @@ ext      = Lovely.ext
 trim     = Lovely.trim
 bind     = Lovely.bind
 Class    = Lovely.Class
+isArray  = Lovely.isArray
 window   = this
 document = this.document
 HTML     = document.documentElement
@@ -51,6 +52,10 @@ global_eval = (script) ->
 
 # IE has a native global eval function
 global_eval = window.execScript if window.execScript
+
+# ensures that the value is an array
+ensure_array = (value) ->
+  if isArray(value) then value else [value]
 
 
 # using a random UID_KEY so we didn't interfere with
