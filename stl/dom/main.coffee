@@ -17,6 +17,7 @@ Lovely ->
   include 'src/window'
   include 'src/event'
   include 'src/event/mouseio'
+  include 'src/event/focusio'
   include 'src/search'
 
 
