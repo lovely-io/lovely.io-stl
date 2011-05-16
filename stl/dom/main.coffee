@@ -48,8 +48,6 @@ Lovely ->
   # @return {Lovely.Search|Lovely.Wrapper} result
   #
   $ = (value, context) ->
-    return value if value is null
-
     switch typeof(value)
       when 'string'   then return new Search(value, context)
       when 'function' then return $(document).on('ready', value)

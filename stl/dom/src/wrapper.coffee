@@ -20,7 +20,7 @@ Wrapper = new Class
         return Wrapper[element.tagName]
       else return undefined
 
-  _: undefined,
+  _: null,
 
   #
   # Basic constructor
@@ -42,18 +42,21 @@ Wrapper = new Class
 # @return {Wrapper} dom-unit
 #
 wrap = (value) ->
-  key = uid(value) # trying to use an existing wrapper
+  if `value != null`
+    key = uid(value) # trying to use an existing wrapper
 
-  if key of Wrapper.Cache
-    return Wrapper.Cache[key]
-  else if value.nodeType is 1
-    return new Element(value)
-  else if value.target || value.srcElement
-    return new Event(value)
-  else if value.nodeType is 9
-    return new Document(value)
-  else if `value.window == value`
-    return new Window(value)
+    if key of Wrapper.Cache
+      return Wrapper.Cache[key]
+    else if value.nodeType is 1
+      return new Element(value)
+    else if value.target || value.srcElement
+      return new Event(value)
+    else if value.nodeType is 9
+      return new Document(value)
+    else if `value.window == value`
+      return new Window(value)
+
+  return value # in case it's already wrapped or just `null`
 
 
 # using a random UID_KEY so we didn't interfere with
