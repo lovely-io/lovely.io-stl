@@ -102,12 +102,9 @@ Element.include
           Element_clean_style(Element_computed_styles(@_), name)
 
       else # setting a style
-        if name is 'float'
-          name = if Browser_OLD_IE then 'styleFloat' else 'cssFloat'
-        else
-          name = camelize(name)
+        name = if name is 'float' then ELEMENT_STYLE_FLOAT else camelize(name)
 
-        if name is 'opacity' and BROWSER_IE_OPACITY
+        if name is 'opacity' and ELEMENT_IE_OPACITY
           @_.style.filter = "alpha(opacity=#{value * 100})"
         else
           @_.style[name] = value
@@ -120,6 +117,11 @@ Element.include
 
 
 # private
+
+# figuring out the actual property names for the `float` and `opacity` styles
+ELEMENT_STYLE_FLOAT = if 'cssFloat' of HTML.style then 'cssFloat' else 'styleFloat'
+ELEMENT_IE_OPACITY  = !('opacity' of HTML.style) and 'filter' of HTML.style
+
 
 # reads specified element styles into a hash
 Element_read_styles = (element, names) ->
@@ -149,18 +151,18 @@ Element_clean_style = (style, name) ->
   name = camelize(name)
 
   if name is 'opacity'
-    return if BROWSER_IE_OPACITY then (
+    return if ELEMENT_IE_OPACITY then (
       (/opacity=(\d+)/i.exec(style.filter || '') ||
       ['', '100'])[1] / 100
     )+'' else style[name].replace(',', '.')
 
   else if name is 'float'
-    name = if Browser_OLD_IE then 'styleFloat' else 'cssFloat'
+    name = ELEMENT_STYLE_FLOAT
 
   value = style[name]
 
   # Opera returns named colors with quotes
-  value = value.replace(/"/g, '') if /color/i.test(name) && value
+  value = value.replace(/"/g, '') if /color/i.test(name) and value
 
   value
 

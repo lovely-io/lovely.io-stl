@@ -8,6 +8,10 @@ require '../../test_helper'
 server.respond '/styles.html': """
   <html>
     <head>
+      <script type="text/javascript">
+        // HACK: due zombie issue with the styles
+        document.documentElement.style.cssFloat = 'none';
+      </script>
       <script src="/core.js"></script>
       <script src="/dom.js"></script>
       <style>
