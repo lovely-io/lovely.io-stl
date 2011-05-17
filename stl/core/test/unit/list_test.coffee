@@ -199,6 +199,14 @@ describe "List", module,
     'should filter out nulls and undefineds': (list) ->
       assert.listEqual list, ['', 0, 1]
 
+  '#includes(item)':
+    topic: -> new List([1,2,3])
+
+    "should say 'true' for things that on the list": (list)->
+      assert.isTrue list.includes(1)
+
+    "should say 'false' for things that are not on the list": (list)->
+      assert.isFalse list.includes(888)
 
   '#toArray()':
     topic: list.toArray()

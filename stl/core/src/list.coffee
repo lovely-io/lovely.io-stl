@@ -130,6 +130,15 @@ ext List.prototype,
   clone: -> new @constructor(A(this))
 
   #
+  # Checks if the list includes the item
+  #
+  # @param {anything} item
+  # @return {Boolean} check result
+  #
+  includes: (item)->
+    @indexOf(item) isnt -1
+
+  #
   # Array#concat like method
   #
   # @param {Array} items to add
