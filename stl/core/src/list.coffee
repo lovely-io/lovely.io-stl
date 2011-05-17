@@ -130,6 +130,14 @@ ext List.prototype,
   clone: -> new @constructor(A(this))
 
   #
+  # Array#concat like method
+  #
+  # @param {Array} items to add
+  # @return {List} new
+  #
+  concat: (items)-> new @constructor(A(this).concat(items))
+
+  #
   # Converts the list into an instance or {Array}
   #
   # @return {Array} new

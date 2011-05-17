@@ -286,6 +286,27 @@ describe "List", module,
     'should slice the original list': (list) ->
       assert.listEqual list, [3,4,5]
 
+  '#reverse':
+    topic: ->
+      this.list = new List([1,2,3,4])
+      this.list.reverse()
+
+    "should not create a new list": (list)->
+      assert.same list, this.list
+
+    "should reverse it's entries order": (list)->
+      assert.listEqual list, [4,3,2,1]
+
+  '#concat':
+    topic: ->
+      this.list = new List([1,2])
+      this.list.concat([3,4])
+
+    "should create a new list": ensure_new_list
+
+    "should add the new values": (list)->
+      assert.listEqual list, [1,2,3,4]
+
   'subclass':
     topic: -> new FooList()
 
@@ -307,4 +328,8 @@ describe "List", module,
 
     "should return the subclass instance with the #clone operation": (list)->
       list = list.clone()
+      assert.instanceOf list, FooList
+
+    "should return the subclass instance with the #concat operation": (list)->
+      list = list.concat([1,2,3])
       assert.instanceOf list, FooList
