@@ -333,16 +333,16 @@ describe "List", module,
       list = list.slice(1,2)
       assert.instanceOf list, FooList
 
-    "should return the subclass instance with the #map operation": (list)->
+    "should return a List instance with the #map operation": (list)->
       list = list.map('getValue')
-      assert.instanceOf list, FooList
+      assert.instanceOf list, List
 
     "should return the subclass instance with the #filter operation": (list)->
       list = list.filter('odd')
       assert.instanceOf list, FooList
 
     "should return the subclass instance with the #reject operation": (list)->
-      list = list.map('event')
+      list = list.reject('event')
       assert.instanceOf list, FooList
 
     "should return the subclass instance with the #clone operation": (list)->

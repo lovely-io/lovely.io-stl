@@ -80,7 +80,7 @@ ext List.prototype,
   # @return {List} new
   #
   map: ->
-    new @constructor(List_call(Array_proto.map, this, arguments))
+    new List(List_call(Array_proto.map, this, arguments))
 
   #
   # Creates a new list that has only matching items in it
