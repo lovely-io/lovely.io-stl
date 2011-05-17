@@ -58,7 +58,7 @@ ext List.prototype,
   # @return {List} new slice
   #
   slice: ->
-    new List(Array_proto.slice.apply(this, arguments))
+    new @constructor(Array_proto.slice.apply(this, arguments))
 
   ##
   # The standard `forEaech` equivalent
@@ -80,7 +80,7 @@ ext List.prototype,
   # @return {List} new
   #
   map: ->
-    new List(List_call(Array_proto.map, this, arguments))
+    new @constructor(List_call(Array_proto.map, this, arguments))
 
   #
   # Creates a new list that has only matching items in it
@@ -90,7 +90,7 @@ ext List.prototype,
   # @return {List} new
   #
   filter: ->
-    new List(List_call(Array_proto.filter, this, arguments))
+    new @constructor(List_call(Array_proto.filter, this, arguments))
 
   #
   # Creates a new list that has no matching items in it
@@ -100,7 +100,7 @@ ext List.prototype,
   # @return {List} new
   #
   reject: ->
-    new List(List_call(Array_reject, this, arguments))
+    new @constructor(List_call(Array_reject, this, arguments))
 
   #
   # Creates a new list without the specified items
@@ -127,7 +127,7 @@ ext List.prototype,
   #
   # @return {List} new
   #
-  clone: -> new List(A(this))
+  clone: -> new @constructor(A(this))
 
   #
   # Converts the list into an instance or {Array}

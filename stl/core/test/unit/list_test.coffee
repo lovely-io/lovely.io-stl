@@ -30,8 +30,8 @@ Foo = new Lovely.Class
 
 # making a list of Foo stuff to test various things
 FooList = new Lovely.Class List,
-  constructor: ->
-    this.$super([
+  constructor: (args)->
+    this.$super(args || [
       new Foo(1)
       new Foo(2)
       new Foo(3)
@@ -285,3 +285,26 @@ describe "List", module,
 
     'should slice the original list': (list) ->
       assert.listEqual list, [3,4,5]
+
+  'subclass':
+    topic: -> new FooList()
+
+    "should return the subclass instance with the #slice operation": (list)->
+      list = list.slice(1,2)
+      assert.instanceOf list, FooList
+
+    "should return the subclass instance with the #map operation": (list)->
+      list = list.map('getValue')
+      assert.instanceOf list, FooList
+
+    "should return the subclass instance with the #filter operation": (list)->
+      list = list.filter('odd')
+      assert.instanceOf list, FooList
+
+    "should return the subclass instance with the #reject operation": (list)->
+      list = list.map('event')
+      assert.instanceOf list, FooList
+
+    "should return the subclass instance with the #clone operation": (list)->
+      list = list.clone()
+      assert.instanceOf list, FooList
