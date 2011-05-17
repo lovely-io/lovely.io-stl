@@ -294,6 +294,17 @@ describe "List", module,
     'should slice the original list': (list) ->
       assert.listEqual list, [3,4,5]
 
+  '#splice':
+    topic: ->
+      this.list = new List([1,2,3,4])
+      this.list.splice(1,2,5,6,7)
+
+    "should return the extracted items": (items)->
+      assert.deepEqual items, [2,3]
+
+    "should remove and insert items correctly":->
+      assert.listEqual this.list, [1,5,6,7,4]
+
   '#reverse':
     topic: ->
       this.list = new List([1,2,3,4])
