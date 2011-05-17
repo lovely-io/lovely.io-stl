@@ -33,6 +33,32 @@ Element = new Class Wrapper,
 
     return this
 
+#
+# making the Element to automatically generate the dom-collection
+# methods for the {Search} class with the following principle
+#
+# if this is an element's mutating method and it returns a
+# reference to the element itself, then this method will be called
+# on all the elements in the collection.
+#
+# on the other hand, if this is a getter method and it returns
+# some value that is different from the element itself, then
+# the collection method will return the result of that method
+# call on the _first_ element in the collection
+#
+Element.include = (hash)->
+  Class.include.apply(Element, arguments)
+
+  for name, method of hash
+    unless name of Lovely.List.prototype
+      do (name)->
+        Search.prototype[name] = ->
+          for element, i in @
+            result = element[name].apply(element, arguments)
+            return result if i is 0 and result isnt element
+
+          return @
+
 
 
 # private

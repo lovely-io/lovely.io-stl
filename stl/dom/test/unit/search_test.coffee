@@ -110,3 +110,22 @@ describe 'Search', module,
       assert.equal      search[0]._.innerHTML, 'one'
       assert.equal      search[1]._.innerHTML, 'two'
 
+  "DOM methods":
+    topic: Search
+
+    "should call the setter methods on every item on the list": (Search)->
+      search = new Search('<div></div><div></div><div></div>')
+
+      search.addClass('test')
+
+      assert.deepEqual search.map('getClass').toArray(), ['test', 'test', 'test']
+
+    "should return the search object back to the code": (Search)->
+      search = new Search('<div></div>')
+
+      assert.same search.addClass('test'), search
+
+    "should return the result of the first element when calls a getter method": (Search)->
+      search = new Search('<div>one</div><div>two</div><div>three</div>')
+
+      assert.equal search.html(), 'one'
