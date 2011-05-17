@@ -14,6 +14,7 @@ Lovely ->
   include 'src/element/styles'
   include 'src/element/commons'
   include 'src/element/dimensions'
+  include 'src/element/navigation'
   include 'src/element/manipulation'
   include 'src/document'
   include 'src/window'
@@ -44,7 +45,7 @@ Lovely ->
   #   ...
   #
   # @param {String|Function|Element|Document} stuff
-  # @return {Lovely.Search|Lovely.Wrapper} result
+  # @return {Search|Wrapper} result
   #
   $ = (value, context) ->
     switch typeof(value)

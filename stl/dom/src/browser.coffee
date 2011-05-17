@@ -22,3 +22,10 @@ else if /Konqueror/.test(Browser)
 else
   Browser = 'Unknown'
 
+
+# IE 8 or older check
+try
+  document.createElement('<input/>')
+  BROWSER_IS_OLD_IE = true
+catch e
+  BROWSER_IS_OLD_IE = false

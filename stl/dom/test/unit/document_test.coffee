@@ -23,14 +23,23 @@ describe "Document", module,
   'events handling interface':
     topic: document
 
-    "should copy #no from Element#no": (window)->
+    "should copy #no from Element#no": ->
       assert.same this.Document.prototype.no, this.Element.prototype.no
 
-    "should copy #ones from Element#ones": (window)->
+    "should copy #ones from Element#ones": ->
       assert.same this.Document.prototype.ones, this.Element.prototype.ones
 
-    "should copy #emit from Element#emit": (window)->
+    "should copy #emit from Element#emit": ->
       assert.same this.Document.prototype.emit, this.Element.prototype.emit
+
+  'DOM navigation interface':
+    topic: document
+
+    "should use the same #find method as the Element": (document)->
+      assert.same this.Document.prototype.find, this.Element.prototype.find
+
+    "should use the same #first method as the Element": ->
+      assert.same this.Document.prototype.first, this.Element.prototype.first
 
   "#window()":
     topic: document

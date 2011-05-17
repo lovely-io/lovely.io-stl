@@ -84,6 +84,7 @@ global.load = (url, test, callback)->
     test.Document = test.dom.Document
     test.Window   = test.dom.Window
     test.Event    = test.dom.Event
+    test.Search   = test.dom.Search
 
     test.callback(err, if callback then callback.call(test, test.dom) else test.dom)
 

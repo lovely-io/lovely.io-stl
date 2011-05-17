@@ -8,20 +8,25 @@ Element.include
   #
   # Checks if the element matches given css-rule
   #
+  # NOTE: the element should be attached to the page
+  #
   # @param {String} css-rule
   # @return {Boolean} check result
   #
   match: (css_rule) ->
-    # TODO implement me
+    for element in @document().find(css_rule, true)
+      if element is @_
+        return true
+    return false
 
   #
   # Finds all the elements that match given css-rule
   #
   # @param {String} css-rule
-  # @return {NodeList} list of matching elements
+  # @param {Boolean} a marker if you need raw dom-elements
+  # @return {Search|Array} list of matching elements
   #
-  find: (css_rule) ->
-    # TODO implement me
+  find: Search_module.find
 
   #
   # Finds the first matching sub-element
@@ -29,18 +34,7 @@ Element.include
   # @param {String} optional css-rule
   # @return {Element} element or `null`
   #
-  first: (css_rule) ->
-    # TODO implement me
-
-  #
-  # Returns the list of immediate children of the element
-  # optionally filtered by a css-rule
-  #
-  # @param {String} optional css-rule
-  # @return {NodeList} list of matching elements
-  #
-  children: (css_rule) ->
-    # TODO implement me
+  first: Search_module.first
 
   #
   # Returns the parent element or the first parent
@@ -50,17 +44,66 @@ Element.include
   # @return {Element} matching parent or `null`
   #
   parent: (css_rule) ->
-    # TODO implement me
+    parent = @_.parentNode; parent_type = parent && parent.nodeType;
+
+    if css_rule
+      @parents(css_rule)[0]
+    else if parent_type in [1, 9] # <- IE6 sometimes has a fragment node in there
+      wrap(parent)
+    else
+      null
 
   #
   # Finds all the parent elements of current element
   # optinally filtered by a css-rule
   #
   # @param {String} optional css-rule
-  # @return {NodeList} list of matching elements
+  # @return {Search} list of matching elements
   #
   parents: (css_rule) ->
-    # TODO implement me
+    Element_recursively_collect(@, 'parentNode', css_rule)
+
+  #
+  # Returns the list of immediate children of the element
+  # optionally filtered by a css-rule
+  #
+  # @param {String} optional css-rule
+  # @return {Search} list of matching elements
+  #
+  children: (css_rule) ->
+    @find(css_rule).filter (element)->
+      element._.parentNode is @_
+    , @
+
+  #
+  # Returns a list of the element siblings
+  # optionally filtered by a css-rule
+  #
+  # @param {String} optional css-rule
+  # @return {Search} list of matching elements
+  #
+  siblings: (css_rule) ->
+    @previousSiblings(css_rule).reverse().concat(@nextSiblings(css_rule).toArray())
+
+  #
+  # Returns a list of the next siblings of the element
+  # optionally filtered by a css-rule
+  #
+  # @param {String} optional css-rule
+  # @return {Search} list of matching elements
+  #
+  nextSiblings: (css_rule)->
+    Element_recursively_collect(@, 'nextSibling', css_rule)
+
+  #
+  # Returns a list of the previous siblings of the element
+  # optionally filtered by a css-rule
+  #
+  # @param {String} optional css-rule
+  # @return {Search} list of matching elements
+  #
+  previousSiblings: (css_rule)->
+    Element_recursively_collect(@, 'previousSibling', css_rule)
 
   #
   # Returns the next sibling element, optionally
@@ -70,7 +113,10 @@ Element.include
   # @return {Element} sibling element or `null`
   #
   nextSibling: (css_rule) ->
-    # TODO implement me
+    if css_rule is undefined and @_.nextElementSibling isnt undefined
+      wrap(@_.nextElementSibling)
+    else
+      @nextSiblings(css_rule)[0]
 
   #
   # Returns the next sibling element, optionally
@@ -79,16 +125,30 @@ Element.include
   # @param {String} optional css-rule
   # @return {Element} sibling element or `null`
   #
-  prevSibling: (css_rule) ->
-    # TODO implement me
+  previousSibling: (css_rule) ->
+    if css_rule is undefined and @_.previousElementSibling isnt undefined
+      wrap(@_.previousElementSibling)
+    else
+      @previousSiblings(css_rule)[0]
 
-  #
-  # Returns a list of the element siblings
-  # optionally filtered by a css-rule
-  #
-  # @param {String} optional css-rule
-  # @return {NodeList} list of matching elements
-  #
-  siblings: (css_rule) ->
-    # TODO implement me
 
+# private
+
+#
+# Recursively collects stuff from the element
+# wraps them up with the {Element} instances
+# and returns as a standard {Search} result
+#
+# @param {Element} start point
+# @param {String} attribute
+# @param {String} css-rule
+# @return {Search} result
+#
+Element_recursively_collect = (element, attr, css_rule)->
+  result = []; node = element._; no_rule = css_rule is undefined
+
+  while node = node[attr]
+    if node.nodeType is 1 and (no_rule or wrap(node).match(css_rule))
+      result.push(node)
+
+  return new Search(result)

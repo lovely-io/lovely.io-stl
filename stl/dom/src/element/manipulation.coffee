@@ -107,7 +107,7 @@ Element.include
   # @return {Element} this
   #
   insertTo: (element, position) ->
-    element = document.getElementById(element.substr(1)) if typeof(element) is 'string'
+    element = Search_by_id(element) if typeof(element) is 'string'
     element = wrap(element) unless element instanceof Element
 
     element.insert(@, position)

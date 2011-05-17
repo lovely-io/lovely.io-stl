@@ -5,7 +5,7 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 
-if Browser is 'IE' # don't bother the others
+if BROWSER_IS_OLD_IE # don't bother the others
 
   #
   # Tests if there is the event support

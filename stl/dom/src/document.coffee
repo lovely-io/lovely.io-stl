@@ -4,8 +4,8 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Document = new Class Wrapper,
-  # copying the standard events handling interface from `Element.prototype`
-  include: Element_events
+  # copying the standard events handling and navigation interfaces
+  include: [Element_events, Search_module]
 
   #
   # Returns a wrapped reference to the window where
