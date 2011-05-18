@@ -9,7 +9,7 @@ src =
   core: Source.compile(__dirname + "/../../core/")
   dom:  Source.compile(__dirname + "/../")
 
-global.assert  = require('assert')
+exports.assert = assert = require('assert')
 
 assert.same    = assert.strictEqual
 assert.notSame = assert.notStrictEqual
@@ -24,11 +24,12 @@ assert.notSame = assert.notStrictEqual
 # @param {Object} batch hash
 # @return void
 #
-global.describe = (thing, module, batch) ->
+exports.describe = (thing, module, batch) ->
   require('vows').describe(thing).addBatch(batch).export(module)
 
 # making a little local server with 'express' to load the fixtures into the zombie
-server  = require('express').createServer()
+global.server or= require('express').createServer()
+exports.server = server
 
 server.get '/', (req, resp) ->
   resp.send('<html><body>Hello</body></html>')
@@ -49,15 +50,13 @@ server.get '/test.html', (req, resp) ->
   </html>
   """
 
-global.server = server
-
 #
 # A shortcut to dynamically define the server responses
 #
 # @param {Object} routes and responses
 # @return {undefined}
 #
-global.server.respond = (defs) ->
+server.respond = (defs) ->
   for route, response of defs
     do (route, response) ->
       server.get route, (req, resp) ->
@@ -72,7 +71,7 @@ global.server.respond = (defs) ->
 # @param {Function} optional callback
 # @return void
 #
-global.load = (url, test, callback)->
+exports.load = load = (url, test, callback)->
   Browser.open url, (err, browser) ->
     test.browser  = browser
     test.window   = browser.window
@@ -98,12 +97,12 @@ global.load = (url, test, callback)->
 # @param {String} element's ID
 # @return void
 #
-global.load_element = (url, test, id) ->
+exports.load_element = (url, test, id) ->
   load url, test, (dom)->
     new dom.Element(this.document.getElementById(id))
 
 # a global zombie-browser reference
-global.Browser = require('zombie').Browser
+exports.Browser = Browser = require('zombie').Browser
 
 #
 # Our own shortcut for the browser load

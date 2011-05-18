@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011
 #
-require '../test_helper'
+{describe, assert, Browser} = require('../test_helper')
 
 # user-agent strings
 user_agents =

@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-require '../test_helper'
+{describe, assert, load} = require('../test_helper')
 
 load_Element = (test, callback) ->
   load "/test.html", test, (dom) ->

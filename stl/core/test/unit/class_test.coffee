@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-require('../test_helper')
+{describe, assert, Lovely} = require('../test_helper')
 
 Class = Lovely.Class
 

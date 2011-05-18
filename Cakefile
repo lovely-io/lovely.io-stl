@@ -17,11 +17,11 @@ task 'build', 'Build the scripts', ->
 
 
 task 'test', 'Run the tests', ->
-  system 'vows stl/*/test/*/*_test.*'
+  system 'vows stl/*/test/*/*_test.coffee stl/*/test/*/*/*_test.coffee'
 
 
 task 'test:spec', 'Run the tests with the specs output', ->
-  system 'vows stl/*/test/*/*_test.* --spec'
+  system 'vows stl/*/test/*/*_test.coffee stl/*/test/*/*/*_test.coffee --spec'
 
 
 task 'check', 'Checks the source code with JSHint', ->

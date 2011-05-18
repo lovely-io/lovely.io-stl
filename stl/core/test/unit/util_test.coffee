@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-require('../test_helper')
+{describe, assert, util, Lovely} = require('../test_helper')
 
 #
 # A shortcut for the type check functions mass-testing

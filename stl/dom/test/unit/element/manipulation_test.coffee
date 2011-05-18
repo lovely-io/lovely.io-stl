@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-require '../../test_helper'
+{describe, assert, server, load} = require('../../test_helper')
 
 server.respond "/manipulations.html": """
   <html>

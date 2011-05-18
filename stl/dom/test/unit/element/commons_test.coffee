@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-require '../../test_helper'
+{describe, assert, server, load_element} = require('../../test_helper')
 
 server.respond "/commons.html": """
   <html>
@@ -17,7 +17,7 @@ server.respond "/commons.html": """
   </html>
   """
 
-get_element = ->
+test_element = ->
   load_element("/commons.html", this, 'test')
 
 
@@ -25,7 +25,7 @@ describe 'Element Commons', module,
   "#attr":
 
     "\b('name')":
-      topic: get_element
+      topic: test_element
 
       "should read a property attribute": (element) ->
         assert.equal element.attr('id'), 'test'
@@ -38,7 +38,7 @@ describe 'Element Commons', module,
 
 
     "\b('name', 'value')":
-      topic: get_element
+      topic: test_element
 
       "should return the element back": (element) ->
         assert.same element.attr('title', 'text'), element
@@ -53,7 +53,7 @@ describe 'Element Commons', module,
 
 
     "\b({name: 'value'})":
-      topic: get_element
+      topic: test_element
 
       "should return the element back afterwards": (element) ->
         assert.same element.attr(smth: 'value'), element
@@ -68,7 +68,7 @@ describe 'Element Commons', module,
 
 
     "\b('name', null)":
-      topic: get_element
+      topic: test_element
 
       "should remove the attribute": (element) ->
         element.attr('something', 'something')
@@ -79,7 +79,7 @@ describe 'Element Commons', module,
 
 
   "#hidden()":
-    topic: get_element
+    topic: test_element
 
     "should say 'true' when the element is hidden": (element)->
       element._.style.display = 'none'
@@ -90,7 +90,7 @@ describe 'Element Commons', module,
       assert.isFalse element.hidden()
 
   "#visible()":
-    topic: get_element
+    topic: test_element
 
     "should say 'false' when the element is hidden": (element)->
       element._.style.display = 'none'
@@ -101,7 +101,7 @@ describe 'Element Commons', module,
       assert.isTrue element.visible()
 
   "#hide()":
-    topic: get_element
+    topic: test_element
 
     "should hide the element when it is visible": (element)->
       element._.style.display = 'block'
@@ -117,7 +117,7 @@ describe 'Element Commons', module,
       assert.same element.hide(), element
 
   "#show()":
-    topic: get_element
+    topic: test_element
 
     "should show an element if it's hidden": (element)->
       element._.style.display = 'none'
@@ -133,7 +133,7 @@ describe 'Element Commons', module,
       assert.same element.show(), element
 
   "#toggle()":
-    topic: get_element
+    topic: test_element
 
     "should show an element if it is hidden": (element)->
       element._.style.display = 'none'
@@ -150,7 +150,7 @@ describe 'Element Commons', module,
 
 
   "#document()":
-    topic: get_element
+    topic: test_element
 
     "should return the owner document wrapper": (element)->
       document = element.document()
@@ -162,7 +162,7 @@ describe 'Element Commons', module,
       assert.same element.document(), element.document()
 
   "#window()":
-    topic: get_element
+    topic: test_element
 
     "should return the owner window wrapper": (element)->
       window = element.window()

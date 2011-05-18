@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-require('../test_helper')
+{describe, assert, Lovely} = require('../test_helper')
 
 List  = Lovely.List
 array = [1,2,3,4,5]

@@ -3,9 +3,9 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-require('../test_helper')
+{describe, assert, Browser, server} = require('../test_helper')
 
-server_respond
+server.respond
   '/load.html': """
    <html><head>
     <script src="/core.js"></script>

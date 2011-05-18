@@ -11,10 +11,9 @@ src = require('../../../cli/source')
 eval(src = src.compile(__dirname + "/../"))
 
 # globalizing those ones so we didn't need to reinit them all the time
-global.Lovely  = this.Lovely
-global.util    = require('util')
-global.vows    = require('vows')
-global.assert  = require('assert')
+exports.Lovely  = this.Lovely
+exports.util    = require('util')
+exports.assert  = assert = require('assert')
 
 assert.same    = assert.strictEqual
 assert.notSame = assert.notStrictEqual
@@ -28,11 +27,12 @@ assert.notSame = assert.notStrictEqual
 # @param {Object} batch hash
 # @return void
 #
-global.describe = (thing, module, batch) ->
-  vows.describe(thing).addBatch(batch).export(module)
+exports.describe = (thing, module, batch) ->
+  require('vows').describe(thing).addBatch(batch).export(module)
 
 # making a little local server with 'express' to load the fixtures into the zombie
-server  = require('express').createServer()
+global.server or= require('express').createServer()
+exports.server = server
 
 server.get '/', (req, resp) ->
   resp.send('<html><body>Hello</body></html>')
@@ -40,7 +40,7 @@ server.get '/', (req, resp) ->
 server.get '/core.js', (req, resp) ->
   resp.send(src)
 
-global.server = server
+exports.server = server
 
 #
 # A shortcut to dynamically define the server responses
@@ -48,14 +48,14 @@ global.server = server
 # @param {Object} routes and responses
 # @return {undefined}
 #
-global.server_respond = (defs) ->
+server.respond = (defs) ->
   for route, response of defs
     do (route, response) ->
       server.get route, (req, resp) ->
         resp.send(response)
 
 # a global zombie-browser reference
-global.Browser = require('zombie').Browser
+exports.Browser = Browser = require('zombie').Browser
 
 #
 # Our own shortcut for the browser load
