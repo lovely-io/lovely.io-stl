@@ -3,12 +3,12 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Lovely ->
-  ext = Lovely.ext
+core = require('core')
+ext  = core.ext
 
-  include 'src/array'
-  include 'src/string'
-  include 'src/number'
-  include 'src/function'
+include 'src/array'
+include 'src/string'
+include 'src/number'
+include 'src/function'
 
-  {version: '%{version}'}
+exports.version = '%{version}'

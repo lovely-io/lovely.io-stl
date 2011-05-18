@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-
+Lovely   = require('core')
 A        = Lovely.A
 L        = Lovely.L
 ext      = Lovely.ext
@@ -11,8 +11,8 @@ trim     = Lovely.trim
 bind     = Lovely.bind
 Class    = Lovely.Class
 isArray  = Lovely.isArray
-window   = this
-document = this.document
+window   = global
+document = window.document
 HTML     = document.documentElement
 
 

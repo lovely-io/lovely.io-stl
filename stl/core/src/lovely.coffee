@@ -67,7 +67,7 @@ Lovely = ->
         return undefined # giving up on unreachable module
 
     # making the call
-    result = callback.apply(null, packages)
+    result = callback.apply(global, packages)
 
     # registering the current module if needed
     if current

@@ -4,7 +4,12 @@
 # Copyright (C) %{year} %{username}
 #
 
-# include 'src/my_file'
+# hook up dependencies
+var core = require('core')
+var dom  = require('dom')
 
-Lovely ['dependency'], (module) ->
-  {version: '%{version}'}
+# glue in your files
+include 'src/my_file'
+
+# export your objects
+exports.version = '%{version}'

@@ -3,9 +3,11 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Lovely ($, lang) ->
+core = require('core')
+dom  = require('dom')
+lang = require('dom')
 
-  include 'src/element'
-  include 'src/string'
+include 'src/element'
+include 'src/string'
 
-  {version: '%{version}'}
+exports.version = '%{version}'

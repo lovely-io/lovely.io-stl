@@ -3,22 +3,24 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Lovely ($) ->
-  ext     = Lovely.ext
-  Class   = Lovely.Class
-  Element = $.Element
+core    = require('core')
+dom     = require('dom')
 
-  include 'src/form'
-  include 'src/input'
+ext     = core.ext
+Class   = core.Class
+Element = dom.Element
 
-  # setting up the dynamic typecasting for the form-elements
-  ext Element.Wrappers,
-    FORM:     Form
-    INPUT:    Input
-    SELECT:   Input
-    TEXTAREA: Input
+include 'src/form'
+include 'src/input'
 
-  # exporting the globals and the module
-  ext Form,
-    version: '%{version}'
-    Input:   Input
+# setting up the dynamic typecasting for the form-elements
+ext Element.Wrappers,
+  FORM:     Form
+  INPUT:    Input
+  SELECT:   Input
+  TEXTAREA: Input
+
+# exporting the globals and the module
+exports = ext Form,
+  version: '%{version}'
+  Input:   Input

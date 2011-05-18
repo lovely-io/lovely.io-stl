@@ -3,13 +3,13 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Lovely ->
-  ext   = Lovely.ext
-  Class = Lovely.Class
+core  = require('core')
+ext   = core.ext
+Class = core.Class
 
-  include 'src/ajax'
-  include 'src/jsonp'
-  include 'src/iframe'
+include 'src/ajax'
+include 'src/jsonp'
+include 'src/iframe'
 
-  ext Ajax,
-    version: '%{version}'
+exports = ext Ajax,
+  version: '%{version}'

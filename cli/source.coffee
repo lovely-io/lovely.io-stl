@@ -29,28 +29,57 @@ compile = (directory)->
 
   # converting coffee into javascript if needed
   if format is 'coffee'
-    source = require('coffee-script').compile(source)
+    source = require('coffee-script').compile(source, {bare: true})
 
     # fixing coffee's void(0) hack back to `undefined`
-    source = source.replace(/^\(function\(\)\s*\{/, '(function(undefined) {')
     source = source.replace(/([^a-z0-9\_]+)void\s+0([^a-z0-9]+)/ig, '$1undefined$2')
 
-    source = """
-    /**
-     * lovely.io '#{options.name}' module v#{options.version}
-     *
-     * Copyright (C) #{new Date().getFullYear()} #{options.author}
-     */
-    #{source}
-    """
-
   # adding the package dependencies
-  source = source.replace /(Lovely\s*\(\s*)(function)/,
-    "$1'#{options.name}', [#{"'"+key+"'" for key of options.dependencies}], $2"
   source = source.replace('%{version}', options.version)
 
-  # inlining the styles where available
-  source + inline_css(directory)
+  # creating a standard AMD layout
+  if options.name is 'core' # core doesn't use AMD
+    source = """
+    (function(undefined) {
+      var global = this;
+      #{source.replace(/(\n)/g, '$1  ')}
+    }).apply(this)
+    """
+
+  else
+    if /[^a-z0-9_\-\.]exports[^a-z0-9\_\-]/i.test(source)
+      source = "var exports = {};\n\n#{source}\n\nreturn exports;"
+
+    if /[^a-z0-9_\-\.]global[^a-z0-9\_\-]/i.test(source)
+      source = "var global = this;\n"+ source
+
+    # extracting the 'require' modules to make dependencies
+    dependencies = []
+    source = source.replace /([^a-z0-9_\-\.])require\(('|")([^\.].+?)\2\)/ig,
+      (match, start, quote, module)->
+        if module is 'core'
+          return "#{start}global.Lovely"
+        else
+          dependencies.push(module)
+          return "#{start}Lovely.modules['#{module}']"
+
+    # creating the Lovely(....) definition
+    source = """
+      Lovely("#{options.name}", [#{"'#{name}'" for name in dependencies}], function(undefined) {
+        #{source.replace(/(\n)/g, "$1  ")}
+      });
+      #{inline_css(directory)}
+      """
+
+  # creating a standard header block
+  source = """
+  /**
+   * lovely.io '#{options.name}' module v#{options.version}
+   *
+   * Copyright (C) #{new Date().getFullYear()} #{options.author}
+   */
+  #{source}
+  """
 
 
 #
@@ -121,18 +150,18 @@ inline_css = (directory) ->
 
       // embedded css-styles
       (function(document) {
-        var style = document.createElement('style'),
-            rules = document.createTextNode("#{style}");
+        var style = document.createElement('style');
+        var rules = document.createTextNode("#{style}");
 
         style.type = 'text/css';
         document.getElementsByTagName('head')[0].appendChild(style);
 
-        if(style.styleSheet) {
+        if (style.styleSheet) {
           style.styleSheet.cssText = rules.nodeValue;
         } else {
           style.appendChild(rules);
         }
-      })(document);
+      })(this.document);
       """
   catch e
     "" # file doesn't exists

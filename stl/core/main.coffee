@@ -13,7 +13,7 @@ include 'src/events'
 include 'src/options'
 
 # exporting the globally visible objects
-this.Lovely = ext Lovely,
+global.Lovely = ext Lovely,
   version:     '%{version}'
 
   # the loader default options
