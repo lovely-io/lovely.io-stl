@@ -10,12 +10,10 @@
 task 'build', 'Build the scripts', ->
   fs   = require('fs')
   dir  = "#{__dirname}/stl/"
-  dest = "#{__dirname}/build/"
 
-  system "mkdir -p #{dest}", ->
-    for name in fs.readdirSync(dir)
-      system "cd #{dir + name}; ../../bin/lovely build", ->
-        system "cp #{dir + name}/build/* #{dest}"
+  for name in fs.readdirSync(dir)
+    if fs.statSync(dir + name).isDirectory()
+      system "cd #{dir + name}; ../../bin/lovely build"
 
 
 task 'test', 'Run the tests', ->
