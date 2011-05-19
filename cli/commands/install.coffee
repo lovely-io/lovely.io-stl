@@ -12,12 +12,13 @@ exports.init = (args) ->
   package  = require('../package')
 
   location[location.length - 1] == '/' || (location += '/')
-  location += "#{package.name}/#{package.version}"
+  location += "packages/#{package.name}/#{package.version}"
 
   system "rm -rf #{location}", ->
     system "mkdir -p #{location}", ->
       system "../../bin/lovely build", ->
-        system "cp -r ./* #{location}"
+        system "cp -r ./* #{location}", ->
+          system "../../bin/lovely activate #{package.name}"
 
 
 exports.help = (args) ->
