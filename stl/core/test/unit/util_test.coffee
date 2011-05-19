@@ -46,6 +46,14 @@ describe 'Core Utils', module,
     "should accept 'undefined' as the second argument": (ext) ->
       assert.deepEqual {a: 1}, ext({a: 1}, undefined)
 
+    "should skip the prototype values": (ext)->
+      o1 = ->
+      o2 = ->
+
+      ext(o1, o2)
+
+      assert.notSame o1.prototype, o2.prototype
+
 
   "bind":
     topic: ->

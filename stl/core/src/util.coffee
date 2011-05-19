@@ -54,7 +54,7 @@ H = (object) -> new Hash(object)
 ext = (one, another) ->
   `another == null && (another = {})`
 
-  for key of another
+  for own key of another
     one[key] = another[key]
 
   return one
