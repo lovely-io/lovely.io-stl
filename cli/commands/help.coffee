@@ -35,7 +35,7 @@ exports.init = (args) ->
   if commands_list().indexOf(args[0]) > -1
     print require('./'+ args[0]).help(args.slice(1))
   else
-    print "Unknown command '#{args[0]}'"
+    print_error "Unknown command '#{args[0]}'"
 
 
 # the help string

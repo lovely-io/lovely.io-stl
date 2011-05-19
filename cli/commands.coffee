@@ -24,6 +24,15 @@ global.print = (str) ->
   console.log(str)
 
 #
+# An uniformed errors printing feature
+#
+# NOTE: halts the process!
+#
+global.print_error = (str)->
+  console.log("ERROR: ".red + str)
+  process.exit(0)
+
+#
 # Makes a string of certain size by adding spaces at the end
 #
 # @param {Number} desired length

@@ -3,7 +3,8 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-fs = require('fs')
+fs   = require('fs')
+path = require('path')
 
 #
 # Starts the new project generation
@@ -51,18 +52,23 @@ generate = (projectname, args) ->
 exports.init = (args) ->
   name_re = ///
     ^[a-z0-9]     # it should start with a letter or a number
-    [a-z0-9\-_]+  # should hase only alpha-numberic symbols
+    [a-z0-9\-]+   # should hase only alpha-numberic symbols
     [a-z0-9]$     # end with a letter or a number
   ///
 
-  if args[0].match(name_re)
-    try
-      fs.lstatSync("#{process.cwd()}/#{args[0]}")
-      print "Directory already exists".red
-    catch e
-      generate(args[0], args.slice(1))
-  else
-    print "Project name should match: ".red + name_re.toString().yellow
+  project_name = args.shift()
+
+  if !project_name
+    print_error "You have to specify the project name"
+
+  if !name_re.test(project_name)
+    print_error "Project name should match: " + name_re.toString().yellow
+
+  if path.existsSync("#{process.cwd()}/#{project_name}")
+    print_error "Directory already exists"
+
+  generate(project_name, args)
+
 
 
 exports.help = (args) ->

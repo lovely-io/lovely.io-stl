@@ -26,22 +26,21 @@ exports.init = (args)->
   path     = require('path')
   package  = args.shift()
 
-  if !package
-    print "FAILED:".red + " You should specify the package name"
-  else
-    location[location.length - 1] == '/' || (location += '/')
-    location += "packages/#{package}"
 
-    if !path.existsSync(location)
-      print "FAILED: ".red + "Could not locate package '#{package}'"
-    else
-      version = args.shift()
-      version = find_latest(location) unless version
+  print_error "You should specify the package name" if !package
 
-      if !path.existsSync("#{location}/#{version}")
-        print "FAILED: ".red + "Could not version '#{version}' of '#{package}'"
-      else
-        system("cd #{location}; ln -s #{version} current")
+  location[location.length - 1] == '/' || (location += '/')
+  location += "packages/#{package}"
+
+  print_error "Could't locate package '#{package}'" if !path.existsSync(location)
+
+  version = args.shift()
+  version = find_latest(location) unless version
+
+  if !path.existsSync("#{location}/#{version}")
+    print_error "Could't find version '#{version}' of '#{package}'"
+
+  system("cd #{location}; ln -s #{version} current")
 
 
 exports.help = (args)->
