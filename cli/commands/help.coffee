@@ -9,6 +9,24 @@ commands_list = ->
   require('fs').readdirSync(__dirname).map (file) ->
     file.split('.')[0]
 
+# returns the commands list in a batches of given length
+commands_list_in_batches = (length)->
+  separator = ', '
+  batches   = []
+  batch     = []
+  commands  = commands_list()
+  commands.sort()
+
+  for name in commands
+    if batch.join(separator).length > length
+      batches.push(batch.join(separator))
+      batch = []
+
+    batch.push(name)
+
+  batches.push(batch.join(separator))
+  batches
+
 
 # kicks in the command
 exports.init = (args) ->
@@ -26,7 +44,7 @@ exports.help = (args) ->
   Usage: lovely <command>
 
   Where <command> is one of:
-      #{commands_list().join(', ')}
+      #{commands_list_in_batches(60).join("\n    ")}
 
   Help usage: lovely help <command>
 
