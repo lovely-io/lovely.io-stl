@@ -15,8 +15,9 @@ fs = require('fs')
 generate = (projectname, args) ->
   directory    = "#{process.cwd()}/#{projectname}"
   project_tpl  = "#{__dirname}/../project_tpl"
-  use_coffee   = args.indexOf('--no-coffee') == -1
-  use_stylus   = args.indexOf('--no-stylus') == -1
+  use_coffee   = args.indexOf('--js')     == -1
+  use_stylus   = args.indexOf('--stylus') != -1
+  use_sass     = !use_stylus && args.indexOf('--css') == -1
   placeholders =
     projectname: projectname,
     year:        new Date().getFullYear(),
@@ -29,8 +30,10 @@ generate = (projectname, args) ->
   suitable = (filename) ->
     ((use_coffee and filename != 'main.js')      or
     (!use_coffee and filename != 'main.coffee')) and
-    ((use_stylus and filename != 'main.css')     or
-    (!use_stylus and filename != 'main.styl'))
+    ((use_stylus and filename != 'main.css' and filename != 'main.sass') or
+    (!use_stylus and filename != 'main.styl'))   and
+    ((use_sass   and filename != 'main.css' and filename != 'main.styl') or
+    (!use_sass   and filename != 'main.sass'))
 
   for filename in fs.readdirSync(project_tpl)
     if suitable(filename)
@@ -70,7 +73,8 @@ exports.help = (args) ->
       lovely new <project-name>
 
   Options:
-      --no-coffee         don't use coffee-script
-      --no-stylus         don't use stylus for css
+      --js         use JavaScript for scripting
+      --css        use CSS for styles
+      --stylus     use Stylus for styles
 
   """
