@@ -8,36 +8,6 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Hash = new Class
-  #
-  # Class level methods. Unlike the prototype methods
-  # those always return plain objects instead of Hash instances
-  #
-  # Basically the idea is to provide a quick interface to handle
-  # plain objects without bothering to manually convert things into
-  # hashes back and forth
-  #
-  extend:
-    keys:   (object) -> new Hash(object).keys()
-    values: (object) -> new Hash(object).values()
-    empty:  (object) -> new Hash(object).empty()
-    clone:  (object) -> new Hash(object).clone()._
-
-    each: (object, callback, scope) ->
-      new Hash(object).each(callback, scope)._
-
-    map: (object, callback, scope) ->
-      new Hash(object).map(callback, scope)
-
-    filter: (object, callback, scope) ->
-      new Hash(object).filter(callback, scope)._
-
-    reject: (object, callback, scope) ->
-      new Hash(object).reject(callback, scope)._
-
-    merge: ->
-      args = A(arguments); hash = new Hash(args.shift())
-      hash.merge.apply(hash, args)._
-
   _: null
 
   #
@@ -50,6 +20,29 @@ Hash = new Class
     this._ = object;
   }`
 
+
+#
+# Making `Hash.include` to automatically generate
+# class level methods that will work with raw
+# JavaScript objects. They are all the same
+# the `Hash.prototype` ones, but they always
+# take and return raw objects
+#
+Hash.include = (params)->
+  Class.include.apply(Hash, arguments)
+
+  for name, method of params
+    do (name)->
+      Hash[name] = ->
+        args = A(arguments)
+        hash = new Hash(args.shift())
+        args = hash[name].apply(hash, args)
+        args = args._ if args instanceof Hash
+        args
+
+
+# the actual Hash methods
+Hash.include
   #
   # Returns the list of keys in the object
   #
