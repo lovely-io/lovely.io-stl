@@ -9,8 +9,8 @@ Class = (parent, params) ->
     parent = null
 
   params or= {}
-  Klass = -> this.$super.apply(this, arguments) if this.$super
-  Klass = params.constructor if params.hasOwnProperty('constructor')
+  Klass = -> this.$super.apply(this, arguments) if this.$super isnt undefined
+  Klass = params.constructor if `__hasProp.call(params, 'constructor')`
 
   if parent # handling the inheritance
     Super = ->
@@ -24,9 +24,8 @@ Class = (parent, params) ->
   Klass.prototype.constructor = Klass  # instances class self-reference
 
   # loading shared modules
-  ext(Klass, Class)
-    .extend.apply( Klass, ensure_Array(params.extend  || []))
-    .include.apply(Klass, ensure_Array(params.include || []))
+  (Klass.include = Class.include).apply(Klass, ensure_Array(params.include || []))
+  (Klass.extend  = Class.extend).apply( Klass, ensure_Array(params.extend  || []))
 
   delete(params.extend)
   delete(params.include)
