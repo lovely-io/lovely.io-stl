@@ -111,60 +111,63 @@ minify = (directory)->
 # @return {String} inlined css
 #
 inline_css = (directory) ->
-  try
-    format = path.existsSync("#{directory}/main.styl")
-    format = if format then 'styl' else 'css'
+  for format in ['css', 'sass', 'styl']
+    if path.existsSync("#{directory}/main.#{format}")
+      style = fs.readFileSync("#{directory}/main.#{format}").toString()
 
-    style  = fs.readFileSync("#{directory}/main.#{format}").toString()
+  return "" if !style
 
-    if format is 'styl'
-      require('stylus').render style, (err, src) ->
-        if err then console.log(err) else style = src
-
-    style = style
-
-    # preserving IE hacks
-    .replace(/\/\*\\\*\*\/:/g, '_ie8_s:')
-    .replace(/\\9;/g, '_ie8_e;')
-
-    # compacting the styles
-    .replace(/\/\*[\S\s]*?\*\//img, '')
-    .replace(/\n\s*\n/mg, "\n")
-    .replace(/\s+/img, ' ')
-    .replace(/\s*(\+|>|\||~|\{|\}|,|\)|\(|;|:|\*)\s*/img, '$1')
-    .replace(/;\}/g, '}')
-    .replace(/\)([^;}\s])/g, ') $1')
-    .trim()
-
-    # getting IE hacks back
-    .replace(/([^\s])\*/g,   '$1 *')
-    .replace(/_ie8_s:/g,     '/*\\\\**/:')
-    .replace(/_ie8_e(;|})/g, '\\\\9$1')
-
-    # escaping the quotes
-    .replace(/"/g, '\\"')
+  # converting from various formats
+  if format is 'sass'
+    style = require('sass').render(style)
+  else if format is 'styl'
+    require('stylus').render style, (err, src) ->
+      if err then console.log(err) else style = src
 
 
-    # making the JavaScript embedding script
-    if style.match(/^\s*$/) then '' else """
+  # minfigying the stylesheets
+  style = style
 
-      // embedded css-styles
-      (function(document) {
-        var style = document.createElement('style');
-        var rules = document.createTextNode("#{style}");
+  # preserving IE hacks
+  .replace(/\/\*\\\*\*\/:/g, '_ie8_s:')
+  .replace(/\\9;/g, '_ie8_e;')
 
-        style.type = 'text/css';
-        document.getElementsByTagName('head')[0].appendChild(style);
+  # compacting the styles
+  .replace(/\/\*[\S\s]*?\*\//img, '')
+  .replace(/\n\s*\n/mg, "\n")
+  .replace(/\s+/img, ' ')
+  .replace(/\s*(\+|>|\||~|\{|\}|,|\)|\(|;|:|\*)\s*/img, '$1')
+  .replace(/;\}/g, '}')
+  .replace(/\)([^;}\s])/g, ') $1')
+  .trim()
 
-        if (style.styleSheet) {
-          style.styleSheet.cssText = rules.nodeValue;
-        } else {
-          style.appendChild(rules);
-        }
-      })(this.document);
-      """
-  catch e
-    "" # file doesn't exists
+  # getting IE hacks back
+  .replace(/([^\s])\*/g,   '$1 *')
+  .replace(/_ie8_s:/g,     '/*\\\\**/:')
+  .replace(/_ie8_e(;|})/g, '\\\\9$1')
+
+  # escaping the quotes
+  .replace(/"/g, '\\"')
+
+  return "" if /^\s*$/.test(style) # no need to wrap an empty style
+
+  """
+
+  // embedded css-styles
+  (function(document) {
+    var style = document.createElement('style');
+    var rules = document.createTextNode("#{style}");
+
+    style.type = 'text/css';
+    document.getElementsByTagName('head')[0].appendChild(style);
+
+    if (style.styleSheet) {
+      style.styleSheet.cssText = rules.nodeValue;
+    } else {
+      style.appendChild(rules);
+    }
+  })(this.document);
+  """
 
 exports.compile = compile
 exports.minify  = minify
