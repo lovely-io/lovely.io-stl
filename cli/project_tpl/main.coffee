@@ -5,11 +5,14 @@
 #
 
 # hook up dependencies
-var core = require('core')
-var dom  = require('dom')
+core = require('core')
+dom  = require('dom')
 
 # glue in your files
 include 'src/my_file'
 
-# export your objects
+# export your objects in the module
 exports.version = '%{version}'
+
+# global exports (don't use unless you're really need that)
+global.my_stuff = 'that pollutes the global scope'
