@@ -19,8 +19,13 @@ exports.init = (args) ->
 
   # dynamically serving the main module script
   server.get '/main.js', (req, res) ->
-    console.log(" Compiling: "+ "/main.js".grey)
-    res.send if minify then source.minify() else source.compile()
+    src  = if minify then source.minify() else source.compile()
+    size = Math.round(src.length/102.4)/10
+    console.log(" Compiling: "+ "/main.js (#{size}Kb #{if minify then 'minified' else 'source'})".grey)
+    res.charset = 'utf-8'
+    res.header('Cache-Control', 'no-cache')
+    res.contentType('text/javascript')
+    res.send src
 
   server.get '/lovely.io/:module.js', (req, res) ->
     module = req.params.module
@@ -29,25 +34,30 @@ exports.init = (args) ->
     console.log(" Serving:   "+ "'#{module}' module from #{script}".grey)
 
     fs.readFile script, (err, data)->
+      res.contentType('text/javascript')
       res.send data
 
   server.get '/favicon.ico', (req, res) ->
     res.send '' # just keeping it happy
 
   # listening all the pages in the user project
-  server.get '/:page?', (req, res) ->
+  server.get /^\/(.*?)$/, (req, res) ->
     minify = req.query.minify is 'true'
-    console.log(" Sending:   "+ "/#{req.params.page || 'index'}.html".grey)
-    res.send fs.readFileSync(
-      "#{process.cwd()}/#{req.params.page || 'index'}.html"
-    )
+    filename = req.params[0] || 'index'
+    filename.substr(filename.length - 5) == '.html' || filename += '.html'
+
+    console.log(" Sending:   "+ "/#{filename}".grey)
+
+    fs.readFile "#{process.cwd()}/#{filename}", (err, data)->
+      res.charset = 'utf-8'
+      res.contentType('text/html')
+      res.send data
+
 
   server.listen(port)
 
-  print """
-  Listening at: http://127.0.0.0:#{port}
-  Press Ctrl+C to hung up
-  """
+  print "Listening at: http://127.0.0.0:#{port}\n"+
+    "Press Ctrl+C to hung up\n".grey
 
 
 exports.help = (args) ->
