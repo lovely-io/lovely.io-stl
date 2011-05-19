@@ -31,7 +31,7 @@ Hash = new Class
 Hash.include = (params)->
   Class.include.apply(Hash, arguments)
 
-  for name, method of params
+  for name of params
     do (name)->
       Hash[name] = ->
         args = A(arguments)
