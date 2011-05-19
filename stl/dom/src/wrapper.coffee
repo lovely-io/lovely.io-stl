@@ -20,7 +20,7 @@ Wrapper = new Class
         return Wrapper[element.tagName]
       else return undefined
 
-  _: null,
+  _: null
 
   #
   # Basic constructor

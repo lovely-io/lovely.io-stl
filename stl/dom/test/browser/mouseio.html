@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lovely DOM - Mouse IO Test</title>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <script src="/lovely.io/core.js"></script>
+    <script src="/main.js"></script>
+    <script type="text/javascript">
+      var $ = Lovely.modules.dom;
+
+      $(function() {
+        Lovely.L(['one', 'two', 'three']).each(function(id) {
+          $('#' + id).on('mouseenter', 'addClass',    id + '-in');
+          $('#' + id).on('mouseleave', 'removeClass', id + '-in');
+          /*
+          $(document).delegate('mouseenter', '.'+id, 'addClass', id + '-in');
+          $(document).delegate('mouseleave', '.'+id, 'removeClass', id + '-in');
+
+          $(document).delegate('mouseenter', '#complex-case', function() {
+            this.addClass('complex-case-hover');
+          });
+          $(document).delegate('mouseleave', '#complex-case', function() {
+            this.removeClass('complex-case-hover');
+          });
+
+          $(document).delegate('mouseenter', '#complex-case ul', function() {
+            this.addClass('complex-case-ul-hover');
+          });
+          $(document).delegate('mouseleave', '#complex-case ul', function() {
+            this.removeClass('complex-case-ul-hover');
+          });*/
+        });
+      });
+    </script>
+    <style type="text/css">
+      html, body {
+        font-family: Verdana, Helvetica;
+        font-size: 11pt;
+      }
+      div.test-block {
+        float: left;
+        margin-right: 3em;
+      }
+      div.test-block div {
+        float: left;
+        display: inline-block;
+        display: inline;
+        zoom: 1;
+        background: #EEE;
+        border: 1px solid #bbb;
+        border-radius: .25em;
+        -moz-border-radius: .25em;
+        -webkit-border-radius: .25em;
+        padding: 2em;
+        position: relative;
+      }
+      div.test-block div:hover {
+        border-color: #888;
+      }
+      div.test-block h3 {
+        margin: 0;
+        margin-bottom: 1em;
+      }
+      #three, .three {
+        right: -5em;
+      }
+      .one-in {
+        background: #FDD !important;
+      }
+      .two-in {
+        background: #DFD !important;
+      }
+      .three-in {
+        background: #DDF !important;
+      }
+
+      #complex-case {
+        background: #EEE;
+        border: 1px solid #bbb;
+        border-radius: .25em;
+        -moz-border-radius: .25em;
+        -webkit-border-radius: .25em;
+        padding: 1em;
+        width: 20em;
+      }
+      .complex-case-hover {
+        background: #FFd !important;
+      }
+      .complex-case-ul-hover {
+        background: #FdF !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>MouseEnter/MouseLeave Events Test</h2>
+    <p>
+      <div class="test-block">
+        <h3>Direct Handling</h3>
+        <div id="one">
+          <div id="two">
+            <div id="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-block">
+        <h3>UJS Handling</h3>
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="clear: both"></div>
+    </p>
+
+    <h2>More Complicated Case</h2>
+    <p>
+      <div id="complex-case">
+        <ul>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+          <li><b>Some</b> <i>sort <u>of</u> <s>text</s></i></li>
+        </ul>
+      </div>
+    </p>
+
+    <p class="white-space"></p>
+  </body>
+</html>

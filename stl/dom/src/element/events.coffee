@@ -101,7 +101,7 @@ Element_make_listeners = (instance) ->
         event.stop() if hash.c.apply(instance, args) is false
 
       # attaching the actual event listener
-      if BROWSER_OLD_IE
+      if BROWSER_IS_OLD_IE
         instance._.attachEvent('on'+ hash.r, hash.w)
       else
         instance._.addEventListener(hash.r, hash.w, false)
@@ -114,7 +114,7 @@ Element_make_listeners = (instance) ->
   list.splice = (position) ->
     hash = this[position]
 
-    if BROWSER_OLD_IE
+    if BROWSER_IS_OLD_IE
       instance._.detachEvent('on'+ hash.r, hash.w)
     else
       instance._.removeEventListener(hash.r, hash.w, false)

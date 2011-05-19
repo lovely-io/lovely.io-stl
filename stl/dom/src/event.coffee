@@ -36,7 +36,7 @@ Event = new Class Wrapper,
       event = ext({type: event}, options)
       @stopped = event.bubbles is false
 
-      if bound_element isnt null
+      if options isnt null
         ext(this, options)
 
     @_             = event
@@ -64,7 +64,7 @@ Event = new Class Wrapper,
 
 
     # making old IE attrs looks like w3c standards
-    if BROWSER_OLD_IE and 'srcElement' of event
+    if BROWSER_IS_OLD_IE and 'srcElement' of event
       @which         = if event.button is 2 then 3 else if event.button is 4 then 2 else 1
 
       @target        = wrap(event.srcElement) || options

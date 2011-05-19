@@ -24,8 +24,9 @@ mouseio_emit = (raw, element, enter) ->
   # replacing the #find method so that UJS didn't
   # get broke with trying to find nested elements
   event.find = (css_rule)->
-    if current_Document.find(css_rule, true).indexOf(this.target._) isnt -1
-      return this.target
+    for element in current_Document.find(css_rule, true)
+      if element is this.target._
+        return this.target
 
   event.target.emit(event)
   current_Document.emit(event)

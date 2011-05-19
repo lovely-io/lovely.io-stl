@@ -29,7 +29,7 @@ Events_delegation =
         @on(event, build_delegative_listener(css_rule, entry, @))
 
         # adding the css-rule and callback references to the store
-        ext @_listeners.last[@_listeners.length - 1],
+        ext @_listeners[@_listeners.length - 1],
           dr: css_rule, dc: entry[0]
 
     return @
@@ -104,7 +104,7 @@ build_delegative_listener = (css_rule, entry, scope)->
   (event)->
     target = event.find(css_rule)
 
-    if target is null
+    if `target == null`
       return target
     else if typeof(callback) is 'string'
       return target[callback].apply(target, args)

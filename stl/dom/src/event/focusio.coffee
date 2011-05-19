@@ -25,9 +25,9 @@ focusio_boobler = (raw_event)->
 # manually like they were normal events
 #
 #
-if BROWSER_OLD_IE
-  document.attachEvent('onfocusin',  focus_boobler)
-  document.attachEvent('onfocusout', focus_boobler)
+if BROWSER_IS_OLD_IE
+  document.attachEvent('onfocusin',  focusio_boobler)
+  document.attachEvent('onfocusout', focusio_boobler)
 else
-  document.addEventListener('focus', focus_boobler, true)
-  document.addEventListener('blur',  focus_boobler, true)
+  document.addEventListener('focus', focusio_boobler, true)
+  document.addEventListener('blur',  focusio_boobler, true)

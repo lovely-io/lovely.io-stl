@@ -10,7 +10,7 @@ Document.include
       doc   = @_
       ready = bind(@emit, @, 'ready')
 
-      if 'readyState' of doc # IE and Konqueror
+      if 'readyState' of doc
         do ->
           if (doc.readyState in ['loaded', 'complete'])
             ready()
@@ -21,4 +21,4 @@ Document.include
 
       @_ir = true # prevening from double initialization
 
-    this.$super.apply(this, arguments)
+    Element_events.on.apply(this, arguments)
