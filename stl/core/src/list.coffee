@@ -8,8 +8,8 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-List = new Class Array,
-  length: 0,
+class List extends Array
+  length: 0
 
   #
   # Basic constructor
@@ -20,6 +20,7 @@ List = new Class Array,
   constructor: `function List(items) {
     Array_proto.splice.apply(this, [0,0].concat(A(items)));
   }`
+
 
 # using direct prototype extension so that it didn't
 # try to overload the existing Array methods

@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Window = new Class Wrapper,
+class Window extends Wrapper
   # copying the standard events handling interface from `Element.prototype`
   include: Element_events
 

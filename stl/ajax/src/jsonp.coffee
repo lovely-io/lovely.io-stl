@@ -3,5 +3,5 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-JSONP = new Class
+class JSONP
   constructor: () ->

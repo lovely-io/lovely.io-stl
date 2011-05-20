@@ -67,7 +67,15 @@ ext Class,
 
           parent = parent.__super__
 
-        this.prototype[key] = Class_make_method(module[key], super_method)
+        method = module[key]
+
+        this.prototype[key] = do (method, super_method)->
+          if super_method then ->
+            this.$super = super_method
+            method.apply(this, arguments)
+          else
+            method
+
 
     return this
 
@@ -83,12 +91,3 @@ ext Class,
       ext(this, module)
 
     return this
-
-
-# preserves the supermethod reference when exists
-Class_make_method = (method, super_method) ->
-  if super_method then ->
-    this.$super = super_method
-    method.apply(this, arguments)
-  else
-    method

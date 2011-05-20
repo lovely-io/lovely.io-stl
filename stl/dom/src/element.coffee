@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Element = new Class Wrapper,
+class Element extends Wrapper
 
   #
   # Basic constructor

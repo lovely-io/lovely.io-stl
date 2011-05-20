@@ -3,5 +3,5 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-IFrame = new Class
+class IFrame
   constructor: () ->

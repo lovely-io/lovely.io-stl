@@ -35,7 +35,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Search = new Class Lovely.List,
+class Search extends Lovely.List
 
   #
   # Basic constructor

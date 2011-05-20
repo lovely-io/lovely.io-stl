@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Document = new Class Wrapper,
+class Document extends Wrapper
   # copying the standard events handling and navigation interfaces
   include: [Element_events, Search_module]
 

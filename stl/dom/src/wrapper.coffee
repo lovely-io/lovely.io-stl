@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Wrapper = new Class
+class Wrapper
   extend:
     Cache: [] # the dom-wrappers registry
 
@@ -20,7 +20,7 @@ Wrapper = new Class
         return Wrapper[element.tagName]
       else return undefined
 
-  _: null
+  _: null # the standard raw dom-unit reference
 
   #
   # Basic constructor

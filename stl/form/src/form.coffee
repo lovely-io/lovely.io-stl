@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Form = new Class Element,
+class Form extends Element
 
   constructor: (options) ->
     this.$super 'form', options

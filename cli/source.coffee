@@ -29,10 +29,22 @@ compile = (directory)->
 
   # converting coffee into javascript if needed
   if format is 'coffee'
+    # hijacking the Coffee's class definitions and converting them in our classes
+    source = source.replace /(\n\s*)class\s+([^\s]+)(\s+extends\s+([^\s]+))?/g,
+      (match, start, Klass, smth, Super)->
+        if !Super then "#{start}#{Klass} = new Class"
+        else "#{start}#{Klass} = new Class #{Super},"
+
+    # building the basic scripts
     source = require('coffee-script').compile(source, {bare: true})
 
     # fixing coffee's void(0) hack back to `undefined`
-    source = source.replace(/([^a-z0-9\_]+)void\s+0([^a-z0-9]+)/ig, '$1undefined$2')
+    source = source.replace /([^a-z0-9\_]+)void\s+0([^a-z0-9]+)/ig, '$1undefined$2'
+
+    # adding the class names to the constructor functions
+
+
+
 
   # adding the package dependencies
   source = source.replace('%{version}', options.version)

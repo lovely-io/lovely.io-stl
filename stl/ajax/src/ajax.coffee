@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Ajax = new Class
+class Ajax
   extend:
     Options:
       method:   'post'

@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Event = new Class Wrapper,
+class Event extends Wrapper
   type:          null
 
   which:         null
