@@ -60,7 +60,7 @@ describe 'Element', module,
 
   "dynamic typecasting":
     topic: -> load_Element this, (Element) ->
-      this.Wrapper.TABLE = new this.Lovely.Class Element,
+      this.Wrapper.set 'table', new this.Lovely.Class Element,
         constructor: (one, two) ->
           this.$super(one, two)
 
@@ -69,7 +69,7 @@ describe 'Element', module,
     "should automatically typecast elements by tag name": (Element) ->
       table = new Element('table')
 
-      assert.instanceOf table, this.Wrapper.TABLE
+      assert.instanceOf table, this.Wrapper.get('table')
       assert.instanceOf table, Element
 
     "should bypass the attributes in place": (Element) ->
@@ -82,7 +82,7 @@ describe 'Element', module,
       raw_dom = this.browser.document.createElement('table')
       element = new Element(raw_dom)
 
-      assert.instanceOf element, this.Wrapper.TABLE
+      assert.instanceOf element, this.Wrapper.get('table')
       assert.instanceOf element, Element
 
 

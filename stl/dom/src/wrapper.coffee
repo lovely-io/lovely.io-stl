@@ -6,6 +6,37 @@
 class Wrapper
   extend:
     Cache: [] # the dom-wrappers registry
+    Tags:  {} # tags specific wrappers
+
+    #
+    # Sets a default dom wrapper for the tag
+    #
+    # @param {String} tag name
+    # @param {Element} tag specific dom-wrapper
+    # @return {Wrapper} this
+    #
+    set: (tag, wrapper)->
+      Wrapper.Tags[tag.toUpperCase()] = wrapper
+      Wrapper
+
+    #
+    # Tries to return a tag-specific dom-wrapper for the tag
+    #
+    # @param {String} tag name
+    # @return {Element} wrapper of `undefined`
+    #
+    get: (tag)->
+      Wrapper.Tags[tag.toUpperCase()]
+
+    #
+    # Removes a default tag-specific dom-wrapper for the tag
+    #
+    # @param {String} tag name
+    # @return {Wrapper} this
+    #
+    remove: (tag)->
+      delete Wrapper.Tags[tag.toUpperCase()]
+      Wrapper
 
     #
     # Tries to find a suitable dom-wrapper
@@ -16,8 +47,8 @@ class Wrapper
     # @return {Wrapper} suitable wrapper or `undefined`
     #
     Cast: (element) ->
-      if element.tagName of Wrapper
-        return Wrapper[element.tagName]
+      if element.tagName of Wrapper.Tags
+        return Wrapper.Tags[element.tagName]
       else return undefined
 
   _: null # the standard raw dom-unit reference
