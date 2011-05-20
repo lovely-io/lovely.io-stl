@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lovely DOM - UJS Test</title>
+    <link rel="stylesheet" type="text/css" href="test.css" />
+    <script src="/lovely.io/core.js"></script>
+    <script src="/main.js"></script>
+    <script type="text/javascript">
+      var $ = Lovely.modules.dom;
+
+      // the click tests
+      $(document).delegate('#click-test-1 .one',   'click', 'toggleClass', 'red')
+      $(document).delegate('#click-test-2 .two',   'click', 'toggleClass', 'green')
+      $(document).delegate('#click-test-3 .three', 'click', 'toggleClass', 'blue')
+
+      // mouse over/out tests
+      $(document).delegate('#hover-test-1 .one', {
+        mouseover: function() { this.addClass('red') },
+        mouseout:  function() { this.removeClass('red') }
+      });
+      $(document).delegate('#hover-test-2 .two', {
+        mouseover: function() { this.addClass('green') },
+        mouseout:  function() { this.removeClass('green') }
+      });
+      $(document).delegate('#hover-test-3 .three', {
+        mouseover: function() { this.addClass('blue') },
+        mouseout:  function() { this.removeClass('blue') }
+      });
+
+      // the focuse/blur tests
+      $(document).delegate('#focus-test-1 .one', {
+        focus: ['addClass',    'red'],
+        blur:  ['removeClass', 'red']
+      });
+      $(document).delegate('#focus-test-2 .two', {
+        focus: ['addClass',    'green'],
+        blur:  ['removeClass', 'green']
+      });
+      $(document).delegate('#focus-test-3 .three', {
+        focus: ['addClass',    'blue'],
+        blur:  ['removeClass', 'blue']
+      });
+
+      // making some dynamic content
+      $(document).on('ready', function() {
+        Lovely.L(['click', 'hover', 'focus']).each(function(name) {
+          Lovely.L(['3', '2']).each(function(num) {
+            var id = '#'+name+'-test-1';
+            $(id)[0].clone().attr('id', name+'-test-'+num)
+              .insertTo(id, 'after');
+          });
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <h1>Lovely DOM - UJS Test</h1>
+
+    <h2>Simple Clicks Catcher</h2>
+    <p>
+      <div class="test-block" id="click-test-1">
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="clear: both"></div>
+    </p>
+
+    <h2>Hovers Handler</h2>
+    <p>
+      <div class="test-block" id="hover-test-1">
+        <div class="one">
+          <div class="two">
+            <div class="three">Boo!</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="clear: both"></div>
+    </p>
+
+    <h2>Focus/Blur Test</h2>
+    <p>
+      <div class="test-block" id="focus-test-1">
+        <div class="one">
+          <div class="two">
+            <input type="text" value="Boo!" class="three" />
+          </div>
+        </div>
+      </div>
+
+      <div style="clear: both"></div>
+    </p>
+
+    <p class="white-space"></p>
+  </body>
+</html>

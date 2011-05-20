@@ -145,14 +145,15 @@ class Event extends Wrapper
   # @param {String} css-rule
   # @return {Element} mataching element or `null` if nothing found
   #
-  find: (css_class)->
+  find: (css_rule)->
     if @target instanceof Wrapper and @currentTarget instanceof Wrapper
       target = @target._
       search = @currentTarget.find(css_rule, true)
 
       while target isnt null
-        if search.indexOf(target) isnt -1
-          return wrap(target)
+        for element in search
+          if element is target
+            return wrap(target)
 
         target = target.parentNode
 

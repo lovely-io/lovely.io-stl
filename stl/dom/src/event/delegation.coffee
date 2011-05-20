@@ -7,50 +7,63 @@ Events_delegation =
   #
   # Attaches a delegative event listener to the element/document
   #
-  #    $(element).delegate('click', '#css.rule', function() {...});
-  #    $(element).delegate('click', '#css.rule', 'addClass', 'boo');
-  #    $(element).delegate('click', '#css.rule', 'hide');
+  #    $(element).delegate('#css.rule', 'click', function() {...});
+  #    $(element).delegate('#css.rule', 'click', 'addClass', 'boo');
+  #    $(element).delegate('#css.rule', 'click', 'hide');
   #
-  #    $(element).delegate('click', {
-  #      '#css.rule1': function() {},
-  #      '#css.rule3': ['addClass', 'boo'],
-  #      '#css.rule4': 'hide'
+  #    $(element).delegate('#css.rule', {
+  #      click: function() {},
+  #      focus: 'hide',
+  #      blur:  ['addClass', 'boo']
   #    });
   #
-  # @param {String} event name
-  # @param {String|Object} css-rule a hash or rules
+  # @param {String} css-rule
+  # @param {String|Object} event-name or a hash of event handlers
   # @param {Function} callback
   # @return {Wrapper} this
   #/
-  delegate: (event)->
-    for list, css_rule of delegation_rules(arguments)
-      for entry in list
-        # registering the delegative listener
-        @on(event, build_delegative_listener(css_rule, entry, @))
+  delegate: (css_rule, event)->
+    if typeof(event) is 'string'
+      args     = A(arguments).slice(2)
+      callback = args.shift()
 
-        # adding the css-rule and callback references to the store
-        ext @_listeners[@_listeners.length - 1],
-          dr: css_rule, dc: entry[0]
+      @on event, (event)->
+        target = event.find(css_rule)
+
+        if `target != null`
+          if typeof(callback) is 'string'
+            target[callback].apply(target, args)
+          else
+            callback.apply(target, [event].concat(args))
+
+        return # nothing
+
+      # adding the css-rule and callback references to the store
+      ext @_listeners[@_listeners.length - 1], dr: css_rule, dc: callback
+
+    else # assuming it's a hash of event-handlers
+      for args, callback of event
+        @delegate.apply(this, [css_rule, args].concat(ensure_array(callback)))
 
     return @
 
   #
   # Removes a delegative event listener from the element
   #
-  #    $(element).undelegate('click');
-  #    $(element).undelegate('click', '#css.rule');
-  #    $(element).undelegate('click', '#css.rule', function() {});
-  #    $(element).undelegate('click', '#css.rule', 'addClass', 'boo');
-  #    $(element).undelegate('click', '#css.rule', 'hide');
+  #    $(element).undelegate('#css.rule');
+  #    $(element).undelegate('#css.rule', 'click');
+  #    $(element).undelegate('#css.rule', 'click', function() {});
+  #    $(element).undelegate('#css.rule', 'click', 'addClass', 'boo');
+  #    $(element).undelegate('#css.rule', 'click', 'hide');
   #
-  #    $(element).undelegate('click', {
-  #      '#css.rule1': function() {},
-  #      '#css.rule3': ['addClass', 'boo'],
-  #      '#css.rule4': 'hide'
+  #    $(element).undelegate('#css.rule', {
+  #      click: function() {},
+  #      focus: 'hide',
+  #      blur:  ['addClass', 'boo']
   #    });
   #
-  # @param {String} event name
-  # @param {String|Object} css-rule or a hash or rules
+  # @param {String} css-rule
+  # @param {String|Object} event-name or a hash of event handlers
   # @param {Function} callback
   # @return {Wrapper} this
   #/
@@ -63,81 +76,30 @@ Events_delegation =
   #
   # Checks if there is sucha delegative event listener
   #
-  #    $(element).delegates('click');
-  #    $(element).delegates('click', '#css.rule');
-  #    $(element).delegates('click', '#css.rule', function() {});
-  #    $(element).delegates('click', '#css.rule', 'addClass', 'boo');
-  #    $(element).delegates('click', '#css.rule', 'hide');
+  #    $(element).delegates('#css.rule');
+  #    $(element).delegates('#css.rule', 'click');
+  #    $(element).delegates('#css.rule', 'click', function() {});
+  #    $(element).delegates('#css.rule', 'click', 'addClass', 'boo');
+  #    $(element).delegates('#css.rule', 'click', 'hide');
   #
-  #    $(element).delegates('click', {
-  #      '#css.rule1': function() {},
-  #      '#css.rule3': ['addClass', 'boo'],
-  #      '#css.rule4': 'hide'
+  #    $(element).delegates('#css.rule', {
+  #      click: function() {},
+  #      focus: 'hide',
+  #      blur:  ['addClass', 'boo']
   #    });
   #
   # NOTE:
   #    if several rules are specified then it will check if
   #    _any_ of them are delegateed
   #
-  # @param {String} event name
-  # @param {String|Object} css-rule or a hash of rules
+  # @param {String} css-rule
+  # @param {String|Object} event-name or a hash of event handlers
   # @param {Function} callback
   # @return {Boolean} check result
   #
   delegates: ->
     delegation_listeners(arguments, @).length is 0
 
-
-#
-# Builds the actual event listener that will delegate stuff
-# to other elements as they reach the element where the listener
-# attached
-#
-# @param {String} String css rule
-# @param {Arguments} Arguments the original arguments list
-# @param {Wrapper} Object scope
-# @return {Function} the actual event listener
-#
-build_delegative_listener = (css_rule, entry, scope)->
-  args = A(entry); callback = args.shift()
-
-  (event)->
-    target = event.find(css_rule)
-
-    if `target == null`
-      return target
-    else if typeof(callback) is 'string'
-      return target[callback].apply(target, args)
-    else
-      return callback.apply(target, [event].concat(args))
-
-#
-# Converts the events-delegation api arguments
-# into a systematic hash of rules
-#
-# @param {Arguments} arguments
-# @return {Object} hash of rules
-#
-delegation_rules = (raw_args)->
-  args     = A(raw_args)
-  rules    = args[1] || {}
-  hash     = {}
-  css_rule = null
-
-  if typeof(rules) is 'string'
-    hash[rules] = args.slice(2)
-
-    if isArray(hash[rules][0])
-      hash[rules] = ensure_array(entry) for entry in hash[rules][0]
-
-  else hash = rules
-
-  # converting everything into a hash of lists of callbacks
-  for css_rule of hash
-    hash[css_rule] = ensure_array(hash[css_rule])
-    hash[css_rule] = if isArray(hash[css_rule][0]) then hash[css_rule] else [hash[css_rule]]
-
-  return hash
 
 #
 # Returns the list of delegative listeners that match the conditions
@@ -147,21 +109,24 @@ delegation_rules = (raw_args)->
 # @return {Array} list of matching listeners
 #
 delegation_listeners = (args, object)->
-  event = args[0]
-  rules = delegation_rules(args)
-  rules_are_empty = Lovely.Hash.keys(rules).length is 0
+  args     = A(args)
+  css_rule = args.shift()
+  event    = args.shift()
+  callback = args.shift()
+  result   = []
 
-  L(object._listeners || []).filter (hash)->
-    hash.dr && hash.e is event && (
-      rules_are_empty || do ->
-        for css_rule of rules
-          if hash.dr is css_rule
-            for entry in rules[css_rule]
-              if entry.length is 0 or entry[0] is hash.dc
-                return true
+  if typeof(event) is 'string'
+    for hash in object._listeners
+      if hash.dr is css_rule and (!event or hash.e is event)
+        if !callback or hash.dc is callback
+          result.push(hash)
 
-        return false
-    )
+  else # assuming it's a hash
+    for args, callback of event
+      result = result.concat(delegation_listeners([css_rule, args]
+      .concat(ensure_array(callback)), object))
+
+  result
 
 
 # hooking the API to the `Element` and `Document`
