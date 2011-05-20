@@ -23,9 +23,9 @@ class Hash
   # @param {Object} some object
   # @return void
   #
-  constructor: `function Hash(object) {
-    this._ = object
-  }`
+  constructor: (object)->
+    @_ = object
+    return @
 
 
 #

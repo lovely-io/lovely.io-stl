@@ -17,9 +17,9 @@ class List extends Array
   # @param {mixed} iterable list
   # @return void
   #
-  constructor: `function List(items) {
-    Array_proto.splice.apply(this, [0,0].concat(A(items)));
-  }`
+  constructor: (items)->
+    Array_proto.splice.apply(this, [0,0].concat(A(items)))
+    return @
 
 
 # using direct prototype extension so that it didn't

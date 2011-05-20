@@ -7,6 +7,9 @@ class Window extends Wrapper
   # copying the standard events handling interface from `Element.prototype`
   include: Element_events
 
+  constructor: (window)->
+    Wrapper.call(this, window)
+
   #
   # A self-reference to have a common interface with
   # the rest of the wrappers

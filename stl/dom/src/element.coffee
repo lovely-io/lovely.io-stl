@@ -19,7 +19,7 @@ class Element extends Wrapper
     cast = Wrapper.Cast(element) if @constructor is Element
     return new cast(element, options) if cast isnt undefined
 
-    this.$super(element)
+    Wrapper.call(this, element)
 
     if options isnt undefined
       for key of options

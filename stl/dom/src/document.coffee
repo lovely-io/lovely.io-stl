@@ -7,6 +7,9 @@ class Document extends Wrapper
   # copying the standard events handling and navigation interfaces
   include: [Element_events, Search_module]
 
+  constructor: (document)->
+    Wrapper.call(this, document)
+
   #
   # Returns a wrapped reference to the window where
   # this document belongs to

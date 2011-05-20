@@ -41,8 +41,14 @@ compile = (directory)->
     # fixing coffee's void(0) hack back to `undefined`
     source = source.replace /([^a-z0-9\_]+)void\s+0([^a-z0-9]+)/ig, '$1undefined$2'
 
-    # adding the class names to the constructor functions
 
+  # adding the class names to the constructor functions
+  source = source.replace /([^\s]+)(\s*=\s*new\s+Class\()((.|\n)+?constructor:\s+function\s*\()/mg,
+    (match, Klass, first, second)->
+      if second.indexOf('new Class') is -1 and second.match(/constructor:\s+function\s*\(/).length is 1
+        second = second.replace(/(constructor:\s+function)(\s*\()/, '$1 '+Klass+'$2')
+        "#{Klass}#{first}#{second}"
+      else match.toString()
 
 
 
