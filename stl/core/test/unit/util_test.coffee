@@ -121,7 +121,7 @@ describe 'Core Utils', module,
     fail: ['', 1, 2.2, true, false, null, undefined, [], {}])
 
   "isArray(value)": assertTypeCheck('isArray',
-    ok:   [[]]
+    ok:   [[], new Lovely.List()]
     fail: ['', 1, 2.2, true, false, null, undefined, {}, ->])
 
   "isObject(value)": assertTypeCheck('isObject',

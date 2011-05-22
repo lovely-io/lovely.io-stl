@@ -111,7 +111,7 @@ isFunction = (value) -> typeof(value) is 'function'
 # @param {mixed} some value
 # @return {boolean} check result
 #
-isArray = (value) -> Object_toString.call(value) is '[object Array]'
+isArray = (value) -> Object_toString.call(value) is '[object Array]' or value instanceof List
 
 #
 # Checks if the given value is a plain object
