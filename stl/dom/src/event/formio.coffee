@@ -45,7 +45,7 @@ if BROWSER_IS_OLD_IE # don't bother the others
     document.attachEvent('onkeypress', submit_boobler)
 
 
-  if no_event_support_for('onchange', 'input')
+  if no_event_support('onchange', 'input')
     #
     # Extracts the input field value
     #

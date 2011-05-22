@@ -43,8 +43,8 @@
 
       // making some dynamic content
       $(document).on('ready', function() {
-        Lovely.L(['click', 'hover', 'focus']).each(function(name) {
-          Lovely.L(['3', '2']).each(function(num) {
+        Lovely.L(['click', 'hover', 'focus']).forEach(function(name) {
+          Lovely.L(['3', '2']).forEach(function(num) {
             var id = '#'+name+'-test-1';
             $(id)[0].clone().attr('id', name+'-test-'+num)
               .insertTo(id, 'after');

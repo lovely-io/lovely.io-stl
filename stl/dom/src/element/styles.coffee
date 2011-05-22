@@ -72,7 +72,7 @@ Element.include
   # @return {Element} this
   #
   radioClass: (name) ->
-    this.siblings().each('removeClass', name)
+    this.siblings().forEach('removeClass', name)
     this.addClass(name)
 
   #

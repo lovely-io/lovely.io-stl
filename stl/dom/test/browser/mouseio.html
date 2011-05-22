@@ -9,7 +9,7 @@
       var $ = Lovely.modules.dom;
 
       $(function() {
-        Lovely.L(['one', 'two', 'three']).each(function(id) {
+        Lovely.L(['one', 'two', 'three']).forEach(function(id) {
           $('#' + id).on('mouseenter', 'addClass',    id + '-in');
           $('#' + id).on('mouseleave', 'removeClass', id + '-in');
 

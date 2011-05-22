@@ -50,14 +50,13 @@ Element.include = (hash)->
   Class.include.apply(Element, arguments)
 
   for name, method of hash
-    unless name of Lovely.List.prototype
-      do (name)->
-        Search.prototype[name] = ->
-          for element, i in @
-            result = element[name].apply(element, arguments)
-            return result if i is 0 and result isnt element
+    do (name)->
+      Search.prototype[name] = ->
+        for element, i in @
+          result = element[name].apply(element, arguments)
+          return result if i is 0 and result isnt element
 
-          return @
+        return @
 
 
 

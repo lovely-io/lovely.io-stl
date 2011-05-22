@@ -59,11 +59,7 @@ class Search extends Lovely.List
     @length = css_rule.length
 
     for element,i in css_rule
-      unless element instanceof Element
-        id      = uid(element)
-        element = if id of Wrapper.Cache then Wrapper.Cache[id] else new Element(element)
-
-      @[i] = element
+      @[i] = if element instanceof Element then element else wrap(element)
 
     return @
 
@@ -129,7 +125,7 @@ if !document.querySelector or BROWSER_IS_OLD_IE
     search =
       # search for any descendant nodes
       ' ': (element, tag)->
-        A(element.getElementsByTagName(tag))
+        item for item in element.getElementsByTagName(tag)
 
       # search for immidate descendant nodes
       '>': (element, tag)->
@@ -311,8 +307,10 @@ if !document.querySelector or BROWSER_IS_OLD_IE
               # Class names check
               #
               if classes isnt false
+                node_classes = node.className.split(' ')
                 for klass in classes
-                  for name in node.className.split(' ')
+                  found = false
+                  for name in node_classes
                     if klass is name
                       found = true
                       break
@@ -380,14 +378,14 @@ if !document.querySelector or BROWSER_IS_OLD_IE
 
         # creates a list of uniq nodes
         uniq = (elements)->
-          uniq = []; ids = []; id = null;
+          result = []; ids = []; id = null;
           for element in elements
             id = uid(element)
             unless id of ids
-              uniq.push(element)
+              result.push(element)
               ids[id] = true
 
-          return uniq
+          return result
 
         # performs the actual search of subnodes
         find_subnodes = (element, atom)->
@@ -476,17 +474,17 @@ if !document.querySelector or BROWSER_IS_OLD_IE
     # the dom-selection methods replacement
     return {
       first: (css_rule)->
-        this.find(css_rule)[0]
+        @find(css_rule)[0]
 
       find: (css_rule, raw)->
-        rule = css_rule || '*'; element = this._; tag = element.tagName;
+        rule = css_rule || '*'; element = @_; tag = element.tagName;
 
         try # trying to reuse native css-engine under IE8
-          result = element for element in element.querySelectorAll(rule)
+          result = (element for element in element.querySelectorAll(rule))
         catch e # if it fails use our own engine
           result = select_all(element, rule)
 
-        if raw is true then result else (wrap(element) for element in result)
+        if raw is true then result else new Search(result)
     }
 
 

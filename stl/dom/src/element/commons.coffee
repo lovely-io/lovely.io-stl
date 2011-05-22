@@ -114,7 +114,7 @@ Element.include
   # @return {Element} this
   #
   radio: ->
-    @siblings().each('hide')
+    @siblings().forEach('hide')
     @show()
 
   #

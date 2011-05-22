@@ -76,11 +76,11 @@ uid = (node) ->
   node[UID_KEY]
 
 
-# using IE's native 'uniqNumber' sequencer when available
-if 'uniqNumber' of HTML
+# using IE's native 'uniqueNumber' sequencer when available
+if 'uniqueNumber' of HTML
   uid = (node) ->
     if node.nodeType is 1
-      return node.uniqNumber
+      return node.uniqueNumber
     else
       # document and window objects don't have the `uniqNumber` property
       # so we hack it around by using negative indexes and our own
