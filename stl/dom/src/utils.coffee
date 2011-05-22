@@ -51,7 +51,9 @@ global_eval = (script) ->
   new Element('script', text: script).insertTo(HTML) if script
 
 # IE has a native global eval function
-global_eval = window.execScript if window.execScript
+if window.execScript
+  global_eval = (script)->
+    window.execScript(script) if script
 
 # ensures that the value is an array
 ensure_array = (value) ->

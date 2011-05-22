@@ -177,10 +177,10 @@ Element_create_fragment = (context, content)->
   if typeof(content) is 'string'
     tag   = context.tagName
     tmp   = Element_tmp_cont
-    wrap  = if tag of Element_wraps then Element_wraps[tag] else ['', '', 1]
-    depth = wrap[2]
+    block = if tag of Element_wraps then Element_wraps[tag] else ['', '', 1]
+    depth = block[2]
 
-    tmp.innerHTML = wrap[0] + '<'+ tag + '>' + content + '</'+ tag + '>' + wrap[1]
+    tmp.innerHTML = block[0] + '<'+ tag + '>' + content + '</'+ tag + '>' + block[1]
 
     while depth-- isnt 0
       tmp = tmp.firstChild

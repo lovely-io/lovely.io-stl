@@ -307,6 +307,7 @@ if !document.querySelector or BROWSER_IS_OLD_IE
               # Class names check
               #
               if classes isnt false
+                failed = false
                 node_classes = node.className.split(' ')
                 for klass in classes
                   found = false
@@ -327,7 +328,7 @@ if !document.querySelector or BROWSER_IS_OLD_IE
               #
               if attrs isnt false
                 failed = false
-                for param, key of attrs
+                for key, param of attrs
                   attr    = if key is 'class' then node.className else (node.getAttribute(key) || '')
                   operand = param.o
                   value   = param.v
@@ -390,7 +391,8 @@ if !document.querySelector or BROWSER_IS_OLD_IE
         # performs the actual search of subnodes
         find_subnodes = (element, atom)->
           result = search[atom[0]](element, atom[1].tag)
-          if 'filter' of atom[1] then atom[1].filter(result) else result
+          result = atom[1].filter(result) if 'filter' of atom[1]
+          result
 
 
         # building the actual selector function
@@ -401,7 +403,7 @@ if !document.querySelector or BROWSER_IS_OLD_IE
             if i is 0
               founds = find_subnodes(element, entry)
             else
-              founds = uniq(founds) if i > 0
+              founds = uniq(founds) if i > 1
 
               `for (var j=0; j < founds.length; j++) {
                 sub_founds = find_subnodes(founds[j], rule[i]);
@@ -414,7 +416,8 @@ if !document.querySelector or BROWSER_IS_OLD_IE
                 j += sub_founds.length - 3;
               }`
 
-          return if rule.length > 1 then uniq(founds) else founds
+          founds = uniq(founds) if rule.length > 1
+          return founds
 
       return tokens_cache[rule_key]
 
@@ -425,7 +428,7 @@ if !document.querySelector or BROWSER_IS_OLD_IE
     # @param {String} raw css-rule
     # @return {Array} of selectors
     #
-    selectors_cache = {}; chunks_cache = {};
+    selectors_cache = {};
     split_rule_to_selectors = (css_rule)->
       unless selectors_cache[css_rule]
         chunker.lastIndex = 0
