@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lovely Core - List Test</title>
+    <link rel="stylesheet" type="text/css" href="/test/browser/test.css" />
+    <script src="/main.js"></script>
+    <!--
+      Just making sure that the 'List' magic works in old browsers
+    -->
+  </head>
+  <body>
+    <h1>Lovely Core - List Test</h1>
+    <p>
+      <div id="test-out"></div>
+    </p>
+
+    <script type="text/javascript">
+      function assert(value, expected, message) {
+        var entry = document.createElement('div');
+
+        value = value.toString();
+        expected = expected.toString();
+
+        if (value === expected) {
+          entry.innerHTML = '&raquo; '+ message;
+          entry.style.color = 'green';
+        } else {
+          entry.innerHTML = '&times; '+ message + "<br/>" +
+            " expected: "+ expected.replace(/</g, '&lt;') + "<br/>" +
+            " got: "+ value.replace(/</g, '&lt;');
+          entry.style.color = 'red';
+        }
+
+        document.getElementById('test-out').appendChild(entry);
+      }
+
+      var List = Lovely.List;
+      var list = new List([1,2,3]);
+
+      assert(list instanceof List, true, "Should be instance of List");
+      assert(list.length, 3, "Should have correct size");
+      assert(list.toArray(), [1,2,3], "Should contain correct data");
+      assert(list.toString(), '#<List [1,2,3]>', "Should export itself into a String");
+
+      list.push(4);
+      assert(list.toString(), '#<List [1,2,3,4]>', "Should #push items in");
+      assert(list.length, 4, "Should adjust the 'length' after the #push");
+
+      var value = list.pop();
+      assert(value, 4, "Should #pop values");
+      assert(list.toString(), '#<List [1,2,3]>', "Should remove things on #pop");
+
+      list.unshift(0);
+      assert(list.toString(), '#<List [0,1,2,3]>', "Should allow to #unshift things in");
+
+      var value = list.shift();
+      assert(value, 0, "Should allow to #shift things out");
+      assert(list.toString(), '#<List [1,2,3]>', "Should adjust the list after #shift");
+
+      assert(list.indexOf(2),     1, "Should find the #indexOf");
+      assert(list.lastIndexOf(2), 1, "Should find the #lastIndexOf");
+
+      assert(list.map(function(i) { return i * 2}), "#<List [2,4,6]>", "Should work with the #map method");
+      assert(list.filter(function(i) { return i % 2; }), "#<List [1,3]>", "Should have the #filter method working");
+      assert(list.reject(function(i) { return i % 2; }), "#<List [2]>", "Should have the #reject method working");
+    </script>
+  </body>
+</html>

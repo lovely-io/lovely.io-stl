@@ -26,6 +26,7 @@ Foo = new Lovely.Class
   getValue:    ( ) -> this.value
   addValue:    (v) -> this.value += v
   even:        ( ) -> this.value % 2 is 0
+  biggerThan:  (v) -> this.value > v
 
 
 # making a list of Foo stuff to test various things
@@ -50,51 +51,13 @@ describe "List", module,
     "should make an instance of 'List'": (list) ->
       assert.instanceOf list, List
 
-    "should inherit the Array": (list) ->
-      assert.instanceOf list, Array
 
-
-  '#first':
-    '\b()':
-      topic: list.first()
-
-      'should return the first item on the list': (item) ->
-        assert.same item, list[0]
-
-    '\b(callback)':
-      topic: -> list.first (item) -> item % 2 == 0
-
-      'should return the first item that match the callback': (item) ->
-        assert.same item, 2
-
-
-  '#last':
-    '\b()':
-      topic: list.last()
-
-      'should return the last item on the list': (item) ->
-        assert.same item, list[list.length - 1]
-
-    '\b(callback)':
-      topic: -> list.last (item) -> item % 2 == 0
-
-      'should return the last matching item': (item) ->
-        assert.same item, 4
-
-
-  '#size()':
-    topic: list.size()
-
-    'should return the list size': (size) ->
-      assert.same size, list.length
-
-
-  '#each(callback)':
+  '#forEach(callback)':
     topic: ->
       this.items   = []
       this.indexes = []
 
-      list.each (item, index) ->
+      list.forEach (item, index) ->
         this.items.push(item)
         this.indexes.push(index)
       , this
@@ -109,8 +72,8 @@ describe "List", module,
       assert.same result, list
 
 
-  '#each("name", "arg")':
-    topic: new FooList().each("addValue", 2)
+  '#forEach("name", "arg")':
+    topic: new FooList().forEach("addValue", 2)
 
     'should add 2 to every value on the list': (list) ->
       assert.instanceOf list, FooList
@@ -179,34 +142,44 @@ describe "List", module,
     "should reject values based on the name call": (list) ->
       assert.listEqual list.map('value'), [1,3]
 
-  '#without(a,b,c)': ->
-    topic: list.without(1,2,4)
 
-    'should create a new List': ensure_new_list
+  '#some(callback)':
+    topic: list
 
-    'should filter out listed values': (list) ->
-      assert.listEqual list, [3,5]
+    "should return 'true' when some of the items match": (list)->
+      assert.isTrue list.some (item)-> item > 2
 
-  '#compact()':
-    topic: ->
-      this.original = new List([null, '', undefined, 0, 1])
-      this.original.compact()
+    "should return 'false' when none of the items match": (list)->
+      assert.isFalse list.some (item)-> item > Infinity
 
-    'should create a new List': (list) ->
-      assert.instanceOf list, List
-      assert.notSame    list, this.original
+  '#some("method_name")':
+    topic: new FooList()
 
-    'should filter out nulls and undefineds': (list) ->
-      assert.listEqual list, ['', 0, 1]
+    "should return 'true' when some the items match": (list)->
+      assert.isTrue list.some("biggerThan", 2)
 
-  '#includes(item)':
-    topic: -> new List([1,2,3])
+    "should return 'false' when none of the items match": (list)->
+      assert.isFalse list.some("biggerThan", Infinity)
 
-    "should say 'true' for things that on the list": (list)->
-      assert.isTrue list.includes(1)
 
-    "should say 'false' for things that are not on the list": (list)->
-      assert.isFalse list.includes(888)
+  '#every(callback)':
+    topic: list
+
+    "should return 'true' when every item match": (list)->
+      assert.isTrue list.every (item)-> item > -1
+
+    "should return 'false' when some of the items don't match": (list)->
+      assert.isFalse list.every (item)-> item > 2
+
+  '#every("method_name")':
+    topic: new FooList()
+
+    "should return 'true' when every item match": (list)->
+      assert.isTrue list.every("biggerThan", -1)
+
+    "should return 'false' when some of items don't match": (list)->
+      assert.isFalse list.every("biggerThan", 2)
+
 
   '#toArray()':
     topic: list.toArray()
@@ -219,17 +192,6 @@ describe "List", module,
 
     'should make a clone of the list not refer it by a link': (array) ->
       assert.notSame array, A(list)
-
-
-  '#clone()':
-    topic: list.clone()
-
-    'should make a new list': ensure_new_list
-
-    'should clone the data': (result) ->
-      assert.deepEqual A(result), A(list)
-      assert.notSame   result, list
-
 
   '#indexOf':
     topic: list.indexOf(2)
@@ -326,6 +288,23 @@ describe "List", module,
     "should add the new values": (list)->
       assert.listEqual list, [1,2,3,4]
 
+  '#sort':
+    topic: ->
+      this.list = new List(['c', 'd', 'b', 'a'])
+      this.list.sort()
+
+    "should return the same list back to the code": (list)->
+      assert.same list, this.list
+
+    "should sort the list items": (list)->
+      assert.listEqual list, ['a', 'b', 'c', 'd']
+
+  '#join':
+    topic: new List([1,2,3,4,5]).join('-')
+
+    "should join the list items using separator": (result)->
+      assert.equal result, '1-2-3-4-5'
+
   'subclass':
     topic: -> new FooList()
 
@@ -343,10 +322,6 @@ describe "List", module,
 
     "should return the subclass instance with the #reject operation": (list)->
       list = list.reject('event')
-      assert.instanceOf list, FooList
-
-    "should return the subclass instance with the #clone operation": (list)->
-      list = list.clone()
       assert.instanceOf list, FooList
 
     "should return the subclass instance with the #concat operation": (list)->

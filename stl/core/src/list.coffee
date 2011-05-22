@@ -4,11 +4,15 @@
 # The goal in here is to provide a quick, steady and inheritable
 # JavaScript 1.7 Array like interface with some additional
 # features, so that we could iterate through anything in a civilize
-# maner without tempering with the JavaScript core.
+# maner on any browser, without tempering with the JavaScript core.
+#
+# NOTE: here we have the standard Array like methods + calls-by-name
+# all the rest of the fancy methods and extensions are defined in the
+# `lang` STL module
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-class List extends Array
+class List
   length: 0
 
   #
@@ -18,38 +22,9 @@ class List extends Array
   # @return void
   #
   constructor: (items)->
-    Array_proto.splice.apply(this, [0,0].concat(A(items)))
+    unless items is undefined
+      Array_splice.apply(@, [0,0].concat(items))
     return @
-
-
-# using direct prototype extension so that it didn't
-# try to overload the existing Array methods
-ext List.prototype,
-
-  #
-  # Returns the first items on the list
-  #
-  # @return {mixed} the first item or `undefined`
-  #
-  first: ->
-    if arguments.length is 0 then this[0]
-    else this.filter.apply(this, arguments).first()
-
-  #
-  # Returns the last item on the list
-  #
-  # @return {mixed} the last item or `undefined`
-  #
-  last: ->
-    if arguments.length is 0 then this[this.length - 1]
-    else this.filter.apply(this, arguments).last()
-
-  #
-  # Returns the size of the list
-  #
-  # @return {Number} list size
-  #
-  size: -> this.length
 
   #
   # Returns a slice of the list
@@ -59,7 +34,16 @@ ext List.prototype,
   # @return {List} new slice
   #
   slice: ->
-    new @constructor(Array_proto.slice.apply(this, arguments))
+    new @constructor(Array_slice.apply(@, arguments))
+
+  #
+  # Array#concat like method
+  #
+  # @param {Array} items to add
+  # @return {List} new
+  #
+  concat: (items)->
+    new @constructor(A(@).concat(A(items)))
 
   ##
   # The standard `forEaech` equivalent
@@ -68,9 +52,9 @@ ext List.prototype,
   # @param {mixed} scope object or the method param
   # @return {List} this
   #
-  each: ->
-    List_call(Array_proto.forEach, this, arguments)
-    this
+  forEach: ->
+    List_call(Array_forEach, @, arguments)
+    return @
 
   #
   # Maps the result of the callback function work into
@@ -81,7 +65,7 @@ ext List.prototype,
   # @return {List} new
   #
   map: ->
-    new List(List_call(Array_proto.map, this, arguments))
+    new List(List_call(Array_map, @, arguments))
 
   #
   # Creates a new list that has only matching items in it
@@ -91,7 +75,7 @@ ext List.prototype,
   # @return {List} new
   #
   filter: ->
-    new @constructor(List_call(Array_proto.filter, this, arguments))
+    new @constructor(List_call(Array_filter, @, arguments))
 
   #
   # Creates a new list that has no matching items in it
@@ -101,73 +85,97 @@ ext List.prototype,
   # @return {List} new
   #
   reject: ->
-    new @constructor(List_call(Array_reject, this, arguments))
+    new @constructor(List_call(Array_reject, @, arguments))
 
   #
-  # Creates a new list without the specified items
+  # Checks if some of the items on the list are kinda `true`
   #
-  # @param {mixed} item
-  # .....
-  # @return {List} new
-  #
-  without: ->
-    filter = A(arguments)
-    this.reject (item) ->
-      filter.indexOf(item) isnt -1
-
-  #
-  # Creates a new list that doesn't have 'null' and 'undefined' values
-  #
-  # @return {List} new
-  #
-  compact: ->
-    this.without(null, undefined)
-
-  #
-  # Clones the list with all the internal data
-  #
-  # @return {List} new
-  #
-  clone: -> new @constructor(A(this))
-
-  #
-  # Checks if the list includes the item
-  #
-  # @param {anything} item
+  # @param {mixed} callback or a method name
+  # @param {mixed} scope object or the method param
   # @return {Boolean} check result
   #
-  includes: (item)->
-    @indexOf(item) isnt -1
+  some: ->
+    List_call(Array_some, @, arguments)
 
   #
-  # Array#concat like method
+  # Checks if every item on the list are kinda `true`
   #
-  # @param {Array} items to add
-  # @return {List} new
+  # @param {mixed} callback or a method name
+  # @param {mixed} scope object or the method param
+  # @return {Boolean} check result
   #
-  concat: (items)-> new @constructor(A(this).concat(items))
+  every: ->
+    List_call(Array_every, @, arguments)
 
   #
   # Converts the list into an instance or {Array}
   #
   # @return {Array} new
   #
-  toArray: -> A(this)
+  toArray: -> A(@)
 
-  #
-  # Debugability improver
-  #
-  # @return {String} representation
-  #
-  toString: -> "#<List [#{A(this)}]>"
-
+#
+# Debugability improver
+#
+# @return {String} representation
+#
+List::toString = -> "#<List [#{A(@)}]>"
+# need this to be separated for IE
 
 # private
-Array_proto = Array.prototype
+Array_proto   = Array.prototype
 
-Array_reject = (callback, scope) ->
-  Array_proto.filter.call this, ->
-    !callback.apply(scope, arguments)
+# copying over the standard methods to the list prototype
+for name in 'splice push pop shift unshift reverse sort join indexOf lastIndexOf'.split(' ')
+  List.prototype[name] = Array_proto[name]
+
+# the rest of the standard Array methods and their replacements for old browsers
+Array_slice   = Array_proto.slice
+Array_splice  = Array_proto.splice
+Array_forEach = Array_proto.forEach || `function(callback, scope) {
+  for (var i=0, l=this.length; i < l; i++) {
+    callback.call(scope, this[i], i, this);
+  }}`
+Array_map     = Array_proto.map || `function(callback, scope) {
+  for (var result=[], i=0, l=this.length; i < l; i++) {
+    result[i] = callback.call(scope, this[i], i, this);
+  }return result;}`
+
+Array_filter  = Array_proto.filter || `function(callback, scope) {
+  for (var result=[], j=0, i=0, l=this.length; i < l; i++) {
+    if (callback.call(scope, this[i], i, this)) {
+      result[j++] = this[i];
+  }} return result;}`
+
+Array_reject  = `function(callback, scope) {
+  for (var result=[], j=0, i=0, l=this.length; i < l; i++) {
+    if (!callback.call(scope, this[i], i, this)) {
+      result[j++] = this[i];
+  }} return result;}`
+
+Array_some   = Array_proto.some || `function(callback, scope) {
+  for (var i=0, l=this.length; i < l; i++) {
+    if (callback.call(scope, this[i], i, this)) {
+      return true;
+  }} return false;}`
+
+Array_every = Array_proto.every || `function(callback, scope) {
+  for (var i=0, l=this.length; i < l; i++) {
+    if (!callback.call(scope, this[i], i, this)) {
+      return false;
+  }} return true;}`
+
+# adding those for old browsers
+unless List.prototype.indexOf
+  ext List.prototype,
+    indexOf: `function(value, from) {
+      for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0, l=this.length; i < l; i++) {
+        if (this[i] === value) { return i; }
+      } return -1;}`
+    lastIndexOf: `function(value) {
+      for (var i=this.length-1; i > -1; i--) {
+        if (this[i] === value) { return i; }
+      } return -1;}`
 
 #
 # calls the array method on the list with the arguments
