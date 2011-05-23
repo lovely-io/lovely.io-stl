@@ -23,9 +23,12 @@ else
   Browser = 'Unknown'
 
 
+BROWSER_IS_OLD = !document.querySelector
+
 # IE 8 or older check
 try
   document.createElement('<input/>')
   BROWSER_IS_OLD_IE = true
+  BROWSER_IS_OLD    = true
 catch e
   BROWSER_IS_OLD_IE = false

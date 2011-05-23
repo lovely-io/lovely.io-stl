@@ -21,7 +21,6 @@ include 'src/event'
 include 'src/event/delegation'
 include 'src/event/mouseio'
 include 'src/event/focusio'
-include 'src/event/formio'
 include 'src/event/ready'
 
 
@@ -55,8 +54,8 @@ $ = (value, context) ->
   return value
 
 
-# exporting the main classes
-exports = ext $,
+# exporting the main units
+ext $,
   version:  '%{version}'
   Browser:  Browser
   Wrapper:  Wrapper
@@ -66,3 +65,25 @@ exports = ext $,
   Event:    Event
   Search:   Search
   eval:     global_eval
+  uid:      uid
+
+
+# loading the `legacy` module if needed
+if BROWSER_IS_OLD
+  # stashing the object so it could be accessed
+  # from the `legacy` module code
+  Lovely.modules.__dom = $
+  console.log("DOM initialized")
+  Lovely ['legacy'], ->
+    console.log("Legacy loaded")
+    # finally giving access to client callbacks
+    Lovely.modules.dom = $
+    delete(Lovely.modules.__dom)
+    delete(Lovely.loading.dom)
+
+  exports = undefined # preventing the default callback until it's loaded
+else
+  exports = $
+
+
+

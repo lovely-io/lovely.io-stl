@@ -120,7 +120,7 @@ class List
 # @return {String} representation
 #
 List::toString = -> "#<List [#{A(@)}]>"
-# need this to be separated for IE
+# need this to be assigned directly in IE
 
 # private
 Array_proto   = Array.prototype

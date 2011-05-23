@@ -46,7 +46,7 @@ Lovely = ->
     if !(module of Lovely.modules or module of Lovely.loading)
       script = document.createElement('script')
 
-      script.src   = url
+      script.src   = url.replace(/\/\//g, '/')
       script.async = true
       script.type  = "text/javascript"
 
@@ -70,13 +70,13 @@ Lovely = ->
     result = callback.apply(global, packages)
 
     # registering the current module if needed
-    if current
+    if result && current
       Lovely.modules[current] = result
       delete(Lovely.loading[current])
 
-    undefined
+    return; # nothing
 
-  undefined
+  return; # nothing
 
 
 #

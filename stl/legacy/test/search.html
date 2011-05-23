@@ -3,80 +3,80 @@
   <head>
     <title>Lovely DOM - CSS Search Test</title>
     <link rel="stylesheet" type="text/css" href="test.css" />
-    <script src="/lovely.io/core.js"></script>
-    <script src="/main.js"></script>
+    <script src="/core.js"></script>
     <script type="text/javascript">
-      var $ = Lovely.modules.dom;
-      var selectors = {
-        // css-rule                     correct number of nodes
-        "div"                          : 54  ,
-        "div p"                        : 325 ,
-        "div p a"                      : 84  ,
-        "div #title"                   : 1   ,
-        "#title"                       : 1   ,
-        "h1#title"                     : 1   ,
-        ".note"                        : 14  ,
-        "div.example"                  : 43  ,
-        "ul .tocline2"                 : 12  ,
-        "ul.toc li.tocline2"           : 12  ,
-        "div[class]"                   : 52  ,
-        "a[href][lang][class]"         : 1   ,
-        "div > p"                      : 316 ,
-        "ul.toc > li.tocline2"         : 12  ,
-        "div[class=example]"           : 43  ,
-        "div[class^=exa][class$=mple]" : 43  ,
-        "div[class^=exa]"              : 43  ,
-        "div[class$=mple]"             : 43  ,
-        "div[class*=e]"                : 51  ,
-        "div[class|=dialog]"           : 0   ,
-        "div[class~=example]"          : 43  ,
-        "div + p"                      : 22  ,
-        "div ~ p"                      : 183 ,
-        "h1#title + div > p"           : 0   ,
-        "div.subtoc + h2 > a"          : 1   ,
-        "div, p, a"                    : 675 ,
-        "div.example, div.note"        : 44  ,
-        "div:not(.example)"            : 11  ,
-        "td *[type=submit]"            : 0   ,
-        "div > input,div > select,div > button,div > textarea,div > button" : 4,
-        "table.selectorsReview td:not(:empty)" : 156,
-        "p:nth-last-child(2n)"         : 173 ,
-        "p:nth-last-child(2n+1)"       : 152 ,
-        "p:nth-last-child(odd)"        : 152 ,
-        "p:nth-last-child(even)"       : 173 ,
-        "div > p:nth-last-child(even)" : 167 ,
-        "div > p:nth-last-child(odd)"  : 149 ,
-        "p:nth-last-child(n)"          : 325 ,
-        "p:nth-child(2n)"              : 158 ,
-        "p:nth-child(2n+1)"            : 167 ,
-        "p:nth-child(odd)"             : 167 ,
-        "p:nth-child(even)"            : 158 ,
-        "div > p:nth-child(even)"      : 155 ,
-        "div > p:nth-child(odd)"       : 161 ,
-        "p:nth-child(n)"               : 325 ,
-        "p:only-child"                 : 3   ,
-        "p:last-child"                 : 19  ,
-        "p:first-child"                : 54
-      };
+      Lovely(['dom'], function($) {
+        var selectors = {
+          // css-rule                     correct number of nodes
+          "div"                          : 54  ,
+          "div p"                        : 325 ,
+          "div p a"                      : 84  ,
+          "div #title"                   : 1   ,
+          "#title"                       : 1   ,
+          "h1#title"                     : 1   ,
+          ".note"                        : 14  ,
+          "div.example"                  : 43  ,
+          "ul .tocline2"                 : 12  ,
+          "ul.toc li.tocline2"           : 12  ,
+          "div[class]"                   : 52  ,
+          "a[href][lang][class]"         : 1   ,
+          "div > p"                      : 316 ,
+          "ul.toc > li.tocline2"         : 12  ,
+          "div[class=example]"           : 43  ,
+          "div[class^=exa][class$=mple]" : 43  ,
+          "div[class^=exa]"              : 43  ,
+          "div[class$=mple]"             : 43  ,
+          "div[class*=e]"                : 51  ,
+          "div[class|=dialog]"           : 0   ,
+          "div[class~=example]"          : 43  ,
+          "div + p"                      : 22  ,
+          "div ~ p"                      : 183 ,
+          "h1#title + div > p"           : 0   ,
+          "div.subtoc + h2 > a"          : 1   ,
+          "div, p, a"                    : 675 ,
+          "div.example, div.note"        : 44  ,
+          "div:not(.example)"            : 11  ,
+          "td *[type=submit]"            : 0   ,
+          "div > input,div > select,div > button,div > textarea,div > button" : 4,
+          "table.selectorsReview td:not(:empty)" : 156,
+          "p:nth-last-child(2n)"         : 173 ,
+          "p:nth-last-child(2n+1)"       : 152 ,
+          "p:nth-last-child(odd)"        : 152 ,
+          "p:nth-last-child(even)"       : 173 ,
+          "div > p:nth-last-child(even)" : 167 ,
+          "div > p:nth-last-child(odd)"  : 149 ,
+          "p:nth-last-child(n)"          : 325 ,
+          "p:nth-child(2n)"              : 158 ,
+          "p:nth-child(2n+1)"            : 167 ,
+          "p:nth-child(odd)"             : 167 ,
+          "p:nth-child(even)"            : 158 ,
+          "div > p:nth-child(even)"      : 155 ,
+          "div > p:nth-child(odd)"       : 161 ,
+          "p:nth-child(n)"               : 325 ,
+          "p:only-child"                 : 3   ,
+          "p:last-child"                 : 19  ,
+          "p:first-child"                : 54
+        };
 
-      $(document).on('ready', function() {
-        var results = $('#entries');
-        var stuff   = $('#the-stuff');
+        $(document).on('ready', function() {
+          var results = $('#entries');
+          var stuff   = $('#the-stuff');
 
-        for (var rule in selectors) {
-          var
-          time = new Date(),
-          size = stuff.find(rule, true).length;
-          time = new Date() - time;
+          for (var rule in selectors) {
+            var
+            time = new Date(),
+            size = stuff.find(rule, true).length;
+            time = new Date() - time;
 
-          results.insert(
-            "<tr"+ (size === selectors[rule] ? '' : ' class="failed"') + ">" +
-              "<td>"+ rule + "</td>" +
-              "<td>"+(size === selectors[rule] ? size : (size + ' of '+ selectors[rule])) + "</td>" +
-              "<td>"+ time + "</td>" +
-            "</tr>"
-          );
-        }
+            results.insert(
+              "<tr"+ (size === selectors[rule] ? '' : ' class="failed"') + ">" +
+                "<td>"+ rule + "</td>" +
+                "<td>"+(size === selectors[rule] ? size : (size + ' of '+ selectors[rule])) + "</td>" +
+                "<td>"+ time + "</td>" +
+              "</tr>"
+            );
+          }
+        });
       });
     </script>
     <style type="text/css">

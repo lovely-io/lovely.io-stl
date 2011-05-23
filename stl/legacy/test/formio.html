@@ -3,16 +3,16 @@
   <head>
     <title>Lovely DOM - Form IO Test</title>
     <link rel="stylesheet" type="text/css" href="test.css" />
-    <script src="/lovely.io/core.js"></script>
-    <script src="/main.js"></script>
+    <script src="/core.js"></script>
     <script type="text/javascript">
-      var $ = Lovely.modules.dom;
-      $(document).on('submit', function(event) {
-        console.log("Submit intercepted "+ event.target._);
-        event.stop();
-      });
-      $(document).on('change', function(event) {
-        console.log("OnChange intercepted at: "+ event.target._.tagName +" "+ event.target._.name);
+      Lovely(['dom'], function($) {
+        $(document).on('submit', function(event) {
+          console.log("Submit intercepted "+ event.target._.tagName);
+          event.stop();
+        });
+        $(document).on('change', function(event) {
+          console.log("OnChange intercepted at: "+ event.target._.tagName +" "+ event.target._.name);
+        });
       });
     </script>
   </head>

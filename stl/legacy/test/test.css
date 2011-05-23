@@ -1,0 +1,34 @@
+html, body {
+  font-family: Verdana, Helvetica;
+  font-size: 11pt;
+  margin: 0;
+}
+html {
+  padding: 0 10em;
+  background: #DDD;
+  height: 100%;
+}
+body {
+  padding: 0 2em;
+  background: white;
+  min-height: 100%;
+}
+h1, h2, h3, h4 {
+  font-family: Georgia;
+  color: #333;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  padding-top: .8em;
+}
+h2 {
+  margin-top: 2em;
+}
+p.white-space {
+  display: block;
+  height: 10em;
+  margin: 0;
+  padding: 0;
+}

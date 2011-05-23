@@ -20,14 +20,14 @@ if BROWSER_IS_OLD_IE # don't bother the others
   submit_boobler = (event)->
     element = event.srcElement
     type    = element.type
-    form    = element.form && wrap(element.form)
+    form    = element.form && $(element.form)
     parent  = form && form.parent()
 
     if parent && (
       (event.keyCode is 13   && (type is 'text'   || type is 'password')) ||
       (event.type is 'click' && (type is 'submit' || type is 'image'))
     )
-      event        = wrap(event)
+      event        = $(event)
       event.type   = 'submit'
       event.target = form
       parent.emit(event)
@@ -64,9 +64,9 @@ if BROWSER_IS_OLD_IE # don't bother the others
 
     if parent && ''+target._prev_value isnt ''+value
       target._prev_value = value # saving the value so it didn't fire up again
-      event      = wrap(event)
+      event      = $(event)
       event.type = 'change'
-      wrap(parent).emit(event)
+      $(parent).emit(event)
 
     return #nothing
 

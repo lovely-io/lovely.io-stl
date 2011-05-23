@@ -3,27 +3,26 @@
   <head>
     <title>Lovely DOM - Mouse IO Test</title>
     <link rel="stylesheet" type="text/css" href="test.css" />
-    <script src="/lovely.io/core.js"></script>
-    <script src="/main.js"></script>
+    <script src="/core.js"></script>
     <script type="text/javascript">
-      var $ = Lovely.modules.dom;
+      Lovely(['dom'], function($) {
+        $(function() {
+          Lovely.L(['one', 'two', 'three']).forEach(function(id) {
+            $('#' + id).on('mouseenter', 'addClass',    id + '-in');
+            $('#' + id).on('mouseleave', 'removeClass', id + '-in');
 
-      $(function() {
-        Lovely.L(['one', 'two', 'three']).forEach(function(id) {
-          $('#' + id).on('mouseenter', 'addClass',    id + '-in');
-          $('#' + id).on('mouseleave', 'removeClass', id + '-in');
+            $(document).delegate('.'+id, 'mouseenter', 'addClass',    id + '-in');
+            $(document).delegate('.'+id, 'mouseleave', 'removeClass', id + '-in');
 
-          $(document).delegate('.'+id, 'mouseenter', 'addClass',    id + '-in');
-          $(document).delegate('.'+id, 'mouseleave', 'removeClass', id + '-in');
+            $(document).delegate('#complex-case', {
+              mouseenter: function() { this.addClass('complex-case-hover');    },
+              mouseleave: function() { this.removeClass('complex-case-hover'); }
+            });
 
-          $(document).delegate('#complex-case', {
-            mouseenter: function() { this.addClass('complex-case-hover');    },
-            mouseleave: function() { this.removeClass('complex-case-hover'); }
-          });
-
-          $(document).delegate('#complex-case ul', {
-            mouseenter: ['addClass',    'complex-case-ul-hover'],
-            mouseleave: ['removeClass', 'complex-case-ul-hover']
+            $(document).delegate('#complex-case ul', {
+              mouseenter: ['addClass',    'complex-case-ul-hover'],
+              mouseleave: ['removeClass', 'complex-case-ul-hover']
+            });
           });
         });
       });
