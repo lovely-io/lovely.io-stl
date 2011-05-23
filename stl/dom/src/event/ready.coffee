@@ -5,20 +5,30 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Document.include
-  on: (name)->
-    if name is 'ready' and @_ir is undefined
-      doc   = @_
-      ready = bind(@emit, @, 'ready')
+  on: (name, callback)->
+    Element_events.on.apply(@, arguments)
 
-      if 'readyState' of doc
-        do ->
-          if (doc.readyState in ['loaded', 'complete'])
-            ready()
-          else
-            setTimeout(arguments.callee, 50)
+    if name is 'ready'
+      doc = @_
+      id  = uid(doc)
+
+      if Ready_documents[id]
+        callback.apply(@) # if the document is alrady loaded
       else
-        doc.addEventListener('DOMContentLoaded', ready, false)
+        unless id of Ready_documents
+          Ready_documents[id] = false
+          ready = bind(@emit, @, 'ready')
 
-      @_ir = true # prevening from double initialization
+          if 'readyState' of doc
+            do ->
+              if (doc.readyState in ['loaded', 'complete'])
+                ready()
+              else
+                setTimeout(arguments.callee, 50)
+          else
+            doc.addEventListener('DOMContentLoaded', ready, false)
 
-    Element_events.on.apply(this, arguments)
+    return @
+
+# the ready documents index
+Ready_documents = []
