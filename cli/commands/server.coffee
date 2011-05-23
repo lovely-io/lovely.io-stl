@@ -7,7 +7,9 @@
 #
 exports.init = (args) ->
   fs      = require('fs')
+  path    = require('path')
   source  = require('../source')
+  package = require('../package')
   express = require('express')
   server  = express.createServer()
   port    = args[0] || lovelyrc.port || 3000
@@ -17,28 +19,33 @@ exports.init = (args) ->
   base[base.length - 1] isnt '/' and base += '/'
   base += "packages"
 
-  # dynamically serving the main module script
-  server.get '/main.js', (req, res) ->
-    src  = if minify then source.minify() else source.compile()
-    size = Math.round(src.length/102.4)/10
-    console.log(" Compiling: ".cyan+ "/main.js (#{size}Kb #{if minify then 'minified' else 'source'})".grey)
+  #
+  # serving the modules
+  # NOTE: if the module name is the same as the current package name
+  #       then the module will be dynamically compiled out of the source
+  #
+  server.get '/:module.js', (req, res) ->
+    module = req.params.module
+
+    if module == package.name
+      src  = if minify then source.minify() else source.compile()
+      size = Math.round(src.length/102.4)/10
+      console.log(" Compiling: ".cyan+ "/#{module}.js (#{size}Kb #{if minify then 'minified' else 'source'})".grey)
+
+    else
+      src = "/#{module}/current/build/#{module}#{if minify then '' else '-src'}.js"
+      console.log(" Serving:   ".magenta + "/#{module}.js -> ~/.lovely/packages#{src}".grey)
+      src = fs.readFileSync("#{base}/#{src}").toString()
+
+
     res.charset = 'utf-8'
     res.header('Cache-Control', 'no-cache')
     res.contentType('text/javascript')
     res.send src
 
-  server.get '/lovely.io/:module.js', (req, res) ->
-    module = req.params.module
-    script = "#{base}/#{module}/current/build/#{module}#{if minify then '' else '-src'}.js"
-
-    console.log(" Serving:   ".magenta+ "'#{module}' module from #{script}".grey)
-
-    fs.readFile script, (err, data)->
-      res.contentType('text/javascript')
-      res.send data
-
+  # just a dummy favicon response
   server.get '/favicon.ico', (req, res) ->
-    res.send '' # just keeping it happy
+    res.send ''
 
   # listening all the static content in the user project
   server.get /^\/(.*?)$/, (req, res) ->
@@ -56,18 +63,29 @@ exports.init = (args) ->
       when 'js'  then content_type = 'text/javascript'
       else            content_type = 'text/html'
 
-    fs.readFile "#{process.cwd()}/#{filename}", (err, data)->
-      console.log("") if extension is "html"
-      console.log(" Sending:   "+ "/#{filename} (#{content_type})".grey)
+    if path.existsSync("#{process.cwd()}/#{filename}")
+      fs.readFile "#{process.cwd()}/#{filename}", (err, data)->
+        console.log("") if extension is "html"
+        console.log(" Sending:   "+ "/#{filename} (#{content_type})".grey)
 
-      res.charset = 'utf-8'
-      res.contentType(content_type)
-      res.send data
+        res.charset = 'utf-8'
+        res.contentType(content_type)
+        res.send data
+    else
+      console.log("\n Sending: "+ "404 Error".red + " /#{filename} is not found".grey)
+      res.send """
+      <html>
+        <body>
+          <h1>404 Error</h1>
+          <p>The page is not found</p>
+        </body>
+      </html>
+      """
 
 
   server.listen(port)
 
-  print "Listening at: http://127.0.0.0:#{port}\n"+
+  print "Listening: http://127.0.0.0:#{port}\n"+
     "Press Ctrl+C to hung up".grey
 
 
