@@ -27,7 +27,7 @@ exports.init = (args) ->
   server.get '/:module.js', (req, res) ->
     module = req.params.module
 
-    if module == package.name
+    if module == package.name || module == 'main'
       src  = if minify then source.minify() else source.compile()
       size = Math.round(src.length/102.4)/10
       console.log(" Compiling: ".cyan+ "/#{module}.js (#{size}Kb #{if minify then 'minified' else 'source'})".grey)
