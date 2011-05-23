@@ -22,9 +22,10 @@ h1 {
   margin: 0;
   padding: 0;
   padding-top: .8em;
+  padding-bottom: .5em;
 }
 h2 {
-  margin-top: 2em;
+  margin-top: 1em;
 }
 p.white-space {
   display: block;

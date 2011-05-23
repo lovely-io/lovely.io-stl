@@ -53,6 +53,7 @@ exports.init = (args) ->
     filename  = req.params[0] || 'index'
     extension = filename.split('.')
     extension = extension[extension.length - 1]
+    shared    = "#{__dirname}/../server"
 
     unless extension in ['css', 'html', 'js']
       filename += '.html'
@@ -64,16 +65,17 @@ exports.init = (args) ->
       else            content_type = 'text/html'
 
     if path.existsSync("#{process.cwd()}/#{filename}")
-      fs.readFile "#{process.cwd()}/#{filename}", (err, data)->
-        console.log("") if extension is "html"
-        console.log(" Sending:   "+ "/#{filename} (#{content_type})".grey)
+      console.log("") if extension is "html"
+      console.log(" Sending:   "+ "/#{filename} (#{content_type})".grey)
+      data = fs.readFileSync("#{process.cwd()}/#{filename}")
 
-        res.charset = 'utf-8'
-        res.contentType(content_type)
-        res.send data
+    else if path.existsSync("#{shared}/#{filename}")
+      console.log(" Sending:   "+ "/#{filename} (text/css) from shared directory".grey)
+      data = fs.readFileSync("#{shared}/#{filename}")
+
     else
       console.log("\n Sending: "+ "404 Error".red + " /#{filename} is not found".grey)
-      res.send """
+      data = """
       <html>
         <body>
           <h1>404 Error</h1>
@@ -81,6 +83,10 @@ exports.init = (args) ->
         </body>
       </html>
       """
+
+    res.charset = 'utf-8'
+    res.contentType(content_type)
+    res.send data
 
 
   server.listen(port)
