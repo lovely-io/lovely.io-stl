@@ -12,19 +12,15 @@ class Form extends Element
   #    new Form(method: 'post', action: '/some.url')
   #
   # @param {HTMLFormElement|Object} raw dom-form or a set of options
+  # @param {Object} options
   # @return {Form} this
   #
-  constructor: (options) ->
-    options or= {}
-    element = options
-    remote  = 'remote' of options
-
-
-    if (!isElement(options) and isObject(options))
+  constructor: (element, options) ->
+    if !element or (!isElement(element) and isObject(element))
+      options = element || {}
       element = 'form'
+      remote  = 'remote' of options
       delete(options.remote)
-    else
-      options = undefined
 
     super(element, options)
 

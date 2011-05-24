@@ -18,6 +18,7 @@ include 'src/element/manipulation'
 include 'src/document'
 include 'src/window'
 include 'src/form'
+include 'src/input'
 include 'src/event'
 include 'src/event/delegation'
 include 'src/event/mouseio'
@@ -55,6 +56,16 @@ $ = (value, context) ->
   return value
 
 
+# registering `Form` and `Input` for dynamic typecasting
+Wrapper
+  .set("form",     Form)
+  .set("input",    Input)
+  .set("button",   Input)
+  .set("select",   Input)
+  .set("textarea", Input)
+  .set("optgroup", Input)
+
+
 # exporting the main units
 ext $,
   version:  '%{version}'
@@ -65,6 +76,7 @@ ext $,
   Window:   Window
   Event:    Event
   Form:     Form
+  Input:    Input
   Search:   Search
   eval:     global_eval
   uid:      uid

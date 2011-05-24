@@ -87,6 +87,12 @@ describe "Form", module,
       assert.equal      form._.action, '/some.url'
       assert.equal      form._.method, 'post'
 
+    "should be dynamically used with the 'Element' constructor": ->
+      form = new this.Element('form', action: '/some.url')
+      assert.instanceOf form, this.Form
+      assert.equal      form._.tagName, 'FORM'
+      assert.equal      form._.action,  '/some.url'
+
   "#elements()":
     topic: test_form
 
