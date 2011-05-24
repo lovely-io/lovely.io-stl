@@ -11,9 +11,12 @@ trim     = Lovely.trim
 bind     = Lovely.bind
 Class    = Lovely.Class
 isArray  = Lovely.isArray
+isObject = Lovely.isObject
 window   = global
 document = window.document
 HTML     = document.documentElement
+isElement = (value)->
+  `value != null && value.nodeType === 1`
 
 
 # camelizes dashed strings

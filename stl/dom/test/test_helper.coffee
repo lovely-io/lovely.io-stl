@@ -84,6 +84,7 @@ exports.load = load = (url, test, callback)->
     test.Window   = test.dom.Window
     test.Event    = test.dom.Event
     test.Search   = test.dom.Search
+    test.Form     = test.dom.Form
 
     test.callback(err, if callback then callback.call(test, test.dom) else test.dom)
 

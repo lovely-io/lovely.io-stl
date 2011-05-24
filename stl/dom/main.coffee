@@ -17,6 +17,7 @@ include 'src/element/navigation'
 include 'src/element/manipulation'
 include 'src/document'
 include 'src/window'
+include 'src/form'
 include 'src/event'
 include 'src/event/delegation'
 include 'src/event/mouseio'
@@ -63,6 +64,7 @@ ext $,
   Element:  Element
   Window:   Window
   Event:    Event
+  Form:     Form
   Search:   Search
   eval:     global_eval
   uid:      uid
