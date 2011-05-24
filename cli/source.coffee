@@ -35,6 +35,11 @@ compile = (directory)->
         if !Super then "#{start}#{Klass} = new Class"
         else "#{start}#{Klass} = new Class #{Super},"
 
+    # replacing teh Coffee's 'super' calls with our own class calls
+    source = source.replace /([^\w$\.])super(\(|\s)(.+?)([\)\n;])/g,
+      (match, start, b1, params, b2)->
+        "#{start}this.$super(#{params});"
+
     # building the basic scripts
     source = require('coffee-script').compile(source, {bare: true})
 
@@ -65,12 +70,6 @@ compile = (directory)->
     """
 
   else
-    if /[^a-z0-9_\-\.]exports[^a-z0-9\_\-]/i.test(source)
-      source = "var exports = {};\n\n#{source}\n\nreturn exports;"
-
-    if /[^a-z0-9_\-\.]global[^a-z0-9\_\-]/i.test(source)
-      source = "var global = this;\n"+ source
-
     # extracting the 'require' modules to make dependencies
     dependencies = []
     source = source.replace /([^a-z0-9_\-\.])require\(('|")([^\.].+?)\2\)/ig,
@@ -79,7 +78,15 @@ compile = (directory)->
           return "#{start}global.Lovely"
         else
           dependencies.push(module)
-          return "#{start}Lovely.modules['#{module}']"
+          return "#{start}global.Lovely.modules['#{module}']"
+
+    # adding the 'exports' object
+    if /[^a-z0-9_\-\.]exports[^a-z0-9\_\-]/i.test(source)
+      source = "var exports = {};\n\n#{source}\n\nreturn exports;"
+
+    # adding the 'global' object
+    if /[^a-z0-9_\-\.]global[^a-z0-9\_\-]/i.test(source)
+      source = "var global = this;\n"+ source
 
     # creating the Lovely(....) definition
     source = """
