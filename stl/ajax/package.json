@@ -3,5 +3,8 @@
   "version":     "0.0.0",
   "description": "Standard AJAX support module",
   "author":      "Nikolay Nemshilov",
-  "license":     "MIT"
+  "license":     "MIT",
+  "dependencies": {
+    "dom": "0.0.0"
+  }
 }

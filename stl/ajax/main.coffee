@@ -3,13 +3,21 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-core  = require('core')
-ext   = core.ext
-Class = core.Class
+$        = require('dom')
+core     = require('core')
+
+ext      = core.ext
+Hash     = core.Hash
+Class    = core.Class
+isArray  = core.isArray
+isObject = core.isObject
+doc      = $(global.document)
+
 
 include 'src/ajax'
 include 'src/jsonp'
 include 'src/iframe'
+include 'src/hash'
 
 exports = ext Ajax,
   version: '%{version}'
