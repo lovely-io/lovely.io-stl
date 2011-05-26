@@ -84,12 +84,12 @@ describe 'Hash', module,
       assert.deepEqual  clone._, data
       assert.notSame    clone._, data
 
-  '#each(callback)':
+  '#forEach(callback)':
     "should go through every key-value pair": (result) ->
       hash   = new Hash(a:1, b:2)
       result = []
 
-      ret = hash.each (key, value, hash) ->
+      ret = hash.forEach (key, value, hash) ->
         result.push([key, value, hash])
 
       assert.same      ret, hash
@@ -101,7 +101,7 @@ describe 'Hash', module,
     "should skip the prototype keys and values": ->
       result = []
 
-      new Hash(new Foo(a:1, b:2)).each (key, value) ->
+      new Hash(new Foo(a:1, b:2)).forEach (key, value) ->
         result.push([key, value])
 
       assert.deepEqual result, [['a', 1], ['b', 2]]
@@ -213,11 +213,11 @@ describe 'Hash', module,
       assert.deepEqual clone, object
       assert.notSame   clone, object
 
-  ".each":
+  ".forEach":
     topic: ->
       this.args = []
       this.obj  = a: 1, b: 2
-      Hash.each this.obj, (key, value, object) ->
+      Hash.forEach this.obj, (key, value, object) ->
         this.args.push([key, value, object])
       , this
 

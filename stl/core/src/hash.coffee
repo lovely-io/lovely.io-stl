@@ -90,7 +90,7 @@ Hash.include
   # @param {Object} optional scope
   # @return {Hash} this
   #
-  each: (callback, scope) ->
+  forEach: (callback, scope) ->
     object = this._
 
     for own key, value of object
