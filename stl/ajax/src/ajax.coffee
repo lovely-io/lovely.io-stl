@@ -185,7 +185,7 @@ class Ajax
   instRequest: ->
     if @options.jsonp
       new JSONP(@)
-    else if @options.params instanceof $.Form and @options.params.first('input[type=file]')
+    else if @options.params instanceof Form and @options.params.first('input[type=file]')
       new IFrame(@)
     else if global.ActiveXObject
       new ActiveXObject("MSXML2.XMLHTTP")
@@ -260,7 +260,7 @@ Ajax_merge = ->
   for params in arguments
     if typeof(params) is 'string'
       params = Hash.fromQueryString(params)
-    else if params instanceof $.Form
+    else if params instanceof Form
       params = params.values()
 
     for key of params

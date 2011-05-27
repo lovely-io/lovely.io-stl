@@ -13,12 +13,16 @@ Class    = core.Class
 isArray  = core.isArray
 isObject = core.isObject
 doc      = $(global.document)
+Form     = $.Form
+Element  = $.Element
 
 
 include 'src/ajax'
 include 'src/jsonp'
 include 'src/iframe'
 include 'src/hash'
+#include 'src/form'
+#include 'src/element'
 
 exports = ext Ajax,
   version: '%{version}'

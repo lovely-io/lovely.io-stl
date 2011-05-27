@@ -17,7 +17,7 @@ class JSONP
     @param = 'callback' if typeof(@jsonp) is 'string'
     @param += "="+ @name
 
-    @script = new $.Element 'script',
+    @script = new Element 'script',
       charset: ajax.options.encoding
       async:   true
 
