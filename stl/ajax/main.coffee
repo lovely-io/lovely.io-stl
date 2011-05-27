@@ -7,6 +7,7 @@ $        = require('dom')
 core     = require('core')
 
 ext      = core.ext
+bind     = core.bind
 Hash     = core.Hash
 Class    = core.Class
 isArray  = core.isArray

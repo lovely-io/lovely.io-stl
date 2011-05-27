@@ -184,7 +184,7 @@ class Ajax
   #
   instRequest: ->
     if @options.jsonp
-      new JSONP(ajax)
+      new JSONP(@)
     else if @options.params instanceof $.Form and @options.params.first('input[type=file]')
       new IFrame(@)
     else if global.ActiveXObject
@@ -290,7 +290,7 @@ Ajax_state = (ajax)->
 
 # tries to extract JSON data out of the Ajax object
 Ajax_json = (data)->
-  if 'JSON' in global
+  if 'JSON' of global
     return global.JSON.parse(data)
   else if /^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/.test(data.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))
     return new Function('return '+ data)()
