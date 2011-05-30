@@ -36,7 +36,7 @@ compile = (directory)->
         else "#{start}#{Klass} = new Class #{Super},"
 
     # replacing teh Coffee's 'super' calls with our own class calls
-    source = source.replace /([^\w$\.])super(\(|\s)(.+?)([\)\n;])/g,
+    source = source.replace /([^\w$\.])super(\(|\s)(.*?)([\)\n;])/g,
       (match, start, b1, params, b2)->
         "#{start}this.$super(#{params});"
 
