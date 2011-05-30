@@ -61,6 +61,9 @@
       #fx-style-test + textarea {
         height: 8em;
       }
+      #fx-highlight-test {
+        background: transparent;
+      }
       #fx-scroll-test {
         white-space: nowrap;
         overflow: hidden;
@@ -79,7 +82,16 @@
   color:      'red',
   width:      '500px'
 });</textarea>
+      <p>
+        <a href="" class="start">Start</a>
+        <a href="" class="reset">Reset</a>
+      </p>
+    </div>
 
+    <h2>Fx.Highlight</h2>
+    <div>
+      <div id="fx-highlight-test" class="test">Fx.Highlight</div>
+      <textarea>$('#fx-highlight-test').highlight();</textarea>
       <p>
         <a href="" class="start">Start</a>
         <a href="" class="reset">Reset</a>
@@ -92,7 +104,7 @@
         1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
         19 20 21 22 23 24 25 26 27 28 29 30 31 32 33
       </div>
-      <textarea>$('#fx-scroll-test').scroll({x: 400});</textarea>
+      <textarea>$('#fx-scroll-test').scroll({x: 400}, {duration: 'long'});</textarea>
       <p>
         <a href="" class="start">Start</a>
         <a href="" class="reset">Reset</a>

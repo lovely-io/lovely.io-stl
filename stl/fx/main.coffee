@@ -10,6 +10,8 @@ ext        = core.ext
 bind       = core.bind
 Class      = core.Class
 List       = core.List
+Hash       = core.Hash
+isObject   = core.isObject
 Element    = $.Element
 Browser    = $.Browser
 HTML       = global.document.documentElement
@@ -19,6 +21,7 @@ include 'src/fx'
 include 'src/fx/attr'
 include 'src/fx/scroll'
 include 'src/fx/style'
+include 'src/fx/highlight'
 include 'src/element'
 include 'src/colors'
 

@@ -28,9 +28,9 @@ class Fx
 
     # Named durations
     Durations:
-      short:  200
-      normal: 400
-      long:   800
+      short:  250
+      normal: 500
+      long:   1000
 
   #
   # Basic constructor
