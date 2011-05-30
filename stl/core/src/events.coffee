@@ -149,7 +149,7 @@ Events =
     args  = A(arguments)
     event = args.shift()
 
-    for entry in this._listeners
+    for entry in this._listeners || []
       if entry.e is event
         entry.c.apply(this, entry.a.concat(args))
 
