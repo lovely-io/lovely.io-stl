@@ -13,12 +13,13 @@ Class = (parent, params) ->
   Klass = params.constructor if `__hasProp.call(params, 'constructor')`
 
   if parent # handling the inheritance
+    #console.log(parent.toString())
     Super = ->
     Super.prototype = parent.prototype
     Klass.prototype = new Super()
     Klass.__super__ = parent
     Klass.prototype.$super = ->
-      this.$super = parent.__super__
+      this.$super = parent.prototype.$super
       parent.apply(this, arguments)
 
   Klass.prototype.constructor = Klass  # instances class self-reference

@@ -55,6 +55,51 @@ describe 'Class', module,
       assert.deepEqual new Klass(), ['some-other-data']
 
 
+  'new Class() with a multilevel constructor inheritance':
+    topic: ->
+      this.Klass0 = new Class
+        constructor: -> this.property = 'value'
+      this.Klass1 = new Class this.Klass0,
+        method1: 'method1'
+      this.Klass2 = new Class this.Klass1,
+        method2: 'method2'
+      this.Klass3 = new Class this.Klass2,
+        method3: 'method3'
+
+
+    "should handle the first level inheritance": ->
+      klass = new this.Klass1()
+
+      assert.instanceOf klass, this.Klass1
+      assert.instanceOf klass, this.Klass0
+      assert.equal      klass.property, 'value'
+      assert.equal      klass.method1,  'method1'
+
+
+    "should handle the second level inheritance": ->
+      klass = new this.Klass2()
+
+      assert.instanceOf klass, this.Klass2
+      assert.instanceOf klass, this.Klass1
+      assert.instanceOf klass, this.Klass0
+      assert.equal      klass.property, 'value'
+      assert.equal      klass.method1,  'method1'
+      assert.equal      klass.method2,  'method2'
+
+
+    "should handle the third level inheritance": ->
+      klass = new this.Klass3()
+
+      assert.instanceOf klass, this.Klass3
+      assert.instanceOf klass, this.Klass2
+      assert.instanceOf klass, this.Klass1
+      assert.instanceOf klass, this.Klass0
+      assert.equal      klass.property, 'value'
+      assert.equal      klass.method1,  'method1'
+      assert.equal      klass.method2,  'method2'
+      assert.equal      klass.method3,  'method3'
+
+
 
   'new Class':
     topic: ->
