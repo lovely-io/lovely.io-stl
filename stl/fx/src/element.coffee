@@ -46,7 +46,16 @@ Element.include
     new Fx.Fade(@, options).start(direction)
     return @
 
+  #
+  # Runs the Fx.Slide effect on the element
+  #
+  # @param {String} 'in', 'out' or 'toggle' (default)
+  # @param {Object} fx options
+  # @return {Element} this
+  #
   slide: (direction, options)->
+    new Fx.Slide(@, options).start(direction)
+    return @
 
   #
   # Runs the Fx.Highlight on the element

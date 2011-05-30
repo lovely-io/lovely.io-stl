@@ -24,6 +24,7 @@ include 'src/fx/style'
 include 'src/fx/highlight'
 include 'src/fx/twin'
 include 'src/fx/fade'
+include 'src/fx/slide'
 include 'src/element'
 include 'src/colors'
 
