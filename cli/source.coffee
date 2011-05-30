@@ -51,7 +51,7 @@ compile = (directory)->
   source = source.replace /([^\s]+)(\s*=\s*new\s+Class\()((.|\n)+?constructor:\s+function\s*\()/mg,
     (match, Klass, first, second)->
       if second.indexOf('new Class') is -1 and second.match(/constructor:\s+function\s*\(/).length is 1
-        second = second.replace(/(constructor:\s+function)(\s*\()/, '$1 '+Klass+'$2')
+        second = second.replace(/(constructor:\s+function)(\s*\()/, '$1 '+Klass.replace('.', '_')+'$2')
         "#{Klass}#{first}#{second}"
       else match.toString()
 
