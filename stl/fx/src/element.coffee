@@ -25,19 +25,28 @@ Element.include
     Fx_cancel_all(@)
     return @
 
-  show: (fx, options)->
+#  show: (fx, options)->
 
-  hide: (fx, options)->
+#  hide: (fx, options)->
 
-  toggle: (fx, options)->
+#  toggle: (fx, options)->
 
 #  remove: (fx, options)->
 #    this.$super()
 
 
-  fade: (how, options)->
+  #
+  # Runs the Fx.Fade effect on the element
+  #
+  # @param {String} 'in', 'out' or 'toggle' (default)
+  # @param {Object} fx options
+  # @return {Element} this
+  #
+  fade: (direction, options)->
+    new Fx.Fade(@, options).start(direction)
+    return @
 
-  slide: (how, options)->
+  slide: (direction, options)->
 
   #
   # Runs the Fx.Highlight on the element

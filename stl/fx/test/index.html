@@ -22,7 +22,12 @@
       });
     </script>
     <style type="text/css">
-      div.test {
+      div {
+        position: relative;
+        padding: 0;
+        padding-top: 65pt;
+      }
+      div div {
         border: 1px solid #DDD;
         -moz-border-radius: .25em;
         -webkit-border-radius: .25em;
@@ -40,6 +45,8 @@
         text-align: center;
         font-family: Georgia;
         font-weight: bold;
+        position: absolute;
+        top: 0;
       }
       textarea {
         font: inherit;
@@ -50,6 +57,9 @@
         border-radius: .25em;
         height: 48pt;
         width: 25em;
+        position: absolute;
+        top: 0;
+        left: 160pt;
       }
       textarea:focus {
         background: #FFD;
@@ -59,7 +69,12 @@
         margin-bottom: 5pt;
       }
       #fx-style-test + textarea {
+        top: 65pt;
+        left: 0;
         height: 8em;
+      }
+      #fx-style-test ~ p {
+        margin-top: 105pt;
       }
       #fx-highlight-test {
         background: transparent;
@@ -75,7 +90,7 @@
 
     <h2>Fx.Style</h2>
     <div>
-      <div id="fx-style-test" class="test">Fx.Style</div>
+      <div id="fx-style-test">Fx.Style</div>
       <textarea>$('#fx-style-test').animate({
   background: 'green',
   fontSize:   '50px',
@@ -90,8 +105,18 @@
 
     <h2>Fx.Highlight</h2>
     <div>
-      <div id="fx-highlight-test" class="test">Fx.Highlight</div>
+      <div id="fx-highlight-test">Fx.Highlight</div>
       <textarea>$('#fx-highlight-test').highlight();</textarea>
+      <p>
+        <a href="" class="start">Start</a>
+        <a href="" class="reset">Reset</a>
+      </p>
+    </div>
+
+    <h2>Fx.Fade</h2>
+    <div>
+      <div id="fx-fade-test">Fx.Fade</div>
+      <textarea>$('#fx-fade-test').fade();</textarea>
       <p>
         <a href="" class="start">Start</a>
         <a href="" class="reset">Reset</a>
@@ -100,7 +125,7 @@
 
     <h2>Fx.Scroll</h2>
     <div>
-      <div id="fx-scroll-test" class="test">
+      <div id="fx-scroll-test">
         1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
         19 20 21 22 23 24 25 26 27 28 29 30 31 32 33
       </div>
