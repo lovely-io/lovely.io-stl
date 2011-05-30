@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lovely FX - Test</title>
+    <link href="/test.css" rel="stylesheet" type="text/css"/>
+    <script src="/core.js"></script>
+    <script type="text/javascript">
+      Lovely(['dom', 'fx'], function($, Fx) {
+        window.$  = $;
+        window.Fx = Fx;
+
+        $(document).delegate('a.start', 'click', function(e) {
+          e.stop();
+          eval(this.parent().parent().first('textarea').value());
+        });
+        $(document).delegate('a.reset', 'click', function(e) {
+          e.stop();
+          var block = this.parent().parent().first('div');
+          var clone = $('<div class="test" id="'+ block._.id +'">'+ block.html() +'</div>')[0]
+          block.insert(clone, 'before').remove();
+        });
+      });
+    </script>
+    <style type="text/css">
+      div.test {
+        border: 1px solid #DDD;
+        -moz-border-radius: .25em;
+        -webkit-border-radius: .25em;
+        border-radius: .25em;
+        background: orange;
+        color: brown;
+        width: 12em;
+        height: 60pt;
+        line-height: 60pt;
+        padding: 0 1em;
+        display: inline-block;
+        *display: inline;
+        *zoom: 1;
+        vertical-align: top;
+        text-align: center;
+        font-family: Georgia;
+        font-weight: bold;
+      }
+      textarea {
+        font: inherit;
+        padding: .5em;
+        border: 1px solid #DDD;
+        -moz-border-radius: .25em;
+        -webkit-border-radius: .25em;
+        border-radius: .25em;
+        height: 48pt;
+        width: 25em;
+      }
+      textarea:focus {
+        background: #FFD;
+      }
+      #fx-style-test {
+        display: block;
+        margin-bottom: 5pt;
+      }
+      #fx-style-test + textarea {
+        height: 8em;
+      }
+      #fx-scroll-test {
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Lovely FX - Test</h1>
+
+    <h2>Fx.Style</h2>
+    <div>
+      <div id="fx-style-test" class="test">Fx.Style</div>
+      <textarea>$('#fx-style-test').animate({
+  background: 'green',
+  fontSize:   '50px',
+  color:      'red',
+  width:      '500px'
+});</textarea>
+
+      <p>
+        <a href="" class="start">Start</a>
+        <a href="" class="reset">Reset</a>
+      </p>
+    </div>
+
+    <h2>Fx.Scroll</h2>
+    <div>
+      <div id="fx-scroll-test" class="test">
+        1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
+        19 20 21 22 23 24 25 26 27 28 29 30 31 32 33
+      </div>
+      <textarea>$('#fx-scroll-test').scroll({x: 400});</textarea>
+      <p>
+        <a href="" class="start">Start</a>
+        <a href="" class="reset">Reset</a>
+      </p>
+    </div>
+  </body>
+</html>
