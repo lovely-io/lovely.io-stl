@@ -74,15 +74,8 @@ exports.init = (args) ->
       data = fs.readFileSync("#{shared}/#{filename}")
 
     else
-      console.log("\n Sending: "+ "404 Error".red + " /#{filename} is not found".grey)
-      data = """
-      <html>
-        <body>
-          <h1>404 Error</h1>
-          <p>The page is not found</p>
-        </body>
-      </html>
-      """
+      console.log("\n Sending:   "+ "404 Error".red + " /#{filename} is not found".grey)
+      data = fs.readFileSync("#{shared}/404.html")
 
     res.charset = 'utf-8'
     res.contentType(content_type)
