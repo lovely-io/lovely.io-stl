@@ -20,15 +20,26 @@ bootstrap = (base_dir) ->
   print "Making the base at: #{base_dir}"
 
   if path.existsSync(base_dir)
-    print "» " + "Already exists".yellow
+    print " » " + "Already exists".yellow
   else
     fs.mkdirSync(base_dir, 0755)
 
   print "Initial RC file at: ~/.lovelyrc"
-  lovelyrc.base = base_dir
-  lovelyrc.host = 'http://cdn.lovely.io'
-  lovelyrc.port = '3000'
-  lovelyrc.name = 'Vasily Pupkin'
+  if path.existsSync("#{home_dir}/.lovelyrc")
+    print " » " + "Already exists".yellow
+  else
+    lovelyrc.base = base_dir
+    lovelyrc.host = 'http://cdn.lovely.io'
+    lovelyrc.port = '3000'
+    lovelyrc.name = 'Vasily Pupkin'
+
+
+  print "Copying shared server content"
+  if path.existsSync("#{base_dir}/server")
+    print " » " + "Already exists".yellow
+  else
+    system "cp -r #{__dirname + "/../server"} #{base_dir}"
+
 
   print "Installing STL packages"
   stl_dir = "#{__dirname}/../../stl/"

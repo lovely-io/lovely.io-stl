@@ -49,8 +49,8 @@ exports.init = (args) ->
 
   # listening all the static content in the user project
   server.get /^\/(.*?)$/, (req, res) ->
-    minify    = req.query.minify is 'true'
-    shared    = "#{__dirname}/../server"
+    minify = req.query.minify is 'true'
+    shared = "#{lovelyrc.base}/server"
 
     file_in = (directory)->
       for ext in ['', '.html', 'index.html', '/index.html']
