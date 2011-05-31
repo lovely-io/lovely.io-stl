@@ -18,5 +18,8 @@
     "coffee-script": ">=1.1.1",
     "sass":          ">=0.5.0"
   },
-  "bin":  "./bin/lovely"
+  "bin":  "./bin/lovely",
+  "scripts": {
+    "postinstall": "./bin/lovely bootstrap"
+  }
 }
