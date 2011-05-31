@@ -75,6 +75,7 @@ exports.init = (args) ->
       data = fs.readFileSync("#{process.cwd()}/#{filename}")
 
     else if filename = file_in(shared)
+      console.log("") if filename.substr(filename.length-4) is 'html'
       console.log(" Sending:   "+ "/#{filename} -> ~/.lovely/server/#{filename}".grey)
       data = fs.readFileSync("#{shared}/#{filename}")
 
