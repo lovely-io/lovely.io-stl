@@ -4,7 +4,11 @@
     <title>%{projectname} Demo</title>
     <link href="/test.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
-    <script src="/%{projectname}.js"></script>
+    <script type="text/javascript">
+      Lovely(["%{projectname}"], function(my_module) {
+        console.log(my_module.version);
+      });
+    </script>
     <!--
       NOTE: do not include anything else in here!
         all the styles and builds will be handled
