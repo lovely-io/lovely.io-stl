@@ -90,7 +90,7 @@ exports.init = (args) ->
 
   server.listen(port)
 
-  print "Listening: http://127.0.0.0:#{port}\n"+
+  print "Listening: http://127.0.0.1:#{port}\n"+
     "Press Ctrl+C to hung up".grey
 
 
