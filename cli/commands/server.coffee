@@ -50,35 +50,40 @@ exports.init = (args) ->
   # listening all the static content in the user project
   server.get /^\/(.*?)$/, (req, res) ->
     minify    = req.query.minify is 'true'
-    filename  = req.params[0] || 'index'
-    extension = filename.split('.')
-    extension = extension[extension.length - 1]
     shared    = "#{__dirname}/../server"
 
-    unless extension in ['css', 'html', 'js']
-      filename += '.html'
-      extension = 'html'
+    file_in = (directory)->
+      for ext in ['', '.html', 'index.html', '/index.html']
+        relname  = "#{req.params[0]}#{ext}"
+        fullname = "#{directory}/#{relname}"
+        if path.existsSync(fullname) and !fs.statSync(fullname).isDirectory()
+          return relname
 
-    switch extension
-      when 'css' then content_type = 'text/css'
-      when 'js'  then content_type = 'text/javascript'
-      else            content_type = 'text/html'
+      return false
 
-    if path.existsSync("#{process.cwd()}/#{filename}")
-      console.log("") if extension is "html"
-      console.log(" Sending:   "+ "/#{filename} (#{content_type})".grey)
+    content_type = (name)->
+      extension = (name || '').split('.')
+      switch extension[extension.length - 1]
+        when 'css' then return 'text/css'
+        when 'js'  then return 'text/javascript'
+        else            return 'text/html'
+
+
+    if filename = file_in(process.cwd())
+      console.log("") if filename.substr(filename.length-4) is 'html'
+      console.log(" Sending:   "+ "/#{filename} (#{content_type(filename)})".grey)
       data = fs.readFileSync("#{process.cwd()}/#{filename}")
 
-    else if path.existsSync("#{shared}/#{filename}")
-      console.log(" Sending:   "+ "/#{filename} (text/css) from shared directory".grey)
+    else if filename = file_in(shared)
+      console.log(" Sending:   "+ "/#{filename} -> ~/.lovely/server/#{filename}".grey)
       data = fs.readFileSync("#{shared}/#{filename}")
 
     else
-      console.log("\n Sending:   "+ "404 Error".red + " /#{filename} is not found".grey)
+      console.log("\n Sending:   "+ "404 Error".red + " /#{req.params[0]} is not found".grey)
       data = fs.readFileSync("#{shared}/404.html")
 
     res.charset = 'utf-8'
-    res.contentType(content_type)
+    res.contentType(content_type(filename))
     res.send data
 
 
