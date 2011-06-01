@@ -1,0 +1,10 @@
+application: lovely-io
+version:     1_0_0
+runtime:     python
+api_version: 1
+
+
+handlers:
+
+- url: /.*
+  script: app/main.py
