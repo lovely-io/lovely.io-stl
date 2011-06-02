@@ -14,6 +14,12 @@ from google.appengine.ext.webapp import RequestHandler, template
 
 TEMPLATES_PATH = os.path.join(os.path.dirname(__file__), '..', 'views')
 PUBLIC_PATH    = os.path.join(os.path.dirname(__file__), '..', '..', 'public')
+CONTENT_TYPES  = {
+    'css' : 'text/css',
+    'js'  : 'text/javascript',
+    'txt' : 'text/plain',
+    'ico' : 'image/ico'
+}
 
 
 class ApplicationController(RequestHandler):
@@ -24,20 +30,23 @@ class ApplicationController(RequestHandler):
         self.resource = self.__class__.resource or ('/' + self.__name__)
 
         self.views_path  = TEMPLATES_PATH + '/' + self.__name__ + '/'
-        self.public_path = PUBLIC_PATH
 
         super(ApplicationController, self).__init__(**kwargs)
 
-    def get(self):
-        self.parse_params()
 
-        if self.params.has_key('id'):
-            if self.params['id'] == 'new':
-                self.new()
-            else:
-                self.show()
+    def get(self):
+        if self.request.path != '/' and os.path.exists(PUBLIC_PATH + self.request.path):
+            self.send_static()
         else:
-            self.index()
+            self.parse_params()
+
+            if self.params.has_key('id'):
+                if self.params['id'] == 'new':
+                    self.new()
+                else:
+                    self.show()
+            else:
+                self.index()
 
 
     def post(self):
@@ -92,3 +101,19 @@ class ApplicationController(RequestHandler):
 
         if len(id) > 0:
             self.params['id'] = id
+
+    def template_exists(name):
+        """ Checks if the template exists """
+        return os.path.exists(self.views_path + name + '.html')
+
+
+    def send_static(self):
+        """ Handles the static content serving """
+
+        file = PUBLIC_PATH + self.request.path
+        type = file.split('.')
+        type = type[len(type) - 1]
+        type = CONTENT_TYPES[type] or 'text/html'
+
+        self.response.headers['Content-Type'] = type
+        self.response.out.write(open(file, 'r').read())
