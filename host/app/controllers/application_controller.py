@@ -97,12 +97,18 @@ class ApplicationController(RequestHandler):
         if len(path) > 0 and path[0] == '/':
             path = path[1 : len(path)]
 
-        id = path.split('/')[0]
+        format = path.split('.')
+        format = format[len(format) - 1]
 
-        if len(id) > 0:
-            self.params['id'] = id
+        self.params['format'] = format or 'html'
 
-    def template_exists(name):
+        path = path[0 : len(path) - len(format) - 1]
+
+        if len(path) > 0:
+            self.params['id'] = path
+
+
+    def template_exists(self, name):
         """ Checks if the template exists """
         return os.path.exists(self.views_path + name + '.html')
 
