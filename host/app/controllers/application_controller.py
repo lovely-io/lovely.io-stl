@@ -118,11 +118,11 @@ class ApplicationController(RequestHandler):
             path = path[1 : len(path)]
 
         format = path.split('.')
-        format = format[len(format) - 1]
+        if len(format) > 1:
+            format = format[len(format) - 1]
+            path   = path[0 : len(path) - len(format) - 1]
 
         self.params['format'] = format or 'html'
-
-        path = path[0 : len(path) - len(format) - 1]
 
         if len(path) > 0:
             self.params['id'] = path

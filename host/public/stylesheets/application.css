@@ -1,50 +1,125 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  font: 11pt Verdana, Helvetica;
-  color: #333;
-}
+@import url(http://fonts.googleapis.com/css?family=Droid+Serif:regular,italic,bold,cyr);
+@import url(http://fonts.googleapis.com/css?family=OFL+Sorts+Mill+Goudy+TT);
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
 
+html, body {
+  font-family: 'Droid Serif', serif;
+  font-size: 11pt;
+  color: #222;
+}
 html {
-  padding-top: 8em;
-  position: relative;
+  height: 100%;
+  background: #D2DDA3;
+  margin: 0;
+  padding: 0 10em;
 }
 body {
-  padding: 1em 10em;
-  padding-bottom: 5em;
-  min-height: 20em;
+  min-height: 100%;
+  min-width: 40em;
+  margin: 0;
+  padding: 0;
+  background: #F2F2E4;
+  position: relative;
 }
 
-h1, h2, label, dl dt {
-  margin-top: 20pt;
-  font-weight: normal;
-  font-family: "Trebuchet MS", Garuda, sans-serif;
-  color: #7A5E44;
+h1, h2, h3, h4, label, th, dd {
+  font-family: 'OFL Sorts Mill Goudy TT', serif;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0;
+}
+h2, h3, h4 {
+  margin-top: 2em;
 }
 
 a {
   text-decoration: none;
+  color: brown;
 }
-
 a:hover {
   text-decoration: underline;
 }
 
-h1 {
+input[type="text"], input[type="password"], textarea {
+  font-family: inherit;
+  background: #F4F9EC;
+  border: 1px solid #D1D3BE;
+  border-radius: .25em;
+  -moz-border-radius: .25em;
+  -webkit-border-radius: .25em;
+  padding: .125em .25em;
+}
+
+tt, pre {
+  font-family: 'Droid Sans Mono';
+  font-size: 95%;
+}
+
+tt {
+  display: inline-block;
+  padding: .1em .25em;
+  line-height: 1em;
+  background: #dCe2c9;
+}
+
+pre {
+  background: #F4F9EC;
+  overflow: auto;
+  padding: .5em 1em;
+  border: 1px solid #D1D3BE;
+  border-radius: .25em;
+  -moz-border-radius: .25em;
+  -webkit-border-radius: .25em;
+}
+
+/* the layout */
+body > header, body > section, body > footer {
+  padding: 0 2em;
+}
+
+body > header {
+  position: relative;
+  margin-bottom: 2em;
+}
+body > footer {
   position: absolute;
-  top: -.6em;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding-bottom: 1em;
+  padding-top: 1em;
+  color: grey;
+}
+body > section {
+  padding-bottom: 4em;
+}
+
+body > header h1 {
   font-size: 4em;
   margin: 0;
   padding: 0;
-  padding-top: 1em;
+  display: inline-block;
+  color: brown;
 }
-
-div#footer {
+body > header h2 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 1.1em;
+  color: grey;
   position: absolute;
-  bottom: 1.5em;
-  font-size: 90%;
+  margin-top: -1em;
 }
-
-h2 {
-  border-bottom: 1px solid;
+body > header nav {
+  position: absolute;
+  bottom: 0;
+  right: 2em;
+}
+body > header form#search {
+  position: absolute;
+  top: 1em;
+  right: 2em;
 }

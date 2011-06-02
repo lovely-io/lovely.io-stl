@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Hello</title>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/application.css" />
+    <meta charset="utf-8" >
+    <title>Lovely.IO: {{ title }}</title>
+    <link href="/stylesheets/application.css" rel="stylesheet" >
   </head>
   <body>
-    {{ content }}
+    <header>
+      <a href="/" id="logo"><h1>Lovely.IO</h1></a>
+      <h2>The Front-Side Development Platform</h2>
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/about">About</a>
+      </nav>
+      <form id="search" action="/packages">
+        <input type="text" name="search" placeholder="Search">
+      </form>
+    </header>
+    <section id="main">
+      {{ content }}
+    </section>
+    <footer>
+      Copyright (C) 2011 <a href="http://st-on-it.blogspot.com">Nikolay Nemshilov</a>
+    </footer>
   </body>
 </html>
