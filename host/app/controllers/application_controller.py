@@ -68,6 +68,26 @@ class ApplicationController(RequestHandler):
         self.parse_params()
         self.destroy()
 
+
+    # dummy RESTful methods
+    def index(self):
+        self.render('index')
+
+    def new(self):
+        self.render('new')
+
+    def show(self):
+        self.render('show')
+
+    def edit(self):
+        self.render('edit')
+
+    def update(self):
+        return None
+
+    def destroy(self):
+        return None
+
 # protected
 
     def render(self, path, values={}):

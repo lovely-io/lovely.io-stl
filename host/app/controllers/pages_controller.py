@@ -8,11 +8,6 @@ from application_controller import ApplicationController
 class PagesController(ApplicationController):
     resource = '/' # it works in the root resource
 
-    def index(self):
-        """ Just render the landing page"""
-        self.render('index')
-
-
     def show(self):
         """ Handles the static pages requests """
 
