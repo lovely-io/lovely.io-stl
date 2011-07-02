@@ -28,7 +28,7 @@ post = (path, params)->
         data = JSON.parse(data)
 
         if data.errors
-          print "ERROR: ".red + "request validation failed".grey
+          print "ERROR: ".red + "request failed".grey
 
           for key, errors of data.errors
             errors = [errors] if typeof(errors) is 'string'
@@ -36,7 +36,7 @@ post = (path, params)->
               print "  #{key} #{message}".yellow
 
         else if data.url
-          print "SUCCESS! ".green + "#{data.url}".grey
+          print "SUCCESS! ".green + "visit #{data.url} for the result".grey
 
       catch e
         print_error "something wrong with the server"
@@ -64,3 +64,10 @@ post = (path, params)->
 #
 exports.send_package = (params)->
   post "/packages.json", package: params
+
+
+#
+# Sends a request to remove a package out of the server
+#
+exports.remove_package = (name, version)->
+  post "/packages/#{name}.json", version: version, _method: 'delete'
