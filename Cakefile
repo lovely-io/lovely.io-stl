@@ -8,12 +8,8 @@
 #
 
 task 'build', 'Build the scripts', ->
-  fs   = require('fs')
-  dir  = "#{__dirname}/stl/"
-
-  for name in fs.readdirSync(dir)
-    if fs.statSync(dir + name).isDirectory()
-      system "cd #{dir + name}; ../../bin/lovely build"
+  for dir in package_dirs()
+    system "cd #{dir}; ../../bin/lovely build"
 
 
 task 'test', 'Run the tests', ->
@@ -25,12 +21,13 @@ task 'test:spec', 'Run the tests with the specs output', ->
 
 
 task 'check', 'Checks the source code with JSHint', ->
-  fs  = require('fs')
-  dir = "#{__dirname}/stl/"
+  for dir in package_dirs()
+    system "cd #{dir}; ../../bin/lovely check"
 
-  for name in fs.readdirSync(dir)
-    system "cd #{dir + name}; ../../bin/lovely check"
 
+task 'publish', 'Publishes all known packages', ->
+  for dir in package_dirs()
+    system "cd #{dir}; ../../bin/lovely publish"
 
 
 #
@@ -46,3 +43,14 @@ system = (cmd, callback) ->
 
     if !error && callback
       callback()
+
+#
+# Returns a list of known package directories
+#
+# @return {Array} directories list
+#
+package_dirs = ->
+  fs  = require('fs')
+  dir = "#{__dirname}/stl/"
+
+  "#{dir + name}" for name in fs.readdirSync(dir) when fs.statSync(dir + name).isDirectory()
