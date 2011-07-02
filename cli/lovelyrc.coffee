@@ -13,6 +13,7 @@ params   =
   email:  'your email address'
   base:   'local lovely packages library location'
   host:   'the main lovely.io hosting location'
+  auth:   'lovely.io authentication key'
   port:   'development server default port'
   secret: 'lovely.io authentication token'
 
