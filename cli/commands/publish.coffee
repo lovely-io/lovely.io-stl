@@ -25,11 +25,13 @@ exports.init = (args) ->
 
   system "../../bin/lovely build", ->
     hosting.send_package
-      name:        package.name
-      version:     package.version
-      description: package.description
-      build:       read("build/#{package.name}.js")
-      readme:      read('README.md')
+      name:         package.name
+      version:      package.version
+      description:  package.description
+      dependencies: package.dependencies
+      license:      package.license
+      build:        read("build/#{package.name}.js")
+      readme:       read('README.md')
 
 
 #

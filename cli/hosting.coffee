@@ -45,18 +45,40 @@ post = (path, params)->
     print_error error.message
 
 
-  data = "auth_token=#{encodeURIComponent(lovelyrc.auth)}"
+  params.auth_token = lovelyrc.auth
 
-  for key, value of params
-    if typeof(value) is 'object'
-      for name, string of value
-        data += "&#{encodeURIComponent(key+'['+name+']')}=#{encodeURIComponent(string)}"
-    else
-      data += "&#{encodeURIComponent(key)}=#{encodeURIComponent(value)}"
-
-  request.write(data)
+  request.write(to_query_string(params))
   request.end()
 
+
+#
+# Converts an object into a query string
+#
+to_query_string = (data)->
+
+  map = (hash, prefix='')->
+    result = []
+
+    for key, value of hash
+      key = if prefix is '' then key else "#{prefix}[#{key}]"
+
+      if typeof(value) is 'object'
+        if value instanceof Array
+          for v in value
+            result.push(["#{key}[]", v])
+        else if value # assuming it's an object
+          for entry in map(value, key)
+            result.push(entry)
+
+      else
+        result.push([key, "#{value}"])
+
+    result
+
+  data = for e in map(data)
+    "#{encodeURIComponent(e[0])}=#{encodeURIComponent(e[1])}"
+
+  data.join('&')
 
 
 #
