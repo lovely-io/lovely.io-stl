@@ -28,18 +28,17 @@ post = (path, params)->
         data = JSON.parse(data)
 
         if data.errors
-          print "ERROR: ".red + "request failed".grey
+          message = "request failed".grey
 
           for key, errors of data.errors
             errors = [errors] if typeof(errors) is 'string'
-            for message in errors
-              print "  #{key} #{message}".yellow
+            for msg in errors
+              message += "\n - #{key} #{msg}".magenta
 
-        else if data.url
-          print "SUCCESS! ".green + "visit #{data.url} for the result".grey
+          print_error message
 
       catch e
-        print_error "something wrong with the server"
+        print_error "server response is malformed"
 
   request.on 'error', (error)->
     print_error error.message

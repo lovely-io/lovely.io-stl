@@ -23,7 +23,11 @@ exports.init = (args) ->
   package = require('../package')
   hosting = require('../hosting')
 
+  sout "» Compiling the project".ljust(61)
   system "../../bin/lovely build", ->
+    sout "Done\n".green
+
+    sout "» Publishing #{lovelyrc.host}/packages/#{package.name} ".ljust(61)
     hosting.send_package
       name:         package.name
       version:      package.version
@@ -32,6 +36,8 @@ exports.init = (args) ->
       license:      package.license
       build:        read("build/#{package.name}.js")
       readme:       read('README.md')
+
+    sout "Done\n".green
 
 
 #

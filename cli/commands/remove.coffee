@@ -8,7 +8,9 @@ exports.init = (args)->
   else
     hosting = require('../hosting')
 
+    sout "» Removing #{lovelyrc.host}/packages/#{args[0]}/#{args[1]}".ljust(61)
     hosting.remove_package(args[0], args[1])
+    sout "Done\n".green
 
 
 exports.help = (args)->

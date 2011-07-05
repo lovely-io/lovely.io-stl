@@ -24,6 +24,12 @@ global.print = (str) ->
   console.log(str)
 
 #
+# Puts a string into the STDOUT without breaking the line
+#
+global.sout = (str)->
+  process.stdout.write(str)
+
+#
 # An uniformed errors printing feature
 #
 # NOTE: halts the process!
@@ -39,7 +45,7 @@ global.print_error = (str)->
 # @return {String} of that length
 #
 String.prototype.ljust = (length, filler) ->
-  str = this
+  str = this + ''
   filler or= ' '
 
   while str.length < length
