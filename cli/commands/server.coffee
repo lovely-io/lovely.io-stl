@@ -33,7 +33,7 @@ exports.init = (args) ->
       console.log(" Compiling: ".cyan+ "/#{module}.js (#{size}Kb #{if minify then 'minified' else 'source'})".grey)
 
     else
-      src = "/#{module}/current/build/#{module}#{if minify then '' else '-src'}.js"
+      src = "/#{module}/current/build.js"
       console.log(" Serving:   ".magenta + "/#{module}.js -> ~/.lovely/packages#{src}".grey)
       src = fs.readFileSync("#{base}/#{src}").toString()
 
