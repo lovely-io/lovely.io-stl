@@ -19,7 +19,7 @@ save_package = (package, build)->
     system "mkdir -p #{location}", ->
       fs = require('fs')
 
-      fs.writeFileSync("#{location}/#{package.name}.js", build)
+      fs.writeFileSync("#{location}/build.js", build)
       fs.writeFileSync("#{location}/package.json", JSON.stringify(package))
 
       system "#{__dirname}/../../bin/lovely activate #{package.name}"
@@ -48,6 +48,14 @@ remote_install = (args)->
 
   sout "» Downloading the package from the server".ljust(61)
   hosting.get_package args[0], args[1], (package, build)->
+    sout "Done\n".green
+
+    sout "» Resolving package dependencies".ljust(61)
+    for name, version of (package.dependencies || {})
+      sout "\n  - #{name}@#{version}".magenta
+      system "#{__dirname}/../../bin/lovely install #{name} #{version}"
+
+    sout "\n" if name
     sout "Done\n".green
 
     sout "» Saving the package in ~/.lovely/packages/#{package.name} ".ljust(61)

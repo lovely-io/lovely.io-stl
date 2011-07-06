@@ -18,7 +18,7 @@ exports.init = (args) ->
         unless version is 'current'
           versions.push(version)
 
-      print "#{name.ljust(16)} #{versions.sort().join(' ')}"
+      print " #{name.ljust(16)} #{versions.sort().join(' ').grey}"
 
 
 exports.help = (args) ->
