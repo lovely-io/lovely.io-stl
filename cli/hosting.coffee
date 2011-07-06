@@ -136,3 +136,10 @@ exports.get_package = (name, version, callback)->
     package.version = version || package.versions[0]
     get "/#{package.name}-#{package.version}.js", {}, (build)->
       callback package, build
+
+#
+# Downloads the package index from the server
+#
+exports.get_index = (callback)->
+  get "/packages.json", {}, (index)->
+    callback index
