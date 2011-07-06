@@ -44,7 +44,7 @@ bootstrap = (base_dir) ->
   print "Installing STL packages"
   stl_dir = "#{__dirname}/../../stl/"
   for name in fs.readdirSync(stl_dir)
-    system("cd #{stl_dir + name}; ../../bin/lovely install")
+    system("cd #{stl_dir + name}; #{__dirname}/../../bin/lovely install")
 
   print "» " + "Done".green
 

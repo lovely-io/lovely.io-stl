@@ -24,7 +24,7 @@ exports.init = (args) ->
   hosting = require('../hosting')
 
   sout "» Compiling the project".ljust(61)
-  system "../../bin/lovely build", ->
+  system "#{__dirname}/../../bin/lovely build", ->
     sout "Done\n".green
 
     sout "» Publishing #{lovelyrc.host}/packages/#{package.name} ".ljust(61)
