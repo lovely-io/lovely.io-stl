@@ -5,53 +5,63 @@
 #
 
 #
-# Makes a POST request to the lovelyrc.host
-# in order to create/update a package
+# Generic request method
 #
 # @param {String} url addres (relative)
 # @param {Object} data
+# @param {String} request method
+# @param {Function} optional callback
 #
-post = (path, params)->
+request = (path, params, method, callback)->
   url = require('url').parse(lovelyrc.host)
 
   options =
     host:   url.hostname
     port:   url.port
     path:   path
-    method: 'POST'
+    method: method
 
-  request = require('http').request options, (response)->
+  req = require('http').request options, (response)->
     response.setEncoding('utf8')
 
     response.on 'data', (data)->
-      try
-        data = JSON.parse(data)
+      content_type = response.headers['content-type']
 
-        if data.errors
-          message = "request failed".grey
+      if /json/.test(content_type)
+        try
+          data = JSON.parse(data)
 
-          for key, errors of data.errors
-            errors = [errors] if typeof(errors) is 'string'
-            for msg in errors
-              message += "\n - #{key} #{msg}".magenta
+          if data.errors
+            message = "request failed".grey
 
-          print_error message
+            for key, errors of data.errors
+              errors = [errors] if typeof(errors) is 'string'
+              for msg in errors
+                message += "\n - #{key} #{msg}".magenta
 
-      catch e
-        print_error "server response is malformed"
+            print_error message
 
-  request.on 'error', (error)->
+        catch e
+          print_error "server response is malformed"
+
+      else if !/(ecma|java)script/.test(content_type)
+        print_error "unexpected server response"
+
+      callback(data) if callback
+
+  req.on 'error', (error)->
     print_error error.message
-
 
   params.auth_token = lovelyrc.auth
 
-  request.write(to_query_string(params))
-  request.end()
-
+  req.write(to_query_string(params))
+  req.end()
 
 #
 # Converts an object into a query string
+#
+# @param {Object} data
+# @return {String} URI encoded string
 #
 to_query_string = (data)->
 
@@ -81,6 +91,28 @@ to_query_string = (data)->
 
 
 #
+# Makes a GET request to the server
+#
+# @param {String} url address (relative)
+# @param {Object} optional data
+# @param {Function} optional callback
+#
+get = (path, params, callback)->
+  request path, params, 'GET', callback
+
+#
+# Makes a POST request to the lovelyrc.host
+# in order to create/update a package
+#
+# @param {String} url addres (relative)
+# @param {Object} data
+# @param {Function} optional callback
+#
+post = (path, params, callback)->
+  request path, params, 'POST', callback
+
+
+#
 # Sends the package create/update request to the server
 #
 exports.send_package = (params)->
@@ -92,3 +124,15 @@ exports.send_package = (params)->
 #
 exports.remove_package = (name, version)->
   post "/packages/#{name}.json", version: version, _method: 'delete'
+
+#
+# Downloads the package from the server
+#
+exports.get_package = (name, version, callback)->
+  url = "/packages/#{name}"
+  url+= "/#{version}" if version
+
+  get "#{url}.json", {}, (package)->
+    package.version = version || package.versions[0]
+    get "/#{package.name}-#{package.version}.js", {}, (build)->
+      callback package, build
