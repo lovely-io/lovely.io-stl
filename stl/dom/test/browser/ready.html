@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lovely DOM - Ready Test</title>
+    <link rel="stylesheet" type="text/css" href="/shared.css" />
+    <script src="/core.js"></script>
+    <script src="/dom.js"></script>
+    <script>
+      var $ = Lovely.modules.dom;
+
+      console.log("Initial call");
+      $(function() {
+        console.log("DOM Ready Call");
+
+        $(function() {
+          console.log("After DOM Ready Call");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Lovely DOM - Ready Test</h1>
+  </body>
+</html>

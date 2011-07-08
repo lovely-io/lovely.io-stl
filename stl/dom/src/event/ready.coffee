@@ -6,27 +6,19 @@
 #
 Document.include
   on: (name, callback)->
-    Element_events.on.apply(@, arguments)
+    this.$super.apply(@, arguments)
 
     if name is 'ready'
       doc = @_
       id  = uid(doc)
 
-      if Ready_documents[id]
+      if doc.readyState in ['interactive', 'loaded', 'complete']
         callback.apply(@) # if the document is alrady loaded
-      else
-        unless id of Ready_documents
-          Ready_documents[id] = false
-          ready = bind(@emit, @, 'ready')
-
-          if 'readyState' of doc
-            do ->
-              if (doc.readyState in ['loaded', 'complete'])
-                ready()
-              else
-                setTimeout(arguments.callee, 50)
-          else
-            doc.addEventListener('DOMContentLoaded', ready, false)
+      else if !(id of Ready_documents)
+        Ready_documents[id] = @
+        doc.addEventListener('DOMContentLoaded', ->
+          Ready_documents[id].emit('ready')
+        , false)
 
     return @
 
