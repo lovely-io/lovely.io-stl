@@ -3,15 +3,15 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-Lovely   = require('core')
-A        = Lovely.A
-L        = Lovely.L
-ext      = Lovely.ext
-trim     = Lovely.trim
-bind     = Lovely.bind
-Class    = Lovely.Class
-isArray  = Lovely.isArray
-isObject = Lovely.isObject
+core     = require('core')
+A        = core.A
+L        = core.L
+ext      = core.ext
+trim     = core.trim
+bind     = core.bind
+Class    = core.Class
+isArray  = core.isArray
+isObject = core.isObject
 window   = global
 document = window.document
 HTML     = document.documentElement
