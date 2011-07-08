@@ -53,11 +53,6 @@ extract_scripts = (content) ->
 global_eval = (script) ->
   new Element('script', text: script).insertTo(HTML) if script
 
-# IE has a native global eval function
-if window.execScript
-  global_eval = (script)->
-    window.execScript(script) if script
-
 # ensures that the value is an array
 ensure_array = (value) ->
   if isArray(value) then value else [value]
@@ -81,20 +76,6 @@ uid = (node) ->
   node[UID_KEY]
 
 
-# using IE's native 'uniqueNumber' sequencer when available
-if 'uniqueNumber' of HTML
-  uid = (node) ->
-    if node.nodeType is 1
-      return node.uniqueNumber
-    else
-      # document and window objects don't have the `uniqNumber` property
-      # so we hack it around by using negative indexes and our own
-      # internal random UID_KEY property
-      unless UID_KEY of node
-        node[UID_KEY] = -1 * UID_NUM++
-
-    node[UID_KEY]
-
 #
 # a quick local dom-wrapping interface
 #
@@ -109,7 +90,7 @@ wrap = (value) ->
       return Wrapper.Cache[key]
     else if value.nodeType is 1
       return new Element(value)
-    else if value.target || value.srcElement
+    else if `value.target != null`
       return new Event(value)
     else if value.nodeType is 9
       return new Document(value)

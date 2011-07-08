@@ -44,14 +44,10 @@ Element.include
   # @return {Element} matching parent or `null`
   #
   parent: (css_rule) ->
-    parent = @_.parentNode; parent_type = parent && parent.nodeType;
-
     if css_rule
       @parents(css_rule)[0]
-    else if parent_type in [1, 9] # <- IE6 sometimes has a fragment node in there
-      wrap(parent)
     else
-      null
+      wrap(@_.parentNode)
 
   #
   # Finds all the parent elements of current element

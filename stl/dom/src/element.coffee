@@ -12,8 +12,12 @@ class Element extends Wrapper
   # @param {Object} new element options
   # @return {Element} instance
   #
-  constructor: (element, options) ->
-    element = make_element(element, options) if typeof(element) is 'string'
+  constructor: (element, options)->
+    # making a dom-element by the tag-name
+    if typeof(element) is 'string'
+      element = if element of elements_cache then elements_cache[element]
+      else (elements_cache[element] = document.createElement(element))
+      element = element.cloneNode(false)
 
     # handling dynamic typecasting
     cast = Wrapper.Cast(element) if @constructor is Element
@@ -61,22 +65,5 @@ Element.include = (hash)->
 
 
 # private
-
-# a quick elements creation helper
+# the dom-elements cache, for quicker instantiation
 elements_cache = {}
-make_element = (tag, options) ->
-  unless tag of elements_cache
-    elements_cache[tag] = document.createElement(tag)
-
-  elements_cache[tag].cloneNode false
-
-
-# old IE < 9 browsers have a bug with INPUT elements
-# and 'checked' status presets
-if BROWSER_IS_OLD_IE
-  make_element = (tag, options) ->
-    if tag is 'input' and options isnt undefined
-      tag = "<input name=\"#{options.name}\" type=\"#{options.type}\"#{
-        if options.checked then ' checked' else ''} />"
-
-    document.createElement(tag)

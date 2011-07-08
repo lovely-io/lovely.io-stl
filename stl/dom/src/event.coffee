@@ -54,28 +54,12 @@ class Event extends Wrapper
     @pageY         = event.pageY
 
     @target        = wrap(event.target)
+    @target        = wrap(event.target.parentNode) if event.target and event.target.nodeType is 3
 
     @currentTarget = wrap(event.currentTarget)
     @relatedTarget = wrap(event.relatedTarget)
 
-    # Webkit throws events on textual nodes as well, gotta fix that
-    if 'target' of event and event.target.nodeType is 3
-      @target = wrap(event.target.parentNode)
-
-
-    # making old IE attrs looks like w3c standards
-    if BROWSER_IS_OLD_IE and 'srcElement' of event
-      @which         = if event.button is 2 then 3 else if event.button is 4 then 2 else 1
-
-      @target        = wrap(event.srcElement) || options
-      @relatedTarget = if @target._ is event.fromElement then wrap(event.toElement) else @target
-      @currentTarget = options
-
-      scrolls = @target.window().scrolls()
-
-      @pageX  = event.clientX + scrolls.x
-      @pageY  = event.clientY + scrolls.y
-
+    return # nothing
 
   #
   # Stops the event propagation through the dom-tree
@@ -83,11 +67,7 @@ class Event extends Wrapper
   # @return {Event} this
   #
   stopPropagation: ->
-    if @_.stopPropagation
-      @_.stopPropagation()
-    else
-      @_.cancelBubble = true
-
+    @_.stopPropagation() if @_.stopPropagation
     @stopped = true
 
     return @
@@ -98,11 +78,7 @@ class Event extends Wrapper
   # @return {Event} this
   #
   preventDefault: ->
-    if @_.preventDefault
-      @_.preventDefault()
-    else
-      @_.returnValue = false
-
+    @_.preventDefault() if @_.preventDefault
     return @
 
   #

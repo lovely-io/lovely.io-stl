@@ -47,7 +47,7 @@ Element.include
   # @return {String|Element} this element or textual content
   #
   text: (text) ->
-    if text is undefined then (@_.textContent || @_.innerText)
+    if text is undefined then @_.textContent
     else @update(document.createTextNode(text))
 
   #
@@ -107,7 +107,7 @@ Element.include
   # @return {Element} this
   #
   insertTo: (element, position) ->
-    element = Search_by_id(element) if typeof(element) is 'string'
+    element = $(element)[0] if typeof(element) is 'string'
     element = wrap(element) unless element instanceof Element
 
     element.insert(@, position)

@@ -102,12 +102,8 @@ Element.include
           Element_clean_style(Element_computed_styles(@_), name)
 
       else # setting a style
-        name = if name is 'float' then ELEMENT_STYLE_FLOAT else camelize(name)
-
-        if name is 'opacity' and ELEMENT_IE_OPACITY
-          @_.style.filter = "alpha(opacity=#{value * 100})"
-        else
-          @_.style[name] = value
+        name = 'cssFloat' if name is 'float'
+        @_.style[camelize(name)] = value
 
     else # assuming it's a hash to set
       for value of name
@@ -117,11 +113,6 @@ Element.include
 
 
 # private
-
-# figuring out the actual property names for the `float` and `opacity` styles
-ELEMENT_STYLE_FLOAT = if 'cssFloat' of HTML.style then 'cssFloat' else 'styleFloat'
-ELEMENT_IE_OPACITY  = !('opacity' of HTML.style) and 'filter' of HTML.style
-
 
 # reads specified element styles into a hash
 Element_read_styles = (element, names) ->
@@ -151,13 +142,10 @@ Element_clean_style = (style, name) ->
   name = camelize(name)
 
   if name is 'opacity'
-    return if ELEMENT_IE_OPACITY then (
-      (/opacity=(\d+)/i.exec(style.filter || '') ||
-      ['', '100'])[1] / 100
-    )+'' else style[name].replace(',', '.')
+    return style[name].replace(',', '.')
 
   else if name is 'float'
-    name = ELEMENT_STYLE_FLOAT
+    name = 'cssFloat'
 
   value = style[name]
 
@@ -168,14 +156,7 @@ Element_clean_style = (style, name) ->
 
 
 # finding computed styles of a dom-element
-if 'currentStyle' of HTML
-  Element_computed_styles = (element) ->
-    element.computedStyle || {}
-else if 'runtimeStyle' of HTML
-  Element_computed_styles = (element) ->
-    element.runtimeStyle || {}
-else
-  Element_computed_styles = (element) ->
-    element.ownerDocument.defaultView.getComputedStyle(element, null)
+Element_computed_styles = (element) ->
+  element.ownerDocument.defaultView.getComputedStyle(element, null)
 
 

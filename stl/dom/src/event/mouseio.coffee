@@ -40,11 +40,11 @@ mouseio_emit = (raw, element, enter) ->
 # @return void
 #
 mouseio_handler = (e)->
-  target  = e.target        || e.srcElement
-  from    = e.relatedTarget || e.fromElement
+  target  = e.target
+  from    = e.relatedTarget
   element = target
   passed  = false
-  parents = L([])
+  parents = []
   id      = null
   event   = null
 
@@ -95,11 +95,7 @@ mouseio_activate = ->
   if mouseio_inactive
     mouseio_inactive = false
 
-    if Browser is 'IE'
-      document.attachEvent('onmouseover', mouseio_handler)
-      window.attachEvent('blur', mouseio_reset)
-    else
-      document.addEventListener('mouseover', mouseio_handler, false)
-      window.addEventListener('blur', mouseio_reset, false)
+    document.addEventListener('mouseover', mouseio_handler, false)
+    window.addEventListener('blur', mouseio_reset, false)
 
   return #nothing

@@ -29,6 +29,10 @@ task 'publish', 'Publishes all known packages', ->
   for dir in package_dirs()
     system "cd #{dir}; ../../bin/lovely publish"
 
+task 'install', 'Installs all the known packages locally', ->
+  for dir in package_dirs()
+    system "cd #{dir}; ../../bin/lovely install"
+
 
 #
 # A simple system-call wrapper

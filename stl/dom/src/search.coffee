@@ -50,7 +50,7 @@ class Search extends Lovely.List
       if css_rule[0] is '<' # '<div>boo hoo</div>' to node-list conversion
         return new Element('div').html(css_rule).children()
       else if /^#[^ \.\[:]+$/i.test(css_rule)
-        css_rule = [Search_by_id(css_rule)] # quick by-id search
+        css_rule = [document.getElementById(css_rule.substr(1))] # quick by-id search
       else
         context  = current_Document  if `context == null`
         context  = wrap(context)     unless context instanceof Wrapper
@@ -64,19 +64,6 @@ class Search extends Lovely.List
     return @
 
 # private
-
-# a quick search by-id feature
-Search_by_id = (id)->
-  document.getElementById(id.substr(1))
-
-
-if BROWSER_IS_OLD_IE
-  # fixing an old IE browsers bug with searching by the `name` attribute
-  Search_by_id = (id)->
-    id      = id.substr(1)
-    element = document.getElementById(id)
-    element = current_Document.first('#'+ id, true) if element.id isnt id
-    element
 
 
 # the standard search interface, used in {Element} and {Document}

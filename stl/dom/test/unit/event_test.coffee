@@ -94,13 +94,6 @@ describe 'Event', module,
       assert.isTrue      raw.called
       assert.isUndefined raw.cancelBubble
 
-    "should set 'cancelBubble = true' on IE browsers": (Event)->
-      event = new Event('my-event')
-
-      event.stopPropagation()
-
-      assert.isTrue event._.cancelBubble
-
     "should set the @stopped = true property": (Event)->
       event = new Event('my-event')
 
@@ -123,11 +116,6 @@ describe 'Event', module,
 
       assert.isTrue      raw.called
       assert.isUndefined raw.returnValue
-
-    "should assign 'returnValue = false' for non w3c events": (Event)->
-      event = new Event('my-event')
-      event.preventDefault()
-      assert.isFalse event._.returnValue
 
     "should return the event itself back to the code": (Event)->
       event = new Event('my-event')
@@ -177,6 +165,6 @@ describe 'Event', module,
   "#find('css-rule')":
     topic: Event
 
-    "should return 'null' if there is no 'target' proprty": (Event)->
+    "should return 'null' if there is no 'target' property": (Event)->
       event = new Event('my-event')
       assert.isNull event.find('something')

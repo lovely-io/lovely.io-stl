@@ -1,7 +1,0 @@
-{
-  "name":        "legacy",
-  "version":     "0.0.0",
-  "description": "The legacy browsers support module",
-  "author":      "Nikolay Nemshilov",
-  "license":     "MIT"
-}
