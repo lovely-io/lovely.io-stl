@@ -57,16 +57,15 @@ ext Class,
       module or= {}
 
       for key of module
-        parent = this.__super__
-        super_method = false
+        unless super_method = this.prototype[key] || false
+          parent = this.__super__
+          while parent
+            if key of parent.prototype
+              if isFunction(parent.prototype[key])
+                super_method = parent.prototype[key]
+              break
 
-        while parent
-          if key of parent.prototype
-            if isFunction(parent.prototype[key])
-              super_method = parent.prototype[key]
-            break
-
-          parent = parent.__super__
+            parent = parent.__super__
 
         method = module[key]
 

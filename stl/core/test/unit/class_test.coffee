@@ -190,3 +190,14 @@ describe 'Class', module,
       assert.isFalse 'a' of Klass.prototype
       assert.isFalse 'b' of Klass.prototype
 
+  "in class methods overloading":
+    topic: ->
+      Klass = new Class
+        method: -> "original"
+
+      Klass.include
+        method: -> this.$super() + "+overload"
+
+    "should overload the method right in the class": (Klass)->
+      assert.equal new Klass().method(), "original+overload"
+
