@@ -4,16 +4,11 @@
 # The goal in here is to provide a quick, steady and inheritable
 # JavaScript 1.7 Array like interface with some additional
 # features, so that we could iterate through anything in a civilize
-# maner on any browser, without tempering with the JavaScript core.
-#
-# NOTE: here we have the standard Array like methods + calls-by-name
-# all the rest of the fancy methods and extensions are defined in the
-# `lang` STL module
+# maner, without tempering with the JavaScript core.
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-class List
-  length: 0
+class List extends Array
 
   #
   # Basic constructor
@@ -114,68 +109,30 @@ class List
   #
   toArray: -> A(@)
 
-#
-# Debugability improver
-#
-# @return {String} representation
-#
-List::toString = -> "#<List [#{A(@)}]>"
-# need this to be assigned directly in IE
+  #
+  # Debugability improver
+  #
+  # @return {String} representation
+  #
+  toString: -> "#<List [#{A(@)}]>"
+
 
 # private
 Array_proto   = Array.prototype
 
-# copying over the standard methods to the list prototype
-for name in 'splice push pop shift unshift reverse sort join indexOf lastIndexOf'.split(' ')
-  List.prototype[name] = Array_proto[name]
-
 # the rest of the standard Array methods and their replacements for old browsers
 Array_slice   = Array_proto.slice
 Array_splice  = Array_proto.splice
-Array_forEach = Array_proto.forEach || `function(callback, scope) {
-  for (var i=0, l=this.length; i < l; i++) {
-    callback.call(scope, this[i], i, this);
-  }}`
-Array_map     = Array_proto.map || `function(callback, scope) {
-  for (var result=[], i=0, l=this.length; i < l; i++) {
-    result[i] = callback.call(scope, this[i], i, this);
-  }return result;}`
+Array_forEach = Array_proto.forEach
+Array_map     = Array_proto.map
+Array_filter  = Array_proto.filter
+Array_reject  = (callback, scope)->
+  Array_filter.call @, ->
+    !callback.apply scope, arguments
 
-Array_filter  = Array_proto.filter || `function(callback, scope) {
-  for (var result=[], j=0, i=0, l=this.length; i < l; i++) {
-    if (callback.call(scope, this[i], i, this)) {
-      result[j++] = this[i];
-  }} return result;}`
+Array_some   = Array_proto.some
+Array_every = Array_proto.every
 
-Array_reject  = `function(callback, scope) {
-  for (var result=[], j=0, i=0, l=this.length; i < l; i++) {
-    if (!callback.call(scope, this[i], i, this)) {
-      result[j++] = this[i];
-  }} return result;}`
-
-Array_some   = Array_proto.some || `function(callback, scope) {
-  for (var i=0, l=this.length; i < l; i++) {
-    if (callback.call(scope, this[i], i, this)) {
-      return true;
-  }} return false;}`
-
-Array_every = Array_proto.every || `function(callback, scope) {
-  for (var i=0, l=this.length; i < l; i++) {
-    if (!callback.call(scope, this[i], i, this)) {
-      return false;
-  }} return true;}`
-
-# adding those for old browsers
-unless List.prototype.indexOf
-  ext List.prototype,
-    indexOf: `function(value, from) {
-      for (var i=(from<0) ? Math.max(0, this.length+from) : from || 0, l=this.length; i < l; i++) {
-        if (this[i] === value) { return i; }
-      } return -1;}`
-    lastIndexOf: `function(value) {
-      for (var i=this.length-1; i > -1; i--) {
-        if (this[i] === value) { return i; }
-      } return -1;}`
 
 #
 # calls the array method on the list with the arguments
