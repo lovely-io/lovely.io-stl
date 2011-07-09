@@ -21,7 +21,6 @@ global.Lovely = ext Lovely,
   loading:     {} # the currently loading modules
   baseUrl:     '' # default base url address for local modules
   hostUrl:     '' # default host url address for Lovely modules
-  waitSeconds: 8  # timeout before give up on a module
 
   # globally accessible functions
   A:          A

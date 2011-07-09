@@ -34,49 +34,97 @@ Lovely = ->
 
   deadline.setTime(deadline.getTime() + options.waitSeconds * 1000)
 
-  # inserting the actual scripts on the page
-  for module, i in modules
-    url = (
-      if module[0] is '.' then options.baseUrl else options.hostUrl
-    ) + module + ".js"
+  check_modules_load = modules_load_listener_for(modules, callback, current)
 
-    # stripping out the '../' and './' things to get the clean module name
-    module = modules[i] = modules[i].replace(/^[\.\/]+/, '')
+  unless check_modules_load() # checking maybe they are already loaded
+    modules_load_listeners.push(check_modules_load)
 
-    if !(module of Lovely.modules or module of Lovely.loading)
-      script = document.createElement('script')
+    # inserting the actual scripts on the page
+    for module, i in modules
+      url = (
+        if module[0] is '.' then options.baseUrl else options.hostUrl
+      ) + module + ".js"
 
-      script.src   = url.replace(/\/\//g, '/')
-      script.async = true
-      script.type  = "text/javascript"
+      # stripping out the '../' and './' things to get the clean module name
+      module = modules[i] = modules[i].replace(/^[\.\/]+/, '')
 
-      header.appendChild(script)
+      if !(loaded_module(module) or module of Lovely.loading)
+        script = document.createElement('script')
 
-      Lovely.loading[module] = script
+        script.src    = url.replace(/\/\//g, '/')
+        script.async  = true
+        script.type   = "text/javascript"
+        script.onload = check_all_waiting_loaders
 
-  # waiting for the modules to load
-  do ->
+        header.appendChild(script)
+
+        Lovely.loading[module] = script
+
+  return # nothing
+
+# modules load_listeners registery
+modules_load_listeners = []
+
+#
+# Checks all the awaiting module loaders in the registery
+#
+check_all_waiting_loaders = ->
+  global.setTimeout ->
+    for listener, i in modules_load_listeners
+      if listener()
+        modules_load_listeners.splice(i,1)
+
+    return # nothing
+  , 0 # using an async call to let the script run
+
+#
+# Builds an event listener that checks if the modules are
+# loaded and if so then calls the callback
+#
+# @param {Array}     modules list
+# @param {Function}  callback
+# @param {String}    currently awaiting module name
+# @return {Function} listener
+#
+modules_load_listener_for = (modules, callback, name)->
+  ->
     packages=[]
 
     for module in modules
-      if module of Lovely.modules
-        packages.push(Lovely.modules[module])
-      else if new Date() < deadline
-        return setTimeout(arguments.callee, 50)
+      if module = loaded_module(module)
+        packages.push(module)
       else
-        return undefined # giving up on unreachable module
-
-    # making the call
-    result = callback.apply(global, packages)
+        return # some modules are not loaded yet
 
     # registering the current module if needed
-    if result && current
-      Lovely.modules[current] = result
-      delete(Lovely.loading[current])
+    if (result = callback.apply(global, packages)) && name
+      # saving the module with the version
+      Lovely.modules[name] = result
 
-    return; # nothing
+      # saving the module without a name
+      name = name.replace(/\-\d+\.\d+\.\d+.*$/, '')
+      if result.version and (!Lovely.modules[name] or Lovely.modules[name].version < result.version)
+        Lovely.modules[name] = result
 
-  return; # nothing
+      delete(Lovely.loading[name])
+
+    return true # successfully loaded everything
+
+
+#
+# Searches for an already loaded module
+#
+# @param {String} full module name (including the version)
+#
+loaded_module = (module)->
+  version = (module.match(/\-\d+\.\d+\.\d+.*$/) || [''])[0]
+  name    = module.substr(0, module.length - version.length)
+
+  if (module = Lovely.modules[name]) and (version = version.substr(1))
+    if module.version and module.version < version
+      module = undefined
+
+  module
 
 
 #
