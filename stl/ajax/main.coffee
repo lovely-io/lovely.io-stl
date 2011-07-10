@@ -21,8 +21,8 @@ include 'src/ajax'
 include 'src/jsonp'
 include 'src/iframe'
 include 'src/hash'
-#include 'src/form'
-#include 'src/element'
+include 'src/form'
+include 'src/element'
 
 exports = ext Ajax,
   version: '%{version}'

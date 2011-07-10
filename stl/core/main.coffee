@@ -39,3 +39,10 @@ global.Lovely = ext Lovely,
   Hash:       Hash,
   Events:     Events,
   Options:    Options
+
+
+# stashing this module itself in the modules list
+Lovely.modules.core =
+Lovely.modules["core-#{Lovely.version}"] = Lovely
+
+

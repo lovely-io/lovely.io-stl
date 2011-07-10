@@ -48,7 +48,7 @@ Lovely = ->
       # stripping out the '../' and './' things to get the clean module name
       module = modules[i] = modules[i].replace(/^[\.\/]+/, '')
 
-      if !(loaded_module(module) or module of Lovely.loading)
+      if !(find_module(module, Lovely.modules) or find_module(module, Lovely.loading))
         script = document.createElement('script')
 
         script.src    = url.replace(/\/\//g, '/')
@@ -70,9 +70,15 @@ modules_load_listeners = []
 #
 check_all_waiting_loaders = ->
   global.setTimeout ->
+    clean_list = []
     for listener, i in modules_load_listeners
-      if listener()
-        modules_load_listeners.splice(i,1)
+      unless listener() # if not yet loaded
+        clean_list.push(listener)
+
+    # if some modules were loaded, then check the rest of them again
+    if clean_list.length != modules_load_listeners.length
+      modules_load_listeners = clean_list
+      check_all_waiting_loaders()
 
     return # nothing
   , 0 # using an async call to let the script run
@@ -91,7 +97,7 @@ modules_load_listener_for = (modules, callback, name)->
     packages=[]
 
     for module in modules
-      if module = loaded_module(module)
+      if module = find_module(module, Lovely.modules)
         packages.push(module)
       else
         return # some modules are not loaded yet
@@ -101,7 +107,7 @@ modules_load_listener_for = (modules, callback, name)->
       # saving the module with the version
       Lovely.modules[name] = result
 
-      # saving the module without a name
+      # saving the module without the version suffix
       name = name.replace(/\-\d+\.\d+\.\d+.*$/, '')
       if result.version and (!Lovely.modules[name] or Lovely.modules[name].version < result.version)
         Lovely.modules[name] = result
@@ -115,12 +121,14 @@ modules_load_listener_for = (modules, callback, name)->
 # Searches for an already loaded module
 #
 # @param {String} full module name (including the version)
+# @param {Object} modules registery
+# @param {Object} matching module
 #
-loaded_module = (module)->
+find_module = (module, registry)->
   version = (module.match(/\-\d+\.\d+\.\d+.*$/) || [''])[0]
   name    = module.substr(0, module.length - version.length)
 
-  if (module = Lovely.modules[name]) and (version = version.substr(1))
+  if (module = registry[name]) and (version = version.substr(1))
     if module.version and module.version < version
       module = undefined
 

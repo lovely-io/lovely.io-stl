@@ -74,11 +74,10 @@ compile = (directory)->
     dependencies = []
     source = source.replace /([^a-z0-9_\-\.])require\(('|")([^\.].+?)\2\)/ig,
       (match, start, quote, module)->
-        if module is 'core'
-          return "#{start}global.Lovely"
-        else
-          dependencies.push(module)
-          return "#{start}global.Lovely.modules['#{module}']"
+        if options.dependencies and options.dependencies[module]
+          module += "-#{options.dependencies[module]}"
+        dependencies.push(module) unless module is 'core' # default core shouldn't be on the list
+        return "#{start}this.Lovely.modules['#{module}']"
 
     # adding the 'exports' object
     if /[^a-z0-9_\-\.]exports[^a-z0-9\_\-]/i.test(source)
@@ -89,8 +88,10 @@ compile = (directory)->
       source = "var global = this;\n"+ source
 
     # creating the Lovely(....) definition
+    module_name = options.name
+    module_name+= "-#{options.version}" if options.version
     source = """
-      Lovely("#{options.name}", [#{"'#{name}'" for name in dependencies}], function(undefined) {
+      Lovely("#{module_name}", [#{"'#{name}'" for name in dependencies}], function(undefined) {
         #{source.replace(/(\n)/g, "$1  ")}
       });
       #{inline_css(directory)}
