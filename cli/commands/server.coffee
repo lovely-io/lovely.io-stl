@@ -32,6 +32,10 @@ exports.init = (args) ->
       size = Math.round(src.length/102.4)/10
       console.log(" Compiling: ".cyan+ "/#{module}.js (#{size}Kb #{if minify then 'minified' else 'source'})".grey)
 
+    else if path.existsSync("#{process.cwd()}/#{module}.js")
+      src = fs.readFileSync("#{process.cwd()}/#{module}.js")
+      console.log(" Sending:   "+ "/#{module}.js (text/javascript)".grey)
+
     else
 
       if match = module.match(/^(.+?)\-(\d+\.\d+\.\d+.*?)$/)
