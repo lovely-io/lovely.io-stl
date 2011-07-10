@@ -33,14 +33,21 @@ exports.init = (args) ->
       console.log(" Compiling: ".cyan+ "/#{module}.js (#{size}Kb #{if minify then 'minified' else 'source'})".grey)
 
     else
-      src = "/#{module}/current/build.js"
+
+      if match = module.match(/^(.+?)\-(\d+\.\d+\.\d+.*?)$/)
+        module  = match[1]
+        version = match[2]
+      else
+        version = 'active'
+
+      src = "/#{module}/#{version}/build.js"
       console.log(" Serving:   ".magenta + "/#{module}.js -> ~/.lovely/packages#{src}".grey)
       src = fs.readFileSync("#{base}/#{src}").toString()
 
 
     res.charset = 'utf-8'
     res.header('Cache-Control', 'no-cache')
-    res.contentType('text/javascript')
+    res.header('Content-Type', 'text/javascript')
     res.send src
 
   # just a dummy favicon response
@@ -66,6 +73,7 @@ exports.init = (args) ->
       switch extension[extension.length - 1]
         when 'css' then return 'text/css'
         when 'js'  then return 'text/javascript'
+        when 'ico' then return 'image/icon'
         else            return 'text/html'
 
 
@@ -84,7 +92,7 @@ exports.init = (args) ->
       data = fs.readFileSync("#{shared}/404.html")
 
     res.charset = 'utf-8'
-    res.contentType(content_type(filename))
+    res.header('Content-Type', content_type(filename))
     res.send data
 
 
