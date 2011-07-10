@@ -40,7 +40,7 @@ exports.init = (args)->
   if !path.existsSync("#{location}/#{version}")
     print_error "Could't find version '#{version}' of '#{package}'"
 
-  system("cd #{location}; ln -s #{version} current")
+  system("cd #{location}; ln -s #{version} active")
 
 
 exports.help = (args)->
