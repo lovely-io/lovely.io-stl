@@ -29,13 +29,9 @@ exports.init = (args) ->
 
     sout "» Publishing #{lovelyrc.host}/packages/#{package.name} ".ljust(61)
     hosting.send_package
-      name:         package.name
-      version:      package.version
-      description:  package.description
-      dependencies: package.dependencies
-      license:      package.license
-      build:        read("build/#{package.name}.js")
-      readme:       read('README.md')
+      manifest: read('package.json')
+      build:    read("build/#{package.name}.js")
+      readme:   read('README.md')
 
     sout "Done\n".green
 
