@@ -11,5 +11,6 @@ A    = core.A
 include 'src/string'
 include 'src/number'
 include 'src/function'
+include 'src/math'
 
 exports.version = '%{version}'
