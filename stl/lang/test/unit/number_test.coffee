@@ -5,7 +5,7 @@
 #
 {describe, assert} = require('../test_helper')
 
-describe "String extensions", module,
+describe "Number extensions", module,
 
   "#abs()":
     "should return the number itself for positive values":->
