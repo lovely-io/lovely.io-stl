@@ -12,5 +12,6 @@ include 'src/string'
 include 'src/number'
 include 'src/function'
 include 'src/math'
+include 'src/regexp'
 
 exports.version = '%{version}'
