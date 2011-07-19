@@ -3,15 +3,18 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-core = require('core')
-ext  = core.ext
-A    = core.A
+core    = require('core')
+ext     = core.ext
+A       = core.A
+List    = core.List
+isArray = core.isArray
 
-#include 'src/array'
+include 'src/array'
 include 'src/string'
 include 'src/number'
 include 'src/function'
-include 'src/math'
 include 'src/regexp'
+include 'src/math'
+
 
 exports.version = '%{version}'
