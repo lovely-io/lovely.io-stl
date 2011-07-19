@@ -5,10 +5,11 @@
 #
 core = require('core')
 ext  = core.ext
+A    = core.A
 
-include 'src/array'
+#include 'src/array'
 include 'src/string'
-include 'src/number'
-include 'src/function'
+#include 'src/number'
+#include 'src/function'
 
 exports.version = '%{version}'
