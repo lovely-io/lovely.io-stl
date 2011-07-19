@@ -9,7 +9,7 @@ A    = core.A
 
 #include 'src/array'
 include 'src/string'
-#include 'src/number'
+include 'src/number'
 #include 'src/function'
 
 exports.version = '%{version}'
