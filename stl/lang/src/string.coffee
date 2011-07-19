@@ -4,8 +4,71 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 ext String.prototype,
+  #
+  # Checks if the string is an empty string
+  #
+  # @return {Boolean} check result
+  #
+  empty: -> `this == ''`
 
+  #
+  # Checks if the string contains only white-spaces
+  #
+  # @return {Boolean} check result
+  #
+  blank: -> `this == false`
 
+  #
+  # Removes trailing whitespaces
+  #
+  # @return {String} trimmed version
+  #
+  trim: String.prototype.trim || ->
+    str = @replace(/^\s\s*/, ''); i = str.length
+    while ((/\s/).test(str.charAt(i-=1)))
+      ;
+    str.slice(0, i + 1)
+
+  #
+  # Returns a copy of the string with all the tags removed
+  #
+  # @return {String} without tags
+  #
+  stripTags: ->
+    @replace /<\/?[^>]+>/ig, ''
+
+  #
+  # Converts underscored or dasherized string to a camelized one
+  #
+  # @returns {String} camelized version
+  #
+  camelize: ->
+    @replace /(\-|_)+(.)?/g, (match, dash, chr)->
+      if chr then chr.toUpperCase() else ''
+
+  #
+  # Converts a camelized or dasherized string into an underscored one
+  #
+  # @return {String} underscored version
+  #
+  underscored: ->
+    @replace(/(^|[a-z\d])([A-Z]+)/g, '$1_$2').replace(/\-/g, '_').toLowerCase()
+
+  #
+  # Converts the string into a dashed string
+  #
+  # @return {String} dasherized version
+  #
+  dasherize: ->
+    @underscored().replace(/_/g, '-')
+
+  #
+  # Returns a capitalised version of the string
+  #
+  # @return {String} captialised version
+  #
+  capitalize: ->
+    @charAt(0).toUpperCase() + @substring(1).toLowerCase()
 
   #
   # Checks if the string contains the given substring

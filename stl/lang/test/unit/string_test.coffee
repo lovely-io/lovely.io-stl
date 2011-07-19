@@ -6,6 +6,57 @@
 {describe, assert} = require('../test_helper')
 
 describe "String extensions", module,
+  "#empty()":
+    "should return 'true' for an empty string": ->
+      assert.isTrue "".empty()
+    "should return 'false' for non-empty string": ->
+      assert.isFalse "boo".empty()
+    "should return 'false' for a string with blanks only":->
+      assert.isFalse " ".empty()
+
+
+  "#blank()":
+    "should return 'true' for an empty string": ->
+      assert.isTrue "".blank()
+    "should return 'true' for a string with blanks only": ->
+      assert.isTrue " \n\t".blank()
+    "should return 'false' for a non-blank string": ->
+      assert.isFalse " boo ".blank()
+
+
+  "#trim()":
+    "should remove staring an ending spaces": ->
+      assert.equal "  boo  ".trim(), "boo"
+
+    "should leave a string as is if there are no trailing spaces":->
+      assert.equal "boo".trim(), "boo"
+
+
+  "#stripTags()":
+    "should remove all the tags out of the string": ->
+      assert.equal "<b>boo</b> hoo<hr/>".stripTags(), "boo hoo"
+
+
+  "#camelize()":
+    "should convert an underscored string into a camelcased one":->
+      assert.equal "_boo_hoo".camelize(), "BooHoo"
+    "should convert a dashed string into a camelized one":->
+      assert.equal "-boo-hoo".camelize(), "BooHoo"
+
+  "#underscored()":
+    "should convert a camelcazed string into an underscored one": ->
+      assert.equal "BooHoo".underscored(), "_boo_hoo"
+
+    "should convert a dashed string into an underscored one": ->
+      assert.equal "-boo-hoo".underscored(), "_boo_hoo"
+
+  "#dasherize()":
+    "should convert a camelized string into a dashed one": ->
+      assert.equal "BooHoo".dasherize(), "-boo-hoo"
+    "should convert underscores into dashes": ->
+      assert.equal "_boo_hoo".dasherize(), "-boo-hoo"
+
+
   "#includes(substring)":
     "should return 'true' if a string includes a substring": ->
       assert.isTrue "super-duper".includes('super')
