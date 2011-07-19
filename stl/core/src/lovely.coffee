@@ -21,7 +21,6 @@ Lovely = ->
   options  = if isObject(args[0])   then args.shift() else {}
   modules  = if isArray(args[0])    then args.shift() else []
   callback = if isFunction(args[0]) then args.shift() else ->
-  header   = document.getElementsByTagName('head')[0]
   deadline = new Date() # the hang up time
 
   # setting up the options
@@ -38,6 +37,7 @@ Lovely = ->
 
   unless check_modules_load() # checking maybe they are already loaded
     modules_load_listeners.push(check_modules_load)
+    header = document.getElementsByTagName('head')[0]
 
     # inserting the actual scripts on the page
     for module, i in modules
@@ -141,11 +141,12 @@ find_module = (module, registry)->
 # @return {String} location
 #
 find_host_url = ->
-  scripts = document.getElementsByTagName('script')
-  re = /(.*?(^|\/))(lovely.io(:\d{4})?\/core\.js)/
+  if global.document
+    scripts = document.getElementsByTagName('script')
+    re = /(.*?(^|\/))(lovely.io(:\d{4})?\/core\.js)/
 
-  for script in scripts
-    if match = (script.getAttribute('src') || '').match(re)
-      return match[0].replace(/core\.js$/, '')
+    for script in scripts
+      if match = (script.getAttribute('src') || '').match(re)
+        return match[0].replace(/core\.js$/, '')
 
   Lovely.hostUrl
