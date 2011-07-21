@@ -12,13 +12,14 @@ and main OOP units like `Class`, `Observer`, `Options`
 
 Basic scripts initialization is pretty simple
 
+    :html
     <html>
       <head>
         <script src="http://cdn.lovely.io/core.js"></script>
         <script>
-          Lovely(['dom', 'ajax'], function($, ajax) {
+          Lovely(['dom', 'ajax', 'fx'], function($, ajax, 'fx') {
             ajax.load('/my.url', {
-              onComplete: function() {
+              complete: function() {
                 $('#content').html(this.text).highlight();
               }
             });
