@@ -4,8 +4,6 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 class Cookie
-  include: Options
-
   extend:
     #
     # Sets the coookie
@@ -16,7 +14,7 @@ class Cookie
     # @return {Cookie} object
     #
     set: (name, value, options)->
-      new this(name, options).set(value)
+      new Cookie(name, options).set(value)
 
     #
     # Reads a cookie by name
@@ -25,16 +23,17 @@ class Cookie
     # @return {mixed|undefined} cookie value or `undefined` if not set
     #
     get: (name, options)->
-      new this(name).get()
+      new Cookie(name).get()
 
     #
     # Removes the cookie
     #
     # @param {String} cookie name
+    # @param {Object} options
     # @return {Cookie} object
     #
-    remove: (name)->
-      new this(name).remove()
+    remove: (name, options)->
+      new Cookie(name, options).remove()
 
     #
     # Checks if cookies are enabled in the browser
@@ -42,8 +41,8 @@ class Cookie
     # @return {Boolean} check result
     #
     enabled: ->
-      document.cookie = "__t=1"
-      document.cookie.indexOf("__t=1") isnt -1
+      Cookie.Options.document.cookie = "__t=1"
+      Cookie.Options.document.cookie.indexOf("__t=1") isnt -1
 
     #
     # Default options
@@ -63,8 +62,8 @@ class Cookie
   # @return {Cookie} this
   #
   constructor: (name, options)->
-    @setOptions(options)
-    @name = name
+    @options = ext(ext({}, Cookie.Options), options)
+    @name    = name
     return @
 
   #
@@ -74,18 +73,19 @@ class Cookie
   # @return Cookie this
   #
   set: (data)->
-    data = encodeURIComponent(JSON.stringify(data))
+    data = JSON.stringify(data) if typeof(data) is 'object'
+    data = escape(data)
 
     @options.domain && data += '; domain='+ @options.domain
     @options.path   && data += '; path='+   @options.path
     @options.secure && data += '; secure'
 
     if @options.ttl
-      ttl = new Date()
-      ttl.setTime(ttl.getTime() + @options.ttl * 24 * 60 * 60 * 1000)
-      data += '; expires='+ ttl.toGMTString()
+      date = new Date()
+      date.setTime(date.getTime() + @options.ttl * 24 * 60 * 60 * 1000)
+      data += '; expires='+ date.toGMTString()
 
-    @options.document.cookie = "#{encodeURIComponent(@name)}=#{data}"
+    @options.document.cookie = "#{escape(@name)}=#{data}"
 
     return @
 
@@ -95,11 +95,15 @@ class Cookie
   # @return {mixed} saved value or `undefined` if nothing was set
   #
   get: ->
-    name = decodeURIComponent(@name)
+    name = escape(@name)
     name = "(?:^|;)\\s*#{name.replace(/([.*+?\^=!:${}()|\[\]\/\\])/g, '\\$1')}=([^;]*)"
     data = @options.document.cookie.match(name)
 
-    if data then JSON.parse(decodeURIComponent(data[1])) else undefined
+    if data
+      data = unescape(data[1])
+      try data = JSON.parse(data) catch e
+
+    data || undefined
 
   #
   # Removes the cookie
@@ -107,5 +111,8 @@ class Cookie
   # @return {Cookie} this
   #
   remove: ->
-    @options.duration = -1
-    @set('')
+    unless @get() is undefined
+      @options.ttl = -1
+      @set('')
+
+    return @
