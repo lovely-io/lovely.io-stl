@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Syntax Sugar Test</title>
+    <link rel="stylesheet" href="/shared.css" />
+    <script src="/core.js"></script>
+    <script type="text/javascript">
+      Lovely(['dom', 'sugar'], function($) {
+        $(function() {
+          // dom.Element 'onEvent' extensions check
+          $('#clicks-test')[0].onClick(function(event) {
+            event.target.toggleClass('marked');
+          });
+
+          // dom.Search 'onSomething' extensions check
+          $('#test-form input[type=text]')
+            .onFocus('addClass',   'focused')
+            .onBlur('removeClass', 'focused');
+
+          $('#test-form').onSubmit('stopEvent');
+
+          // String#toSomething calls check
+          "#ujs-test".append("#ujs-test".html());
+        });
+
+        // UJS handlers check
+        "#ujs-test li".onClick('toggleClass', 'marked');
+      });
+    </script>
+    <style type="text/css">
+      ul {
+        width: 16em;
+      }
+      ul li {
+        cursor: pointer;
+        user-selection: none;
+      }
+      ul li.marked {
+        font-weight: bold;
+        background: pink;
+      }
+
+      input.focused {
+        background: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Syntax Sugar Test</h1>
+
+    <h2>Direct 'onClick' handlers</h2>
+    <p>
+      <ul id="clicks-test">
+        <li>One</li>
+        <li>Two</li>
+        <li>Three</li>
+      </ul>
+    </p>
+
+    <h2>Form 'onSubmit', 'onFocus', 'onBlur' Handlers via Search collection</h2>
+    <p>
+      <form id="test-form">
+        <input type="text" value="some text" />
+        <input type="submit" value="Submit" />
+      </form>
+    </p>
+
+    <h2>UJS Handlers</h2>
+    <p>
+      <ul id="ujs-test">
+        <li>One</li>
+        <li>Two</li>
+        <li>Three</li>
+      </ul>
+    </p>
+  </body>
+</html>

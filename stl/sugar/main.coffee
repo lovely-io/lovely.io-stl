@@ -3,11 +3,14 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-core = require('core')
-dom  = require('dom')
-lang = require('dom')
+core     = require('core')
+dom      = require('dom')
+A        = core.A
+ext      = core.ext
+document = global.document
 
+include 'src/string'  # NOTE: should be before the 'src/element' !
 include 'src/element'
-include 'src/string'
+
 
 exports.version = '%{version}'

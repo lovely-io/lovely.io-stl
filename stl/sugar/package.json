@@ -5,7 +5,6 @@
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
   "dependencies": {
-    "dom":  "0.0.0",
-    "lang": "0.0.0"
+    "dom":  "0.0.0"
   }
 }
