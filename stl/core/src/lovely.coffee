@@ -48,7 +48,7 @@ Lovely = ->
       # stripping out the '../' and './' things to get the clean module name
       module = modules[i] = modules[i].replace(/^[\.\/]+/, '')
 
-      if !(find_module(module, Lovely.modules) or find_module(module, Lovely.loading))
+      if !(find_module(module) or find_module(module, Lovely.loading))
         script = document.createElement('script')
 
         script.src    = url.replace(/\/\//g, '/')
@@ -97,7 +97,7 @@ modules_load_listener_for = (modules, callback, name)->
     packages=[]
 
     for module in modules
-      if module = find_module(module, Lovely.modules)
+      if module = find_module(module)
         packages.push(module)
       else
         return # some modules are not loaded yet
@@ -106,11 +106,6 @@ modules_load_listener_for = (modules, callback, name)->
     if (result = callback.apply(global, packages)) && name
       # saving the module with the version
       Lovely.modules[name] = result
-
-      # saving the module without the version suffix
-      name = name.replace(/\-\d+\.\d+\.\d+.*$/, '')
-      if result.version and (!Lovely.modules[name] or Lovely.modules[name].version < result.version)
-        Lovely.modules[name] = result
 
       delete(Lovely.loading[name])
 
@@ -125,12 +120,20 @@ modules_load_listener_for = (modules, callback, name)->
 # @param {Object} matching module
 #
 find_module = (module, registry)->
-  version = (module.match(/\-\d+\.\d+\.\d+.*$/) || [''])[0]
-  name    = module.substr(0, module.length - version.length)
+  registry = registry || Lovely.modules
+  version  = (module.match(/\-\d+\.\d+\.\d+.*$/) || [''])[0]
+  name     = module.substr(0, module.length - version.length)
+  version  = version.substr(1)
 
-  if (module = registry[name]) and (version = version.substr(1))
-    if module.version and module.version < version
-      module = undefined
+  unless module = registry[module]
+    versions = [] # tring to find the latest version manually
+
+    for key of registry
+      if match = key.match(/^(.+?)-(\d+\.\d+\.\d+.*?)$/)
+        if match[1] is name
+          versions.push(key)
+
+    module = registry[versions.sort()[versions.length - 1]]
 
   module
 

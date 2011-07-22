@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011 Nikolay Nemshilov
 #
-{describe, assert, Browser, server} = require('../test_helper')
+{describe, assert, Browser, server, Lovely} = require('../test_helper')
 
 server.respond
   '/load.html': """
@@ -142,8 +142,15 @@ server.respond
   });
   """
 
-
 describe 'Lovely', module,
+  'should find itself by a short name': ->
+    assert.same Lovely.module('core'), Lovely
+
+  'should find itself by a long name': ->
+    assert.same Lovely.module("core-#{Lovely.version}"), Lovely
+
+  "should return nothing if a module doesn't exist": ->
+    assert.isUndefined Lovely.module('unknown')
 
   'standard modules loading':
     topic: -> Browser.open('/load.html', this.callback)

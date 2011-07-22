@@ -21,6 +21,7 @@ global.Lovely = ext Lovely,
   loading:     {} # the currently loading modules
   baseUrl:     '' # default base url address for local modules
   hostUrl:     '' # default host url address for Lovely modules
+  module:      find_module # the standard modules accessing method
 
   # globally accessible functions
   A:          A
@@ -42,7 +43,6 @@ global.Lovely = ext Lovely,
 
 
 # stashing this module itself in the modules list
-Lovely.modules.core =
 Lovely.modules["core-#{Lovely.version}"] = Lovely
 
 
