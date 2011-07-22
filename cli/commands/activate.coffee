@@ -12,7 +12,7 @@ find_latest = (location)->
 
   for entry in fs.readdirSync(location)
     if fs.statSync("#{location}/#{entry}").isDirectory()
-      versions.push(entry)
+      versions.push(entry) if entry isnt 'active'
 
   versions.sort()
   versions[versions.length - 1]
