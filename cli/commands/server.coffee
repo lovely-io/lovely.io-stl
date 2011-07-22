@@ -24,7 +24,7 @@ exports.init = (args) ->
   # NOTE: if the module name is the same as the current package name
   #       then the module will be dynamically compiled out of the source
   #
-  server.get '/:module.js', (req, res) ->
+  server.all '/:module.js', (req, res) ->
     module = req.params.module
 
     if module == package.name || module == 'main'
@@ -59,7 +59,7 @@ exports.init = (args) ->
     res.send ''
 
   # listening all the static content in the user project
-  server.get /^\/(.*?)$/, (req, res) ->
+  server.all /^\/(.*?)$/, (req, res) ->
     minify = req.query.minify is 'true'
     shared = "#{lovelyrc.base}/server"
 
