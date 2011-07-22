@@ -13,9 +13,8 @@
           });
 
           // dom.Search 'onSomething' extensions check
-          $('#test-form input[type=text]')
-            .onFocus('addClass',   'focused')
-            .onBlur('removeClass', 'focused');
+          $('#test-form input[type=text]').onFocus('addClass',   'focused');
+          $('#test-form input[type=text]').onBlur('removeClass', 'focused');
 
           $('#test-form').onSubmit('stopEvent');
 
