@@ -16,8 +16,8 @@ Basic scripts initialization is pretty simple
     <html>
       <head>
         <script src="http://cdn.lovely.io/core.js"></script>
-        <script>
-          Lovely(['dom', 'ajax', 'fx'], function($, ajax, 'fx') {
+        <script type="text/javascript">
+          Lovely(['dom', 'ajax', 'fx'], function($, ajax, fx) {
             ajax.load('/my.url', {
               complete: function() {
                 $('#content').html(this.text).highlight();
