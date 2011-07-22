@@ -77,7 +77,7 @@ compile = (directory)->
         if options.dependencies and options.dependencies[module]
           module += "-#{options.dependencies[module]}"
         dependencies.push(module) unless module is 'core' # default core shouldn't be on the list
-        return "#{start}this.Lovely.modules['#{module}']"
+        return "#{start}this.Lovely.module('#{module}')"
 
     # adding the 'exports' object
     if /[^a-z0-9_\-\.]exports[^a-z0-9\_\-]/i.test(source)
