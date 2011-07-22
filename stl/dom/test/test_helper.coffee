@@ -77,7 +77,7 @@ exports.load = load = (url, test, callback)->
     test.window   = browser.window
     test.document = browser.document
     test.Lovely   = browser.window.Lovely
-    test.dom      = test.Lovely.modules.dom
+    test.dom      = test.Lovely.module('dom')
     test.Wrapper  = test.dom.Wrapper
     test.Element  = test.dom.Element
     test.Document = test.dom.Document

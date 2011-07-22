@@ -5,7 +5,7 @@
 #
 {describe, assert} = require('../test_helper')
 
-Cookie = Lovely.modules.cookie
+Cookie = Lovely.module('cookie')
 
 # mocking the document cookie reference
 cookie = null

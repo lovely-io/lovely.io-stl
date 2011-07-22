@@ -17,7 +17,7 @@ user_agents =
 # a shortcut to load the test page with differet user-agents
 load_as = (user_agent, callback) ->
   Browser.open "/test.html", userAgent: user_agents[user_agent], (err, browser) ->
-    callback(err, browser.window.Lovely.modules.dom.Browser)
+    callback(err, browser.window.Lovely.module('dom').Browser)
 
 
 describe 'Browser', module,

@@ -68,8 +68,8 @@ exports.load = load = (url, test, callback)->
     test.window   = browser.window
     test.document = browser.document
     test.Lovely   = browser.window.Lovely
-    test.dom      = test.Lovely.modules.dom
-    test.Ajax     = test.Lovely.modules.ajax
+    test.dom      = test.Lovely.module('dom')
+    test.Ajax     = test.Lovely.module('ajax')
     test.Hash     = test.Lovely.Hash
 
     test.callback(err, if callback then callback.call(test, test.Ajax) else test.Ajax)

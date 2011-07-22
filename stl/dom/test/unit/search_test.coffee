@@ -120,10 +120,10 @@ describe 'Search', module,
 
       assert.deepEqual search.map('getClass').toArray(), ['test', 'test', 'test']
 
-    "should return the search object back to the code": (Search)->
+    "should return null object back to the code by default": (Search)->
       search = new Search('<div></div>')
 
-      assert.same search.addClass('test'), search
+      assert.isNull search.addClass('test')
 
     "should return the result of the first element when calls a getter method": (Search)->
       search = new Search('<div>one</div><div>two</div><div>three</div>')
