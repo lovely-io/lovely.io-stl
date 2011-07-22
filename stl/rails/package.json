@@ -1,11 +1,11 @@
 {
   "name":        "rails",
-  "version":     "0.0.0",
+  "version":     "0.0.2",
   "description": "My super lovely module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
   "dependencies": {
     "dom":  "0.0.2",
-    "ajax": "0.0.0"
+    "ajax": "0.0.2"
   }
 }

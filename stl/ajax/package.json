@@ -1,10 +1,10 @@
 {
   "name":        "ajax",
-  "version":     "0.0.0",
+  "version":     "0.0.2",
   "description": "Standard AJAX support module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
   "dependencies": {
-    "dom": "0.0.0"
+    "dom": "0.0.2"
   }
 }
