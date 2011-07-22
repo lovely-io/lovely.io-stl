@@ -4,6 +4,7 @@
   "description": "Standard AJAX support module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/ajax",
   "dependencies": {
     "dom": "0.0.2"
   }

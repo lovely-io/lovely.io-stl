@@ -4,6 +4,7 @@
   "description": "My super lovely module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/rails",
   "dependencies": {
     "dom":  "0.0.2",
     "ajax": "0.0.2"
