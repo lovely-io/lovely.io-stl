@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rails Demo</title>
+    <link href="/shared.css" rel="stylesheet" type="text/css" />
+    <script src="/core.js"></script>
+    <script src="/rails.js"></script>
+    <style type="text/css">
+      .spinner { display: none }
+    </style>
+  </head>
+  <body>
+    <h1>Rails Demo</h1>
+
+    <span id="ajax-content"></span>
+    <ul>
+      <li>
+        <a href="/test/data/1.js" data-remote="true" data-confirm="Are you sure?">Remote call</a>
+      </li>
+      <li>
+        <a href="/test/data/2.js" data-method="get">Method call</a>
+      </li>
+      <li>
+        <form action="/test/data/3.js" method="get" data-remote="true" data-spinner="#spinner">
+          <input type="submit" value="Submit" />
+          <span id="spinner" class="spinner">Spinner</span>
+        </form>
+      </li>
+    </ul>
+
+  </body>
+</html>
