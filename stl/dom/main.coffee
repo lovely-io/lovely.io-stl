@@ -49,9 +49,7 @@ include 'src/event/ready'
 #
 $ = (value, context) ->
   switch typeof(value)
-    when 'string'
-      value = new Search(value, context)
-      value = null if value.length is 0
+    when 'string'   then return new Search(value, context)
     when 'function' then return $(document).on('ready', value)
     when 'object'   then return wrap(value)
 

@@ -60,7 +60,7 @@ Element.include = (hash)->
           result = element[name].apply(element, arguments)
           return result if i is 0 and result isnt element
 
-        return @
+        return null # the no-value fallback
 
 
 
