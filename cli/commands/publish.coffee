@@ -31,7 +31,8 @@ exports.init = (args) ->
     hosting.send_package
       manifest: read('package.json')
       build:    read("build/#{package.name}.js")
-      readme:   read('README.md')
+      documents:
+        index:  read('README.md')
 
     sout "Done\n".green
 
