@@ -8,12 +8,13 @@ This package provides the standard `ajax` functionality
 Install it locally with `lovely install ajax` or hook up from
 `http://cdn.lovely.io`
 
+    :javascript
     Lovely(['ajax'], function(ajax) {
       ajax.load('/my.url', {
-        onComplete: function() {
-          //
-        }
-      })
+        success:  function() { /* ... */ },
+        failure:  function() { /* ... */ },
+        complete: function() { /* ... */ }
+      });
     });
 
 
