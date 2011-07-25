@@ -1,6 +1,6 @@
-# Welcome to %{projectname}!
+# %{projectunit}
 
-%{projectname} is an absolutely lovely thing!
+%{projectunit} is ...
 
 
 ## Copyright And License

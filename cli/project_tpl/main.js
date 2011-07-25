@@ -1,15 +1,19 @@
 /**
- * %{projectname} main file
+ * %{projectunit} main file
  *
  * Copyright (C) %{year} %{username}
  */
 
 // hook up the dependencies
-var core = require('core');
-var dom  = require('dom');
+var core    = require('core');
+var $       = require('dom');
+
+// local variables assignment
+var Class   = core.Class;
+var Element = $.Element;
 
 // glue in your files
-include('src/my-file');
+include('src/%{projectfile}');
 
 // exports your objects in the module
 exports.version = '%{version}';

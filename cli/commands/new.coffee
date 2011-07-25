@@ -6,6 +6,8 @@
 fs   = require('fs')
 path = require('path')
 
+placeholders = {}
+
 #
 # Starts the new project generation
 #
@@ -19,10 +21,14 @@ generate = (projectname, args) ->
   use_coffee   = args.indexOf('--js')     == -1
   use_stylus   = args.indexOf('--stylus') != -1
   use_sass     = !use_stylus && args.indexOf('--css') == -1
+
   placeholders =
     projectname: projectname,
+    projectunit: projectname.replace(/(^|-)[a-z]/g, (m)-> m.toUpperCase())
+    projectfile: projectname.replace(/\-/g, '_')
     year:        new Date().getFullYear(),
     username:    lovelyrc.name || "Vasily Pupkin"
+
 
   print "Creating directory: #{projectname}"
   fs.mkdirSync(directory, 0755)
@@ -40,13 +46,45 @@ generate = (projectname, args) ->
     if suitable(filename)
       source = fs.readFileSync("#{project_tpl}/#{filename}").toString()
 
-      for key of placeholders
-        source = source.replace(
-          new RegExp('%\\{'+ key + '\\}', 'g'), placeholders[key]
-        )
-
       print " - #{filename}"
-      fs.writeFileSync("#{directory}/#{filename}", source)
+      fs.writeFileSync("#{directory}/#{filename}", patch_source(source))
+
+
+  print " - src/"
+  fs.mkdirSync("#{directory}/src", 0755)
+
+  filename = "#{placeholders.projectfile}.#{
+    if use_coffee then 'coffee' else 'js'
+  }"
+
+  source = if use_coffee then """
+  #
+  # Project's main unit
+  #
+  # Copyright (C) %{year} %{username}
+  #
+  """ else """
+  /**
+   * Project's main unit
+   *
+   * Copyright (C) %{year} %{username}
+   */
+  """
+
+  print " - src/#{filename}"
+  fs.writeFileSync("#{directory}/src/#{filename}", patch_source(source))
+
+  print " - build/"
+  fs.mkdirSync("#{directory}/build", 0755)
+
+
+# fills in all the placeholders
+patch_source = (source)->
+  for key of placeholders
+    source = source.replace(
+      new RegExp('%\\{'+ key + '\\}', 'g'), placeholders[key])
+
+  source
 
 
 exports.init = (args) ->

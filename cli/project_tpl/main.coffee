@@ -1,15 +1,19 @@
 #
-# %{projectname} main file
+# %{projectunit} main file
 #
 # Copyright (C) %{year} %{username}
 #
 
 # hook up dependencies
-core = require('core')
-dom  = require('dom')
+core    = require('core')
+$       = require('dom')
+
+# local variables assignments
+Class   = core.Class
+Element = $.Element
 
 # glue in your files
-include 'src/my_file'
+include 'src/%{projectfile}'
 
 # export your objects in the module
 exports.version = '%{version}'

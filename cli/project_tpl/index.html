@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>%{projectname} Demo</title>
+    <title>%{projectunit} Demo</title>
     <link href="/shared.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
     <script type="text/javascript">
-      Lovely(["%{projectname}"], function(my_module) {
-        console.log(my_module.version);
+      Lovely(["%{projectname}"], function(module) {
+        console.log(module.version);
       });
     </script>
     <!--
@@ -16,7 +16,7 @@
     -->
   </head>
   <body>
-    <h1>%{projectname} Demo</h1>
+    <h1>%{projectunit} Demo</h1>
 
   </body>
 </html>
