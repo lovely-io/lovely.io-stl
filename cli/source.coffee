@@ -81,7 +81,7 @@ compile = (directory)->
 
     # adding the 'exports' object
     if /[^a-z0-9_\-\.]exports[^a-z0-9\_\-]/i.test(source)
-      source = "var exports = {};\n\n#{source}\n\nreturn exports;"
+      source = "var exports = {};\n\n"+ source;
 
     # adding the 'global' object
     if /[^a-z0-9_\-\.]global[^a-z0-9\_\-]/i.test(source)
@@ -93,8 +93,9 @@ compile = (directory)->
     source = """
       Lovely("#{module_name}", [#{"'#{name}'" for name in dependencies}], function(undefined) {
         #{source.replace(/(\n)/g, "$1  ")}
+        #{inline_css(directory)}
+        #{if source.indexOf('var exports = {};') > -1 then "return exports;" else ""}
       });
-      #{inline_css(directory)}
       """
 
   # creating a standard header block
@@ -179,20 +180,21 @@ inline_css = (directory) ->
 
   """
 
-  // embedded css-styles
-  (function(document) {
-    var style = document.createElement('style');
-    var rules = document.createTextNode("#{style}");
+    // embedded css-styles
+    (function(document) {
+      var style = document.createElement('style');
+      var rules = document.createTextNode("#{style}");
 
-    style.type = 'text/css';
-    document.getElementsByTagName('head')[0].appendChild(style);
+      style.type = 'text/css';
+      document.getElementsByTagName('head')[0].appendChild(style);
 
-    if (style.styleSheet) {
-      style.styleSheet.cssText = rules.nodeValue;
-    } else {
-      style.appendChild(rules);
-    }
-  })(this.document);
+      if (style.styleSheet) {
+        style.styleSheet.cssText = rules.nodeValue;
+      } else {
+        style.appendChild(rules);
+      }
+    })(this.document);
+
   """
 
 exports.compile = compile
