@@ -17,6 +17,8 @@ read = (filename)->
 
   if path.existsSync(filename)
     fs.readFileSync(filename).toString()
+  else
+    ''
 
 
 #
