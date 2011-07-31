@@ -54,5 +54,8 @@ save_options = ->
 #
 if require('path').existsSync(location)
   src = require('fs').readFileSync(location).toString()
-  src.replace /(\w+)\s*=\s*([^#\n]+)/g, (m, key, value) ->
+  src.replace /(^|\n)\s*(\w+)\s*=\s*([^#\n]+)/g, (m, s, key, value) ->
     options[key] = value.trim()
+
+
+console.log lovelyrc.host
