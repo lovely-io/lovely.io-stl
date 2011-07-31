@@ -11,9 +11,12 @@
 # @return {String} file content
 #
 read = (filename)->
-  require('fs').readFileSync(
-    process.cwd() + "/" + filename
-  ).toString()
+  fs       = require('fs')
+  path     = require('path')
+  filename = process.cwd() + "/" + filename
+
+  if path.existsSync(filename)
+    fs.readFileSync(filename).toString()
 
 
 #
@@ -31,6 +34,7 @@ exports.init = (args) ->
     hosting.send_package
       manifest: read('package.json')
       build:    read("build/#{package.name}.js")
+      demo:     read("demo.html") || read("index.html")
       documents:
         index:  read('README.md')
 
