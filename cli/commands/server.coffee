@@ -78,6 +78,10 @@ exports.init = (args) ->
         when 'css' then return 'text/css'
         when 'js'  then return 'text/javascript'
         when 'ico' then return 'image/icon'
+        when 'png' then return 'image/png'
+        when 'jpg' then return 'image/jpg'
+        when 'gif' then return 'image/gif'
+        when 'swf' then return 'application/x-shockwave-flash'
         else            return 'text/html'
 
 
