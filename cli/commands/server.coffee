@@ -90,6 +90,10 @@ exports.init = (args) ->
       console.log(" Sending:   "+ "/#{filename} (#{content_type(filename)})".grey)
       data = fs.readFileSync("#{process.cwd()}/#{filename}")
 
+    else if filename = file_in("#{lovelyrc.base}/packages")
+      console.log(" Sending:   "+ "/#{filename} -> ~/.lovely/packages/#{filename}".grey)
+      data = fs.readFileSync("#{lovelyrc.base}/packages/#{filename}")
+
     else if filename = file_in(shared)
       console.log("") if filename.substr(filename.length-4) is 'html'
       console.log(" Sending:   "+ "/#{filename} -> ~/.lovely/server/#{filename}".grey)
