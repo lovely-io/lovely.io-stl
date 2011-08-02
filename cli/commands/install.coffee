@@ -19,6 +19,16 @@ save_package = (package, build)->
     system "mkdir -p #{location}", ->
       fs = require('fs')
 
+      fs.mkdirSync("#{location}/images", 0755)
+      build = build.replace /('|")([^'"]+\.(gif|png|jpg|jpeg|svg|swf))\1/g,
+      (match, q, url)->
+        url = url.replace(/http:\/\/[^\/]+/, '').replace(/^\//, '')
+
+        # copying the file over
+        fs.writeFileSync("#{location}/#{url}", fs.readFileSync("#{process.cwd()}/#{url}"))
+
+        "#{q}/#{package.name}/#{package.version}/#{url}#{q}"
+
       fs.writeFileSync("#{location}/build.js", build)
       fs.writeFileSync("#{location}/package.json", JSON.stringify(package))
 
