@@ -20,6 +20,25 @@ read = (filename)->
   else
     ''
 
+#
+# Reading the images list
+#
+# @return {Object} images
+#
+read_images = (build)->
+  fs     = require('fs')
+  path   = require('path')
+  folder = "#{process.cwd()}/images/"
+  images = {}
+
+  if match = build.match(/('|")\/?images\/.+?\1/g)
+    for file in match
+      file = file.substr(1, file.length - 2)
+      if file = file.split('images/')[1]
+        if path.existsSync(folder + file)
+          images[file] = fs.readFileSync(folder + file).toString('base64')
+
+  return images
 
 #
 # Kicks in the command
@@ -32,10 +51,13 @@ exports.init = (args) ->
   system "#{__dirname}/../../bin/lovely build", ->
     sout "Done\n".green
 
+    build = read("build/#{package.name}.js")
+
     sout "» Publishing #{lovelyrc.host}/packages/#{package.name} ".ljust(61)
     hosting.send_package
       manifest: read('package.json')
-      build:    read("build/#{package.name}.js")
+      build:    build
+      images:   read_images(build)
       documents:
         index:  read('README.md')
         demo:   read("demo.html") || read("index.html")
