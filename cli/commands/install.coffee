@@ -22,10 +22,20 @@ save_package = (package, build)->
       fs.mkdirSync("#{location}/images", 0755)
       build = build.replace /('|")([^'"]+\.(gif|png|jpg|jpeg|svg|swf))\1/g,
       (match, q, url)->
-        url = url.replace(/http:\/\/[^\/]+/, '').replace(/^\//, '')
+        if url.indexOf('http://') > -1
+          url = url.replace(/http:\/\/[^\/]+/, '')
 
-        # copying the file over
-        fs.writeFileSync("#{location}/#{url}", fs.readFileSync("#{process.cwd()}/#{url}"))
+          do (url)->
+            # downloading the image
+            require('../hosting').download url,
+              "#{location}/images/#{url.replace(/^\/[^\/]+\/[^\/]+\//, '')}"
+
+          url = "images/#{url.replace(/^\/[^\/]+\/[^\/]+\//, '')}"
+
+        else
+          # copying over a local file
+          url = url.replace(/^\//, '')
+          fs.writeFileSync("#{location}/#{url}", fs.readFileSync("#{process.cwd()}/#{url}"))
 
         "#{q}/#{package.name}/#{package.version}/#{url}#{q}"
 

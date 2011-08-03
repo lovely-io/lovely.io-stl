@@ -24,12 +24,17 @@ request = (path, params, method, callback)->
   req = require('http').request options, (response)->
     response.setEncoding('utf8')
 
-    response.on 'data', (data)->
+    data = ''
+
+    response.on 'data', (chunk)->
+      data += chunk
+
+    response.on 'end', ->
       content_type = response.headers['content-type']
 
       if /json/.test(content_type)
         try
-          data = JSON.parse(data)
+          data = JSON.parse(data.toString())
 
           if data.errors
             message = "request failed".grey
@@ -143,3 +148,31 @@ exports.get_package = (name, version, callback)->
 exports.get_index = (callback)->
   get "/packages.json", {}, (index)->
     callback index
+
+#
+# Downloads the given url into the given location
+#
+exports.download = (path, location)->
+  url = require('url').parse(lovelyrc.host)
+
+  options =
+    host:   url.hostname
+    port:   url.port
+    path:   path
+    method: 'GET'
+
+  req = require('http').request options, (response)->
+    response.setEncoding('binary')
+
+    data = require('fs').createWriteStream(location)
+
+    response.on 'data', (chunk)->
+      data.write(chunk, 'binary')
+
+    response.on 'end', ->
+      data.end()
+
+  req.on 'error', (error)->
+    print_error error.message
+
+  req.end()
