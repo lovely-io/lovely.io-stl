@@ -38,7 +38,7 @@ Element.include Element_events =
   # @return {Wrapper} this
   #
   emit: (event, options) ->
-    parent = wrap(this._.parentNode) if @ instanceof Element
+    parent = wrap(this._.parentNode)
 
     unless event instanceof Event
       event = new Event(event, ext({target: @_}, options))

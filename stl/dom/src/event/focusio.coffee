@@ -10,7 +10,7 @@
 # @param {HTMLEvent} raw dom-event
 #
 focusio_boobler = (raw_event)->
-  event      = new Event(raw_event)
+  event = new Event(raw_event)
 
   if event.target instanceof Element
     event.target.parent().emit(event)

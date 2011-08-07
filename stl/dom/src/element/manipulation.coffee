@@ -108,7 +108,7 @@ Element.include
   #
   insertTo: (element, position) ->
     element = $(element)[0] if typeof(element) is 'string'
-    element = wrap(element) unless element instanceof Element
+    element = wrap(element) unless element._
 
     element.insert(@, position)
 
@@ -128,7 +128,7 @@ Element.include
     if typeof(content) isnt 'object'
       [content, scripts] = extract_scripts(''+content)
 
-    content  = content._ if content instanceof Element
+    content  = content._ if content._
     content  = Element_create_fragment(
       (if position in ['bottom', 'top'] then element
       else element.parentNode), content
@@ -193,7 +193,7 @@ Element_create_fragment = (context, content)->
   else # converting iterables into a framgent
     `for (var i=0, length = content.length, node; i < length; i++) {
       node = content[content.length === length ? i : 0];
-      Element_fragment.appendChild(node instanceof Element ? node._ : node);
+      Element_fragment.appendChild(node._ || node);
     }`
 
   return Element_fragment
