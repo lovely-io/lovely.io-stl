@@ -7,6 +7,47 @@
 fs   = require('fs')
 path = require('path')
 
+
+#
+# Preconverts coffe-script into javascript
+#
+# @param {String} CoffeeScript
+# @return {String} JavaScript
+#
+convert_from_coffee = (source)->
+  # hijacking the Coffee's class definitions and converting them in our classes
+  source = source.replace /(\n\s*)class\s+([^\s]+)(\s+extends\s+([^\s]+))?/g,
+    (match, start, Klass, smth, Super)->
+      if !Super then "#{start}#{Klass} = new Class"
+      else "#{start}#{Klass} = new Class #{Super},"
+
+  # replacing teh Coffee's 'super' calls with our own class calls
+  source = source.replace /([^\w$\.])super(\(|\s)(.*?)([\)\n;])/g,
+    (match, start, b1, params, b2)->
+      "#{start}this.$super(#{params});"
+
+  # building the basic scripts
+  source = require('coffee-script').compile(source, {bare: true})
+
+  # fixing coffee's void(0) hack back to `undefined`
+  source.replace /([^a-z0-9\_]+)void\s+0([^a-z0-9]+)/ig, '$1undefined$2'
+
+
+#
+# Adds function names to the constructors so that
+# they appeared correctly in the debugging console
+#
+# @param {String} original
+# @return {String} patched
+#
+add_constructor_names = (source)->
+  source.replace /([a-zA-Z0-9_$]+)(\s*=\s*new\s+Class\()((.|\n)+?constructor:\s*function\s*\()/mg,
+    (match, Klass, first, second)->
+      if second.indexOf('new Class') is -1 and second.match(/constructor:\s*function\s*\(/).length is 1
+        second = second.replace(/(constructor:\s*function)(\s*\()/, '$1 '+Klass.replace('.', '_')+'$2')
+        "#{Klass}#{first}#{second}"
+      else match.toString()
+
 #
 # Builds the actual source code of the current project
 #
@@ -28,34 +69,10 @@ compile = (directory)->
       .toString().replace(/($|\n)/g, '$1'+spaces) + "\n\n"
 
   # converting coffee into javascript if needed
-  if format is 'coffee'
-    # hijacking the Coffee's class definitions and converting them in our classes
-    source = source.replace /(\n\s*)class\s+([^\s]+)(\s+extends\s+([^\s]+))?/g,
-      (match, start, Klass, smth, Super)->
-        if !Super then "#{start}#{Klass} = new Class"
-        else "#{start}#{Klass} = new Class #{Super},"
-
-    # replacing teh Coffee's 'super' calls with our own class calls
-    source = source.replace /([^\w$\.])super(\(|\s)(.*?)([\)\n;])/g,
-      (match, start, b1, params, b2)->
-        "#{start}this.$super(#{params});"
-
-    # building the basic scripts
-    source = require('coffee-script').compile(source, {bare: true})
-
-    # fixing coffee's void(0) hack back to `undefined`
-    source = source.replace /([^a-z0-9\_]+)void\s+0([^a-z0-9]+)/ig, '$1undefined$2'
-
+  source = convert_from_coffee(source) if format is 'coffee'
 
   # adding the class names to the constructor functions
-  source = source.replace /([^\s]+)(\s*=\s*new\s+Class\()((.|\n)+?constructor:\s+function\s*\()/mg,
-    (match, Klass, first, second)->
-      if second.indexOf('new Class') is -1 and second.match(/constructor:\s+function\s*\(/).length is 1
-        second = second.replace(/(constructor:\s+function)(\s*\()/, '$1 '+Klass.replace('.', '_')+'$2')
-        "#{Klass}#{first}#{second}"
-      else match.toString()
-
-
+  source = add_constructor_names(source)
 
   # adding the package dependencies
   source = source.replace('%{version}', options.version)
@@ -119,13 +136,22 @@ minify = (directory)->
   source = compile(directory)
   ugly   = require('uglify-js')
   build  = ugly.parser.parse(source)
+  except = ['Class']
 
-  build  = ugly.uglify.ast_mangle(build)
+  # extracting the exported class names so they didn't get mangled
+  if match = source.match(/((ext\(\s*exports\s*,)|(\n\s+exports\s*=\s*))[^;]+?;/mg)
+    for name in match[0].match(/[^a-zA-Z0-9_$][A-Z][a-zA-Z0-9_$]+/g) || []
+      except.push(name.substr(1)) if except.indexOf(name.substr(1)) is -1
+
+  build  = ugly.uglify.ast_mangle(build, except: except)
   build  = ugly.uglify.ast_squeeze(build)
   build  = ugly.uglify.gen_code(build)
 
   # fixing the ugly `== 'string'` fuckups back to `=== 'string'`
   build  = build.replace(/(typeof [a-z]+)==("[a-z]+")/g, '$1===$2')
+
+  # getting back the constructor names
+  build  = add_constructor_names(build, true)
 
   # copying the header over
   (source.match(/\/\*[\s\S]+?\*\/\s/m) || [''])[0] + build
