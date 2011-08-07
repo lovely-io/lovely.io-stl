@@ -12,7 +12,7 @@ Form.include
   # @param {Object} ajax options
   # @return {Form} this
   #
-  send: ->
+  send: (options)->
     options or= {}
     options.method  = options.method  || @_.method || 'post'
     options.spinner = options.spinner || @first('.spinner')
@@ -43,7 +43,7 @@ Form.include
   # @param {Object} ajax options
   # @return {Form} this
   #
-  remotize: ->
+  remotize: (options)->
     unless @remote
       @on 'submit', Form_remote_send, options
       @remote = true

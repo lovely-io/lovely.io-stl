@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML5 Upload Test</title>
+    <script src="/core.js"></script>
+    <script type="text/javascript">
+      Lovely(["ajax", "dom"], function(ajax, $) {
+        $(function() {
+          $('#the-form')[0].remotize({
+            progress: function(event) {
+              var value = event.loaded / event.total * 100;
+              $('#progress').attr('value', value);
+              $('#progress').html(value + "% complete")
+            }
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>HTML5 Upload Test</h1>
+
+    <form id="the-form" action="receiver.js" method="post" enctype="multipart/form-data">
+      <p>
+        <label>Text</label>
+        <input type="text" name="text" />
+      </p>
+      <p>
+        <label>File</label>
+        <input type="file" name="file" />
+      </p>
+      <p>
+        <input type="submit" value="Send" />
+      </p>
+
+      <progress min="0" max="100" value="0" id="progress">0% complete</progress>
+    </form>
+  </body>
+</html>

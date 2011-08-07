@@ -69,7 +69,7 @@ class Ajax
 
     # catching the event listeners that are specified in the options
     for key, method of @options
-      if key in ['success', 'failure', 'complete', 'create', 'request', 'cancel']
+      if key in ['success', 'failure', 'complete', 'create', 'request', 'progress', 'cancel']
         @on key, method
 
     return @
@@ -133,13 +133,24 @@ class Ajax
     xhr.open(method, url, true) # <- it's always an async request!
     xhr.onreadystatechange = Ajax_state(@)
 
+    if 'upload' of xhr # HTML5 upload progress
+      xhr.upload.onprogress =
+      xhr.upload.onload     = bind((e)->
+        if e.lengthComputable
+          @emit 'progress',
+            loaded: e.loaded,
+            total:  e.total
+      , @)
+
+    # sending the headers
     for name of headers
       xhr.setRequestHeader(name, headers[name])
 
-    xhr.send(params)
+    # sending the data
+    xhr.send(Ajax_prepare(params, options))
     @emit 'request'
 
-    xhr.onreadystatechange()
+    xhr.onreadystatechange() if xhr instanceof JSONP
 
     return @
 
@@ -153,7 +164,7 @@ class Ajax
 
     @_.abort()
     @_.onreadystatechange = ->
-    @__canceled = true
+    @_.canceled = true
 
     return @emit('cancel')
 
@@ -167,11 +178,13 @@ class Ajax
   # ajax events listener
   #
   # @param {String} event name
+  # @param {Object} event options
   # @return {Ajax} this
   #
-  emit: (name)->
-    core.Events.emit.call(@, name, @, @_)
-    doc.emit("ajax:#{name}", ajax: @)
+  emit: (name, options)->
+    options = ext(ajax: @, options)
+    super(name, options)
+    doc.emit("ajax:#{name}",options)
     return @
 
 
@@ -252,6 +265,21 @@ Ajax_merge = ->
       hash[key] = params[key]
 
   return hash
+
+# prepares HTML5 FormData with files to upload when needed
+Ajax_prepare = (params, options)->
+  # sending XHR2 FormData object if the form has files
+  if (form = options.params) instanceof Form and form.first('input[type="file"]')
+    data   = new global.FormData(form._)
+    params = Hash.fromQueryString(params)
+
+    for name, value of params
+      unless form.input(name)
+        data.append(name, value)
+
+    params = data
+
+  params
 
 
 # makes an 'onreadystatechange' listener
