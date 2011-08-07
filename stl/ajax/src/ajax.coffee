@@ -127,7 +127,7 @@ class Ajax
 
       params = null
 
-    xhr = @_ = @instRequest()
+    xhr = @_ = if @options.jsonp then new JSONP(@) else new XMLHttpRequest()
     @emit 'create'
 
     xhr.open(method, url, true) # <- it's always an async request!
@@ -178,21 +178,6 @@ class Ajax
 # protected
 
   #
-  # Instances a suitable reqest transprot
-  #
-  # @return {mixed} request transport
-  #
-  instRequest: ->
-    if @options.jsonp
-      new JSONP(@)
-    else if @options.params instanceof Form and @options.params.first('input[type=file]')
-      new IFrame(@)
-    else if global.ActiveXObject
-      new ActiveXObject("MSXML2.XMLHTTP")
-    else
-      new XMLHttpRequest()
-
-  #
   # Tries to auto-handle JavaScript and JSON responses
   #
   # @return void
@@ -204,10 +189,10 @@ class Ajax
     if options.evalResponse or (options.evalJS && /(ecma|java)script/i.test(content_type))
       $.eval(@responseText)
     else if options.evalJSON and /json/i.test(content_type)
-      @responseJSON = Ajax_json(@responseText)
+      @responseJSON = JSON.parse(@responseText)
 
     if (options = @header('X-JSON'))
-      this.headerJSON = Ajax_json(options)
+      this.headerJSON = JSON.parse(options)
 
     return;
 
@@ -286,15 +271,3 @@ Ajax_state = (ajax)->
 
     ajax.emit('complete')
     ajax.emit(if ajax.successful() then 'success' else 'failure')
-
-
-# tries to extract JSON data out of the Ajax object
-Ajax_json = (data)->
-  if 'JSON' of global
-    return global.JSON.parse(data)
-  else if /^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/.test(data.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))
-    return new Function('return '+ data)()
-  else
-    throw "JSON error: "+ data
-
-  return;
