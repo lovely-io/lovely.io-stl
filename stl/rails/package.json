@@ -1,12 +1,12 @@
 {
   "name":        "rails",
-  "version":     "0.0.2",
-  "description": "My super lovely module",
+  "version":     "1.0.0",
+  "description": "Ruby On Rails UJS support module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/rails",
   "dependencies": {
-    "dom":  "0.0.2",
-    "ajax": "0.0.2"
+    "dom":  "1.0.0",
+    "ajax": "1.0.0"
   }
 }

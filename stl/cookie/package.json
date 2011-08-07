@@ -1,6 +1,6 @@
 {
   "name":        "cookie",
-  "version":     "0.0.2",
+  "version":     "1.0.0",
   "description": "Standard cookies handling module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",

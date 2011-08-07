@@ -1,6 +1,6 @@
 {
   "name":        "lang",
-  "version":     "0.0.2",
+  "version":     "1.0.0",
   "description": "Standard JavaScript core extensions",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
