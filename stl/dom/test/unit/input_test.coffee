@@ -316,3 +316,13 @@ describe "Input", module,
 
       "should return the input field itself back to the code": (input)->
         assert.same input.checked(true), input
+
+  'Search extension':
+    topic: Input,
+
+    "'should add the 'value()' method": (Input)->
+      input = new Input(name: 'boo', value: 'hoo')
+      search = new this.Search([input])
+
+      assert.isTrue 'value' of search
+      assert.same   search.value(), input.value()

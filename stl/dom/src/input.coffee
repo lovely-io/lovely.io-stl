@@ -33,6 +33,11 @@ class Input extends Element
 
     super element, options
 
+
+# making the methods with Search shortcuts
+Input.include = Element.include
+Input.include
+
   #
   # Returns a reference to the input's form
   #

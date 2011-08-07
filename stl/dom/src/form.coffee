@@ -28,6 +28,11 @@ class Form extends Element
 
     return @
 
+
+# making the methods with Search shortcuts
+Form.include = Element.include
+Form.include
+
   #
   # Returns the form elements as an array of extended units
   #

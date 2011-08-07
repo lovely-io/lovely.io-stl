@@ -288,3 +288,13 @@ describe "Form", module,
 
     "should return the form itself back to the code": (form)->
       assert.same form.reset(), form
+
+  'Search extension':
+    topic: test_form
+
+    "should create 'values()' method": (form)->
+      search = new this.Search([form])
+
+      assert.isTrue    'values' of search
+      assert.deepEqual search.values(), form.values()
+

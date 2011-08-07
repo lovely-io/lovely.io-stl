@@ -51,7 +51,7 @@ class Element extends Wrapper
 # call on the _first_ element in the collection
 #
 Element.include = (hash)->
-  Class.include.apply(Element, arguments)
+  Class.include.apply(this, arguments)
 
   for name, method of hash
     do (name)->
