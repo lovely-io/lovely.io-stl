@@ -11,7 +11,7 @@ exports.init = (args) ->
   source  = require('../source')
   package = require('../package')
   express = require('express')
-  server  = express.createServer()
+  server  = express.createServer(express.bodyParser())
   port    = args[0] || lovelyrc.port || 3000
   base    = lovelyrc.base
   minify  = false
@@ -84,6 +84,8 @@ exports.init = (args) ->
         when 'swf' then return 'application/x-shockwave-flash'
         else            return 'text/html'
 
+    if req.method is 'POST'
+      console.log("\n POST:     ", JSON.stringify(req.body).grey)
 
     if filename = file_in(process.cwd())
       console.log("") if filename.substr(filename.length-4) is 'html'
