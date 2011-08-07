@@ -35,7 +35,7 @@ exports.server = server
 server.get '/core.js', (req, resp) ->
   resp.send src.core
 
-server.get '/dom-0.0.0.js', (req, resp) ->
+server.get "/dom-:version.js", (req, resp) ->
   resp.send src.dom
 
 server.get '/ajax.js', (req, resp) ->

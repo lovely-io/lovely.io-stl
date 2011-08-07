@@ -24,7 +24,7 @@ class Hash
   # @return void
   #
   constructor: (object)->
-    @_ = object
+    @_ = object || {}
     return @
 
 

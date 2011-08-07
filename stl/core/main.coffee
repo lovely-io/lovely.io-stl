@@ -12,8 +12,8 @@ include 'src/hash'
 include 'src/events'
 include 'src/options'
 
-# exporting the globally visible objects
-global.Lovely = ext Lovely,
+# exporting the object
+exports = ext Lovely,
   version:     '%{version}'
 
   # the loader default options
@@ -41,8 +41,8 @@ global.Lovely = ext Lovely,
   Events:     Events,
   Options:    Options
 
-
 # stashing this module itself in the modules list
 Lovely.modules["core-#{Lovely.version}"] = Lovely
 
-
+# making the main object globally available
+global.Lovely = Lovely

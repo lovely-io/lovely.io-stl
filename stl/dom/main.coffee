@@ -67,7 +67,7 @@ Wrapper
 
 
 # exporting the main units
-ext $,
+exports = ext $,
   version:  '%{version}'
   Browser:  Browser
   Wrapper:  Wrapper
@@ -80,9 +80,3 @@ ext $,
   Search:   Search
   eval:     global_eval
   uid:      uid
-
-
-exports = $
-
-
-
