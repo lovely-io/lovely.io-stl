@@ -59,8 +59,9 @@ exports.init = (args) ->
       build:    build
       images:   read_images(build)
       documents:
-        index:  read('README.md')
-        demo:   read("demo.html") || read("index.html")
+        index:     read('README.md')
+        demo:      read("demo.html") || read("index.html")
+        changelog: read('CHANGELOG')
 
     sout "Done\n".green
 
