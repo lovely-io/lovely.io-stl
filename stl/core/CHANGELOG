@@ -1,0 +1,4 @@
+2011-08-13 Nikolay Nemshilov
+
+  * Version 1.0.1
+  * Lovely async loader fix to make it recognize the CDN location correctly on other domains

@@ -51,7 +51,7 @@ Lovely = ->
       if !(find_module(module) or find_module(module, Lovely.loading))
         script = document.createElement('script')
 
-        script.src    = url.replace(/\/\//g, '/')
+        script.src    = url.replace(/([^:])\/\//g, '\1/')
         script.async  = true
         script.type   = "text/javascript"
         script.onload = check_all_waiting_loaders
@@ -146,10 +146,10 @@ find_module = (module, registry)->
 find_host_url = ->
   if global.document
     scripts = document.getElementsByTagName('script')
-    re = /(.*?(^|\/))(lovely.io(:\d{4})?\/core\.js)/
+    re = /^(.*?\/?)core(-.+)?\.js/
 
     for script in scripts
       if match = (script.getAttribute('src') || '').match(re)
-        return match[0].replace(/core\.js$/, '')
+        return match[1]
 
   Lovely.hostUrl
