@@ -7,6 +7,8 @@
 # hook up dependencies
 core    = require('core')
 ext     = core.ext
+zerofy  = (value)->
+  (if value < 10 then '0' else '') + value
 
 # glueing in the files
 include 'src/i18n'
