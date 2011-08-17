@@ -4,5 +4,6 @@
   "description": "Lovely IO main module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
-  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/core"
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/core",
+  "tags":        "STL, Core"
 }

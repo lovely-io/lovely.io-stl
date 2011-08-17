@@ -4,5 +4,6 @@
   "description": "Standard DOM manipulation module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
-  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/dom"
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/dom",
+  "tags":        "STL, DOM"
 }

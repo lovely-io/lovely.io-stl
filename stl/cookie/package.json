@@ -4,5 +4,6 @@
   "description": "Standard cookies handling module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
-  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/cookie"
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/cookie",
+  "tags":        "STL, Cookie"
 }
