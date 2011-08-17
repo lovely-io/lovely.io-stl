@@ -1,12 +1,12 @@
 {
   "name":        "fx",
-  "version":     "1.0.0",
+  "version":     "1.0.1",
   "description": "Standard visual effects module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/fx",
   "tags":        "STL, Fx",
   "dependencies": {
-    "dom":       "1.0.0"
+    "dom":       "1.0.1"
   }
 }

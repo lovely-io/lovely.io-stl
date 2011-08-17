@@ -1,5 +1,6 @@
 2011-08-17 Nikolay Nemshilov
 
+  * Version 1.0.1
   * Making the `$` calls return a link to the search result
     back in general cases, so you could chain the calls
 
