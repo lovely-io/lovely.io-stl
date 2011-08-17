@@ -60,7 +60,10 @@ Element.include = (hash)->
           result = element[name].apply(element, arguments)
           return result if i is 0 and result isnt element
 
-        return null # the no-value fallback
+        # returning null if there are no items on the list
+        # in case the user asked for data, otherwise returning
+        # the search itself so that the user could chain the calls
+        return if @length is 0 then null else @
 
 
 

@@ -1,0 +1,9 @@
+2011-08-17 Nikolay Nemshilov
+
+  * Making the `$` calls return a link to the search result
+    back in general cases, so you could chain the calls
+
+        $('#my-thing')
+          .addClass('boo-hoo')
+          .html('trololo!')
+          .show()
