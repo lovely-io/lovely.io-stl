@@ -1,0 +1,8 @@
+{
+  "name":        "date",
+  "version":     "1.0.0",
+  "description": "Date unit extensions",
+  "author":      "Nikolay Nemshilov",
+  "license":     "MIT",
+  "tags":        "STL, Dates"
+}
