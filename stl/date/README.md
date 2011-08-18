@@ -4,10 +4,12 @@
 additional things like POSIX style dates formatting, initialization
 and so on
 
+    :javascript
     var date = new Date();
     date.format('%Y-%m-%d');
 
-    var date = Date.parse('January 10, 1999');
+    var date = Date.parse('January 10, 1999', '%B %d, %Y');
+    date instanceof Date; // -> true!
 
 
 ## Formatting keys
