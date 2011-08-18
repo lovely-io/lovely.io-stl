@@ -29,7 +29,7 @@ Date.parse = (string, format)->
         key    = holders.shift()
 
         if key.toLowerCase() is 'b'
-          month = L(Date.i18n[if key is 'b' then 'monthNamesShort' else 'monthNames'].split(' ')).indexOf(value)
+          month = L(Date.i18n[if key is 'b' then 'monthsShort' else 'months'].split(' ')).indexOf(value)
         else if key.toLowerCase() is 'p'
           meridian = value.toLowerCase()
         else

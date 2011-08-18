@@ -16,10 +16,10 @@ Date.prototype.format = (pattern)->
   hour_ampm = if hour == 0 then 12 else if hour < 13 then hour else hour - 12
 
   values =
-    a: Date.i18n.dayNamesShort.split(' ')[day]
-    A: Date.i18n.dayNames.split(' ')[day]
-    b: Date.i18n.monthNamesShort.split(' ')[month]
-    B: Date.i18n.monthNames.split(' ')[month]
+    a: Date.i18n.daysShort.split(' ')[day]
+    A: Date.i18n.days.split(' ')[day]
+    b: Date.i18n.monthsShort.split(' ')[month]
+    B: Date.i18n.months.split(' ')[month]
     d: zerofy(date)
     e: ''+date
     m: (if month < 9 then '0' else '') + (month+1)

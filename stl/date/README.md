@@ -28,12 +28,28 @@ This extension generally uses the POSIX date formatting keys
  * `%H` - Hour of the day, 24-hour clock (00..23)
  * `%k` - Hour of the day, 24-hour clock without leading zero (0..23)
  * `%I` - Hour of the day, 12-hour clock (01..12)
- * `%l` - Hour of the day, 12-hour clock without leading zer (0..12)
+ * `%l` - Hour of the day, 12-hour clock without leading zero (0..12)
  * `%p` - Meridian indicator (``AM''  or  ``PM'')
  * `%P` - Meridian indicator (``pm''  or  ``pm'')
  * `%M` - Minute of the hour (00..59)
  * `%S` - Second of the minute (00..60)
  * `%%` - Literal ``%'' character
+
+
+## I18n Support
+
+You also can use i18n with this module
+
+    :javascript
+    Date.i18n = {
+      days:        'Воскресенье Понедельник Вторник Среда Четверг Пятница Суббота'
+      daysShort:   'Вск Пнд Втр Срд Чтв Птн Суб'
+      months:      'Январь Февраль Март Апрель Май Июнь Июль Август Сентябрь Октябрь Ноябрь Декабрь'
+      monthsShort: 'Янв Фев Мар Апр Май Инь Иль Авг Сен Окт Ноя Дек'
+    };
+
+    new Date().format('%A %e %B, %Y'); // -> "Четверг 18 Августа, 2011"
+    Date.parse("Четверг 18 Августа, 2011", '%A %e %B, %Y'); // -> Date
 
 
 
