@@ -5,18 +5,50 @@
     <link href="/shared.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
     <script type="text/javascript">
-      Lovely(["keys"], function(module) {
-        console.log(module.version);
+      Lovely(["dom", "keys"], function($) {
+        function log(text) {
+          $('#the-log').insert('<p>'+ text +'</p>', 'top');
+        }
+
+        $(document).on('ready', function() {
+          log("DOM-ready is okay!");
+        });
+
+        $(document.documentElement).on('click', function() {
+          log("Clicking is okay!");
+        });
+
+        var keys = 'zxcvbnmasdfghjklqewtyuiop1234567890'.split('');
+        var mods = ' ctrl alt shift shift+ctrl shift-meta ctrl+alt'.split(' ');
+
+        for (var i=0; i < keys.length; i++) {
+          for (var j=0; j < mods.length; j++) {
+            (function(name) {
+              $(document).on(name, function() { log(name); });
+            })((mods[j] ? mods[j] + ' '+ keys[i] : keys[i]).toLowerCase());
+          }
+        }
       });
     </script>
-    <!--
-      NOTE: do not include anything else in here!
-        all the styles and builds will be handled
-        automatically by the development server
-    -->
+    <style type="text/css">
+      #the-log {
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: .25em;
+        background: rgba(255,255,255,0.8);
+        color: rgba(0,0,0,0.8);
+        height: 20em;
+        overflow: auto;
+      }
+      #the-log p {
+        font-size: 80%;
+        padding: .25em .5em;
+        margin: 0;
+      }
+    </style>
   </head>
   <body>
     <h1>Keys Demo</h1>
 
+    <div id="the-log"></div>
   </body>
 </html>

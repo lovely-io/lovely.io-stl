@@ -5,11 +5,18 @@
 #
 
 # hook up dependencies
-core    = require('core')
-$       = require('dom')
+core     = require('core')
+dom      = require('dom')
+
+A        = core.A
+Event    = dom.Event
+Element  = dom.Element
+Document = dom.Document
+Window   = dom.Window
 
 # glue in the files
-include 'src/keys'
+include 'src/event'
+include 'src/element'
 
 
 exports.version = '%{version}'

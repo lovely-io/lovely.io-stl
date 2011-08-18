@@ -11,6 +11,9 @@ you to specify human readable keyboard combinations as the event names
         .on('ctrl alt del', kill_em_all)
     });
 
+__NOTE__: Firefox still doesn't support `event.keyCode` on non-ascii
+keyboard layouts, so non-ascii keyboard combinations won't work in there
+
 
 ## Copyright And License
 
