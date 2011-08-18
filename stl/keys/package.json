@@ -1,7 +1,12 @@
 {
   "name":        "keys",
-  "version":     "0.0.0",
-  "description": "My super lovely module",
+  "version":     "1.0.0",
+  "description": "Provides support of nice keyboard event names",
   "author":      "Nikolay Nemshilov",
-  "license":     "MIT"
+  "license":     "MIT",
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/keys",
+  "tags":        "STL, DOM",
+  "dependencies": {
+    "dom": "1.0.1"
+  }
 }
