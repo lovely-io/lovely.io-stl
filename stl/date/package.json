@@ -1,8 +1,8 @@
 {
   "name":        "date",
   "version":     "1.0.0",
-  "description": "Date unit extensions",
+  "description": "JavaScript Date class extensions",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
-  "tags":        "STL, Dates"
+  "tags":        "STL, Dates, i18n"
 }
