@@ -17,7 +17,7 @@ class Fx.Slide extends Fx.Twin
     # calling 'prototype' to prevent circular calls from subclasses
     element = Element.prototype.show.call(@element)
     element_style = element._.style
-    old_styles = element.style('overflow width height marginTop marginLeft')
+    old_styles = element.style('overflow,width,height,marginTop,marginLeft')
 
     restore_styles = ->
       ext(element_style, old_styles)

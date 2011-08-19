@@ -61,7 +61,7 @@ native_fx_prepare    = (style)->
   options = @options
   element = @element
   element_style = element._.style
-  old_style = element.style("#{native_fx_property} #{native_fx_duration} #{native_fx_function}")
+  old_style = element.style("#{native_fx_property},#{native_fx_duration},#{native_fx_function}")
 
   reset_transitions_style = ->
     for key of old_style
