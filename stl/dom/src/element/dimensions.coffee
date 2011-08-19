@@ -92,8 +92,17 @@ Element.include
 
     else
       position = dimensions_hash(arguments)
-      # TODO: implement me
-      return this
+      offset   = x: 0, y: 0
+
+      for parent in this.parents()
+        if parent.style('position') in ['relative', 'absolute', 'fixed'] or parent._.tagName is 'HTML'
+          offset = parent.position()
+          break
+
+      this._.style.left = position.x - offset.x + 'px' if 'x' of position
+      this._.style.top  = position.y - offset.y + 'px' if 'y' of position
+
+    return this
 
   #
   # Checks if current element overlaps with the target position
