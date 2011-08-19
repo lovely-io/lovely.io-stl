@@ -80,7 +80,7 @@ Element.include
   #
   # USAGE:
   #     element.style('name')          // -> {String} style value
-  #     element.style('name1 name2')   // -> {Object} style values
+  #     element.style('name1,name2')   // -> {Object} style values
   #     element.style('name', 'value') // -> {Element} sets the style
   #     element.style('name:value')    // -> {Element} sets the style
   #     element.style(name: value)     // -> {Element} also sets the style
@@ -94,7 +94,7 @@ Element.include
       if name.indexOf(':') isnt -1 # setting style as a string
         return @style(Element_parse_style(name))
 
-      else if name.indexOf(' ') isnt -1 # reading multiple styles
+      else if name.indexOf(',') isnt -1 # reading multiple styles
         return Element_read_styles(this, name)
 
       else if value is undefined # reading a single style
@@ -118,7 +118,7 @@ Element.include
 Element_read_styles = (element, names) ->
   hash = {}
 
-  for name in names.split(/\s+/)
+  for name in names.split(',')
     name = camelize(name)
     hash[name] = element.style(name)
 

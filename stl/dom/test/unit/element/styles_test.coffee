@@ -59,19 +59,19 @@ describe "Element Styles", module,
         element._.style.cssFloat = 'right'
         assert.equal element.style('float'), 'right'
 
-    "\b('name1 name2...')":
+    "\b('name1,name2...')":
       topic: get_element
 
       "should read several styles into a hash": (element) ->
         element.style margin: '22px', padding: '23px'
 
-        assert.deepEqual element.style('margin padding'),
+        assert.deepEqual element.style('margin,padding'),
           margin: '22px', padding: '23px'
 
       "should support both camelcased and dashed names": (element) ->
         element.style marginLeft: '25px', paddingRight: '26px'
 
-        assert.deepEqual element.style('margin-left paddingRight'),
+        assert.deepEqual element.style('margin-left,paddingRight'),
           marginLeft: '25px', paddingRight: '26px'
 
 
