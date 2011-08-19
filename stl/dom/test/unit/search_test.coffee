@@ -131,4 +131,4 @@ describe 'Search', module,
     "should return the result of the first element when calls a getter method": (Search)->
       search = new Search('<div>one</div><div>two</div><div>three</div>')
 
-      #assert.equal search.html(), 'one'
+      assert.equal search.html(), 'one'
