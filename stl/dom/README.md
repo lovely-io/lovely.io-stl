@@ -4,11 +4,14 @@ This is the standard `dom` handling package for LovelyIO
 
 ## Usage
 
-Install it locally with `lovely install dom` or hook up from
-`http://cdn.lovely.io`, and then
+It is mostly the good old [RightJS](http://rightjs.org) except
+there is just one `$` jquery-like function
 
+    :javascript
     Lovely(['dom'], function($) {
-      $('#my-id').highlight();
+      $('#my-id')
+        .html('<p>trololo</p>')
+        .parent().addClass('parent');
     });
 
 See the API docs for the actual usage information
