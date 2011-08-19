@@ -17,12 +17,12 @@ class Fx.Slide extends Fx.Twin
     # calling 'prototype' to prevent circular calls from subclasses
     element = Element.prototype.show.call(@element)
     element_style = element._.style
-    old_styles = element.style('overflow width height marginTop marginLeft')
+    old_styles = element.style('overflow,width,height,marginTop,marginLeft')
 
     restore_styles = ->
       ext(element_style, old_styles)
 
-    @on 'finish cancel', restore_styles
+    @on 'finish,cancel', restore_styles
 
     element_style.overflow = 'hidden'
 
@@ -30,8 +30,7 @@ class Fx.Slide extends Fx.Twin
       element_style,
       element.size(),
       @options.direction,
-      @direction
-    )
+      @direction)
 
     super end_style
 
@@ -55,10 +54,10 @@ fx_slide_prepare_styles = (element_style, size, direction, how)->
   else
     if vertical
       style.height = size.y + 'px'
-      element_style.height = '0px'
+      element_style.height  = '0px'
     else
       style.width = size.x + 'px'
-      element_style.width = '0px'
+      element_style.width  = '0px'
 
     if to_right
       style.marginLeft = margin_left + 'px'

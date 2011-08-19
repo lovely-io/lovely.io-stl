@@ -6,6 +6,8 @@
       $(element).style('color,background-color');
         // -> {color: '#smth', backgroundColor: '#smth'}
 
+  * `Element#position(smth)` method implementation
+
 
 2011-08-17 Nikolay Nemshilov
 
