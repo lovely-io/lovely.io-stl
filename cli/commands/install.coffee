@@ -5,56 +5,16 @@
 #
 
 #
-# Common installation logic
-#
-# @param {Object} package
-# @param {String} build
-#
-save_package = (package, build)->
-  location = lovelyrc.base
-  location[location.length - 1] == '/' || (location += '/')
-  location += "packages/#{package.name}/#{package.version}"
-
-  system "rm -rf #{location}", ->
-    system "mkdir -p #{location}", ->
-      fs = require('fs')
-
-      fs.mkdirSync("#{location}/images", 0755)
-      build = build.replace /('|")([^'"]+\.(gif|png|jpg|jpeg|svg|swf))\1/g,
-      (match, q, url)->
-        if url.indexOf('http://') > -1
-          url = url.replace(/http:\/\/[^\/]+/, '')
-
-          do (url)->
-            # downloading the image
-            require('../hosting').download url,
-              "#{location}/images/#{url.replace(/^\/[^\/]+\/[^\/]+\//, '')}"
-
-          url = "images/#{url.replace(/^\/[^\/]+\/[^\/]+\//, '')}"
-
-        else
-          # copying over a local file
-          url = url.replace(/^\//, '')
-          fs.writeFileSync("#{location}/#{url}", fs.readFileSync("#{process.cwd()}/#{url}"))
-
-        "#{q}/#{package.name}/#{package.version}/#{url}#{q}"
-
-      fs.writeFileSync("#{location}/build.js", build)
-      fs.writeFileSync("#{location}/package.json", JSON.stringify(package))
-
-      system "#{__dirname}/../../bin/lovely activate #{package.name}"
-
-
-#
 # Makes a local package install
 #
 local_install = ->
   fs      = require('fs')
   package = require('../package')
+  repo    = require('../repository')
 
   sout "» Installing '#{package.name}' locally".ljust(61)
   system "#{__dirname}/../../bin/lovely build", ->
-    save_package(
+    repo.save(
       JSON.parse(fs.readFileSync("package.json").toString()),
       fs.readFileSync("build/#{package.name}.js").toString())
     sout "Done\n".green
@@ -65,6 +25,7 @@ local_install = ->
 #
 remote_install = (args)->
   hosting = require('../hosting')
+  repo    = require('../repository')
 
   sout "» Downloading the package from the server".ljust(61)
   hosting.get_package args[0], args[1], (package, build)->
@@ -79,7 +40,7 @@ remote_install = (args)->
     sout "Done\n".green
 
     sout "» Saving the package in ~/.lovely/packages/#{package.name} ".ljust(61)
-    save_package(package, build)
+    repo.save(package, build)
     sout "Done\n".green
 
 
