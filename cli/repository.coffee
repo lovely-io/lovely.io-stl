@@ -36,7 +36,7 @@ exports.list = ->
 # @param {Object} package manifest
 # @param {String} build
 #
-save_package = (package, build)->
+exports.save = (package, build)->
   location = lovelyrc.base
   location[location.length - 1] == '/' || (location += '/')
   location += "packages/#{package.name}/#{package.version}"
@@ -68,4 +68,4 @@ save_package = (package, build)->
       fs.writeFileSync("#{location}/build.js", build)
       fs.writeFileSync("#{location}/package.json", JSON.stringify(package))
 
-      system "#{__dirname}/../../bin/lovely activate #{package.name}"
+      system "#{__dirname}/../bin/lovely activate #{package.name}"

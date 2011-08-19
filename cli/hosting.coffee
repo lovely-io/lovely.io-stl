@@ -138,7 +138,7 @@ exports.get_package = (name, version, callback)->
   url+= "/#{version}" if version
 
   get "#{url}.json", {}, (package)->
-    package.version = version || package.versions[0]
+    package.version = version || package.versions[package.versions.length - 1]
     get "/#{package.name}-#{package.version}.js", {}, (build)->
       callback package, build
 
