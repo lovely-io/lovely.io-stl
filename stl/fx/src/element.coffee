@@ -25,15 +25,45 @@ Element.include
     Fx_cancel_all(@)
     return @
 
-#  show: (fx, options)->
+  #
+  # Makes the element to appear with given fx
+  #
+  # @param {String} optional fx name
+  # @param {Object} fx options
+  # @return {Element} this
+  #
+  show: (fx, options)->
+    call_with_fx(@, fx, options, @$super, 'show')
 
-#  hide: (fx, options)->
+  #
+  # Hides the element with given Fx
+  #
+  # @param {String} optional fx name
+  # @param {Object} fx options
+  # @return {Element} this
+  #
+  hide: (fx, options)->
+    call_with_fx(@, fx, options, @$super, 'hide')
 
-#  toggle: (fx, options)->
+  #
+  # Toggles the element style optionally with the Fx
+  #
+  # @param {String} optional fx name
+  # @param {Object} fx options
+  # @return {Element} this
+  #
+  toggle: (fx, options)->
+    call_with_fx(@, fx, options, @$super, 'toggle')
 
-#  remove: (fx, options)->
-#    this.$super()
-
+  #
+  # Removes the element, optionally with the Fx
+  #
+  # @param {String} optional fx name
+  # @param {Object} fx options
+  # @return {Element} this
+  #
+  remove: (fx, options)->
+    call_with_fx(@, fx, options, @$super, 'remove')
 
   #
   # Runs the Fx.Fade effect on the element
@@ -82,3 +112,19 @@ Element.include
     else
       super(position, options)
     return @
+
+
+# private
+
+call_with_fx = (element, fx, options, original, method)->
+  if !(method is 'show' and element.visible()) and !(method is 'hide' and element.hidden())
+    if typeof(fx) is 'string'
+      fx = fx[0].toUpperCase() + fx.slice(1)
+      fx = new Fx[fx](element, options)
+      fx.on('finish', -> element.remove()) if method is 'remove'
+      fx.start()
+    else
+      original.call(element)
+
+  return element
+
