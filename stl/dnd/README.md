@@ -1,6 +1,6 @@
 # DND
 
-`DND` is the HTML5 based drag-n-drop feature extension for the [dom module](/packages/dom)
+`DND` is the drag-n-drop feature extension for the [dom module](/packages/dom)
 
     :javascript
     Lovely(['dom', 'dnd'], function($) {
@@ -17,6 +17,14 @@
     });
 
 ## DND Events
+
+ * dragstart
+ * drag
+ * dragenter
+ * dragleave
+ * dragover
+ * drop
+ * dragend
 
 
 ## Copyright And License
