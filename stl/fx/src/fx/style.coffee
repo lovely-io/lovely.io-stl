@@ -58,10 +58,10 @@ native_fx_duration   = native_fx_transition + 'Duration'
 native_fx_function   = native_fx_transition + 'TimingFunction'
 
 native_fx_prepare    = (style)->
-  options = @options
-  element = @element
+  options       = @options
+  element       = @element
+  old_style     = element.style("#{native_fx_property},#{native_fx_duration},#{native_fx_function}")
   element_style = element._.style
-  old_style = element.style("#{native_fx_property},#{native_fx_duration},#{native_fx_function}")
 
   reset_transitions_style = ->
     for key of old_style
@@ -73,13 +73,16 @@ native_fx_prepare    = (style)->
       element_style[native_fx_property] = 'none'
       setTimeout(reset_transitions_style, 1)
 
+  # the following should be in a subprocess to work correctly in Chrome
+  setTimeout ->
+    # setting up the transition
+    element_style[native_fx_property] = 'all'
+    element_style[native_fx_function] = options.transition
+    element_style[native_fx_duration] = (Fx.Durations[options.duration] || options.duration) + "ms"
 
-  # setting up the transition
-  element_style[native_fx_property] = 'all'
-  element_style[native_fx_function] = options.transition
-  element_style[native_fx_duration] = (Fx.Durations[options.duration] || options.duration) + "ms"
-
-  setTimeout((->element.style(style)), 0)
+    # setting the actual end styles
+    setTimeout((->element.style(style)), 0)
+  , 0
 
 
 # NOTE: OPERA's css-transitions are a bit jerky so we disable them by default

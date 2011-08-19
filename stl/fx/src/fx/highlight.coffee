@@ -37,6 +37,6 @@ class Fx.Highlight extends Fx.Style
 
       end_color = end_color[0] || '#FFF'
 
-    element_style[style_name] = (start || @options.color)
+    element_style[style_name] = start || @options.color
 
     super backgroundColor: end_color
