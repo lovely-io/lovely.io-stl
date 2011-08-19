@@ -5,9 +5,8 @@
     <link href="/shared.css" rel="stylesheet" type="text/css"/>
     <script src="/core.js"></script>
     <script type="text/javascript">
-      Lovely(['dom', 'fx'], function($, Fx) {
-        window.$  = $;
-        window.Fx = Fx;
+      Lovely(['fx'], function() {
+        var $ = Lovely.module('dom');
 
         $(document).delegate('a.start', 'click', function(e) {
           e.stop();
@@ -29,8 +28,6 @@
       }
       div div {
         border: 1px solid #DDD;
-        -moz-border-radius: .25em;
-        -webkit-border-radius: .25em;
         border-radius: .25em;
         background: orange;
         color: brown;
@@ -52,11 +49,9 @@
         font: inherit;
         padding: .5em;
         border: 1px solid #DDD;
-        -moz-border-radius: .25em;
-        -webkit-border-radius: .25em;
         border-radius: .25em;
         height: 48pt;
-        width: 25em;
+        width: 16em;
         position: absolute;
         top: 0;
         left: 160pt;
@@ -72,6 +67,7 @@
         top: 65pt;
         left: 0;
         height: 8em;
+        width: 20em;
       }
       #fx-style-test ~ p {
         margin-top: 105pt;
@@ -145,5 +141,7 @@
         <a href="" class="reset">Reset</a>
       </p>
     </div>
+
+    <p class="white-space"></p>
   </body>
 </html>
