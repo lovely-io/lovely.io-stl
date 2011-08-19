@@ -22,7 +22,7 @@ Events =
   #
   # USAGE:
   #     object.on 'event', callback
-  #     object.on 'event1 event2 event3', callback
+  #     object.on 'event1,event2,event3', callback
   #     object.on event1: callback1, event2: callback2
   #     object.on 'event', 'methodname'[, arg1, arg2, ..]
   #
@@ -38,7 +38,7 @@ Events =
 
     switch typeof(events)
       when 'string'
-        for event in events.split(' ')
+        for event in events.split(',')
           this._listeners.push
             e: event     # event name
             c: callback  # callback function reference
@@ -74,7 +74,7 @@ Events =
 
     switch typeof(events)
       when 'string'
-        for event in events.split(' ')
+        for event in events.split(',')
           index = 0
           while index < this._listeners.length
             this._listeners.splice index--, 1 if this._listeners[index].e is
@@ -121,7 +121,7 @@ Events =
 
     switch typeof(events)
       when 'string'
-        for event in events.split(' ')
+        for event in events.split(',')
           for entry in this._listeners
             result |= entry.e is event and (
               entry.c is callback or callback is undefined)

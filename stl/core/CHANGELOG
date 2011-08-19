@@ -1,3 +1,11 @@
+2011-08-19 Nikolay Nemshilov
+
+  * Version 1.0.2
+  * Making multiple event names assignable via the `Events` API
+
+      smth.on('event1,event2,event3', callback);
+
+
 2011-08-13 Nikolay Nemshilov
 
   * Version 1.0.1

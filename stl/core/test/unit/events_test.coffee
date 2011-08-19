@@ -34,8 +34,8 @@ describe 'Events', module,
       "should stash the additional arguments for later use": (object) ->
         assert.deepEqual object._listeners[0].a, [1,2,3]
 
-    "\b('event1 event2', callback)":
-      topic: -> new Dummy().on('event1 event2', this.cb = ->)
+    "\b('event1,event2', callback)":
+      topic: -> new Dummy().on('event1,event2', this.cb = ->)
 
       "should start listening to the event1": (object) ->
         assert.isTrue object.ones('event1', this.cb)
@@ -116,8 +116,8 @@ describe 'Events', module,
 
     "\b(callback)":
       topic: -> new Dummy()
-        .on('event1 event2', this.cb1 = ->)
-        .on('event1 event2', this.cb2 = ->)
+        .on('event1,event2', this.cb1 = ->)
+        .on('event1,event2', this.cb2 = ->)
         .no(this.cb1)
 
       "should listening all events for the callback": (object)->
@@ -128,10 +128,10 @@ describe 'Events', module,
         assert.isTrue object.ones('event1', this.cb2)
         assert.isTrue object.ones('event2', this.cb2)
 
-    "\b('event1 event2')":
+    "\b('event1,event2')":
       topic: -> new Dummy()
-        .on('event1 event2 event3', this.cb = ->)
-        .no('event1 event2')
+        .on('event1,event2,event3', this.cb = ->)
+        .no('event1,event2')
 
       "should stop listening to the 'event1'": (object) ->
         assert.isFalse object.ones('event1')
