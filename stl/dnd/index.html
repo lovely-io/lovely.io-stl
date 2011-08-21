@@ -7,31 +7,6 @@
     <script type="text/javascript">
       Lovely(["dom", "dnd"], function($) {
         $(function() {
-          // simple draggables
-          $('#simple-draggable-1').draggable();
-          $('#simple-draggable-2').draggable();
-          $('#simple-draggable-3').draggable();
-
-          // revertible draggables
-          $('#revertable-draggable-1').draggable({revert: true});
-          $('#revertable-draggable-2').draggable({revert: true, revertDuration: 'short'});
-          $('#revertable-draggable-3').draggable({revert: true, revertDuration: 0});
-
-          // cloned draggables
-          $('#cloned-draggable-1').draggable({clone: true, revert: true});
-          $('#cloned-draggable-2').draggable({clone: true, revert: true, revertDuration: 'short'});
-          $('#cloned-draggable-3').draggable({clone: true, revert: true, revertDuration: 0});
-
-          // snapping draggables
-          $('#snapping-draggable-1').draggable({snap: 40});
-          $('#snapping-draggable-2').draggable({snap: [40, 0]});
-          $('#snapping-draggable-3').draggable({snap: [0, 40]});
-
-          // draggables with axis
-          $('#constrainted-draggable-1').draggable({revert: true});
-          $('#constrainted-draggable-2').draggable({revert: true, axis: 'x'});
-          $('#constrainted-draggable-3').draggable({revert: true, axis: 'y'});
-
           // ranged draggables
           var el1 = $('#ranged-draggable-1')[0];
           var el2 = $('#ranged-draggable-2')[0];
@@ -54,10 +29,6 @@
 
           $('#ranged-draggable-4').draggable({range: $('#ranging-field-1')});
           $('#ranged-draggable-5').draggable({range:   '#ranging-field-2' });
-
-
-          // relatively positioned draggables
-          $('#relative-draggable-1').draggable({range: '#ranging-field-3'});
         });
       });
     </script>
@@ -121,45 +92,45 @@
     <h2>Simple Draggables</h2>
     <p>
       <div class="test-container">
-        <div class="drag-test" id="simple-draggable-1">drag me around</div>
-        <div class="drag-test" id="simple-draggable-2">drag me too!</div>
-        <div class="drag-test" id="simple-draggable-3">or me!</div>
+        <div class="drag-test" data-draggable="{}">drag me around</div>
+        <div class="drag-test" data-draggable="{}">drag me too!</div>
+        <div class="drag-test" data-draggable="{}">or me!</div>
       </div>
     </p>
 
     <h2>Revertible Draggables</h2>
     <p>
       <div class="test-container">
-        <div class="drag-test" id="revertable-draggable-1">I move back</div>
-        <div class="drag-test" id="revertable-draggable-2">I do it faster!</div>
-        <div class="drag-test" id="revertable-draggable-3">I do it instantly!</div>
+        <div class="drag-test" data-draggable="{revert: true}">I move back</div>
+        <div class="drag-test" data-draggable="{revert: true, revertDuration: 'short'}">I do it faster!</div>
+        <div class="drag-test" data-draggable="{revert: true, revertDuration: 0}">I do it instantly!</div>
       </div>
     </p>
 
     <h2>Cloned Draggables</h2>
     <p>
       <div class="test-container">
-        <div class="drag-test" id="cloned-draggable-1">I leave clone</div>
-        <div class="drag-test" id="cloned-draggable-2">So do I</div>
-        <div class="drag-test" id="cloned-draggable-3">Me too!</div>
+        <div class="drag-test" data-draggable="{clone: true, revert: true}">I leave clone</div>
+        <div class="drag-test" data-draggable="{clone: true, revert: true, revertDuration: 'short'}">So do I</div>
+        <div class="drag-test" data-draggable="{clone: true, revert: true, revertDuration: 0}">Me too!</div>
       </div>
     </p>
 
     <h2>Snapping Draggables</h2>
     <p>
       <div class="test-container">
-        <div class="drag-test" id="snapping-draggable-1">I snap to 40px</div>
-        <div class="drag-test" id="snapping-draggable-2">I snap to [40, 0]</div>
-        <div class="drag-test" id="snapping-draggable-3">I snap to [0, 40]</div>
+        <div class="drag-test" data-draggable="{snap: 50}">I snap to 50px</div>
+        <div class="drag-test" data-draggable="{snap: [50, 0]}">I snap to [50, 0]</div>
+        <div class="drag-test" data-draggable="{snap: [0, 50]}">I snap to [0, 50]</div>
       </div>
     </p>
 
     <h2>Axis Draggables</h2>
     <p>
       <div class="test-container">
-        <div class="drag-test" id="constrainted-draggable-1">I move around</div>
-        <div class="drag-test" id="constrainted-draggable-2">I move only X</div>
-        <div class="drag-test" id="constrainted-draggable-3">I move only Y</div>
+        <div class="drag-test" data-draggable="{revert: true}">I move around</div>
+        <div class="drag-test" data-draggable="{revert: true, axis: 'x'}">I move only X</div>
+        <div class="drag-test" data-draggable="{revert: true, axis: 'y'}">I move only Y</div>
       </div>
     </p>
 
@@ -187,18 +158,10 @@
     <h2>Relatively Positioned Draggable</h2>
     <p>
       <div  class="drag-test-container" style="position: relative" id="ranging-field-3">
-        <div class="drag-test" id="relative-draggable-1" style="left:0; top:0">Move me around</div>
+        <div class="drag-test" data-draggable="{range: '#ranging-field-3'}">Move me around</div>
       </div>
     </p>
 
-    <h2>Auto-Discovered Draggables</h2>
-    <p>
-      <div class="test-container">
-        <div class="drag-test" data-draggable="{revert: true}">I move around</div>
-        <div class="drag-test" data-draggable="{revert: true, axis: 'x'}">I move only X</div>
-        <div class="drag-test" data-draggable="{revert: true, axis: 'y'}">I move only Y</div>
-      </div>
-    </p>
     <p class="white-space"></p>
   </body>
 </html>

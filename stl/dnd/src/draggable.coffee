@@ -21,7 +21,7 @@ Draggable =
     scroll:            true       # if it should automatically scroll
     scrollSensitivity: 32         # the scrolling area size in pixels
 
-    zIndex:            10000000   # the element's z-index
+    zIndex:            999999999  # the element's z-index
     moveOut:           false      # marker if the draggable should be moved out of it's context (for overflown
 
   # currently dragged element reference
@@ -30,15 +30,14 @@ Draggable =
   #
   # Switches on/off the draggability
   #
-  # @param {Object|Boolean} options or `false` to switch off
+  # @param {Object|Boolean} options or `true|false` to switch on/off
   # @return {Element} this
   #
   draggable: (options)->
     if options is false
-      if '__draggable' of @
-        @no('mousedown', @__draggable)
-    else
-      @on('mousedown', @__draggable = make_draggable(this, options))
+      delete(@__draggable)
+    else if !('__draggable' of @)
+      @__draggable = make_draggable(this, options)
 
     return @
 
@@ -51,51 +50,50 @@ Draggable =
 # @param
 #
 make_draggable = (element, options)->
-  options = merge(Draggable.Options, element.attr('data-draggable'), options)
+  additional = new Function("return #{element.attr('data-draggable')}")();
+  options    = Hash.merge(Draggable.Options, additional, options)
 
-  draggable = (event)->
-    # finding the handle element
-    options.handle   = $(options.handle) if isString(options.handle)
-    options.handle   = options.handle[0] if isArray(options.handle)
-    draggable.handle = options.handle || element
+  # finding the handle element
+  options.handle = $(options.handle) if isString(options.handle)
+  options.handle = options.handle[0] if isArray(options.handle)
+  options.handle = options.handle || element
 
-    # prefetching the snap options
-    if isArray(options.snap)
-      draggable.snapX = options.snap[0]
-      draggable.snapY = options.snap[1]
-    else
-      draggable.snapX = draggable.snapY = options.snap || 0
+  if isArray(options.snap)
+    options.snapX = options.snap[0]
+    options.snapY = options.snap[1]
+  else
+    options.snapX = options.snapY = options.snap || 0
 
-    # initializing the actual drag
-    draggable_start(event, draggable)
-    Draggable.current = draggable
-
-  ext draggable, options: options, element: element
+  return options
 
 
 #
 # Starts the drag process
 #
 # @param {dom.Event} event
-# @param {draggable} unit
+# @param {dom.Element} draggable
 #
-draggable_start = (event, draggable)->
+draggable_start = (event, element)->
+  Draggable.current = element
   console.log("Start")
+
 
 #
 # Moves the draggable unit
 #
 # @param {dom.Event} event
-# @param {draggable} unit
+# @param {dom.Element} draggable
 #
-draggable_move = (event, draggable)->
+draggable_move = (event, element)->
+  console.log("Moving")
 
 #
 # Finishes the drag
 #
 # @param {dom.Event} event
-# @param {draggable} unit
+# @param {dom.Element} element
 #
-draggable_drop = (event, draggable)->
+draggable_drop = (event, element)->
+  Draggable.current = null
   console.log("Drop")
 
