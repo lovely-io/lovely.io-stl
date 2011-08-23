@@ -29,7 +29,7 @@ bootstrap = (base_dir) ->
     print " » " + "Already exists".yellow
   else
     lovelyrc.base = base_dir
-    lovelyrc.host = 'http://cdn.lovely.io'
+    lovelyrc.host = 'http://lovely.io'
     lovelyrc.port = '3000'
     lovelyrc.name = 'Vasily Pupkin'
 
