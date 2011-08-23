@@ -44,6 +44,12 @@ Draggable =
 
 # private
 
+# x,y offsets from the cursor and relative scope
+draggable_offset_x  = 0
+draggable_offset_y  = 0
+draggable_offset_rx = 0
+draggable_offset_ry = 0
+
 #
 # Makes a draggable unit
 #
@@ -74,8 +80,59 @@ make_draggable = (element, options)->
 # @param {dom.Element} draggable
 #
 draggable_start = (event, element)->
-  Draggable.current = element
-  console.log("Start")
+  element.emit('beforedragstart')
+
+  options  = element.__draggable
+  position = element.position()
+
+  # getting the cursor position offset
+  draggable_offset_x = event.pageX - position.x
+  draggable_offset_y = event.pageY - position.y
+
+  # grabbing the relative position diffs for nested spaces
+  draggable_offset_rx = 0
+  draggable_offset_ry = 0
+
+  parent = element.parent()
+
+  while parent instanceof $.Element
+    if parent.style('position') isnt 'static'
+      parent = parent.position()
+      draggable_offset_rx = parent.x
+      draggable_offset_ry = parent.y
+      break
+
+    parent = parent.parent()
+
+  # preserving the element sizes
+  size = element.style('width,height')
+  size.width  = element.size().x + 'px' if size.width  is 'auto'
+  size.height = element.size().y + 'px' if size.height is 'auto'
+
+  # building a clone element if necessary
+  if options.clone or options.revert
+    options._clone = element.clone().style({
+      visibility: if options.clone then 'visible' else 'hidden'
+    }).insertTo(element, 'before')
+
+  # reinserting the element to the body so it was over all the other elements
+  element.style({
+    position: 'absolute',
+    zIndex:   Draggable.Options.zIndex++,
+    top:      position.y - draggable_offset_ry + 'px',
+    left:     position.x - draggable_offset_rx + 'px',
+    width:    size.x,
+    height:   size.y
+  }).addClass(options.dragClass)
+
+  element.insertTo(document.body) if options.moveOut
+
+  # caching the window scrolls
+  options.winScrolls = $(window).scrolls();
+  options.winSizes   = $(window).size();
+
+  Draggable.current  = element
+  element.emit('dragstart')
 
 
 #
@@ -95,5 +152,6 @@ draggable_move = (event, element)->
 #
 draggable_drop = (event, element)->
   Draggable.current = null
+  element.emit('dragend')
   console.log("Drop")
 

@@ -23,6 +23,7 @@ $(document).on
         element.draggable()
 
       if '__draggable' of element
+        event.stop()
         draggable_start(event, element)
         break
 
