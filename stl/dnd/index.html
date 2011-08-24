@@ -5,7 +5,9 @@
     <link href="/shared.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
     <script type="text/javascript">
-      Lovely(["dom", "dnd", "fx"], function($) {
+      Lovely(["dnd"], function() {
+        var $ = Lovely.module('dom');
+
         $(function() {
           // ranged draggables
           var el1 = $('#ranged-draggable-1')[0];

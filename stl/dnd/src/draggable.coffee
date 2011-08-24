@@ -55,9 +55,10 @@ draggable_offset_ry = 0
 #
 # @param
 #
-make_draggable = (element, options)->
-  additional = new Function("return #{element.attr('data-draggable')}")();
-  options    = Hash.merge(Draggable.Options, additional, options)
+make_draggable = (element, opts)->
+  options = ext({}, Draggable.Options)
+  options = ext(options, new Function("return #{element.attr('data-draggable')}")())
+  options = ext(options, opts)
 
   # finding the handle element
   options.handle = $(options.handle) if isString(options.handle)
@@ -85,9 +86,8 @@ draggable_calc_constraints = (element, options)->
 
     # if the range is defined by another element
     range_element = $(range)
-    range_element = element[0] if range_element instanceof $.Search
 
-    if range_element instanceof $.Element
+    if range_element.position
       position = range_element.position()
       range =
         x: [position.x, position.x + range_element.size().x]
@@ -258,7 +258,6 @@ draggable_revert = (element, options)->
   end_style =
     top:  position.y - draggable_offset_ry + 'px'
     left: position.x - draggable_offset_rx + 'px'
-
 
   if options.revertDuration and element.animate
     element.animate end_style,
