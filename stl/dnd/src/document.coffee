@@ -16,18 +16,19 @@ $(document).on
     return # nothing
 
   mousedown: (event)->
-    element = event.target
+    if Draggable.current is null
+      element = event.target
 
-    while element instanceof $.Element
-      if element.attr('data-draggable') isnt null
-        element.draggable()
+      while element instanceof $.Element
+        if element.attr('data-draggable') isnt null
+          element.draggable()
 
-      if '__draggable' of element
-        event.stop()
-        draggable_start(event, element)
-        break
+        if '__draggable' of element
+          event.stop()
+          draggable_start(event, element)
+          break
 
-      element = element.parent()
+        element = element.parent()
 
     return # nothing
 

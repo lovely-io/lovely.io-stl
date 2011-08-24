@@ -232,7 +232,55 @@ draggable_move = (event, element)->
 # @param {dom.Element} element
 #
 draggable_drop = (event, element)->
-  Draggable.current = null
-  element.emit('dragend')
-  console.log("Drop")
+  options = element.__draggable
+  element.removeClass(options.dragClass)
 
+  # notifying the droppables for the drop
+  droppable_check_drop(event, element)
+
+  if options.revert
+    draggable_revert(element, options)
+  else
+    Draggable.current = null
+
+  event.type = 'dragend'
+  element.emit(event)
+
+
+#
+# Moves the element's position and size back
+#
+# @param {dom.Element} element
+# @param {Object} options
+#
+draggable_revert = (element, options)->
+  position  = options._clone.position();
+  end_style =
+    top:  position.y - draggable_offset_ry + 'px'
+    left: position.x - draggable_offset_rx + 'px'
+
+
+  if options.revertDuration and element.animate
+    element.animate end_style,
+      duration: options.revertDuration
+      finish:   -> draggable_swap_back(element, options)
+  else
+    element.style(end_style)
+    draggable_swap_back(element, options)
+
+  return # nothing
+
+
+#
+# Swaps back the element and it's clone
+#
+# @param {dom.Element} element
+# @param {Object} options
+#
+#
+draggable_swap_back = (element, options)->
+  if options._clone
+    element.style options._clone.style('width,height,position,zIndex')
+    options._clone.replace(element)
+
+  Draggable.current = null

@@ -8,3 +8,6 @@ Droppable =
     some: 'stuff'
 
   droppable: (options)->
+
+
+droppable_check_drop = (event, element)->
