@@ -30,3 +30,8 @@ $(document).on
       element = element.parent()
 
     return # nothing
+
+$(window).on 'blur', (event)->
+  if Draggable.current isnt null
+    draggable_drop(event, Draggable.current)
+  return # nothing

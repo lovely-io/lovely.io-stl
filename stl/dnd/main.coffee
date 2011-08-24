@@ -13,6 +13,7 @@ bind     = core.bind
 Hash     = core.Hash
 isString = core.isString
 isArray  = core.isArray
+isObject = core.isObject
 Element  = $.Element
 
 

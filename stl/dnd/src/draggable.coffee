@@ -72,6 +72,39 @@ make_draggable = (element, options)->
 
   return options
 
+#
+# Precalculates the movement constraints
+#
+draggable_calc_constraints = (element, options)->
+  options.axisX = options.axis in ['x', 'horizontal']
+  options.axisY = options.axis in ['y', 'vertical']
+
+  options.ranged = false
+  if range = options.range
+    options.ranged = true
+
+    # if the range is defined by another element
+    range_element = $(range)
+    range_element = element[0] if range_element instanceof $.Search
+
+    if range_element instanceof $.Element
+      position = range_element.position()
+      range =
+        x: [position.x, position.x + range_element.size().x]
+        y: [position.y, position.y + range_element.size().y]
+
+
+    if isObject(range)
+      if 'x' of range
+        options.minX = range.x[0]
+        options.maxX = range.x[1] - element.size().x
+
+      if 'y' of range
+        options.minY = range.y[0]
+        options.maxY = range.y[1] - element.size().y
+
+  return #nothing
+
 
 #
 # Starts the drag process
@@ -131,6 +164,8 @@ draggable_start = (event, element)->
   options.winScrolls = $(window).scrolls();
   options.winSizes   = $(window).size();
 
+  draggable_calc_constraints(element, options)
+
   Draggable.current  = element
   element.emit('dragstart')
 
@@ -142,7 +177,53 @@ draggable_start = (event, element)->
 # @param {dom.Element} draggable
 #
 draggable_move = (event, element)->
-  console.log("Moving")
+  options = element.__draggable
+  page_x  = event.pageX
+  page_y  = event.pageY
+  x = page_x - draggable_offset_x
+  y = page_y - draggable_offset_y
+
+  # checking the range
+  if options.ranged
+    x = options.minX if options.minX > x
+    x = options.maxX if options.maxX < x
+    y = options.minY if options.minY > y
+    y = options.maxY if options.maxY < y
+
+  # checking the scrolls
+  if options.scroll
+    scrolls     = x: options.winScrolls.x, y: options.winScrolls.y
+    sensitivity = options.scrollSensitivity
+
+    if (page_y - scrolls.y) < sensitivity
+      scrolls.y = page_y - sensitivity
+    else if (scrolls.y + options.winSizes.y - page_y) < sensitivity
+      scrolls.y = page_y - options.winSizes.y + sensitivity
+
+    if (page_x - scrolls.x) < sensitivity
+      scrolls.x = page_x - sensitivity
+    else if (scrolls.x + options.winSizes.x - page_x) < sensitivity
+      scrolls.x = page_x - options.winSizes.x + sensitivity
+
+    scrolls.y = 0 if scrolls.y < 0
+    scrolls.x = 0 if scrolls.x < 0
+
+    if scrolls.y < options.winScrolls.y || scrolls.y > options.winScrolls.y ||
+       scrolls.x < options.winScrolls.x || scrolls.x > options.winScrolls.x
+
+        $(window).scrolls(options.winScrolls = scrolls)
+
+  # checking the snaps
+  x = x - x % options.snapX if options.snapX
+  y = y - y % options.snapY if options.snapY
+
+  # checking the constraints
+  element._.style.left = x - draggable_offset_rx + 'px' unless options.axisY
+  element._.style.top  = y - draggable_offset_ry + 'px' unless options.axisX
+
+  event.type = 'drag'
+  element.emit event
+
 
 #
 # Finishes the drag
