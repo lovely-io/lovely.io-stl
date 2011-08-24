@@ -16,15 +16,31 @@
       $('#my-element').droppable(false);
     });
 
+## Automatic Initialization
+
+You can use the standard automatic initialization by the `data-draggable` HTML5 attribute
+
+    :html
+    <div data-draggable="{options: 'here'}">
+      Drag and drop me!
+    </div>
+
+Specify your draggable unit options in JSON format, or just leave `{}` in there
+
+
 ## DND Events
 
+This module fires a bunch of additional events when the user interacts with the draggable
+and droppable elements
+
+ * beforedrag
  * dragstart
  * drag
- * dragenter
+ * dragend
  * dragleave
  * dragover
  * drop
- * dragend
+
 
 
 ## Copyright And License
