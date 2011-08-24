@@ -113,7 +113,8 @@ draggable_calc_constraints = (element, options)->
 # @param {dom.Element} draggable
 #
 draggable_start = (event, element)->
-  element.emit('beforedragstart')
+  event.type = 'beforedragstart'
+  element.emit event
 
   options  = element.__draggable
   position = element.position()
