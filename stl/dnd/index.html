@@ -5,7 +5,7 @@
     <link href="/shared.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
     <script type="text/javascript">
-      Lovely(["dnd"], function() {
+      Lovely(["dnd", "fx"], function(dnd) {
         var $ = Lovely.module('dom');
 
         $(function() {
@@ -31,6 +31,16 @@
 
           $('#ranged-draggable-4').draggable({range: $('#ranging-field-1')});
           $('#ranged-draggable-5').draggable({range:   '#ranging-field-2' });
+
+          // all the droppables are getting hightlighted green on drop
+          dnd.Droppable.Options.drop = function(event) {
+            event.target.highlight('green');
+          };
+
+          $('selective-droppable-5').droppable({accept: $('#the-first-draggable')[0]})
+          $('selective-droppable-6').droppable({accept: $('#the-second-draggable')})
+          $('selective-droppable-7').droppable({accept: ['#the-first-draggable']})
+          $('selective-droppable-8').droppable({accept: ['#the-second-draggable']})
         });
       });
     </script>
@@ -161,6 +171,67 @@
     <p>
       <div  class="drag-test-container" style="position: relative" id="ranging-field-3">
         <div class="drag-test" data-draggable="{range: '#ranging-field-3'}">Move me around</div>
+      </div>
+    </p>
+
+    <p>&nbsp;</p>
+
+    <h2>Simple Droppable</h2>
+    <p>
+      <div class="test-container">
+        <div class="drag-test" data-draggable="{revert: true}">Drag me</div>
+        <div class="drop-test" data-droppable="{}">Drop here</div>
+        <div class="drop-test" data-droppable="{}">or here</div>
+      </div>
+    </p>
+
+    <h2>Overlapping Droppables</h2>
+    <p>
+      Those droppables will react only when overlapped with draggable (50% by default)
+      <div class="test-container">
+        <div class="drag-test" data-draggable="{revert: true}">Drag me</div>
+        <div class="drop-test" data-droppable="{overlap: 'x'}">X Only Overlap</div>
+        <div class="drop-test" data-droppable="{overlap: 'y'}">Y Only Overlap</div>
+      </div>
+    </p>
+    <p>
+      <div class="test-container">
+        <div class="drop-test" data-droppable="{overlap: 'both'}">Both Overlap</div>
+        <div class="drop-test" data-droppable="{overlap: 'vertical',   overlapSize: 0.3}">Overlap Y 30%</div>
+        <div class="drop-test" data-droppable="{overlap: 'horizontal', overlapSize: 0.7}">Overlap X 70%</div>
+      </div>
+    </p>
+
+    <h2>Selective Droppables</h2>
+    <p>
+      Selective by a css-rule
+      <div class="test-container">
+        <div class="drag-test red" data-draggable="{revert: true}">Drag me</div>
+        <div class="drop-test" data-droppable="{accept: '.red'}">Reds Only</div>
+        <div class="drop-test" data-droppable="{accept: '.blue'}">Blues Only</div>
+      </div>
+    </p>
+    <p>
+      <div class="test-container">
+        <div class="drag-test blue" data-draggable="{revert: true}">Drag me</div>
+        <div class="drop-test" data-droppable="{accept: '.red'}">Reds Only</div>
+        <div class="drop-test" data-droppable="{accept: '.blue'}">Blues Only</div>
+      </div>
+    </p>
+
+    <p>
+      Selective by an elements list
+      <div class="test-container">
+        <div class="drag-test" id="the-first-draggable" data-draggable="{revert: true}">First</div>
+        <div class="drop-test" id="selective-droppable-5">First Only</div>
+        <div class="drop-test" id="selective-droppable-6">Second Only</div>
+      </div>
+    </p>
+    <p>
+      <div class="test-container">
+        <div class="drag-test" id="the-second-draggable" data-draggable="{revert: true}">Second</div>
+        <div class="drop-test" id="selective-droppable-7">First Only</div>
+        <div class="drop-test" id="selective-droppable-8">Second Only</div>
       </div>
     </p>
 

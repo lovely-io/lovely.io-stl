@@ -14,6 +14,14 @@
       // to remove the functionality call those
       $('#my-element').draggable(false);
       $('#my-element').droppable(false);
+
+      // same thing for droppables
+      $('#another-element').droppable({
+        accept: 'div.red'
+      })
+
+      // switch off
+      $('#another-element').droppable();
     });
 
 ## Automatic Initialization
@@ -21,11 +29,17 @@
 You can use the standard automatic initialization by the `data-draggable` HTML5 attribute
 
     :html
-    <div data-draggable="{options: 'here'}">
+    <div data-draggable="{revert: true}">
       Drag and drop me!
     </div>
 
-Specify your draggable unit options in JSON format, or just leave `{}` in there
+    <div data-droppable="{accept: 'div.red'}">
+      Reds only!
+    </div>
+
+In this case the element will be initialized automatically when the user _starts_
+to interact with it. Just specify your draggable unit options in the `JSON` format,
+or leave `{}` in the attribute.
 
 
 ## DND Events
@@ -37,10 +51,12 @@ and droppable elements
  * dragstart
  * drag
  * dragend
+ * dragenter
  * dragleave
- * dragover
  * drop
 
+Event listeners can be attached to the elements directly using the standard `Element#on`
+method, or specified along with the options
 
 
 ## Copyright And License

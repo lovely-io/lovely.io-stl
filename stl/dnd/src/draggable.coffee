@@ -55,10 +55,8 @@ draggable_offset_ry = 0
 #
 # @param
 #
-make_draggable = (element, opts)->
-  options = ext({}, Draggable.Options)
-  options = ext(options, new Function("return #{element.attr('data-draggable')}")())
-  options = ext(options, opts)
+make_draggable = (element, options)->
+  options = merge('draggable', element, options)
 
   # finding the handle element
   options.handle = $(options.handle) if isString(options.handle)
@@ -71,15 +69,15 @@ make_draggable = (element, opts)->
   else
     options.snapX = options.snapY = options.snap || 0
 
+  options.axisX = options.axis in ['x', 'horizontal']
+  options.axisY = options.axis in ['y', 'vertical']
+
   return options
 
 #
 # Precalculates the movement constraints
 #
 draggable_calc_constraints = (element, options)->
-  options.axisX = options.axis in ['x', 'horizontal']
-  options.axisY = options.axis in ['y', 'vertical']
-
   options.ranged = false
   if range = options.range
     options.ranged = true
@@ -115,6 +113,8 @@ draggable_calc_constraints = (element, options)->
 draggable_start = (event, element)->
   event.type = 'beforedragstart'
   element.emit event
+
+  droppable_prepare_targets()
 
   options  = element.__draggable
   position = element.position()

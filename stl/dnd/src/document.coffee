@@ -8,6 +8,7 @@ $(document).on
   mousemove: (event)->
     if Draggable.current isnt null
       draggable_move(event, Draggable.current)
+      droppable_hover(event, Draggable.current)
     return # nothing
 
   mouseup: (event)->
