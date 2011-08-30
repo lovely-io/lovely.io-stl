@@ -5,10 +5,10 @@
 #
 Droppable =
   Options:
-    accept:      '*'    # css-class, or list of css-classes or list of elements of accepted draggables
+    accept:      '*'   # css-class, or list of css-classes or list of elements of accepted draggables
 
-    overlap:     false, # 'x', 'y', 'horizontal', 'vertical', 'both'  makes it respond only if the draggable overlaps the droppable
-    overlapSize: 0.5,   # the overlapping level 0 for nothing 1 for the whole thing
+    overlap:     false # 'x', 'y', 'horizontal', 'vertical', 'both'  makes it respond only if the draggable overlaps the droppable
+    overlapSize: 0.5   # the overlapping level 0 for nothing 1 for the whole thing
 
     allowClass:  'droppable-allow' # added when an acceptable draggable hovers the target
     denyClass:   'droppable-deny'  # added when an inacceptable draggable enters the target
