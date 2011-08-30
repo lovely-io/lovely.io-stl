@@ -147,7 +147,7 @@ draggable_start = (event, element)->
   if options.clone or options.revert
     options._clone = element.clone().style({
       visibility: if options.clone then 'visible' else 'hidden'
-    }).insertTo(element, 'before')
+    }).insertTo(element, 'after')
 
   # reinserting the element to the body so it was over all the other elements
   element.style({

@@ -26,22 +26,12 @@ Droppable =
     if options is false
       delete(@__droppable)
     else if !('__droppable' of @)
-      @__droppable = make_droppable(this, options)
+      @__droppable = merge('droppable', @, options)
+      droppable_targets.push(@)
 
     return @
 
 # private
-
-#
-# Makes a droppable unit
-#
-# @param {dom.Element} element
-# @param {Object} options
-#
-make_droppable = (element, options)->
-  options = merge('droppable', element, options)
-
-  return options
 
 # list of droppable targets, populated when a drag starts
 droppable_targets = []
@@ -52,7 +42,7 @@ droppable_targets = []
 # @return void
 #
 droppable_prepare_targets = ->
-  droppable_targets = $('*[data-droppable]').map('droppable')
+  $('*[data-droppable]').map('droppable')
 
 
 #
@@ -123,8 +113,8 @@ droppable_overlaps = (target, e_pos, d_pos, d_size)->
     switch options.overlap
       when 'x', 'horizontal' # horizontal overlap check
         return (
-          (top    > t_top    && top      < t_bottom) ||
-          (bottom > t_top    && bottom   < t_bottom)
+          (top    > t_top    && top     < t_bottom) ||
+          (bottom > t_top    && bottom  < t_bottom)
         ) && (
           (left   > t_left   && left    < (t_right - t_size.x * level)) ||
           (right  < t_right  && right   > (t_left  + t_size.x * level))
@@ -139,8 +129,8 @@ droppable_overlaps = (target, e_pos, d_pos, d_size)->
         )
       else # both side overlap check
         return (
-          (left   > t_left   && left    < (t_right - t_size.x * level)) ||
-          (right  < t_right  && right   > (t_left  + t_size.x * level))
+          (left   > t_left   && left   < (t_right  - t_size.x * level)) ||
+          (right  < t_right  && right  > (t_left   + t_size.x * level))
         ) && (
           (top    > t_top    && top    < (t_bottom - t_size.y * level)) ||
           (bottom < t_bottom && bottom > (t_top    + t_size.y * level))
@@ -151,6 +141,21 @@ droppable_overlaps = (target, e_pos, d_pos, d_size)->
 # Checks if the draggable is acceptable by the drooppable
 #
 droppable_acceptable = (draggable, droppable)->
+  options = droppable.__droppable
+
+  if options.accept is '*'
+    return true
+  else
+    rules = options.accept
+    rules = [rules] unless isArray(rules)
+    for rule in rules
+      rule = $(rule) if isString(rule)
+      rule = [rule] unless isArray(rule)
+
+      for element in rule
+        if element._ is draggable._
+          return true
+
   return false
 
 
