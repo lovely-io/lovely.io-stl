@@ -41,6 +41,30 @@ In this case the element will be initialized automatically when the user _starts
 to interact with it. Just specify your draggable unit options in the `JSON` format,
 or leave `{}` in the attribute.
 
+## Options
+
+The following options are available with the `draggable` method
+
+ * `handle`            (null)       - a handle element that will start the drag
+ * `snap`              (0)          - a number in pixels or [x,y]
+ * `axis`              (null)       - null or 'x' or 'y' or 'vertical' or 'horizontal'
+ * `range`             (null)       - {x: [min, max], y: [min, max]} or reference to another element
+ * `dragClass`         ('dragging') - the in-process class name
+ * `clone`             (false)      - if should keep a clone in place
+ * `revert`            (false)      - marker if the object should be moved back on finish
+ * `revertDuration`    ('normal')   - the moving back fx duration
+ * `scroll`            (true)       - if it should automatically scroll
+ * `scrollSensitivity` (32)         - the scrolling area size in pixels
+ * `moveOut`           (false)      - marker if the draggable should be moved out of it's context (for overflown
+
+The following options are available with the `droppable` method
+
+ * `accept`      ('*')   - css-class, or a list of css-classes or list of elements of accepted draggables
+ * `overlap`     (false) - 'x', 'y', 'horizontal', 'vertical', 'both'  makes it respond only if the draggable overlaps the droppable
+ * `overlapSize` (0.5)   - the overlapping level 0 for nothing 1 for the whole thing
+ * `allowClass`  ('droppable-allow') - added when an acceptable draggable hovers the target
+ * `denyClass`   ('droppable-deny')  - added when an inacceptable draggable enters the target
+
 
 ## DND Events
 
