@@ -1,9 +1,11 @@
 {
   "name":        "dnd",
-  "version":     "0.0.0",
-  "description": "My super lovely module",
+  "version":     "1.0.0",
+  "description": "The standard drag-n-drop functionality module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/dnd",
+  "tags":        "STL, drag n drop"
   "dependencies": {
     "dom": "1.0.2"
   }
