@@ -1,22 +1,240 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Dnd Demo</title>
+    <title>DND Demo</title>
     <link href="/shared.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
     <script type="text/javascript">
-      Lovely(["dnd"], function(module) {
-        console.log(module.version);
+      Lovely(["dnd", "fx"], function(dnd) {
+        var $ = Lovely.module('dom');
+
+        $(function() {
+          // ranged draggables
+          var el1 = $('#ranged-draggable-1')[0];
+          var el2 = $('#ranged-draggable-2')[0];
+          var el3 = $('#ranged-draggable-3')[0];
+
+          el1.draggable({revert: true, range: {
+            x: [el1.position().x - 100, el1.position().x + el1.size().x + 100],
+            y: [el1.position().y - 100, el1.position().y + el1.size().y + 100]
+          }});
+
+          el2.draggable({revert: true, range: {
+            x: [el2.position().x - 200, el2.position().x + el2.size().x + 200],
+            y: [el2.position().y - 200, el2.position().y + el2.size().y + 200]
+          }});
+
+          el3.draggable({revert: true, range: {
+            x: [el3.position().x - 200, el3.position().x + el3.size().x + 200],
+            y: [el3.position().y - 100, el3.position().y + el3.size().y + 100]
+          }});
+
+          $('#ranged-draggable-4').draggable({range: $('#ranging-field-1')});
+          $('#ranged-draggable-5').draggable({range:   '#ranging-field-2' });
+
+          // all the droppables are getting hightlighted green on drop
+          dnd.Droppable.Options.drop = function(event) {
+            event.target.highlight('green');
+          };
+
+          $('#selective-droppable-5').droppable({accept: $('#the-first-draggable')[0]})
+          $('#selective-droppable-6').droppable({accept: $('#the-second-draggable')})
+          $('#selective-droppable-7').droppable({accept: ['#the-first-draggable']})
+          $('#selective-droppable-8').droppable({accept: ['#the-second-draggable']})
+        });
       });
     </script>
-    <!--
-      NOTE: do not include anything else in here!
-        all the styles and builds will be handled
-        automatically by the development server
-    -->
+    <style type="text/css">
+      div.test-container {
+        height: 6em;
+      }
+
+      div.drag-test, div.drop-test {
+        border: 1px solid brown;
+        color: brown;
+        background: orange;
+        height: 6em;
+        line-height: 6em;
+        width: 10em;
+        text-align: center;
+        float: left;
+        margin-right: 1em;
+        cursor: move;
+        border-radius: .25em;
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+      }
+
+      div.drop-test {
+        cursor: default;
+        background: #FF8;
+      }
+
+      div.red {
+        background: #F88;
+      }
+      div.blue {
+        background: #88F;
+      }
+
+      div.droppable-allow {
+        background: #8F8 !important;
+        font-weight: bold;
+        border: 1px dashed brown;
+      }
+      div.droppable-deny {
+        background: #EEE !important;
+        color: #444;
+        border-color: #444;
+      }
+
+      div.drag-test-container {
+        background:#EEE;
+        width: 32em;
+        height: 20em;
+        border: 1px solid #CCC;
+      }
+    </style>
   </head>
   <body>
-    <h1>Dnd Demo</h1>
+    <h1>DND Demo</h1>
 
+    <h2>Simple Draggables</h2>
+    <p>
+      <div class="test-container">
+        <div class="drag-test" data-draggable="{}">drag me around</div>
+        <div class="drag-test" data-draggable="{}">drag me too!</div>
+        <div class="drag-test" data-draggable="{}">or me!</div>
+      </div>
+    </p>
+
+    <h2>Revertible Draggables</h2>
+    <p>
+      <div class="test-container">
+        <div class="drag-test" data-draggable="{revert: true}">I move back</div>
+        <div class="drag-test" data-draggable="{revert: true, revertDuration: 'short'}">I do it faster!</div>
+        <div class="drag-test" data-draggable="{revert: true, revertDuration: 0}">I do it instantly!</div>
+      </div>
+    </p>
+
+    <h2>Cloned Draggables</h2>
+    <p>
+      <div class="test-container">
+        <div class="drag-test" data-draggable="{clone: true, revert: true}">I leave clone</div>
+        <div class="drag-test" data-draggable="{clone: true, revert: true, revertDuration: 'short'}">So do I</div>
+        <div class="drag-test" data-draggable="{clone: true, revert: true, revertDuration: 0}">Me too!</div>
+      </div>
+    </p>
+
+    <h2>Snapping Draggables</h2>
+    <p>
+      <div class="test-container">
+        <div class="drag-test" data-draggable="{snap: 50}">I snap to 50px</div>
+        <div class="drag-test" data-draggable="{snap: [50, 0]}">I snap to [50, 0]</div>
+        <div class="drag-test" data-draggable="{snap: [0, 50]}">I snap to [0, 50]</div>
+      </div>
+    </p>
+
+    <h2>Axis Draggables</h2>
+    <p>
+      <div class="test-container">
+        <div class="drag-test" data-draggable="{revert: true}">I move around</div>
+        <div class="drag-test" data-draggable="{revert: true, axis: 'x'}">I move only X</div>
+        <div class="drag-test" data-draggable="{revert: true, axis: 'y'}">I move only Y</div>
+      </div>
+    </p>
+
+    <h2>Ranged Draggables</h2>
+    <p>
+      Ranged by simple positions
+      <div class="test-container">
+        <div class="drag-test" id="ranged-draggable-1">I move 100px</div>
+        <div class="drag-test" id="ranged-draggable-2">I move 200px</div>
+        <div class="drag-test" id="ranged-draggable-3">I move [200, 100]</div>
+      </div>
+    </p>
+    <p>
+      Range defined by another element
+      <div class="drag-test-container" id="ranging-field-1">
+        <div class="drag-test" id="ranged-draggable-4">I move only here</div>
+      </div>
+    </p>
+    <p>
+      <div class="drag-test-container" id="ranging-field-2">
+        <div class="drag-test" id="ranged-draggable-5">Seems like me too</div>
+      </div>
+    </p>
+
+    <h2>Relatively Positioned Draggable</h2>
+    <p>
+      <div  class="drag-test-container" style="position: relative" id="ranging-field-3">
+        <div class="drag-test" data-draggable="{range: '#ranging-field-3'}">Move me around</div>
+      </div>
+    </p>
+
+    <p>&nbsp;</p>
+
+    <h2>Simple Droppable</h2>
+    <p>
+      <div class="test-container">
+        <div class="drag-test" data-draggable="{revert: true}">Drag me</div>
+        <div class="drop-test" data-droppable="{}">Drop here</div>
+        <div class="drop-test" data-droppable="{}">or here</div>
+      </div>
+    </p>
+
+    <h2>Overlapping Droppables</h2>
+    <p>
+      Those droppables will react only when overlapped with draggable (50% by default)
+      <div class="test-container">
+        <div class="drag-test" data-draggable="{revert: true}">Drag me</div>
+        <div class="drop-test" data-droppable="{overlap: 'x'}">X Only Overlap</div>
+        <div class="drop-test" data-droppable="{overlap: 'y'}">Y Only Overlap</div>
+      </div>
+    </p>
+    <p>
+      <div class="test-container">
+        <div class="drop-test" data-droppable="{overlap: 'both'}">Both Overlap</div>
+        <div class="drop-test" data-droppable="{overlap: 'vertical',   overlapSize: 0.3}">Overlap Y 30%</div>
+        <div class="drop-test" data-droppable="{overlap: 'horizontal', overlapSize: 0.7}">Overlap X 70%</div>
+      </div>
+    </p>
+
+    <h2>Selective Droppables</h2>
+    <p>
+      Selective by a css-rule
+      <div class="test-container">
+        <div class="drag-test red" data-draggable="{revert: true}">Drag me</div>
+        <div class="drop-test" data-droppable="{accept: '.red'}">Reds Only</div>
+        <div class="drop-test" data-droppable="{accept: '.blue'}">Blues Only</div>
+      </div>
+    </p>
+    <p>
+      <div class="test-container">
+        <div class="drag-test blue" data-draggable="{revert: true}">Drag me</div>
+        <div class="drop-test" data-droppable="{accept: '.red'}">Reds Only</div>
+        <div class="drop-test" data-droppable="{accept: '.blue'}">Blues Only</div>
+      </div>
+    </p>
+
+    <p>
+      Selective by an elements list
+      <div class="test-container">
+        <div class="drag-test" id="the-first-draggable" data-draggable="{revert: true}">First</div>
+        <div class="drop-test" id="selective-droppable-5">First Only</div>
+        <div class="drop-test" id="selective-droppable-6">Second Only</div>
+      </div>
+    </p>
+    <p>
+      <div class="test-container">
+        <div class="drag-test" id="the-second-draggable" data-draggable="{revert: true}">Second</div>
+        <div class="drop-test" id="selective-droppable-7">First Only</div>
+        <div class="drop-test" id="selective-droppable-8">Second Only</div>
+      </div>
+    </p>
+
+    <p class="white-space"></p>
   </body>
 </html>
