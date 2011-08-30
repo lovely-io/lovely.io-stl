@@ -75,13 +75,9 @@ droppable_hover = (event, draggable)->
     overlap.emit 'dragenter', draggable: Draggable.current, droppable: Droppable.current
 
   else if !overlap and Droppable.current isnt null
-    overlap = Droppable.current
-    options = overlap.__droppable
+    droppable_revert()
 
-    overlap.removeClass options.allowClass
-    overlap.removeClass options.denyClass
-
-    overlap.emit 'dragleave', draggable: Draggable.current, droppable: Droppable.current
+    Droppable.current.emit 'dragleave', draggable: Draggable.current, droppable: Droppable.current
     Droppable.current = null
 
 
@@ -140,6 +136,10 @@ droppable_overlaps = (target, e_pos, d_pos, d_size)->
 #
 # Checks if the draggable is acceptable by the drooppable
 #
+# @param {dom.Element} draggable
+# @param {dom.Element} droppable
+# @return {Boolean} check result
+#
 droppable_acceptable = (draggable, droppable)->
   options = droppable.__droppable
 
@@ -158,5 +158,29 @@ droppable_acceptable = (draggable, droppable)->
 
   return false
 
+#
+# Reverts a droppable state, when something was dropped
+# or draggable just left the target
+#
+droppable_revert = ->
+  overlap = Droppable.current
+  options = overlap.__droppable
 
+  overlap.removeClass options.allowClass
+  overlap.removeClass options.denyClass
+
+#
+# Checks if the droppable was dropped over a target and fires the events
+#
+# @param {dom.Event} the original mouseup event
+# @param {dom.Element} the draggable element
+#
 droppable_check_drop = (event, draggable)->
+  if Droppable.current isnt null
+    droppable_revert()
+
+    if droppable_acceptable(draggable, Droppable.current)
+      Droppable.current.emit 'drop', draggable: draggable, droppable: Droppable.current
+
+  return # nothing
+
