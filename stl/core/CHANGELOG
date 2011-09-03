@@ -1,3 +1,10 @@
+2011-09-03 Nikolay Nemshilov
+
+  * Version 1.0.3
+  * Making `isNumber(NuN)` to return `false`
+  * Making `isFunction(/re/)` to return `false` under V8
+
+
 2011-08-19 Nikolay Nemshilov
 
   * Version 1.0.2
