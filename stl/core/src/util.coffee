@@ -103,7 +103,7 @@ isNumber = (value) -> typeof(value) is 'number'
 # @param {mixed} some value
 # @return {boolean} check result
 #
-isFunction = (value) -> typeof(value) is 'function'
+isFunction = (value) -> typeof(value) is 'function' and Object_toString.call(value) isnt '[object RegExp]'
 
 #
 # Checks if the given value is an array

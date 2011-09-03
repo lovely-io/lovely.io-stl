@@ -118,7 +118,7 @@ describe 'Core Utils', module,
 
   "isFunction(value)": assertTypeCheck('isFunction',
     ok:   [`function(){}`, new Function('return 1')]
-    fail: ['', 1, 2.2, true, false, null, undefined, [], {}])
+    fail: ['', 1, 2.2, true, false, null, undefined, [], {}, /\s/])
 
   "isArray(value)": assertTypeCheck('isArray',
     ok:   [[], new Lovely.List()]
