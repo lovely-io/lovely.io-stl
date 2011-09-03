@@ -114,7 +114,7 @@ describe 'Core Utils', module,
 
   "isNumber(value)": assertTypeCheck('isNumber',
     ok:   [1, 2.2]
-    fail: ['11', '2.2', true, false, null, undefined, [], {}, ->])
+    fail: ['11', '2.2', true, false, null, undefined, [], {}, NaN, ->])
 
   "isFunction(value)": assertTypeCheck('isFunction',
     ok:   [`function(){}`, new Function('return 1')]

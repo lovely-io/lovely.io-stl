@@ -95,7 +95,7 @@ isString = (value) -> typeof(value) is 'string'
 # @param {mixed} something
 # @return {boolean} check result
 #
-isNumber = (value) -> typeof(value) is 'number'
+isNumber = (value) -> typeof(value) is 'number' and !isNaN(value)
 
 #
 # Checks if the given value is a function
