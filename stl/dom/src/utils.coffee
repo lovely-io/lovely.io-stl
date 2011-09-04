@@ -83,18 +83,18 @@ uid = (node) ->
 # @return {Wrapper} dom-unit
 #
 wrap = (value) ->
-  if `value != null`
+  unless `value == null` or value instanceof Wrapper
     key = uid(value) # trying to use an existing wrapper
 
     if key of Wrapper.Cache
-      return Wrapper.Cache[key]
+      value = Wrapper.Cache[key]
     else if value.nodeType is 1
-      return new Element(value)
-    else if `value.target != null`
-      return new Event(value)
+      value = new Element(value)
     else if value.nodeType is 9
-      return new Document(value)
+      value = new Document(value)
+    else if `value.target != null`
+      value = new Event(value)
     else if `value.window == value`
-      return new Window(value)
+      value = new Window(value)
 
-  return value # in case it's already wrapped or just `null`
+  return value
