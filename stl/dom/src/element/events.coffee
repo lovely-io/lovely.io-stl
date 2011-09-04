@@ -96,7 +96,7 @@ Element_make_listeners = (instance) ->
       # making the event handler wrapper, basically it wraps
       # the event and calls the original function in a correct context
       hash.w = (event)->
-        event = new Event(event, instance)
+        event = new Event(event)
         args  = (if hash.n then [] else [event]).concat(hash.a)
         event.stop() if hash.c.apply(instance, args) is false
 

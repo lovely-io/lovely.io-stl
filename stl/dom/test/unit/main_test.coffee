@@ -37,7 +37,7 @@ describe '$', module,
       result = $('#non-existing')
 
       assert.isTrue result instanceof $.Search
-      assert.equal  result.length, 1
+      assert.equal  result.length, 0
 
     # FIXME: the `window.window == window` hack doesn't work in jsdom
     #        need to figure out something else

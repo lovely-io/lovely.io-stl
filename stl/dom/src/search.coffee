@@ -48,7 +48,8 @@ class Search extends core.List
     if typeof(css_rule) is 'string'
 
       if /^#[^ \.\[:]+$/i.test(css_rule) # quick by-id search
-        css_rule = [document.getElementById(css_rule.substr(1))]
+        css_rule = document.getElementById(css_rule.substr(1))
+        css_rule = if css_rule is null then [] else [css_rule]
       else if css_rule[0] is '<' # '<div>boo hoo</div>' to node-list conversion
         return new Element('div').html(css_rule).children()
       else
@@ -56,11 +57,12 @@ class Search extends core.List
           context = current_Document
         else if !(context instanceof Wrapper)
           context = wrap(context)
+
         css_rule = context.find(css_rule, true)
 
       for element, i in css_rule
-        key = uid(element)
-        @[i] = if key of Wrapper.Cache then Wrapper.Cache[key] else new Element(element)
+        id = uid(element)
+        @[i] = if id of Wrapper.Cache then Wrapper.Cache[id] else new Element(element)
 
     else
       for element,i in css_rule
