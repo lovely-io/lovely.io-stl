@@ -15,29 +15,40 @@ user_agents =
     " (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
 
 # a shortcut to load the test page with differet user-agents
-load_as = (user_agent, callback) ->
-  Browser.open "/test.html", userAgent: user_agents[user_agent], (err, browser) ->
-    callback(err, browser.window.Lovely.module('dom').Browser)
+load_as = (user_agent) ->
+  ->
+    callback = @callback
+    Browser.open "/test.html", userAgent: user_agents[user_agent], (err, browser) ->
+      callback(err, browser.window.Lovely.module('dom').Browser)
 
 
 describe 'Browser', module,
   "With a dummy browser":
-    topic: -> load_as('Dummy', @callback)
+    topic: load_as('Dummy')
 
-    "should say it's 'Unknown'": (Browser) ->
+    "should say it's 'Unknown'": (Browser)->
       assert.equal Browser, 'Unknown'
 
-### due an issue with Zombie https://github.com/assaf/zombie/issues/134
-
   "With an Opera":
-    topic: -> load_as('Opera', @callback)
+    topic: load_as('Opera')
 
-    "should say it's an Opera": (Browser) ->
+    "should say it's 'Opera'": (Browser)->
       assert.equal Browser, 'Opera'
 
   "With Gecko":
-    topic: -> load_as("Gecko", @callback)
+    topic: load_as('Gecko')
 
-    "should say it's a Gecko": (Browser) ->
+    "should say it's 'Gecko'": (Browser)->
       assert.equal Browser, 'Gecko'
-###
+
+  "With Konqueror":
+    topic: load_as('Konqueror')
+
+    "should say it's 'Konqueror'": (Browser)->
+      assert.equal Browser, 'Konqueror'
+
+  "With mobile safari":
+    topic: load_as('MobileSafari')
+
+    "should say it's mobile safari": (Browser)->
+      assert.equal Browser, 'MobileSafari'

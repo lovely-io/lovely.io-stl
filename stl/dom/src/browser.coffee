@@ -13,11 +13,11 @@ else if /Opera/.test(Browser)
   Browser = 'Opera'
 else if /Gecko/.test(Browser) && !/KHTML/.test(Browser)
   Browser = 'Gecko'
-else if /AppleWebKit/.test(Browser)
-  Browser = 'WebKit'
 else if /Apple.*Mobile.*Safari/.test(Browser)
   Browser = 'MobileSafari'
 else if /Konqueror/.test(Browser)
   Browser = 'Konqueror'
+else if /AppleWebKit/.test(Browser)
+  Browser = 'WebKit'
 else
   Browser = 'Unknown'
