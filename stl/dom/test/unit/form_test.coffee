@@ -54,9 +54,9 @@ server.respond "/form.html": """
         </p>
         <p>
           <input type='submit' value='Sumbit' id="submit-button"/>
-          <input type='reset' value='Reset'   id="reset-button"/>
+          <input type='reset'  value='Reset'  id="reset-button"/>
           <input type='button' value='Cancel' id="type-button"/>
-          <input type='image' value=''        id="type-image"/>
+          <input type='image'  value=''       id="type-image"/>
         </p>
       </fieldset>
     </form>
@@ -99,7 +99,7 @@ describe "Form", module,
     "should return the list of all the form elements": (form)->
       result = form.elements()
 
-      assert.instanceOf result, this.Search
+      assert.instanceOf result, this.NodeList
       assert.deepEqual  result.map('attr', 'id').toArray(), [
         'input-name',
         'input-password',
@@ -121,7 +121,7 @@ describe "Form", module,
     "should return the list of input fields only": (form)->
       result = form.inputs()
 
-      assert.instanceOf result, this.Search
+      assert.instanceOf result, this.NodeList
       assert.deepEqual  result.map('attr', 'id').toArray(), [
         'input-name',
         'input-password',
@@ -289,11 +289,11 @@ describe "Form", module,
     "should return the form itself back to the code": (form)->
       assert.same form.reset(), form
 
-  'Search extension':
+  'NodeList extension':
     topic: test_form
 
     "should create 'values()' method": (form)->
-      search = new this.Search([form])
+      search = new this.NodeList([form])
 
       assert.isTrue    'values' of search
       assert.deepEqual search.values(), form.values()

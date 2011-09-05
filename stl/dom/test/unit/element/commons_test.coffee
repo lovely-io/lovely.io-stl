@@ -167,5 +167,5 @@ describe 'Element Commons', module,
     "should return the owner window wrapper": (element)->
       window = element.window()
 
-      assert.instanceOf window,   this.Window
-      assert.same       window._, this.window
+      assert.instanceOf window,          this.Window
+      assert.same       window._.window, this.window.window

@@ -94,7 +94,7 @@ wrap = (value) ->
       value = new Document(value)
     else if `value.target != null`
       value = new Event(value)
-    else if `value.window == value`
+    else if `value.window != null && value.window === value.window.window`
       value = new Window(value)
 
   return value

@@ -83,7 +83,7 @@ exports.load = load = (url, test, callback)->
     test.Document = test.dom.Document
     test.Window   = test.dom.Window
     test.Event    = test.dom.Event
-    test.Search   = test.dom.Search
+    test.NodeList = test.dom.NodeList
     test.Form     = test.dom.Form
     test.Input    = test.dom.Input
 

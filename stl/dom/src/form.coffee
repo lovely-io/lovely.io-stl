@@ -29,14 +29,14 @@ class Form extends Element
     return @
 
 
-# making the methods with Search shortcuts
+# making the methods with NodeList shortcuts
 Form.include = Element.include
 Form.include
 
   #
   # Returns the form elements as an array of extended units
   #
-  # @return {dom.Search} list of elements
+  # @return {dom.NodeList} list of elements
   #
   elements: ->
     @find('input,button,select,textarea')
@@ -44,7 +44,7 @@ Form.include
   #
   # Returns the list of all the input elements on the form
   #
-  # @return {dom.Search} list of elements
+  # @return {dom.NodeList} list of elements
   #
   inputs: ->
     @elements().filter (input)->

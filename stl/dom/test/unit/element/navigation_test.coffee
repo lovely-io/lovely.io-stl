@@ -51,7 +51,7 @@ describe "Element Navigation", module,
     "should search in the element": (element)->
       search = element.find('.one')
 
-      assert.instanceOf search, this.Search
+      assert.instanceOf search, this.NodeList
       assert.length     search, 1
       assert.instanceOf search[0], this.Element
       assert.same       search[0]._, this.document.querySelector('#one .one')
@@ -59,13 +59,13 @@ describe "Element Navigation", module,
     "should return an empty list if nothing found": (element)->
       search = element.find('.non-existing')
 
-      assert.instanceOf search, this.Search
+      assert.instanceOf search, this.NodeList
       assert.length     search, 0
 
     "should allow a raw DOM elements search": (element)->
       search = element.find('.one, .two', true)
 
-      assert.isFalse search instanceof this.Search
+      assert.isFalse search instanceof this.NodeList
       assert.length  search, 2
       assert.equal   search[0], this.document.querySelector('#one .one')
       assert.equal   search[1], this.document.querySelector('#one .two')
@@ -106,7 +106,7 @@ describe "Element Navigation", module,
     "should return the list of all parents when called with a css-rule": (element)->
       parents = element.parents()
 
-      assert.instanceOf parents, this.Search
+      assert.instanceOf parents, this.NodeList
       assert.length     parents, 3
       assert.same       parents[0]._, this.document.querySelector('#one')
       assert.same       parents[1]._, this.document.body
@@ -115,7 +115,7 @@ describe "Element Navigation", module,
     "should filter the list by a given css-rule": (element)->
       parents = element.parents('body')
 
-      assert.instanceOf parents, this.Search
+      assert.instanceOf parents, this.NodeList
       assert.length     parents, 1
       assert.same       parents[0]._, this.document.body
 
@@ -126,7 +126,7 @@ describe "Element Navigation", module,
     "should return all child elements when called without a css-rule": (element)->
       result = element.children()
 
-      assert.instanceOf result, this.Search
+      assert.instanceOf result, this.NodeList
       assert.length     result, 2
       assert.instanceOf result[0],   this.Element
       assert.instanceOf result[1],   this.Element
@@ -146,7 +146,7 @@ describe "Element Navigation", module,
     "should return the list of all siblings when called without a css-rule": (element)->
       siblings = element.siblings()
 
-      assert.instanceOf siblings,      this.Search
+      assert.instanceOf siblings,      this.NodeList
       assert.length     siblings,      2
       assert.instanceOf siblings[0],   this.Element
       assert.instanceOf siblings[1],   this.Element
@@ -154,12 +154,13 @@ describe "Element Navigation", module,
       assert.same       siblings[1]._, this.document.querySelector('#three .three')
 
     "should return the list of matching siblings only when called with a css-rule": (element)->
-      siblings = element.siblings('.one')
+          siblings = element.siblings('.one')
 
-      assert.instanceOf siblings,      this.Search
-      assert.length     siblings,      1
-      assert.instanceOf siblings[0],   this.Element
-      assert.same       siblings[0]._, this.document.querySelector('#three .one')
+          assert.instanceOf siblings,      this.NodeList
+          assert.length     siblings,      1
+          assert.instanceOf siblings[0],   this.Element
+          assert.same       siblings[0]._, this.document.querySelector('#three .one')
+
 
    "#nextSiblings('css-rule')":
     topic: find_element('#three .one')
@@ -167,7 +168,7 @@ describe "Element Navigation", module,
     "should return a list of all the next siblings when called without a css-rule": (element)->
       siblings = element.nextSiblings()
 
-      assert.instanceOf siblings,      this.Search
+      assert.instanceOf siblings,      this.NodeList
       assert.length     siblings,      2
       assert.instanceOf siblings[0],   this.Element
       assert.instanceOf siblings[1],   this.Element
@@ -177,7 +178,7 @@ describe "Element Navigation", module,
     "should return only matching siblings when called with a css-rule": (element)->
       siblings = element.nextSiblings('.two')
 
-      assert.instanceOf siblings,      this.Search
+      assert.instanceOf siblings,      this.NodeList
       assert.length     siblings,      1
       assert.instanceOf siblings[0],   this.Element
       assert.same       siblings[0]._, this.document.querySelector('#three .two')
@@ -188,7 +189,7 @@ describe "Element Navigation", module,
     "should return a list of all the next siblings when called without a css-rule": (element)->
       siblings = element.previousSiblings()
 
-      assert.instanceOf siblings,      this.Search
+      assert.instanceOf siblings,      this.NodeList
       assert.length     siblings,      2
       assert.instanceOf siblings[0],   this.Element
       assert.instanceOf siblings[1],   this.Element
@@ -198,7 +199,7 @@ describe "Element Navigation", module,
     "should return only matching siblings when called with a css-rule": (element)->
       siblings = element.previousSiblings('.two')
 
-      assert.instanceOf siblings,      this.Search
+      assert.instanceOf siblings,      this.NodeList
       assert.length     siblings,      1
       assert.instanceOf siblings[0],   this.Element
       assert.same       siblings[0]._, this.document.querySelector('#three .two')

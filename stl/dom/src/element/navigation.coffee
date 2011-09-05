@@ -4,6 +4,31 @@
 # Copyright (C) 2011 Nikolay Nemshilov
 #
 Element.include
+  #
+  # Finds _all_ matching sub-elements
+  #
+  # @param {String} css-rule
+  # @param {Boolean} marker if you want an Array of raw dom-elements
+  # @return {NodeList|Array} matching elements collection
+  #
+  find: (css_rule, needs_raw)->
+    result = @_.querySelectorAll(css_rule||'*')
+    if needs_raw then result else new NodeList(result)
+
+  #
+  # Finds the _first_ matching sub-element, or just the first
+  # element if no css-rule was specified
+  #
+  # @param {String} css-rule
+  # @return {Element} matching element or `null`
+  #
+  first: (css_rule)->
+    if css_rule is undefined && @_.firstElementChild isnt undefined
+      element = @_.firstElementChild
+    else
+      element = @_.querySelector(css_rule||'*')
+
+    wrap(element)
 
   #
   # Checks if the element matches given css-rule
@@ -18,23 +43,6 @@ Element.include
       if element is @_
         return true
     return false
-
-  #
-  # Finds all the elements that match given css-rule
-  #
-  # @param {String} css-rule
-  # @param {Boolean} a marker if you need raw dom-elements
-  # @return {Search|Array} list of matching elements
-  #
-  find: Search_module.find
-
-  #
-  # Finds the first matching sub-element
-  #
-  # @param {String} optional css-rule
-  # @return {Element} element or `null`
-  #
-  first: Search_module.first
 
   #
   # Returns the parent element or the first parent
@@ -54,7 +62,7 @@ Element.include
   # optinally filtered by a css-rule
   #
   # @param {String} optional css-rule
-  # @return {Search} list of matching elements
+  # @return {NodeList} list of matching elements
   #
   parents: (css_rule) ->
     Element_recursively_collect(@, 'parentNode', css_rule)
@@ -64,7 +72,7 @@ Element.include
   # optionally filtered by a css-rule
   #
   # @param {String} optional css-rule
-  # @return {Search} list of matching elements
+  # @return {NodeList} list of matching elements
   #
   children: (css_rule) ->
     @find(css_rule).filter (element)->
@@ -76,7 +84,7 @@ Element.include
   # optionally filtered by a css-rule
   #
   # @param {String} optional css-rule
-  # @return {Search} list of matching elements
+  # @return {NodeList} list of matching elements
   #
   siblings: (css_rule) ->
     @previousSiblings(css_rule).reverse().concat(@nextSiblings(css_rule).toArray())
@@ -86,7 +94,7 @@ Element.include
   # optionally filtered by a css-rule
   #
   # @param {String} optional css-rule
-  # @return {Search} list of matching elements
+  # @return {NodeList} list of matching elements
   #
   nextSiblings: (css_rule)->
     Element_recursively_collect(@, 'nextSibling', css_rule)
@@ -96,7 +104,7 @@ Element.include
   # optionally filtered by a css-rule
   #
   # @param {String} optional css-rule
-  # @return {Search} list of matching elements
+  # @return {NodeList} list of matching elements
   #
   previousSiblings: (css_rule)->
     Element_recursively_collect(@, 'previousSibling', css_rule)
@@ -133,18 +141,27 @@ Element.include
 #
 # Recursively collects stuff from the element
 # wraps them up with the {Element} instances
-# and returns as a standard {Search} result
+# and returns as a standard {NodeList} result
 #
 # @param {Element} start point
 # @param {String} attribute
 # @param {String} css-rule
-# @return {Search} result
+# @return {NodeList} result
 #
 Element_recursively_collect = (element, attr, css_rule)->
-  result = []; node = element._; no_rule = css_rule is undefined
+  result   = []; node = element._;
+  no_rule  = css_rule is undefined
+  css_rule = element.document().find(css_rule, true) unless no_rule
+  match    = (node)->
+    for element in css_rule
+      if element is node
+        return true
+    return false
 
   while node = node[attr]
-    if node.nodeType is 1 and (no_rule or wrap(node).match(css_rule))
+    if node.nodeType is 1 and (no_rule or match(node))
       result.push(node)
 
-  return new Search(result)
+  return new NodeList(result)
+
+

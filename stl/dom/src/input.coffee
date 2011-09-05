@@ -34,7 +34,7 @@ class Input extends Element
     super element, options
 
 
-# making the methods with Search shortcuts
+# making the methods with NodeList shortcuts
 Input.include = Element.include
 Input.include
 

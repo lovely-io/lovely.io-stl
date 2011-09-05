@@ -39,7 +39,7 @@ class Element extends Wrapper
 
 #
 # making the Element to automatically generate the dom-collection
-# methods for the {Search} class with the following principle
+# methods for the {NodeList} class with the following principle
 #
 # if this is an element's mutating method and it returns a
 # reference to the element itself, then this method will be called
@@ -55,7 +55,7 @@ Element.include = (hash)->
 
   for name, method of hash
     do (name)->
-      Search.prototype[name] = ->
+      NodeList.prototype[name] = ->
         for element, i in @
           result = element[name].apply(element, arguments)
           return result if i is 0 and result isnt element

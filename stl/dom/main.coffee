@@ -6,7 +6,7 @@
 
 include 'src/utils'
 include 'src/browser'
-include 'src/search'
+include 'src/node_list'
 include 'src/wrapper'
 include 'src/element'
 include 'src/element/events'
@@ -24,36 +24,7 @@ include 'src/event/delegation'
 include 'src/event/mouseio'
 include 'src/event/focusio'
 include 'src/event/ready'
-
-
-#
-# The main function of the DOM API, it can take several types of arguments
-#
-# Search:
-#   $('some#css.rule'[, optionally a context]) -> Search
-#
-# Creation:
-#   $('<div>bla bla bla</div>') -> Search
-#
-# DOM-Ready:
-#   $(function() { // dom-ready content // }); -> Document
-#
-# DOM-Wrapper:
-#   $(element)  -> Element
-#   $(document) -> Document
-#   $(window)   -> Window
-#   ...
-#
-# @param {String|Function|Element|Document} stuff
-# @return {Search|Wrapper} result
-#
-$ = (value, context) ->
-  switch typeof(value)
-    when 'string'   then value = new Search(value, context)
-    when 'function' then value = $(document).on('ready', value)
-    when 'object'   then value = wrap(value)
-
-  return value
+include 'src/dollar'
 
 
 # registering `Form` and `Input` for dynamic typecasting
@@ -77,6 +48,6 @@ exports = ext $,
   Event:    Event
   Form:     Form
   Input:    Input
-  Search:   Search
+  NodeList: NodeList
   eval:     global_eval
   uid:      uid

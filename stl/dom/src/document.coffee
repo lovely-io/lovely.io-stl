@@ -5,7 +5,7 @@
 #
 class Document extends Wrapper
   # copying the standard events handling and navigation interfaces
-  include: [Element_events, Search_module]
+  include: [Element_events]
 
   constructor: (document)->
     Wrapper.call(this, document)
@@ -18,6 +18,10 @@ class Document extends Wrapper
   #
   window: ->
     wrap(@_.defaultView || @_.parentWindow)
+
+  # copying the search interface from the Element unit
+  find:  Element.prototype.find
+  first: Element.prototype.first
 
 
 # quick current document wrapper access
