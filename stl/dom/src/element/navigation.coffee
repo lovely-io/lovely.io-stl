@@ -158,7 +158,7 @@ Element_recursively_collect = (element, attr, css_rule)->
         return true
     return false
 
-  while node = node[attr]
+  while (node = node[attr]) isnt null
     if node.nodeType is 1 and (no_rule or match(node))
       result.push(node)
 

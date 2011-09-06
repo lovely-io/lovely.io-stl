@@ -52,6 +52,12 @@ extract_scripts = (content) ->
 # evals the script string in the global-scope
 global_eval = (script) ->
   new Element('script', text: script).insertTo(HTML) if script
+  return # void
+
+if 'execScript' of window
+  global_eval = (script)->
+    window.execScript(script) if script
+    return # void
 
 # ensures that the value is an array
 ensure_array = (value) ->

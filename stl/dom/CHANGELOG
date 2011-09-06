@@ -1,8 +1,10 @@
-2011-09-04 Nikolay Nemshilov
+2011-09-05 Nikolay Nemshilov
 
-  * Version 1.0.3
+  * Version 1.1.0
+  * `Search` -> `NodeList` refactoring
   * The empty by-id search fix
   * CSS-search optimization
+  * Relative navigation with css-filters optimization
 
 
 2011-08-19 Nikolay Nemshilov

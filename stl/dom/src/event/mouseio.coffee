@@ -27,6 +27,7 @@ mouseio_emit = (raw, element, enter) ->
     for element in current_Document.find(css_rule, true)
       if element is this.target._
         return this.target
+    return null
 
   event.target.emit(event)
   current_Document.emit(event)

@@ -85,6 +85,7 @@ Input.include
         value = []
         @find('option').forEach (option)->
           value.push(option._.value) if option._.selected
+          return # nothing
 
       return value
 

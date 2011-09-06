@@ -21,11 +21,11 @@ class Element extends Wrapper
 
     # handling dynamic typecasting
     cast = Wrapper.Cast(element) if @constructor is Element
-    return new cast(element, options) if cast isnt undefined
+    return new cast(element, options) if cast isnt null
 
     Wrapper.call(this, element)
 
-    if options isnt undefined
+    if `options != null`
       for key of options
         switch key
           when 'id'    then this._.id        = options[key]

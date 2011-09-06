@@ -99,6 +99,7 @@ Element_make_listeners = (instance) ->
         event = new Event(event)
         args  = (if hash.n then [] else [event]).concat(hash.a)
         event.stop() if hash.c.apply(instance, args) is false
+        return # nothing
 
       # attaching the actual event listener
       instance._.addEventListener(hash.r, hash.w, false)

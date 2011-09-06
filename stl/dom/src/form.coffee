@@ -116,6 +116,8 @@ Form.include
 
         values[name] = value
 
+      return # nothing
+
     return values
 
   #
