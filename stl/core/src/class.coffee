@@ -9,7 +9,10 @@ Class = (parent, params) ->
     parent = null
 
   params or= {}
-  Klass = -> this.$super.apply(this, arguments) if this.$super isnt undefined
+  Klass = ->
+    if this.$super is undefined then this
+    else this.$super.apply(this, arguments)
+
   Klass = params.constructor if `__hasProp.call(params, 'constructor')`
 
   if parent # handling the inheritance

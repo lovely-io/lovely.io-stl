@@ -51,7 +51,7 @@ Lovely = ->
       if !(find_module(module) or find_module(module, Lovely.loading))
         script = document.createElement('script')
 
-        script.src    = url.replace(/([^:])\/\//g, '\1/')
+        script.src    = url.replace(/([^:])\/\//g, '$1/')
         script.async  = true
         script.type   = "text/javascript"
         script.onload = check_all_waiting_loaders
@@ -97,10 +97,10 @@ modules_load_listener_for = (modules, callback, name)->
     packages=[]
 
     for module in modules
-      if module = find_module(module)
+      if (module = find_module(module))
         packages.push(module)
       else
-        return # some modules are not loaded yet
+        return false # some modules are not loaded yet
 
     # registering the current module if needed
     if (result = callback.apply(global, packages)) && name
@@ -129,7 +129,7 @@ find_module = (module, registry)->
     versions = [] # tring to find the latest version manually
 
     for key of registry
-      if match = key.match(/^(.+?)-(\d+\.\d+\.\d+.*?)$/)
+      if (match = key.match(/^(.+?)-(\d+\.\d+\.\d+.*?)$/))
         if match[1] is name
           versions.push(key)
 
@@ -149,7 +149,7 @@ find_host_url = ->
     re = /^(.*?\/?)core(-.+)?\.js/
 
     for script in scripts
-      if match = (script.getAttribute('src') || '').match(re)
+      if (match = (script.getAttribute('src') || '').match(re))
         return match[1]
 
   Lovely.hostUrl
