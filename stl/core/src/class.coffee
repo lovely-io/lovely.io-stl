@@ -10,7 +10,7 @@ Class = (parent, params) ->
 
   params or= {}
   Klass = ->
-    if this.$super is undefined then this
+    if   this.$super is undefined then this
     else this.$super.apply(this, arguments)
 
   Klass = params.constructor if `__hasProp.call(params, 'constructor')`
