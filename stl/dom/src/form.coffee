@@ -107,14 +107,23 @@ Form.include
     @inputs().forEach (element)->
       input = element._
       name  = input.name
+      hash  = values
+      keys  = name.match(/[^\[]+/g)
 
       if !input.disabled and name and (!(input.type in ['checkbox', 'radio']) || input.checked)
-        value = element.value()
+        # getting throught the smth[smth][smth][] in the name
+        while keys.length > 1
+          key  = keys.shift()
+          key  = key.substr(0, key.length-1) if key[key.length-1] is ']'
+          hash = (hash[key] or= (if keys[0] is ']' then [] else {}))
 
-        if name.substr(name.length - 2) is '[]'
-          value = (values[name] || []).concat([value])
+        key  = keys.shift()
+        key  = key.substr(0, key.length-1) if key[key.length-1] is ']'
 
-        values[name] = value
+        if key is '' # an array
+          hash.push(element.value())
+        else
+          hash[key] = element.value()
 
       return # nothing
 

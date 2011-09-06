@@ -1,10 +1,34 @@
-2011-09-05 Nikolay Nemshilov
+2011-09-06 Nikolay Nemshilov
 
   * Version 1.1.0
   * `Search` -> `NodeList` refactoring
   * The empty by-id search fix
   * CSS-search optimization
   * Relative navigation with css-filters optimization
+  * `Form#values` now returns a raw data structure
+    if say you have a form like that
+
+        :html
+        <form id="my-form">
+          <input name="person[name][first]" value="Bobby" />
+          <input name="person[name][last]"  value="Mountain" />
+          <input name="person[email]" value="bobby@mountain.com" />
+        </form>
+
+    Then the `$('#my-form').values()` call will return a nested hash like that
+
+        :javascript
+        {
+          person: {
+            name: {
+              first: "Bobby",
+              last:  "Mountain"
+            },
+            email: "bobby@mountain.com"
+          }
+        }
+
+    So it can be exported into JSON data directly
 
 
 2011-08-19 Nikolay Nemshilov

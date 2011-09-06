@@ -47,10 +47,8 @@ class Wrapper
     # @return {Wrapper} suitable wrapper or `undefined`
     #
     Cast: (element) ->
-      if element.tagName of Wrapper.Tags
-        Wrapper.Tags[element.tagName]
-      else
-        null
+      Wrapper.Tags[element.tagName]
+
 
   _: null # the standard raw dom-unit reference
 

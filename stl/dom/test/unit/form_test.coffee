@@ -257,13 +257,34 @@ describe "Form", module,
       form.inputs().forEach (element)->
         element.value = -> @_.value
 
-      assert.deepEqual form.values(), {
-        name:     'Bob',
-        password: 'secret',
-        text:     'Boo boo boo',
-        option:   '1',
+      assert.deepEqual form.values(),
+        name:     'Bob'
+        password: 'secret'
+        text:     'Boo boo boo'
+        option:   '1'
         options:  '2'
-      }
+
+
+    "should make a multi-dimensional hash when smth[smth] used": (form)->
+      form = new this.Form html: """
+        <input name="token" value="some token" />
+        <input name="person[email]" value="bobby@mountain.com" />
+        <input name="person[name][first]"  value="Bobby" />
+        <input name="person[name][second]" value="Mountain" />
+        <input name="person[guns][]" value="Shotgun" checked="true" />
+        <input name="person[guns][]" value="M16"     checked="true" />
+        <input name="person[guns][]" value="Glock"   checked="true" />
+      """
+
+      assert.deepEqual form.values(),
+        token: 'some token'
+        person:
+          email: 'bobby@mountain.com'
+          name:
+            first:  'Bobby'
+            second: 'Mountain'
+          guns: [ 'Shotgun', 'M16', 'Glock' ]
+
 
   "#submit()":
     topic: test_form
