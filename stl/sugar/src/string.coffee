@@ -9,10 +9,10 @@ SKIPPED_NAMES = (
   "delegate undelegate delegates"
 ).split(' ')
 
-# Transferring the `dom.Search` methods to `String.prototype`
+# Transferring the `dom.NodeList` methods to `String.prototype`
 for name of dom.Element.prototype
   continue if name in SKIPPED_NAMES
-  if dom.Search.prototype[name] and !String.prototype[name]
+  if dom.NodeList.prototype[name] and !String.prototype[name]
     do (name)->
       String.prototype[name] = ->
         collection = dom("#{@}")

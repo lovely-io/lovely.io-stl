@@ -12,7 +12,7 @@
             event.target.toggleClass('marked');
           });
 
-          // dom.Search 'onSomething' extensions check
+          // dom.NodeList 'onSomething' extensions check
           $('#test-form input[type=text]').onFocus('addClass',   'focused');
           $('#test-form input[type=text]').onBlur('removeClass', 'focused');
 
@@ -56,7 +56,7 @@
       </ul>
     </p>
 
-    <h2>Form 'onSubmit', 'onFocus', 'onBlur' Handlers via Search collection</h2>
+    <h2>Form 'onSubmit', 'onFocus', 'onBlur' Handlers via NodeList collection</h2>
     <p>
       <form id="test-form">
         <input type="text" value="some text" />

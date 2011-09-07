@@ -1,12 +1,12 @@
 {
   "name":        "sugar",
-  "version":     "1.0.2",
+  "version":     "1.0.3",
   "description": "Syntax sugar module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/sugar",
   "tags":        "STL, Core, DOM",
   "dependencies": {
-    "dom":  "1.0.2"
+    "dom":  "1.1.0"
   }
 }

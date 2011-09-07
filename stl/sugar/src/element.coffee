@@ -14,7 +14,7 @@ make_shortcuts = (Klass, EVENTS)->
   for name in EVENTS.split(' ')
     do (name)->
       method = "on#{name[0].toUpperCase() + name.substr(1)}"
-      Klass.prototype[method] = dom.Search.prototype[method] = String.prototype[method] = ->
+      Klass.prototype[method] = dom.NodeList.prototype[method] = String.prototype[method] = ->
         @on.apply(@, [name].concat(A(arguments)))
 
   return # nothing
