@@ -14,7 +14,7 @@ class Fx.Style extends Fx
     else
       keys   = style_keys(style)
       before = clone_style(@element, keys)
-      after  = end_style(@element, style, keys)
+      after  = get_end_style(@element, style, keys)
 
       clean_styles(@element, before, after)
 
@@ -216,7 +216,7 @@ clone_style = (element, keys)->
 
 
 # calculating the end styles hash
-end_style = (element, style, keys)->
+get_end_style = (element, style, keys)->
   dummy = element.clone()
   dummy.style('position:absolute;z-index:-1;visibility:hidden')
   dummy.size(x: element.size().x)
