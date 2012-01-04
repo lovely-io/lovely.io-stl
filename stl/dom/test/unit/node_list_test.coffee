@@ -32,7 +32,7 @@ describe 'NodeList', module,
       search   = new NodeList([element1, element2])
 
       assert.instanceOf search,      NodeList
-      assert.length     search,      2
+      assert.lengthOf   search,      2
       assert.instanceOf search[0],   this.Element
       assert.instanceOf search[0],   this.Element
       assert.same       search[0]._, element1

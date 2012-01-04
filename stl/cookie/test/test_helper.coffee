@@ -5,7 +5,7 @@
 #
 
 fs  = require('fs')
-sys = require('sys')
+sys = require('util')
 src = require('../../../cli/source')
 
 # packing and initializing Lovely core

@@ -13,7 +13,9 @@ exports.assert = assert = require('assert')
 
 assert.same    = assert.strictEqual
 assert.notSame = assert.notStrictEqual
-
+assert.lengthOf = (list, size)-> # ligthweightened lengthOf assertion that doesn't stuck
+  if list.length isnt size
+    assert.fail list.size, size, "#{list}\n\tshould have #{size} items but it has #{list.length} entries instead"
 
 #
 # A simple shortcut over the Vows to make

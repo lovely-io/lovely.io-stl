@@ -52,7 +52,7 @@ describe "Element Navigation", module,
       search = element.find('.one')
 
       assert.instanceOf search, this.NodeList
-      assert.length     search, 1
+      assert.lengthOf   search, 1
       assert.instanceOf search[0], this.Element
       assert.same       search[0]._, this.document.querySelector('#one .one')
 
@@ -60,15 +60,15 @@ describe "Element Navigation", module,
       search = element.find('.non-existing')
 
       assert.instanceOf search, this.NodeList
-      assert.length     search, 0
+      assert.lengthOf   search, 0
 
     "should allow a raw DOM elements search": (element)->
       search = element.find('.one, .two', true)
 
-      assert.isFalse search instanceof this.NodeList
-      assert.length  search, 2
-      assert.equal   search[0], this.document.querySelector('#one .one')
-      assert.equal   search[1], this.document.querySelector('#one .two')
+      assert.isFalse  search instanceof this.NodeList
+      assert.lengthOf search, 2
+      assert.equal    search[0], this.document.querySelector('#one .one')
+      assert.equal    search[1], this.document.querySelector('#one .two')
 
   "#first('css_rule')":
     topic: find_element('#one')
@@ -107,7 +107,7 @@ describe "Element Navigation", module,
       parents = element.parents()
 
       assert.instanceOf parents, this.NodeList
-      assert.length     parents, 3
+      assert.lengthOf   parents, 3
       assert.same       parents[0]._, this.document.querySelector('#one')
       assert.same       parents[1]._, this.document.body
       assert.same       parents[2]._, this.document.documentElement
@@ -116,7 +116,7 @@ describe "Element Navigation", module,
       parents = element.parents('body')
 
       assert.instanceOf parents, this.NodeList
-      assert.length     parents, 1
+      assert.lengthOf   parents, 1
       assert.same       parents[0]._, this.document.body
 
 
@@ -127,7 +127,7 @@ describe "Element Navigation", module,
       result = element.children()
 
       assert.instanceOf result, this.NodeList
-      assert.length     result, 2
+      assert.lengthOf   result, 2
       assert.instanceOf result[0],   this.Element
       assert.instanceOf result[1],   this.Element
       assert.same       result[0]._, this.document.querySelector('#one .one')
@@ -136,7 +136,7 @@ describe "Element Navigation", module,
     "should filter the result by the css-rule": (element)->
       result = element.children('.one')
 
-      assert.length     result, 1
+      assert.lengthOf   result, 1
       assert.same       result[0]._, this.document.querySelector('#one .one')
 
 
@@ -147,7 +147,7 @@ describe "Element Navigation", module,
       siblings = element.siblings()
 
       assert.instanceOf siblings,      this.NodeList
-      assert.length     siblings,      2
+      assert.lengthOf   siblings,      2
       assert.instanceOf siblings[0],   this.Element
       assert.instanceOf siblings[1],   this.Element
       assert.same       siblings[0]._, this.document.querySelector('#three .one')
@@ -157,7 +157,7 @@ describe "Element Navigation", module,
           siblings = element.siblings('.one')
 
           assert.instanceOf siblings,      this.NodeList
-          assert.length     siblings,      1
+          assert.lengthOf   siblings,      1
           assert.instanceOf siblings[0],   this.Element
           assert.same       siblings[0]._, this.document.querySelector('#three .one')
 
@@ -169,7 +169,7 @@ describe "Element Navigation", module,
       siblings = element.nextSiblings()
 
       assert.instanceOf siblings,      this.NodeList
-      assert.length     siblings,      2
+      assert.lengthOf   siblings,      2
       assert.instanceOf siblings[0],   this.Element
       assert.instanceOf siblings[1],   this.Element
       assert.same       siblings[0]._, this.document.querySelector('#three .two')
@@ -179,7 +179,7 @@ describe "Element Navigation", module,
       siblings = element.nextSiblings('.two')
 
       assert.instanceOf siblings,      this.NodeList
-      assert.length     siblings,      1
+      assert.lengthOf   siblings,      1
       assert.instanceOf siblings[0],   this.Element
       assert.same       siblings[0]._, this.document.querySelector('#three .two')
 
@@ -190,7 +190,7 @@ describe "Element Navigation", module,
       siblings = element.previousSiblings()
 
       assert.instanceOf siblings,      this.NodeList
-      assert.length     siblings,      2
+      assert.lengthOf   siblings,      2
       assert.instanceOf siblings[0],   this.Element
       assert.instanceOf siblings[1],   this.Element
       assert.same       siblings[0]._, this.document.querySelector('#three .two')
@@ -200,7 +200,7 @@ describe "Element Navigation", module,
       siblings = element.previousSiblings('.two')
 
       assert.instanceOf siblings,      this.NodeList
-      assert.length     siblings,      1
+      assert.lengthOf   siblings,      1
       assert.instanceOf siblings[0],   this.Element
       assert.same       siblings[0]._, this.document.querySelector('#three .two')
 

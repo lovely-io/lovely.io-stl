@@ -31,80 +31,79 @@ server.respond "/dollar.html": """
 dom = ->
   load "/dollar.html", this, (d) -> d
 
-
 describe '$', module,
 
   'css search':
-      topic: dom
+    topic: dom
 
-      "should correctly find elements by ID": ($)->
-        search = $('#one')
+    "should correctly find elements by ID": ($)->
+      search = $('#one')
 
-        assert.instanceOf search,      this.NodeList
-        assert.length     search,      1
-        assert.instanceOf search[0],   this.Element
-        assert.same       search[0]._, this.document.getElementById('one')
-
-
-      "should correctly find elements by class name": ($)->
-        search = $('.one')
-
-        assert.instanceOf search,      this.NodeList
-        assert.length     search,      3
-        assert.instanceOf search[0],   this.Element
-        assert.instanceOf search[1],   this.Element
-        assert.instanceOf search[2],   this.Element
-        assert.same       search[0]._, this.document.querySelector('#one   .one')
-        assert.same       search[1]._, this.document.querySelector('#two   .one')
-        assert.same       search[2]._, this.document.querySelector('#three .one')
+      assert.instanceOf search,      this.NodeList
+      assert.lengthOf   search,      1
+      assert.instanceOf search[0],   this.Element
+      assert.same       search[0]._, this.document.getElementById('one')
 
 
-      "should correctly find elements in a context": ($)->
-        search = $('.one, .two', this.document.getElementById('one'))
+    "should correctly find elements by class name": ($)->
+      search = $('.one')
 
-        assert.instanceOf search,      this.NodeList
-        assert.length     search,      2
-        assert.same       search[0]._, this.document.querySelector('#one .one')
-        assert.same       search[1]._, this.document.querySelector('#one .two')
-
-
-      "should accept dom-wrappers as the context": ($)->
-        element = $(this.document.getElementById('two'))
-        search  = $('.one, .two', element)
-
-        assert.instanceOf search,      this.NodeList
-        assert.length     search,      2
-        assert.same       search[0]._, this.document.querySelector('#two .one')
-        assert.same       search[1]._, this.document.querySelector('#two .two')
+      assert.instanceOf search,      this.NodeList
+      assert.lengthOf   search,      3
+      assert.instanceOf search[0],   this.Element
+      assert.instanceOf search[1],   this.Element
+      assert.instanceOf search[2],   this.Element
+      assert.same       search[0]._, this.document.querySelector('#one   .one')
+      assert.same       search[1]._, this.document.querySelector('#two   .one')
+      assert.same       search[2]._, this.document.querySelector('#three .one')
 
 
-      'should return an empty list when nothing found by id': ($)->
-        result = $('#non-existing')
+    "should correctly find elements in a context": ($)->
+      search = $('.one, .two', this.document.getElementById('one'))
 
-        assert.instanceOf result, this.NodeList
-        assert.equal      result.length, 0
+      assert.instanceOf search,      this.NodeList
+      assert.lengthOf   search,      2
+      assert.same       search[0]._, this.document.querySelector('#one .one')
+      assert.same       search[1]._, this.document.querySelector('#one .two')
 
-      'should return an empty list when nothing was found by a css selector': ($)->
-        result = $('div.non .existing')
 
-        assert.instanceOf result, this.NodeList
-        assert.equal      result.length, 0
+    "should accept dom-wrappers as the context": ($)->
+      element = $(this.document.getElementById('two'))
+      search  = $('.one, .two', element)
+
+      assert.instanceOf search,      this.NodeList
+      assert.lengthOf   search,      2
+      assert.same       search[0]._, this.document.querySelector('#two .one')
+      assert.same       search[1]._, this.document.querySelector('#two .two')
+
+
+    'should return an empty list when nothing found by id': ($)->
+      result = $('#non-existing')
+
+      assert.instanceOf result, this.NodeList
+      assert.lengthOf   result, 0
+
+    'should return an empty list when nothing was found by a css selector': ($)->
+      result = $('div.non .existing')
+
+      assert.instanceOf result, this.NodeList
+      assert.lengthOf   result, 0
 
 
     'HTML to NodeList conversion':
       topic: dom
 
-        "should create a node-list out of a piece of HTML": ($)->
-          search = $('<span>one</span><b>two</b>')
+      "should create a node-list out of a piece of HTML": ($)->
+        search = $('<span>one</span><b>two</b>')
 
-          assert.instanceOf search, this.NodeList
-          assert.length     search, 2
-          assert.instanceOf search[0], this.Element
-          assert.instanceOf search[1], this.Element
-          assert.equal      search[0]._.tagName, 'SPAN'
-          assert.equal      search[1]._.tagName, 'B'
-          assert.equal      search[0]._.innerHTML, 'one'
-          assert.equal      search[1]._.innerHTML, 'two'
+        assert.instanceOf search,    this.NodeList
+        assert.lengthOf   search,    2
+        assert.instanceOf search[0], this.Element
+        assert.instanceOf search[1], this.Element
+        assert.equal      search[0]._.tagName, 'SPAN'
+        assert.equal      search[1]._.tagName, 'B'
+        assert.equal      search[0]._.innerHTML, 'one'
+        assert.equal      search[1]._.innerHTML, 'two'
 
 
   'window wrapping':
@@ -122,31 +121,31 @@ describe '$', module,
       assert.isTrue $(win) is win
 
   'document wrapping':
-      topic: dom
+    topic: dom
 
-      'should wrap a document': ($)->
-        doc = $(this.document)
+    'should wrap a document': ($)->
+      doc = $(this.document)
 
-        assert.instanceOf doc,   this.Document
-        assert.same       doc._, this.document
+      assert.instanceOf doc,   this.Document
+      assert.same       doc._, this.document
 
-      'should return the same wrapper if already wrapped': ($)->
-        doc = $(this.document)
+    'should return the same wrapper if already wrapped': ($)->
+      doc = $(this.document)
 
-        assert.same doc, $(doc)
+      assert.same doc, $(doc)
 
-    'element wrapping':
-      topic: dom
+  'element wrapping':
+    topic: dom
 
-      'should return a wrapper for a dom-element': ($)->
-        div = this.document.getElementById('one')
-        element = $(div)
+    'should return a wrapper for a dom-element': ($)->
+      div = this.document.getElementById('one')
+      element = $(div)
 
-        assert.instanceOf element,   this.Element
-        assert.same       element._, div
+      assert.instanceOf element,   this.Element
+      assert.same       element._, div
 
-      'should return the same wrapper if an element is already wrapped': ($)->
-        div = this.document.getElementById('one')
-        element = $(div)
+    'should return the same wrapper if an element is already wrapped': ($)->
+      div = this.document.getElementById('one')
+      element = $(div)
 
-        assert.same element, $(element)
+      assert.same element, $(element)
