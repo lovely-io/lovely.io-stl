@@ -54,6 +54,56 @@ Element.include
     return @
 
   #
+  # Sets/gets the `data-smth` data attribute and
+  # automatically converts everything in/out JSON
+  #
+  # @param {String} key name
+  # @param {mixed} data or `undefined` to erase
+  # @return {Element|mixed} self or extracted data
+  #
+  data: (key, value)->
+    if isObject(key)
+      for name of key
+        value = @data(name, key[name])
+
+    else if value is undefined
+      key    = dasherize('data-'+key)
+      result = {}
+      match  = false
+
+      for attr in @_.attributes
+        value = attr.value
+        try
+          value = JSON.parse(value)
+        catch e
+
+        if attr.name is key
+          result = value
+          match  = true
+          break
+        else if attr.name.indexOf(key) is 0
+          result[camelize(attr.name.substring(key.length+1))] = value
+          match = true
+
+      value = if match then result else null
+
+    else
+      key   = dasherize('data-'+ key)
+      value = {'': value} unless isObject(value)
+
+      for name of value
+        attr = if `name == false` then key else dasherize(key+'-'+name)
+
+        if value[name] is null
+          @_.removeAttribute(attr)
+        else
+          @_.setAttribute(attr, if isString(value[name]) then value[name] else JSON.stringify(value[name]))
+
+      value = @
+
+    return value
+
+  #
   # Checks if the element is hidden
   #
   # @return {Boolean} check result
@@ -133,4 +183,3 @@ Element.include
   #
   window: ->
     @document().window()
-

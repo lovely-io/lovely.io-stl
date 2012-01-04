@@ -12,6 +12,7 @@ bind     = core.bind
 Class    = core.Class
 isArray  = core.isArray
 isObject = core.isObject
+isString = core.isString
 window   = global
 document = window.document
 HTML     = document.documentElement
@@ -24,6 +25,10 @@ camelize = (string) ->
   if string.indexOf('-') is -1 then string
   else string.replace /\-([a-z])/g, (match, letter) ->
     letter.toUpperCase()
+
+
+dasherize = (string)->
+  string.replace(/([a-z\d])([A-Z]+)/g, '$1-$2').toLowerCase()
 
 
 # converts arguments into a standard x:NNN, y: NNN hash

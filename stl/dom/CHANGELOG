@@ -1,3 +1,16 @@
+2012-01-04 Nikolay Nemshilov
+
+  * Version 1.2.0
+  * `Element#data` method was added
+
+        :javascript
+        var element = new Element('div', {
+          'data-something' : 'something'
+        });
+
+        element.data('something'); // -> 'something'
+
+
 2011-09-07 Nikolay Nemshilov
 
   * Version 1.1.0

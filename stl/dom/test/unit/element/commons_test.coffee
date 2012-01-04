@@ -169,3 +169,72 @@ describe 'Element Commons', module,
 
       assert.instanceOf window,          this.Window
       assert.same       window._.window, this.window.window
+
+  "#data()":
+    topic: test_element
+
+    "should read data- attributes": (element)->
+      element.attr({
+        'data-false':  'false'
+        'data-true':   'true'
+        'data-number': '1.23'
+        'data-string': '"string"'
+        'data-array':  '[1,2,3]'
+        'data-object': '{"boo":"hoo"}'
+        'data-plain':  'plain text'
+      })
+
+      assert.equal     element.data('false'), false
+      assert.equal     element.data('true'), true
+      assert.equal     element.data('number'), 1.23
+      assert.equal     element.data('string'), 'string'
+      assert.deepEqual element.data('array'), [1,2,3]
+      assert.deepEqual element.data('object'), {boo: "hoo"}
+      assert.equal     element.data('plain'), 'plain text'
+      assert.isNull    element.data('non-existing')
+
+    "should read nested attributes": (element)->
+      element.attr({
+        'data-thing-one': '1'
+        'data-thing-two': '2'
+        'data-thing-three-one': '3.1'
+      })
+
+      assert.deepEqual element.data('thing'), {
+        one: 1, two: 2, threeOne: 3.1
+      }
+
+    "should write data- attributes": (element)->
+      assert.same  element,  element.data('string', 'string')
+      assert.equal 'string', element._.getAttribute('data-string')
+      assert.isTrue element['data-string'] is undefined
+
+      assert.equal 'false',   element.data('false', false)._.getAttribute('data-false')
+      assert.equal 'true',    element.data('true', true)._.getAttribute('data-true')
+      assert.equal '1.23',    element.data('number', 1.23)._.getAttribute('data-number')
+      assert.equal '[1,2,3]', element.data('array', [1,2,3])._.getAttribute('data-array')
+
+    "should allow to write data as a plain hash": (element)->
+      assert.same element, element.data({
+        one: 1, two: 2, three: 3
+      })
+
+      assert.equal '1', element._.getAttribute('data-one')
+      assert.equal '2', element._.getAttribute('data-two')
+      assert.equal '3', element._.getAttribute('data-three')
+
+    "should allow to write data as a nested hash": (element)->
+      assert.same element, element.data('test', {
+        'one': 1, two: 2, 'three-one': 3.1, 'threeTwo': 3.2
+      })
+
+      assert.equal '1',   element._.getAttribute('data-test-one')
+      assert.equal '2',   element._.getAttribute('data-test-two')
+      assert.equal '3.1', element._.getAttribute('data-test-three-one')
+      assert.equal '3.2', element._.getAttribute('data-test-three-two')
+
+    "should allow to remove data- attributes": (element)->
+      element.attr {'data-something': 'something'}
+
+      assert.equal  element, element.data('something', null)
+      assert.equal '', element._.getAttribute('data-something')
