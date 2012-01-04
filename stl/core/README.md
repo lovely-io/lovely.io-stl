@@ -31,6 +31,22 @@ Basic scripts initialization is pretty simple
       </body>
     </html>
 
+
+## Versions Bundling
+
+You can specify which versions of packages should be used by default by
+using the bundling config
+
+    :javascript
+    Lovely.bundle = {
+      'dom'  : '1.2.0',
+      'ajax' : '1.1.0'
+    };
+
+After that you can use just package names like `'dom'` and `'ajax'` and
+lovely will automatically use package versions specified in the bundler config.
+
+
 ## Utility Functions
 
 See the API docs

@@ -22,6 +22,7 @@ exports = ext Lovely,
   baseUrl:     '' # default base url address for local modules
   hostUrl:     '' # default host url address for Lovely modules
   module:      find_module # the standard modules accessing method
+  bundle:      {} # versions bundling config
 
   # globally accessible functions
   A:          A

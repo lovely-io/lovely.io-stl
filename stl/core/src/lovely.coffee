@@ -33,6 +33,10 @@ Lovely = ->
 
   deadline.setTime(deadline.getTime() + options.waitSeconds * 1000)
 
+  for name, i in modules
+    if name of Lovely.bundle
+        modules[i] = "#{name}-#{Lovely.bundle[name]}"
+
   check_modules_load = modules_load_listener_for(modules, callback, current)
 
   unless check_modules_load() # checking maybe they are already loaded

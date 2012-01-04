@@ -142,6 +142,38 @@ server.respond
   });
   """
 
+  "/version-configured.html": """
+  <html><head>
+    <script src="/lovely.io/core.js"></script>
+    <script>
+      Lovely.bundle = {
+        'versioned-module' : '2.0.0'
+      };
+      Lovely(['versioned-module'], function(m) {
+        alert('Version '+ m.version);
+      })
+    </script>
+  </head></html>
+  """
+
+  "/lovely.io/versioned-module.js": """
+  Lovely('versioned-module', function() {
+    return { version: '0.0.0' };
+  });
+  """
+
+  "/lovely.io/versioned-module-1.0.0.js": """
+  Lovely('versioned-module-1.0.0', function() {
+    return { version: '1.0.0' };
+  });
+  """
+
+  "/lovely.io/versioned-module-2.0.0.js": """
+  Lovely('versioned-module-2.0.0', function() {
+    return { version: '2.0.0' };
+  });
+  """
+
 describe 'Lovely', module,
   'should find itself by a short name': ->
     assert.same Lovely.module('core'), Lovely
@@ -211,5 +243,13 @@ describe 'Lovely', module,
         'Received: m11',
         'Received: m12',
         'Done!'
+      ]
+
+  'bundled versions':
+    topic: -> Browser.open('/version-configured.html', @callback)
+
+    "should load the bundled version" : (browser)->
+      assert.deepEqual browser.alerts, [
+        'Version 2.0.0'
       ]
 
