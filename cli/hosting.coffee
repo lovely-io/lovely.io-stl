@@ -22,8 +22,6 @@ request = (path, params, method, callback)->
     method: method
 
   req = require('http').request options, (response)->
-    response.setEncoding('utf8')
-
     data = ''
 
     response.on 'data', (chunk)->
@@ -52,7 +50,22 @@ request = (path, params, method, callback)->
       else if !/(ecma|java)script/.test(content_type)
         print_error "unexpected server response"
 
-      callback(data) if callback
+      # ungzipping response
+      if response.headers['content-encoding'] is 'gzip'
+        require('zlib').gunzip new Buffer(data, 'binary'), (err, data)->
+          print_error err if err
+          data = data.toString('utf8')
+          callback(data) if callback
+
+      else
+        callback(data) if callback
+
+  req.on 'response', (response)->
+    if response.headers['content-encoding'] is 'gzip'
+      response.setEncoding('binary')
+    else
+      response.setEncoding('utf8')
+
 
   req.on 'error', (error)->
     print_error error.message
