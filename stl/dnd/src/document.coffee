@@ -5,18 +5,18 @@
 #
 
 $(document).on
-  mousemove: (event)->
+  'mousemove,touchmove': (event)->
     if Draggable.current isnt null
       draggable_move(event, Draggable.current)
       droppable_hover(event, Draggable.current)
     return # nothing
 
-  mouseup: (event)->
+  'mouseup,touchend': (event)->
     if Draggable.current isnt null
       draggable_drop(event, Draggable.current)
     return # nothing
 
-  mousedown: (event)->
+  'mousedown,touchstart': (event)->
     if Draggable.current is null
       element = event.target
 
