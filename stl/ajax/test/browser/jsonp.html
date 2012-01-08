@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JSONP Ajax Test</title>
+    <script src="/core.js"></script>
+    <script type="text/javascript">
+      Lovely(["ajax", "dom"], function(ajax, $) {
+        $(function() {
+          ajax.get('jsonp.js', {
+            jsonp: 'callback',
+            complete: function() {
+              $('#result').text(
+                "Success: "+ JSON.stringify(this.responseJSON)
+              );
+            }
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>JSONP Ajax Test</h1>
+
+    <div id="result"></div>
+  </body>
+</html>

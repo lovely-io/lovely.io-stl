@@ -21,6 +21,8 @@ class JSONP
       charset: ajax.options.encoding
       async:   true
 
+    return @
+
   #
   # saving the url and method for the further use
   #
