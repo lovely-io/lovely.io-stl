@@ -10,7 +10,7 @@ Install it locally with `lovely install ajax` or hook up from
 
     :javascript
     Lovely(['ajax'], function(ajax) {
-      ajax.load('/my.url', {
+      ajax.get('/my.url', {
         success:  function() { /* ... */ },
         failure:  function() { /* ... */ },
         complete: function() { /* ... */ }

@@ -26,13 +26,13 @@ class Ajax
       }
 
     #
-    # Loads the url address with a GET request
+    # A shortcut to make a quick GET request
     #
     # @param {String} url-address
     # @param {Object} options
     # @return {Ajax} request
     #
-    load: (url, options)->
+    get: (url, options)->
       options or= {}
       options.method = 'get' unless 'method' of options
       new Ajax(url, options).send()
