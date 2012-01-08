@@ -1,0 +1,6 @@
+2012-01-08 Nikolay Nemshilov
+
+  * Version 1.1.0
+  * JSONP support fixes
+  * `Ajax.load` -> `Ajax.get` rename
+  * `dom` dependency updated to version `1.2.0`
