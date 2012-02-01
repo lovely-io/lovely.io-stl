@@ -5,15 +5,18 @@
 #
 
 # hook up dependencies
-core    = require('core')
-$       = require('dom')
+core     = require('core')
+dom      = require('dom')
 
-# local variables assignments
-Class   = core.Class
-Element = $.Element
+A        = core.A
+Event    = dom.Event
+Element  = dom.Element
+Document = dom.Document
+Window   = dom.Window
 
-# glue in your files
-include 'src/ui_core'
+# glue in the files
+include 'src/event'
+include 'src/element'
 
 # export your objects in the module
 exports.version = '%{version}'
