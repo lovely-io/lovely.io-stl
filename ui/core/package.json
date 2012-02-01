@@ -1,0 +1,11 @@
+{
+  "name":        "ui-core",
+  "version":     "0.0.0",
+  "description": "Standarad UI core module",
+  "author":      "Nikolay Nemshilov",
+  "license":     "MIT",
+  "tags":        "UI",
+  "dependencies": {
+    "dom": "1.2.0"
+  }
+}
