@@ -62,11 +62,12 @@
     background-image: linear-gradient(        rgba(255,255,255,0.6) 5%, rgba(255,255,255,0) 70%, rgba(0,0,0,.04) 85%)
 
 
-.lui-button-add, .lui-button-edit, .lui-button-delete,
+.lui-button-add,   .lui-button-edit, .lui-button-delete,
 .lui-button-reply, .lui-button-play, .lui-button-like,
-.lui-button-star, .lui-button-back, .lui-button-forward,
-.lui-button-mark
-  padding-left: 2.5em
+.lui-button-star,  .lui-button-back, .lui-button-forward,
+.lui-button-ok,    .lui-button-help, .lui-button-cancel
+  padding-left:  2.5em
+  padding-right: .8em
 
   &:before
     border-right: inherit
@@ -98,8 +99,15 @@
 .lui-button-like:before
   content: "\u2764"
 
-.lui-button-mark:before
+.lui-button-ok:before
   content: "\u2714"
+
+.lui-button-cancel:before
+  content: "\u2718"
+
+.lui-button-help:before
+  content: "?"
+  font-weight: bold
 
 .lui-button-star:before
   content: "\u2605"
