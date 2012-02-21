@@ -5,7 +5,14 @@
     <title>UI Core Standard Widgets Test</title>
     <link href="/shared.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
-    <script src="/ui-core.js"></script>
+    <script type="text/javascript">
+      Lovely(['ui'], function(UI) {
+        ['add', 'edit', 'delete', 'reply'].forEach(function(type) {
+          var button = new UI.Button(type, {'class': 'lui-button-'+ type});
+          button.insertTo('#buttons-demo');
+        });
+      });
+    </script>
     <style type="text/css">
       .lui-button.red {
         background-color: #ecc;
@@ -62,6 +69,11 @@
       <a href="" class="lui-button lui-button-help">Help</a>
     </p>
 
+    <h2>Programmatically Created Buttons</h2>
+    <p>
+      <div id="buttons-demo"></div>
+    </p>
+
     <h2>Basic Icons</h2>
     <p>
       <a href="" class="lui-icon lui-icon-add"></a>
@@ -82,5 +94,7 @@
       <a href="" class="lui-icon lui-icon-previous"></a>
       <a href="" class="lui-icon lui-icon-help"></a>
     </p>
+
+    <p class="white-space"></p>
   </body>
 </html>
