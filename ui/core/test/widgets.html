@@ -8,8 +8,8 @@
     <script type="text/javascript">
       Lovely(['ui'], function(UI) {
         ['add', 'edit', 'delete', 'reply'].forEach(function(type) {
-          var button = new UI.Button(type, {'class': 'lui-button-'+ type});
-          button.insertTo('#buttons-demo');
+          new UI.Button(type, {'class': 'lui-button-'+ type}).insertTo('#buttons-demo');
+          new UI.Icon({'class': 'lui-icon-'+ type}).insertTo('#icons-demo')
         });
       });
     </script>
@@ -93,6 +93,11 @@
       <a href="" class="lui-icon lui-icon-previous2"></a>
       <a href="" class="lui-icon lui-icon-previous"></a>
       <a href="" class="lui-icon lui-icon-help"></a>
+    </p>
+
+    <h2>Programmatically Created Icons</h2>
+    <p>
+      <div id="icons-demo"></div>
     </p>
 
     <p class="white-space"></p>

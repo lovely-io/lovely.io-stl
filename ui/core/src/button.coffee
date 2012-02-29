@@ -15,6 +15,7 @@ class Button extends Input
   constructor: (html, options)->
     options          or= {}
     options.html     or= html
+    options.type     or= 'button'
     options['class'] or= ''
     options['class']  += ' lui-button'
 

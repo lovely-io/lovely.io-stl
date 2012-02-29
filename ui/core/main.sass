@@ -9,6 +9,8 @@
 // buttons and icons
 
 .lui-button, .lui-icon
+  position:         relative
+  display:          inline-block
   font-family:      Arial, Helvetica
   font-size:        90%
   color:            rgba(0,0,0,.8)
@@ -21,7 +23,6 @@
   background-image: -ms-linear-gradient(    rgba(255,255,255,0.7) 5%, rgba(255,255,255,0) 70%, rgba(0,0,0,.05) 85%)
   background-image: -o-linear-gradient(     rgba(255,255,255,0.7) 5%, rgba(255,255,255,0) 70%, rgba(0,0,0,.05) 85%)
   background-image: linear-gradient(        rgba(255,255,255,0.7) 5%, rgba(255,255,255,0) 70%, rgba(0,0,0,.05) 85%)
-  position: relative
 
   &:hover
     box-shadow: 0 0 2px rgba(0,0,0,.2)
@@ -64,20 +65,27 @@
 .lui-button
   padding: 0.25em 1em
 
+  &:before
+    font-size: 125%
+    width: 1.4em
+
 .lui-icon
   padding:     0
   display:     inline-block
-  width:       1.6em
-  height:      1.6em
-  line-height: 1.6em
+  width:       1.5em
+  height:      1.5em
+  line-height: 1.5em
   outline:     none
+  font-size:   1em
 
   &:before
-    position: absolute
+    position:   absolute
     width:      100%
     text-align: center
     font-size:  1.2em
     height:     100%
+    top:        0
+    left:       0
 
 
 .lui-button-add,   .lui-button-edit, .lui-button-delete,
@@ -94,8 +102,6 @@
     top: 0
     left: 0
     height: 100%
-    font-size: 125%
-    width: 1.4em
     text-align: center
     line-height: 1.3em
 
