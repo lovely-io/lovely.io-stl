@@ -168,3 +168,33 @@
   line-height: .7em
 
 
+
+// spinners
+
+.lui-spinner
+  position:      relative
+  display:       inline-block
+  height:        1em
+  margin:        0
+  padding:       .25em
+  background:    rgba(255,255,255, 0.5)
+  border:        1px solid rgba(0,0,0,.1)
+  border-radius: .2em
+
+  div
+    display: inline-block
+    width:          .5em
+    height:         100%
+    border:         none
+    background:     rgba(0,0,0,.2)
+    margin:         0
+    padding:        0
+    margin-left:    .2em
+    vertical-align: center
+    border-radius:  .1em
+
+    &:first-child
+      margin-left: 0
+
+    &.current
+      background: rgba(0,0,0,.5)

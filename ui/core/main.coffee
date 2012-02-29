@@ -22,9 +22,11 @@ include 'src/event'
 include 'src/element'
 include 'src/button'
 include 'src/icon'
+include 'src/spinner'
 
 # export your objects in the module
 ext exports,
   version: '%{version}'
   Button:  Button
   Icon:    Icon
+  Spinner: Spinner

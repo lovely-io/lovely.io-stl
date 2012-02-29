@@ -7,9 +7,15 @@
     <script src="/core.js"></script>
     <script type="text/javascript">
       Lovely(['ui'], function(UI) {
-        ['add', 'edit', 'delete', 'reply'].forEach(function(type) {
-          new UI.Button(type, {'class': 'lui-button-'+ type}).insertTo('#buttons-demo');
-          new UI.Icon({'class': 'lui-icon-'+ type}).insertTo('#icons-demo')
+        var $ = Lovely.module('dom');
+        $(function() {
+          ['add', 'edit', 'delete', 'reply'].forEach(function(type) {
+            new UI.Button(type, {'class': 'lui-button-'+ type}).insertTo('#buttons-demo');
+            new UI.Icon({'class': 'lui-icon-'+ type}).insertTo('#icons-demo')
+          });
+          new UI.Spinner().insertTo('#spinners-demo');
+          new UI.Spinner({size: 3}).insertTo('#spinners-demo');
+          new UI.Spinner({size: 8, class: 'green'}).insertTo('#spinners-demo');
         });
       });
     </script>
@@ -22,6 +28,12 @@
       }
       .lui-button.green {
         background-color: #cec;
+      }
+      #icons-demo .lui-icon {
+        margin-right: .25em;
+      }
+      #spinners-demo .lui-spinner {
+        margin-right: .5em;
       }
     </style>
   </head>
@@ -98,6 +110,11 @@
     <h2>Programmatically Created Icons</h2>
     <p>
       <div id="icons-demo"></div>
+    </p>
+
+    <h2>Spinners</h2>
+    <p>
+      <div id="spinners-demo"></div>
     </p>
 
     <p class="white-space"></p>
