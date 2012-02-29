@@ -11,9 +11,8 @@ class Icon extends Input
   # @return {Icon} self
   #
   constructor: (options)->
-    options or= {}
-    options['type']  or= 'button'
-    options['class'] or= ''
-    options['class']  += ' lui-icon'
+    options = merge_options(options, {
+      type: 'button', class: 'lui-icon'
+    })
 
     super 'button', options

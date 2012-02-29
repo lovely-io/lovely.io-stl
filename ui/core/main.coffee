@@ -18,6 +18,7 @@ Window   = dom.Window
 Input    = dom.Input
 
 # glue in the files
+include 'src/util'
 include 'src/event'
 include 'src/element'
 include 'src/button'

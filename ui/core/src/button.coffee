@@ -13,10 +13,8 @@ class Button extends Input
   # @return {Button} self
   #
   constructor: (html, options)->
-    options          or= {}
-    options.html     or= html
-    options.type     or= 'button'
-    options['class'] or= ''
-    options['class']  += ' lui-button'
+    options = merge_options(options, {
+      type: 'button', html: html, class: 'lui-button'
+    })
 
     super('button', options)

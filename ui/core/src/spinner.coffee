@@ -17,15 +17,15 @@ class Spinner extends Element
   # @return {Spinner} self
   #
   constructor: (options)->
-    options or= {}
-    options['class'] or= ''
-    options['class']  += ' lui-spinner'
-    options['html']  or= build_spinner_divs(options.size)
-
+    options = merge_options(options, {class: 'lui-spinner'})
+    options.html = build_spinner_divs(options.size)
     delete(options.size)
+
+    super('div', options)
     move_spinner(@)
 
-    super 'div', options
+
+
 
 # builds the spinner
 build_spinner_divs = (size)->
@@ -38,3 +38,5 @@ move_spinner = (spinner)->
   window.setInterval ->
     spinner.insert(spinner.first('div:last-child'), 'top')
   , 400
+
+  return spinner
