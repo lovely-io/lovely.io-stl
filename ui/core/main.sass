@@ -217,7 +217,7 @@
   z-index:    99999
   text-align: center
 
-  > .aligner
+  > .lui-aligner
     display: inline-block
     width: 1px
     height: 100%
@@ -228,13 +228,22 @@
     border: none
     vertical-align: middle
 
-  > .lui-spinner
+  > .lui-inner
     vertical-align: middle
-    height: 1.25em
-    border: none
+    display: inline-block
+
+  > .lui-spinner
+    height:     1.25em
+    border:     none
     background: none
 
     div
       width: 1.25em
       border-radius: .25em
 
+// the modal locker styles
+
+.lui-modal
+  position: fixed
+  left:     0
+  top:      0

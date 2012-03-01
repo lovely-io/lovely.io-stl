@@ -13,5 +13,5 @@ class Locker extends Element
   #
   constructor: (options)->
     super('div', merge_options(options, class: 'lui-locker'))
-    @insert('<div class="aligner"></div>')
-    @insert(@spinner = new Spinner(size: 5))
+    @insert('<div class="lui-aligner"></div>')
+    @insert(@spinner = new Spinner(size: 5, class: 'lui-inner'))

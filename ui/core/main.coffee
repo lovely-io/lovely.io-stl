@@ -25,6 +25,7 @@ include 'src/button'
 include 'src/icon'
 include 'src/spinner'
 include 'src/locker'
+include 'src/modal'
 
 # export your objects in the module
 ext exports,
@@ -33,3 +34,4 @@ ext exports,
   Icon:    Icon
   Spinner: Spinner
   Locker:  Locker
+  Modal:   Modal
