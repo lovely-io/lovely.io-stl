@@ -13,9 +13,12 @@
             new UI.Button(type, {'class': 'lui-button-'+ type}).insertTo('#buttons-demo');
             new UI.Icon({'class': 'lui-icon-'+ type}).insertTo('#icons-demo')
           });
+
           new UI.Spinner().insertTo('#spinners-demo');
           new UI.Spinner({size: 3}).insertTo('#spinners-demo');
           new UI.Spinner({size: 8, class: 'green'}).insertTo('#spinners-demo');
+
+          new UI.Locker().insertTo('#locker-demo')
         });
       });
     </script>
@@ -34,6 +37,10 @@
       }
       #spinners-demo .lui-spinner {
         margin-right: .5em;
+      }
+      #locker-demo {
+        position: relative;
+        width: 40em;
       }
     </style>
   </head>
@@ -116,6 +123,20 @@
     <p>
       <div id="spinners-demo"></div>
     </p>
+
+    <h2>Simple Locker</h2>
+    <p>
+      <div id="locker-demo">
+        <p>
+          Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen.
+        </p>
+        <p>
+          No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum
+        </p>
+      </div>
+    </p>
+
+
 
     <p class="white-space"></p>
   </body>
