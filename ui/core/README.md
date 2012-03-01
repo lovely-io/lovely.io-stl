@@ -11,7 +11,7 @@ for more useful UI related events handling
 and allows you to specify human readable keyboard combinations as the event names
 
     :javascript
-    Lovely(['dom', 'keys'], function($) {
+    Lovely(['dom', 'ui'], function($) {
       $(document)
         .on('ctrl-z',       undo_stuff)
         .on('ctrl shift z', redo_stuff)
