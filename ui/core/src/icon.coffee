@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2012 Nikolay Nemshilov
 #
-class Icon extends Input
+class Icon extends Element
   #
   # Basic constructor
   #
@@ -11,8 +11,4 @@ class Icon extends Input
   # @return {Icon} self
   #
   constructor: (options)->
-    options = merge_options(options, {
-      type: 'button', class: 'lui-icon'
-    })
-
-    super 'button', options
+    super('i', merge_options(options, {class: 'lui-icon'}))
