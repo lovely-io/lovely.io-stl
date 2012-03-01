@@ -1,0 +1,11 @@
+{
+  "name":        "zoom",
+  "version":     "0.0.0",
+  "description": "Lightweight images zoom widget",
+  "author":      "Nikolay Nemshilov",
+  "license":     "MIT",
+  "tags":        "UI, zoom",
+  "dependencies": {
+    "ui" : "0.0.0"
+  }
+}
