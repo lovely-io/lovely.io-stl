@@ -7,16 +7,19 @@
 # hook up dependencies
 core    = require('core')
 $       = require('dom')
+ui      = require('ui')
 
 # local variables assignments
+ext     = core.ext
 Class   = core.Class
 Element = $.Element
+Locker  = ui.Locker
 
 # glue in your files
 include 'src/zoom'
+include 'src/document'
 
 # export your objects in the module
-exports.version = '%{version}'
-
-# global exports (don't use unless you're really need that)
-global.my_stuff = 'that pollutes the global scope'
+exports = ext(Zoom, {
+  version: '%{version}'
+});
