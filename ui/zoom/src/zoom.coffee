@@ -4,11 +4,10 @@
 # Copyright (C) 2012 Nikolay Nemshilov
 #
 class Zoom extends Element
+  include: Options
   extend:
-    # default options
-    Options: {
-      fxDuration: 'normal'
-    }
+    Options: # default options
+      lockScreen: false
 
   #
   # Default constructor
@@ -39,7 +38,8 @@ class Zoom extends Element
   show: (link)->
     hide_all_zooms()
 
-    @style(left: '-99999em')
+    @setOptions(link.data('zoom'))
+
     @insertTo(document.body)
 
     thmb = link.first('img')
@@ -55,5 +55,6 @@ class Zoom extends Element
   # Makes the actual zoom
   #
   zoom: ()->
-    @style(left: '0px')
+    @locker.hide()
+    @[if @options.lockScreen then 'addClass' else 'removeClass']('lock-screen')
 

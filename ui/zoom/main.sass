@@ -14,15 +14,19 @@ div.lui-zoom, div.lui-zoom div.dialog, div.lui-zoom div.aligner
 
 div.lui-zoom
   position:   fixed
-  left:       0px
+  left:       -9999em
   top:        0px
   width:      100%
   height:     100%
   z-index:    999999
   text-align: center
 
+  div.lui-locker
+    overflow: hidden
+
   div.dialog
     position:   relative
+    left:       9999em
     display:    inline-block
     vertical-align: middle
     max-width:  90%
@@ -59,3 +63,9 @@ div.lui-zoom
       padding: 0
       box-shadow: 0 .2em .5em rgba(0,0,0,0.4)
       border-radius: .3em
+
+  &.lock-screen
+    left: 0px
+
+    div.dialog
+      left: 0px

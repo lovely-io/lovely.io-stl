@@ -6,14 +6,16 @@
 
 # hook up dependencies
 core    = require('core')
-$       = require('dom')
-ui      = require('ui')
+UI      = require('ui')
+$       = Lovely.module('dom') # reusing UI's dom module
+
 
 # local variables assignments
 ext     = core.ext
 Class   = core.Class
+Options = core.Options
 Element = $.Element
-Locker  = ui.Locker
+Locker  = UI.Locker
 
 # glue in your files
 include 'src/zoom'

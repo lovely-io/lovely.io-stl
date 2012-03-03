@@ -11,5 +11,7 @@ $(document).on
     if link = event.find('a[data-zoom]')
       event.stop()
       default_zoom.show(link)
+    else if !event.find('div.lui-zoom')
+      hide_all_zooms()
 
   esc: hide_all_zooms
