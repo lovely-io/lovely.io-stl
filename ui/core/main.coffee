@@ -7,6 +7,7 @@
 # hook up dependencies
 core     = require('core')
 dom      = require('dom')
+fx       = require('fx')
 
 A        = core.A
 ext      = core.ext
