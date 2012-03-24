@@ -1,7 +1,7 @@
 # Zoom
 
-Zoom is a lightweight version of a lightbox widget, that works just with
-images and zooms them instead of showing the screen locker and lightbox dialog
+Zoom is a lightweight version of a lightbox widget that works just with
+images and zooms them instead of showing the screen locker and a lightbox dialog
 
 ## Usage
 
@@ -9,6 +9,13 @@ Use the standard link and image markup with the `data-zoom` attribute
 
     :html
     <a href="image-full.png" data-zoom=""><img src="image-thmb.png"></a>
+
+Options can go inside of the `data-zoom` attribute in JSON format
+
+    :html
+    <a href="image-full.jpg" data-zoom='{"fxDuration": 0}'>
+      <img src="image-thmb.jpg">
+    </a>
 
 After that hook this module on your page in any standard way, say by using
 the `Lovely` loader
