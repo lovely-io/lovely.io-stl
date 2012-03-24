@@ -6,33 +6,19 @@
 // Copyright (C) 2012 Nikolay Nemshilov
 //
 
-div.lui-zoom, div.lui-zoom div.dialog, div.lui-zoom div.aligner
-  margin:     0
-  padding:    0
-  border:     none
-
-
 div.lui-zoom
-  position:   fixed
-  left:       -9999em
-  top:        0px
-  width:      100%
-  height:     100%
-  z-index:    999999
   text-align: center
 
-  div.lui-locker
+  > div.lui-locker
     z-index:  1
     overflow: hidden
+    display:  none
 
-  div.dialog
+  > div.lui-inner
     position:   relative
-    left:       9999em
-    display:    inline-block
-    vertical-align: middle
     z-index:    2
 
-    i
+    > i
       display:  inline-block
       position: absolute
       top:   -.9em
@@ -56,14 +42,8 @@ div.lui-zoom
         color:            rgba(0,0,0,.5)
         background-color: rgba(255,255,255,.8)
 
-    img
+    > img
       margin:  0
       padding: 0
       box-shadow: 0 .2em .5em rgba(0,0,0,0.4)
       border-radius: .3em
-
-  &.lock-screen
-    left: 0px
-
-    div.dialog
-      left: 0px

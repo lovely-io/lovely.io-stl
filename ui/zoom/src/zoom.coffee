@@ -3,11 +3,11 @@
 #
 # Copyright (C) 2012 Nikolay Nemshilov
 #
-class Zoom extends Element
+class Zoom extends Modal
   include: Options
   extend:
     Options: # default options
-      lockScreen: false
+      nolock: true
 
   #
   # Default constructor
@@ -16,18 +16,16 @@ class Zoom extends Element
   # @return {Zoom} self
   #
   constructor: (options)->
+    @$super(options).addClass('lui-zoom')
+
     @locker = new Locker()
-    @dialog = new Element('div', class: 'dialog')
-    @image  = new Element('img', on: {load: =>@zoom()})
     @icon   = new Element('i', title: 'Close')
+    @image  = new Element('img')
+    @dialog = @first('.lui-inner').append(@icon, @image)
 
-    super('div', class: 'lui-zoom lui-locker')
+    @icon.on('click', => @hide())
 
-    @append(new Element('div', class: 'lui-aligner'))
-    @append(@dialog.append(@image, @icon), @locker)
-    @on 'click', (event)->
-      if event.target is @ or event.target is @icon
-        @remove()
+    Element.prototype.insert.call(@, @locker)
 
   #
   # Downloads and shows the image from the link
@@ -36,20 +34,15 @@ class Zoom extends Element
   # @return {Zoom} self
   #
   show: (link)->
-    hide_all_zooms()
-
     @setOptions(link.data('zoom'))
-    @removeClass('lock-screen')
-
-    @dialog.style(opacity: 0)
-    @insertTo(document.body)
 
     if @thmb = link.first('img')
       @locker.show().position(@thmb.position()).size(@thmb.size())
 
+    @image = @image.clone().insertTo(@image, 'instead').on('load', =>@zoom())
     @image.attr('src', link.attr('href'))
 
-    return @
+    super()
 
 # private
 
@@ -57,11 +50,9 @@ class Zoom extends Element
   # Makes the actual zoom
   #
   zoom: ()->
-    @style(opacity: 0)
-    @locker.style(display: 'none')
-    @dialog.style(opacity: 1)
+    @[if @options.nolock is true then 'addClass' else 'removeClass']('lui-modal-nolock')
 
-    @[if @options.lockScreen then 'addClass' else 'removeClass']('lock-screen')
+    return
 
     if @thmb
       start_pos  = @thmb.position()
@@ -76,18 +67,12 @@ class Zoom extends Element
       pos_diff = @dialog.style('top,left')
       pos_diff = x: parseInt(pos_diff.left), y: parseInt(pos_diff.top)
 
-      #@dialog.style(opacity: 1)
-      @dialog.animate({
+      @dialog.style(opacity: 1).animate({
         top:     pos_diff.y + (end_pos.y - start_pos.y) + 'px'
         left:    pos_diff.x + (end_pos.x - start_pos.x) + 'px'
         width:   end_size.x + 'px'
         height:  end_size.y + 'px'
       }, finish: =>
-        console.log('fuck')
+        @image.style(width: '', height: '')
+        @dialog.style(top: '', left: '', width: '', height: '')
       )
-
-    @animate opacity: 1
-
-
-
-

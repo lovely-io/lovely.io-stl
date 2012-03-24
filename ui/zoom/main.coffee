@@ -16,6 +16,7 @@ Class   = core.Class
 Options = core.Options
 Element = $.Element
 Locker  = UI.Locker
+Modal   = UI.Modal
 
 # glue in your files
 include 'src/zoom'
