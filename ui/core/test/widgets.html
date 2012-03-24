@@ -29,6 +29,11 @@
           $('#modal-demo3').on('click', function(event) { event.stop();
             new UI.Modal({html: "Boo!"}).update("Update Hello World!").show();
           });
+          $('#modal-demo4').on('click', function(event) { event.stop();
+            new UI.Modal({html: "Hello Non Lock!", nolock: true}).show();
+          });
+
+          new UI.Modal({html: "Hello Non Lock!", nolock: true}).show();
         });
       });
     </script>
@@ -51,6 +56,10 @@
       #locker-demo {
         position: relative;
         width: 40em;
+      }
+      div.lui-modal div.lui-inner {
+        background: pink;
+        padding: 1em;
       }
     </style>
   </head>
@@ -150,7 +159,8 @@
     <p>
       <a href="#" id="modal-demo1">Modal{html: Hello World!}</a> |
       <a href="#" id="modal-demo2">Modal#insert test</a> |
-      <a href="#" id="modal-demo3">Modal#update test</a>
+      <a href="#" id="modal-demo3">Modal#update test</a> |
+      <a href="#" id="modal-demo4">Modal{nolock: true}</a>
     </p>
 
 

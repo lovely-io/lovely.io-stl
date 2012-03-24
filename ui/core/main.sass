@@ -231,6 +231,7 @@
   > .lui-inner
     vertical-align: middle
     display: inline-block
+    position: relative
 
   > .lui-spinner
     height:     1.25em
@@ -248,3 +249,9 @@
   left:     0
   top:      0
   z-index:  9999999
+
+  &.lui-modal-nolock
+    left: -999999em
+
+    > .lui-inner
+      left: 999999em

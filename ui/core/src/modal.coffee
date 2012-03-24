@@ -20,6 +20,7 @@ class Modal extends Element
       <div class="lui-aligner"></div>
       <div class="lui-inner"></div>
     """
+    options['class'] += ' lui-modal-nolock' if options.nolock is true; delete(options.nolock)
 
     super('div', options)
 
