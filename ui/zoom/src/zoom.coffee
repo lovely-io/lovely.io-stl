@@ -34,15 +34,19 @@ class Zoom extends Modal
   # @return {Zoom} self
   #
   show: (link)->
-    @setOptions(link.data('zoom'))
+    @setOptions(link.data('zoom')).addClass('lui-modal-nolock')
 
-    if @thmb = link.first('img')
-      @locker.show().position(@thmb.position()).size(@thmb.size())
+    @dialog.style('display: none')
 
-    @image = @image.clone().insertTo(@image, 'instead').on('load', =>@zoom())
-    @image.attr('src', link.attr('href'))
+    super() # needs to be done _before_ the @locker resize calls
 
-    super()
+    if @thumb = link.first('img')
+      @locker.show().position(@thumb.position()).size(@thumb.size())
+
+    @image = @image.clone().insertTo(@image, 'instead').attr('src', null)
+    @image.on('load', =>@zoom()).attr('src', link.attr('href'))
+
+    return @
 
 # private
 
@@ -52,17 +56,18 @@ class Zoom extends Modal
   zoom: ()->
     @[if @options.nolock is true then 'addClass' else 'removeClass']('lui-modal-nolock')
 
-    return
+    @dialog.style('display: inline-block; opacity: 0')
 
-    if @thmb
-      start_pos  = @thmb.position()
-      start_size = @thmb.size()
+    if @thumb
+      start_pos  = @thumb.position()
+      start_size = @thumb.size()
 
       end_size   = @dialog.size()
       end_pos    = @dialog.position()
 
       @dialog.style(position: 'absolute').size(start_size).position(start_pos)
       @image.style width: '100%', height: '100%'
+      @locker.hide()
 
       pos_diff = @dialog.style('top,left')
       pos_diff = x: parseInt(pos_diff.left), y: parseInt(pos_diff.top)
@@ -75,4 +80,8 @@ class Zoom extends Modal
       }, finish: =>
         @image.style(width: '', height: '')
         @dialog.style(top: '', left: '', width: '', height: '')
+        @dialog.style(position: 'relative')
       )
+    else
+      @dialog.style(opacity: 1)
+
