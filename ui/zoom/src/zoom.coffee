@@ -45,45 +45,50 @@ class Zoom extends Modal
       @locker.show().position(@thumb.position()).size(@thumb.size())
 
     @image = @image.clone().insertTo(@image, 'instead').attr('src', null)
-    @image.on('load', =>@zoom()).attr('src', link.attr('href'))
+    @image.on('load', =>@loaded()).attr('src', link.attr('href'))
 
     return @
 
 # private
 
   #
-  # Makes the actual zoom
+  # Handles the image-load events
   #
-  zoom: ()->
-    @[if @options.nolock is true then 'addClass' else 'removeClass']('lui-modal-nolock')
-
+  loaded: ->
     @dialog.style('display: inline-block; opacity: 0')
 
+    @[if @options.nolock is true then 'addClass' else 'removeClass']('lui-modal-nolock')
+
     if @thumb && @options.fxDuration
-      start_pos  = @thumb.position()
-      start_size = @thumb.size()
-
-      end_size   = @dialog.size()
-      end_pos    = @dialog.position()
-
-      @dialog.style(position: 'absolute').size(start_size).position(start_pos)
-      @image.style width: '100%', height: '100%'
-      @locker.hide()
-
-      pos_diff = @dialog.style('top,left')
-      pos_diff = x: parseInt(pos_diff.left), y: parseInt(pos_diff.top)
-
-      @dialog.style(opacity: 1).animate({
-        top:     pos_diff.y + (end_pos.y - start_pos.y) + 'px'
-        left:    pos_diff.x + (end_pos.x - start_pos.x) + 'px'
-        width:   end_size.x + 'px'
-        height:  end_size.y + 'px'
-      }, duration: @options.fxDuration, finish: =>
-        @image.style(width: '', height: '')
-        @dialog.style(top: '', left: '', width: '', height: '')
-        @dialog.style(position: 'relative')
-      )
+      @zoom()
     else
-      @locker.hide()
       @dialog.style(opacity: 1)
 
+    @locker.hide()
+
+  #
+  # Makes the smooth zoom visual effect
+  #
+  zoom: ()->
+    start_pos  = @thumb.position()
+    start_size = @thumb.size()
+
+    end_size   = @dialog.size()
+    end_pos    = @dialog.position()
+
+    @dialog.style(position: 'absolute').size(start_size).position(start_pos)
+    @image.style width: '100%', height: '100%'
+
+    pos_diff = @dialog.style('top,left')
+    pos_diff = x: parseInt(pos_diff.left), y: parseInt(pos_diff.top)
+
+    @dialog.style(opacity: 1).animate({
+      top:     pos_diff.y + (end_pos.y - start_pos.y) + 'px'
+      left:    pos_diff.x + (end_pos.x - start_pos.x) + 'px'
+      width:   end_size.x + 'px'
+      height:  end_size.y + 'px'
+    }, duration: @options.fxDuration, finish: =>
+      @image.style(width: '', height: '')
+      @dialog.style(top: '', left: '', width: '', height: '')
+      @dialog.style(position: 'relative')
+    )
