@@ -7,7 +7,8 @@ class Zoom extends Modal
   include: Options
   extend:
     Options: # default options
-      nolock: true
+      nolock:     true
+      fxDuration: 'normal'
 
   #
   # Default constructor
@@ -58,7 +59,7 @@ class Zoom extends Modal
 
     @dialog.style('display: inline-block; opacity: 0')
 
-    if @thumb
+    if @thumb && @options.fxDuration
       start_pos  = @thumb.position()
       start_size = @thumb.size()
 
@@ -77,11 +78,12 @@ class Zoom extends Modal
         left:    pos_diff.x + (end_pos.x - start_pos.x) + 'px'
         width:   end_size.x + 'px'
         height:  end_size.y + 'px'
-      }, finish: =>
+      }, duration: @options.fxDuration, finish: =>
         @image.style(width: '', height: '')
         @dialog.style(top: '', left: '', width: '', height: '')
         @dialog.style(position: 'relative')
       )
     else
+      @locker.hide()
       @dialog.style(opacity: 1)
 
