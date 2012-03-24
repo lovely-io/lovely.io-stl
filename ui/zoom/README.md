@@ -23,6 +23,15 @@ Lovely(['zoom'], function(Zoom) {
 It will automatically handle all the clicks on your links marked with the
 `data-zoom` attribute
 
+## Events
+
+In addition to the normal DOM events, instances of the `Zoom` class emit
+the following events
+
+* `show` - when the widget completely appears on the page (after all the fx)
+* `hide` - when the widget was hidden
+* `load` - when the image was loaded, but before the widget starts zooming
+
 
 ## Copyright And License
 

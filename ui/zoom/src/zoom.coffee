@@ -49,12 +49,23 @@ class Zoom extends Modal
 
     return @
 
+  #
+  # Making it to emit the 'hide' event and completely
+  # remove the whole widget out of the document
+  #
+  # @return {Zoom} self
+  #
+  hide: ->
+    @emit('hide').remove()
+
 # private
 
   #
   # Handles the image-load events
   #
   loaded: ->
+    @emit 'load'
+
     @dialog.style('display: inline-block; opacity: 0')
 
     @[if @options.nolock is true then 'addClass' else 'removeClass']('lui-modal-nolock')
@@ -63,6 +74,7 @@ class Zoom extends Modal
       @zoom()
     else
       @dialog.style(opacity: 1)
+      @emit 'show'
 
     @locker.hide()
 
@@ -91,4 +103,5 @@ class Zoom extends Modal
       @image.style(width: '', height: '')
       @dialog.style(top: '', left: '', width: '', height: '')
       @dialog.style(position: 'relative')
+      @emit 'show'
     )
