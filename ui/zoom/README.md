@@ -7,18 +7,17 @@ images and zooms them instead of showing the screen locker and lightbox dialog
 
 Use the standard link and image markup with the `data-zoom` attribute
 
-```html
-<a href="image-full.png" data-zoom=""><img src="image-thmb.png"></a>
-```
+    :html
+    <a href="image-full.png" data-zoom=""><img src="image-thmb.png"></a>
 
 After that hook this module on your page in any standard way, say by using
 the `Lovely` loader
 
-```js
-Lovely(['zoom'], function(Zoom) {
-  // Zoom.Options
-});
-```
+    :js
+    Lovely(['zoom'], function(Zoom) {
+      // Zoom.Options
+    });
+
 
 It will automatically handle all the clicks on your links marked with the
 `data-zoom` attribute
