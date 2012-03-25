@@ -22,3 +22,39 @@
 
     &:first-child
       display: block
+
+  > div.lui-slideshow-controls
+    position: absolute
+    left:     0
+    bottom:   0
+    width:    100%
+
+    .lui-icon
+      position:    absolute
+      bottom:      .5em
+      left:        .5em
+      top:         auto
+      font-size:   200%
+      font-weight: bold
+      border:      none
+      cursor:      pointer
+      opacity:     0
+      -webkit-transition: opacity 200ms
+      -moz-transition:    opacity 200ms
+      -ms-transition:     opacity 200ms
+      -o-transition:      opacity 200ms
+      transition:         opacity 200ms
+
+      &:active
+        top: auto
+
+      &:last-child
+        left:  auto
+        right: .5em
+
+  &:hover
+    > div.lui-slideshow-controls .lui-icon
+      opacity: .5
+
+      &:hover
+        opacity: 1

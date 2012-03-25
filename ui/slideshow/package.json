@@ -5,6 +5,6 @@
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
   "dependencies": {
-    "ui" : "1.0.0"
+    "ui" : "1.0.1"
   }
 }

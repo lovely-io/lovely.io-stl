@@ -20,5 +20,27 @@ class Slideshow extends Element
     super(element._)
 
     @setOptions(options)
+    @append new Element('div', {
+      class: 'lui-slideshow-controls'
+    }).append(
+      new Icon(class: 'lui-icon-previous2').on('click', => @previous()),
+      new Icon(class: 'lui-icon-next2').on('click', => @next())
+    )
 
     return @
+
+  #
+  # Shows previous item on the list
+  #
+  # @return {Slideshow} self
+  #
+  previous: ->
+    console.log("Shows the previous item on the list")
+
+  #
+  # Shows the next item on the list
+  #
+  # @return {Slideshow} self
+  #
+  next: ->
+    console.log("Shows the next item on the list")

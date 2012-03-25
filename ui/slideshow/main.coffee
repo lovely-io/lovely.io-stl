@@ -14,6 +14,7 @@ ext     = core.ext
 Class   = core.Class
 Options = core.Options
 Element = $.Element
+Icon    = UI.Icon
 
 # glue in your files
 include 'src/slideshow'
