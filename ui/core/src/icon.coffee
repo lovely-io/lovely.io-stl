@@ -12,3 +12,4 @@ class Icon extends Element
   #
   constructor: (options)->
     super('i', merge_options(options, {class: 'lui-icon'}))
+    @on 'mousedown', (event)-> event.preventDefault()

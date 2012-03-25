@@ -18,3 +18,5 @@ class Button extends Input
     })
 
     super('button', options)
+
+    @on 'mousedown', (event)-> event.preventDefault()
