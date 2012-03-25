@@ -19,18 +19,13 @@ class Slideshow extends Element
   # @return {Slideshow} this
   #
   constructor: (element, options)->
-    super(element._)
+    @$super(element._).setOptions(options)
 
-    @setOptions(options)
-
-    @append new Element('div', {
-      class: 'lui-slideshow-controls'
-    }).append(
+    @controls = new Element('div', {class: 'lui-slideshow-controls'}).append(
       @prev_button = new Icon(class: 'lui-icon-previous2').on('click', => @previous()),
-      @next_button = new Icon(class: 'lui-icon-next2').on('click', => @next())
-    )
+      @next_button = new Icon(class: 'lui-icon-next2').on('click', => @next()))
 
-    @slideTo(0)
+    @append(@controls).slideTo(0)
 
   #
   # Returns the list of items
@@ -38,8 +33,7 @@ class Slideshow extends Element
   # @return {dom.NodeList} items
   #
   items: ->
-    @children().reject (item)->
-      item._.tagName isnt 'LI'
+    @children().reject (item)=> item is @controls
 
   #
   # Checks whether there is a previous item on the list
@@ -101,17 +95,18 @@ class Slideshow extends Element
   _slide: (index, item, cur_item)->
     return if @__sliding; @__sliding = true
 
-    end_size = @_end_size(item)      # getting the end size
-    old_size = @size(@size()).size() # freezing up the size
+    box_size = @_end_size(item)
+    old_size = cur_item.size()
+    end_size = item.style(display: 'block', position: 'absolute', left: '-9999em').size()
 
     # calculating the left-position for the slide
     end_left = if old_size.x > end_size.x then old_size.x else end_size.x
     end_left *= -1 if @currentIndex > index
 
     # presetting initial styles
-    @addClass('lui-slideshow-resizing')
+    @addClass('lui-slideshow-resizing').size(@size())
     cur_item.style(position: 'absolute', left: '0px')
-    item.style(display: 'block', position: 'absolute', left: end_left + 'px')
+    item.style(left: end_left + 'px')
 
     # visualizing the slide
     item.size(end_size).animate {left: '0px'},
@@ -123,21 +118,20 @@ class Slideshow extends Element
       finish: -> cur_item.style(display: 'none')
 
     # animating the size change
-    @animate {
-      width:  end_size.x + 'px'
-      height: end_size.y + 'px'
-    }, duration: @options.fxDuration, finish: =>
+    @animate box_size, duration: @options.fxDuration, finish: =>
       @removeClass('lui-slideshow-resizing')
       @__sliding = false
 
 
   # calculates the end size of the whole block
   _end_size: (item)->
-    @__clone or= @clone().style(position: 'absolute', left: '-99999em')
+    @__clone or= @clone().style(position: 'absolute', left: '-99999em').insertTo(@, 'after')
     @__clone.update(item.clone().style(display: 'block', position: 'relative'))
-    @__clone.insertTo(@, 'after')
 
-    @__clone.size()
+    clone = @__clone.clone().insertTo(@, 'after').size(@__clone.size())
+    result = clone.style('width,height')
+    clone.remove()
 
+    return result
 
 

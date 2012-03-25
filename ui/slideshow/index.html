@@ -5,23 +5,47 @@
     <link href="/shared.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
     <script type="text/javascript">
-      Lovely(["slideshow"], function(module) {
-
-      });
+      Lovely(["slideshow"], function(module) {});
     </script>
+    <style type="text/css">
+      ol.custom-slideshow {
+        border: .5em solid rgba(0,0,0,.3);
+        border-radius: .5em;
+      }
+      ol.custom-slideshow li {
+        background: pink;
+        width:   500px;
+        height:  400px;
+        padding: 2em;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
-    <h1>Slideshow Demo</h1>
+    <h1>Simple Slideshow Demo</h1>
+
+    <ul class="lui-slideshow">
+      <li><img src="http://rightjs.org/images/test/1-med.jpg"></li>
+      <li><img src="http://rightjs.org/images/test/2-med.jpg"></li>
+      <li><img src="http://rightjs.org/images/test/3-med.jpg"></li>
+      <li><img src="http://rightjs.org/images/test/4-med.jpg"></li>
+      <li><img src="http://rightjs.org/images/test/5-med.jpg"></li>
+      <li><img src="http://rightjs.org/images/test/6-med.jpg"></li>
+    </ul>
+
+    <h2>Slideshow With Custom Styles</h2>
 
     <p>
-      <ul class="lui-slideshow">
+      <ol class="lui-slideshow custom-slideshow">
         <li><img src="http://rightjs.org/images/test/1-med.jpg"></li>
         <li><img src="http://rightjs.org/images/test/2-med.jpg"></li>
         <li><img src="http://rightjs.org/images/test/3-med.jpg"></li>
         <li><img src="http://rightjs.org/images/test/4-med.jpg"></li>
         <li><img src="http://rightjs.org/images/test/5-med.jpg"></li>
         <li><img src="http://rightjs.org/images/test/6-med.jpg"></li>
-      </ul>
+      </ol>
     </p>
+
+    <p class="white-space"></p>
   </body>
 </html>
