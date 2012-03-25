@@ -9,6 +9,8 @@ class Slideshow extends Element
     Options:
       fxDuration: 'normal'
 
+  currentIndex: null
+
   #
   # Basic constructor
   #
@@ -81,11 +83,61 @@ class Slideshow extends Element
   slideTo: (index)->
     items = @items()
 
-    if items[index]
-      console.log("Sliding to #{index}")
-      @currentIndex = index
+    if index isnt @currentIndex && @currentIndex isnt null && items[index] && @currentItem
+      @_slide(index, items[index], @currentItem)
+
+    @currentIndex = index
+    @currentItem  = items[index]
 
     @prev_button[if @hasPrevious() then 'removeClass' else 'addClass']('lui-disabled')
     @next_button[if @hasNext()     then 'removeClass' else 'addClass']('lui-disabled')
 
     return @
+
+
+# protected
+
+  # makes the actual sliding effect
+  _slide: (index, item, cur_item)->
+    return if @__sliding; @__sliding = true
+
+    end_size = @_end_size(item)      # getting the end size
+    old_size = @size(@size()).size() # freezing up the size
+
+    # calculating the left-position for the slide
+    end_left = if old_size.x > end_size.x then old_size.x else end_size.x
+    end_left *= -1 if @currentIndex > index
+
+    # presetting initial styles
+    @addClass('lui-slideshow-resizing')
+    cur_item.style(position: 'absolute', left: '0px')
+    item.style(display: 'block', position: 'absolute', left: end_left + 'px')
+
+    # visualizing the slide
+    item.size(end_size).animate {left: '0px'},
+      duration: @options.fxDuration,
+      finish: -> item.style(position: 'relative')
+
+    cur_item.animate {left: (- end_left) + 'px'},
+      duration: @options.fxDuration,
+      finish: -> cur_item.style(display: 'none')
+
+    # animating the size change
+    @animate {
+      width:  end_size.x + 'px'
+      height: end_size.y + 'px'
+    }, duration: @options.fxDuration, finish: =>
+      @removeClass('lui-slideshow-resizing')
+      @__sliding = false
+
+
+  # calculates the end size of the whole block
+  _end_size: (item)->
+    @__clone or= @clone().style(position: 'absolute', left: '-99999em')
+    @__clone.update(item.clone().style(display: 'block', position: 'relative'))
+    @__clone.insertTo(@, 'after')
+
+    @__clone.size()
+
+
+
