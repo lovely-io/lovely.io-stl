@@ -26,6 +26,7 @@ new Slideshow($('#my-list')[0], {... options ...});
 You can use the following list of options
 
 * `fxDuration` - the sliding visual effect duration
+* `showPager` - show/hide the pager element
 * `autoplay` - automatically swap the items on the list
 * `delay` - delay between switches in the autoplay mode
 * `loop` - start from the beginning when finished

@@ -8,6 +8,7 @@ class Slideshow extends Element
   extend:
     Options:
       fxDuration: 'normal'
+      showPager:  true
       autoplay:   false
       delay:      4000
       loop:       true
@@ -33,6 +34,7 @@ class Slideshow extends Element
       @prev_button.remove(); @next_button.remove();
 
     @pager.delegate('a', click: (e)=> e.stop(); @slideTo(e.target.data('index')))
+    @pager.remove() unless @options.showPager
 
     @on
       mouseenter: => @__hovering = true
