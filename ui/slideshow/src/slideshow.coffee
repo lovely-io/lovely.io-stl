@@ -26,10 +26,13 @@ class Slideshow extends Element
 
     @controls = new Element('div', {class: 'lui-slideshow-controls'}).append(
       @prev_button = new Icon(class: 'lui-icon-previous2').on('click', => @previous()),
-      @next_button = new Icon(class: 'lui-icon-next2').on('click', => @next()))
+      @next_button = new Icon(class: 'lui-icon-next2').on('click', => @next()),
+      @pager       = new Element('div', class: 'lui-slideshow-pager'))
 
     if typeof(window.ontouchstart) isnt 'undefined'
       @prev_button.remove(); @next_button.remove();
+
+    @pager.delegate('a', click: (e)=> e.stop(); @slideTo(e.target.data('index')))
 
     @on
       mouseenter: => @__hovering = true
@@ -113,7 +116,7 @@ class Slideshow extends Element
     @prev_button[if @hasPrevious() then 'removeClass' else 'addClass']('lui-disabled')
     @next_button[if @hasNext()     then 'removeClass' else 'addClass']('lui-disabled')
 
-    return @
+    @_rebuild_pager()
 
   #
   # Starts auto-play mode
@@ -188,5 +191,18 @@ class Slideshow extends Element
     clone.remove()
 
     return result
+
+  # rebuilds the pagination element
+  _rebuild_pager: ->
+    html = for item, index in @items()
+      attr = if index is @currentIndex then ' class="lui-slideshow-pager-current"' else ''
+      """<a href="" data-index="#{index}"#{attr}>&bull;</a>"""
+
+    @pager.html(html.join(''))
+
+
+
+
+
 
 
