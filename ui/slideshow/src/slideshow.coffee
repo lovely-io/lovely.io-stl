@@ -8,6 +8,9 @@ class Slideshow extends Element
   extend:
     Options:
       fxDuration: 'normal'
+      autoplay:   false
+      delay:      4000
+      loop:       true
 
   currentIndex: null
 
@@ -19,13 +22,20 @@ class Slideshow extends Element
   # @return {Slideshow} this
   #
   constructor: (element, options)->
-    @$super(element._).setOptions(options)
+    @$super(element._).setOptions(@data('slideshow'))
 
     @controls = new Element('div', {class: 'lui-slideshow-controls'}).append(
       @prev_button = new Icon(class: 'lui-icon-previous2').on('click', => @previous()),
       @next_button = new Icon(class: 'lui-icon-next2').on('click', => @next()))
 
+    @on
+      mouseenter: => @__hovering = true
+      mouseleave: => @__hovering = false
+
     @append(@controls).slideTo(0)
+    @play() if @options.autoplay
+
+    return @
 
   #
   # Returns the list of items
@@ -85,6 +95,34 @@ class Slideshow extends Element
 
     @prev_button[if @hasPrevious() then 'removeClass' else 'addClass']('lui-disabled')
     @next_button[if @hasNext()     then 'removeClass' else 'addClass']('lui-disabled')
+
+    return @
+
+  #
+  # Starts auto-play mode
+  #
+  # @return {Slideshow} this
+  #
+  play: ->
+    @_timer or= window.setInterval =>
+      unless @__hovering
+        if @hasNext()
+          @next()
+        else if @options.loop
+          @slideTo(0)
+    , @options.delay
+
+    return @
+
+  #
+  # Pauses auto-play mode
+  #
+  # @return {Slideshow} this
+  #
+  pause: ->
+    if @_timer
+      window.clearInterval(@_timer)
+      delete(@_timer)
 
     return @
 

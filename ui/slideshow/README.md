@@ -21,6 +21,15 @@ You also can instantiate `Slideshow` object existing objects
 new Slideshow($('#my-list')[0], {... options ...});
 ```
 
+## Options
+
+You can use the following list of options
+
+* `fxDuration` - the sliding visual effect duration
+* `autoplay` - automatically swap the items on the list
+* `delay` - delay between switches in the autoplay mode
+* `loop` - start from the beginning when finished
+
 
 ## Public API
 
@@ -33,6 +42,8 @@ available as part of the public API with all the `Slideshow` class instances
 * `previous()` - slide to the previous item on the list
 * `next()` - slide to the next item on the list
 * `slideTo(index)` - slide to an item with the (integer) index
+* `play()` - starts the auto-play mode
+* `pause()` - stops the auto-play mode
 
 
 ## Copyright And License
