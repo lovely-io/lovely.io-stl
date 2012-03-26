@@ -3,6 +3,7 @@
   "version":     "1.0.1",
   "description": "Standarad UI core module",
   "author":      "Nikolay Nemshilov",
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/core",
   "license":     "MIT",
   "tags":        "UI",
   "dependencies": {
