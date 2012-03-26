@@ -28,9 +28,26 @@ class Slideshow extends Element
       @prev_button = new Icon(class: 'lui-icon-previous2').on('click', => @previous()),
       @next_button = new Icon(class: 'lui-icon-next2').on('click', => @next()))
 
+    if typeof(window.ontouchstart) isnt 'undefined'
+      @prev_button.remove(); @next_button.remove();
+
     @on
       mouseenter: => @__hovering = true
       mouseleave: => @__hovering = false
+      touchstart: (event)=>
+        @__touchstart = event.position().x
+      touchmove: (event)=>
+        return if @__sliding
+        x_position = event.position().x
+        threshold  = 20
+
+        if (x_position - @__touchstart) > threshold
+          @previous()
+          @__touchstart = x_position
+        else if (@__touchstart - x_position) > threshold
+          @next()
+          @__touchstart = x_position
+
 
     @append(@controls).slideTo(0)
     @play() if @options.autoplay
@@ -121,7 +138,7 @@ class Slideshow extends Element
   #
   pause: ->
     if @_timer
-      window.clearInterval(@_timer)
+      global.clearInterval(@_timer)
       delete(@_timer)
 
     return @
@@ -158,7 +175,7 @@ class Slideshow extends Element
     # animating the size change
     @animate box_size, duration: @options.fxDuration, finish: =>
       @removeClass('lui-slideshow-resizing')
-      @__sliding = false
+      global.setTimeout((=>@__sliding = false), 50)
 
 
   # calculates the end size of the whole block
