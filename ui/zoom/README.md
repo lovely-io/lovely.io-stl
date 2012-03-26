@@ -29,6 +29,14 @@ the `Lovely` loader
 It will automatically handle all the clicks on your links marked with the
 `data-zoom` attribute
 
+## Options
+
+You can use the following options with your `Zoom` instances
+
+* `nolock` - don't lock the screen
+* `fxDuration` - the zooming visual effect duration
+
+
 ## Events
 
 In addition to the normal DOM events, instances of the `Zoom` class emit
