@@ -112,8 +112,9 @@ class Slideshow extends Element
     if index isnt @currentIndex && @currentIndex isnt null && items[index] && @currentItem
       @_slide(index, items[index], @currentItem)
 
-    @currentIndex = index
-    @currentItem  = items[index]
+    if items[index] or @currentIndex is null
+      @currentIndex = index
+      @currentItem  = items[index]
 
     @prev_button[if @hasPrevious() then 'removeClass' else 'addClass']('lui-disabled')
     @next_button[if @hasNext()     then 'removeClass' else 'addClass']('lui-disabled')
