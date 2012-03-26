@@ -6,20 +6,19 @@ Slideshow is a little widget to make slideshows from lists
 
 In a simple case, you can just add the `lui-slideshow` class to your `UL` element
 
-```html
-<ul class="lui-slideshow">
-  <li><img src="img1.jpg"></img></li>
-  <li><img src="img2.jpg"></img></li>
-  <li><img src="img3.jpg"></img></li>
-  ....
-</ul>
-```
+    :html
+    <ul class="lui-slideshow">
+      <li><img src="img1.jpg"></img></li>
+      <li><img src="img2.jpg"></img></li>
+      <li><img src="img3.jpg"></img></li>
+      ....
+    </ul>
 
 You also can instantiate `Slideshow` object existing objects
 
-```javascript
-new Slideshow($('#my-list')[0], {... options ...});
-```
+    :javascript
+    new Slideshow($('#my-list')[0], {... options ...});
+
 
 ## Options
 
@@ -30,6 +29,9 @@ You can use the following list of options
 * `autoplay` - automatically swap the items on the list
 * `delay` - delay between switches in the autoplay mode
 * `loop` - start from the beginning when finished
+
+options can be used with the `Slideshow` class constructor or specified in JSON
+format inside of the `data-slideshow` attribute of your `UL` element
 
 
 ## Public API
