@@ -26,8 +26,8 @@ class Slideshow extends Element
     @$super(element._).setOptions(@data('slideshow'))
 
     @controls = new Element('div', {class: 'lui-slideshow-controls'}).append(
-      @prev_button = new Icon(class: 'lui-icon-previous2').on('click', => @previous()),
-      @next_button = new Icon(class: 'lui-icon-next2').on('click', => @next()),
+      @prev_button = new Icon(class: 'lui-icon-previous').on('click', => @previous()),
+      @next_button = new Icon(class: 'lui-icon-next').on('click', => @next()),
       @pager       = new Element('div', class: 'lui-slideshow-pager'))
 
     if typeof(window.ontouchstart) isnt 'undefined'
