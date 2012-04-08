@@ -53,7 +53,6 @@ class Slideshow extends Element
           @next()
           @__touchstart = x_position
 
-
     @append(@controls).slideTo(0)
     @play() if @options.autoplay
 
@@ -158,7 +157,8 @@ class Slideshow extends Element
 
     box_size = @_end_size(item)
     old_size = cur_item.size()
-    end_size = item.style(display: 'block', position: 'absolute', left: '-9999em').size()
+    end_size = box_size.item_size
+    box_size = box_size.list_size
 
     # calculating the left-position for the slide
     end_left = if old_size.x > end_size.x then old_size.x else end_size.x
@@ -166,17 +166,17 @@ class Slideshow extends Element
 
     # presetting initial styles
     @addClass('lui-slideshow-resizing').size(@size())
-    cur_item.style(position: 'absolute', left: '0px')
-    item.style(left: end_left + 'px')
+    cur_item.size(old_size).style(position: 'absolute', left: '0px')
+    item.style(display: 'block', position: 'absolute', left: end_left + 'px')
 
     # visualizing the slide
     item.size(end_size).animate {left: '0px'},
       duration: @options.fxDuration,
-      finish: -> item.style(position: 'relative')
+      finish: -> item.style(position: 'relative', width: '', height: '')
 
     cur_item.animate {left: (- end_left) + 'px'},
       duration: @options.fxDuration,
-      finish: -> cur_item.style(display: 'none')
+      finish: -> cur_item.style(display: 'none', width: '', height: '')
 
     # animating the size change
     @animate box_size, duration: @options.fxDuration, finish: =>
@@ -186,12 +186,16 @@ class Slideshow extends Element
 
   # calculates the end size of the whole block
   _end_size: (item)->
-    @__clone or= @clone().style(position: 'absolute', left: '-99999em').insertTo(@, 'after')
-    @__clone.update(item.clone().style(display: 'block', position: 'relative'))
+    @__clone or= @clone().style(visibility: 'hidden').insertTo(@, 'after')
+    @__clone.style(display: '')
 
-    clone = @__clone.clone().insertTo(@, 'after').size(@__clone.size())
-    result = clone.style('width,height')
-    clone.remove()
+    item = item.clone().style(display: 'block', position: 'relative')
+
+    result =
+      list_size: @__clone.update(item).style('width,height')
+      item_size: item.size()
+
+    @__clone.style(display: 'none')
 
     return result
 
