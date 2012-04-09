@@ -37,8 +37,8 @@ class Slideshow extends Element
     @pager.remove() unless @options.showPager
 
     @on
-      mouseenter: => @__hovering = true
-      mouseleave: => @__hovering = false
+      mouseenter: 'pause'
+      mouseleave: 'play'
       touchstart: (event)=>
         @__touchstart = event.position().x
       touchmove: (event)=>
@@ -127,11 +127,10 @@ class Slideshow extends Element
   #
   play: ->
     @_timer or= window.setInterval =>
-      unless @__hovering
-        if @hasNext()
-          @next()
-        else if @options.loop
-          @slideTo(0)
+      if @hasNext()
+        @next()
+      else if @options.loop
+        @slideTo(0)
     , @options.delay
 
     return @
