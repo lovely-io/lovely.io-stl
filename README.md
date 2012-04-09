@@ -1,40 +1,23 @@
 # Lovely IO
 
-`Lovely IO` is a javascript development platform based on [RightJS](http://rightjs.org)
-It is not exactly a framework, but rather a collection of micro-frameworks
-based on modules from [RightJS](http://rightjs.org)
+`Lovely IO` is the next-gen front-side development platform.
 
-The goal of the project is to create a platform/environment for JavaScript
-development that will help you to have grand old time while you do your job
+In a short, it's like rubygems + rails, only for the front-side development.
 
-The targets are about the following
+See [the official site](http://lovely.io) and [screencast](http://lovely.io/show)
+for more information and usage examples.
 
- * Real modularity
- * AMD based modules serving
- * Automatic dependencies handling
- * Community available hosting
+## What's In Here
 
-Well, kinda like that.
-Watch for the actual release :)
+In this repo you can find the following things
 
-
-## How To...
-
-You'll need `node`, `npm` and then install the following packages
-
-    npm install coffee-script vows jshint uglify-js express zombie
-
-After that just run one of those
-
-    cake build
-    cake test
-    cake test:spec
-    cake check
-
+ * `cli/` - the lovely CLI tools, server and so on
+ * `stl/` - the STL library of official modules
+ * `ui/`  - the official UI library modules
 
 
 ## License & Copyright
 
 This project is released under the terms of the MIT license
 
-Copyright (C) 2011 Nikolay Nemshilov
+Copyright (C) 2011-2012 Nikolay Nemshilov
