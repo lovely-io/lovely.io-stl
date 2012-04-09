@@ -106,10 +106,14 @@ class Slideshow extends Element
   # @return {Slideshow} this
   #
   slideTo: (index)->
+    return if @__sliding; @__sliding = true
+
     items = @items()
 
     if index isnt @currentIndex && @currentIndex isnt null && items[index] && @currentItem
       @_slide(index, items[index], @currentItem)
+    else
+      @__sliding = false
 
     if items[index] or @currentIndex is null
       @currentIndex = index
@@ -152,8 +156,6 @@ class Slideshow extends Element
 
   # makes the actual sliding effect
   _slide: (index, item, cur_item)->
-    return if @__sliding; @__sliding = true
-
     box_size = @_end_size(item)
     old_size = cur_item.size()
     end_size = box_size.item_size
@@ -185,7 +187,7 @@ class Slideshow extends Element
 
   # calculates the end size of the whole block
   _end_size: (item)->
-    @__clone or= @clone().style(visibility: 'hidden').insertTo(@, 'after')
+    @__clone or= @clone().style(visibility: 'hidden').insertTo(@, 'before')
     @__clone.style(display: '')
 
     item = item.clone().style(display: 'block', position: 'relative')
