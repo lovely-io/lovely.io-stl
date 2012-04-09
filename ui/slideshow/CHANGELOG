@@ -1,3 +1,11 @@
+2012-04-09 Nikolay Nemshilov
+
+  * Version 1.0.1 release
+  * Fixed various issues with handling custom styled slideshows
+  * The left/right buttons made flat and with borders
+  * Less jerky handling of mouseovers in the auto-play mode
+  * Better animation lock to prevent rapid-clicking hacks
+
 2012-03-26 Nikolay Nemshilov
 
   * Version 1.0.0 release
