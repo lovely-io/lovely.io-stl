@@ -1,6 +1,6 @@
 {
   "name":        "slideshow",
-  "version":     "1.0.1",
+  "version":     "1.0.2",
   "description": "Simple slideshow widget",
   "author":      "Nikolay Nemshilov",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/slideshow",

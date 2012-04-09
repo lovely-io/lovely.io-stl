@@ -1,6 +1,6 @@
 2012-04-09 Nikolay Nemshilov
 
-  * Version 1.0.1 release
+  * Version 1.0.2 release
   * Fixed various issues with handling custom styled slideshows
   * The left/right buttons made flat and with borders
   * Less jerky handling of mouseovers in the auto-play mode

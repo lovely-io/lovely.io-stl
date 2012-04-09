@@ -37,8 +37,11 @@ class Slideshow extends Element
     @pager.remove() unless @options.showPager
 
     @on
-      mouseenter: 'pause'
-      mouseleave: 'play'
+      mouseenter: =>
+        @__hovering = !!@_timer; @pause()
+      mouseleave: =>
+        @play() if @__hovering
+        @__hovering = false
       touchstart: (event)=>
         @__touchstart = event.position().x
       touchmove: (event)=>
