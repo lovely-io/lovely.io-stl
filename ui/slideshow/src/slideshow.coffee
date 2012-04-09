@@ -187,7 +187,7 @@ class Slideshow extends Element
 
   # calculates the end size of the whole block
   _end_size: (item)->
-    @__clone or= @clone().style(visibility: 'hidden').insertTo(@, 'before')
+    @__clone or= @clone().style(visibility: 'hidden').insertTo(@, 'after')
     @__clone.style(display: '')
 
     item = item.clone().style(display: 'block', position: 'relative')
