@@ -31,9 +31,10 @@ read_images = (build)->
   folder = "#{process.cwd()}/images/"
   images = {}
 
-  if match = build.match(/('|")\/?images\/.+?\1/g)
+  if match = build.match(/('|"|\()\/?images\/.+?\1/g)
     for file in match
       file = file.substr(1, file.length - 2)
+      file = file.substr(0, file.length - 1) if file[file.length-1] is "\\"
       if file = file.split('images/')[1]
         if path.existsSync(folder + file)
           images[file] = fs.readFileSync(folder + file).toString('base64')
