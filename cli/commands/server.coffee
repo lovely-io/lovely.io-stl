@@ -9,7 +9,7 @@ exports.init = (args) ->
   fs      = require('fs')
   path    = require('path')
   source  = require('../source')
-  package = require('../package')
+  pack    = require('../package')
   express = require('express')
   server  = express.createServer(express.bodyParser())
   port    = args[0] || lovelyrc.port || 3000
@@ -27,7 +27,7 @@ exports.init = (args) ->
   server.all '/:module.js', (req, res) ->
     module = req.params.module
 
-    if module == package.name || module == 'main'
+    if module == pack.name || module == 'main'
       src  = if minify then source.minify() else source.compile()
       size = Math.round(src.length/102.4)/10
       console.log(" Compiling: ".cyan+ "/#{module}.js (#{size}Kb #{if minify then 'minified' else 'source'})".grey)

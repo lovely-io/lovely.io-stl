@@ -43,16 +43,21 @@ class Slideshow extends Element
         @play() if @__hovering
         @__hovering = false
       touchstart: (event)=>
+        @__sliding    = false
         @__touchstart = event.position().x
+        event.preventDefault()
       touchmove: (event)=>
         return if @__sliding
+
         x_position = event.position().x
         threshold  = 20
 
         if (x_position - @__touchstart) > threshold
+          @__sliding = true
           @previous()
           @__touchstart = x_position
         else if (@__touchstart - x_position) > threshold
+          @__sliding = true
           @next()
           @__touchstart = x_position
 
@@ -109,18 +114,27 @@ class Slideshow extends Element
   # @return {Slideshow} this
   #
   slideTo: (index)->
-    return if @__sliding; @__sliding = true
+    #return if @__sliding; @__sliding = true
 
     items = @items()
 
-    if index isnt @currentIndex && @currentIndex isnt null && items[index] && @currentItem
-      @_slide(index, items[index], @currentItem)
-    else
-      @__sliding = false
+    #if index isnt @currentIndex && @currentIndex isnt null && items[index] && @currentItem
+    #  @_slide(index, items[index], @currentItem)
+    #else
+    #  @__sliding = false
 
-    if items[index] or @currentIndex is null
-      @currentIndex = index
-      @currentItem  = items[index]
+    for item, i in @items()
+      if i is index
+        item._.className = 'current'
+        @currentIndex    = index
+        @currentItem     = item
+      else if i is index - 1
+        item._.className = 'previous'
+      else if i is index + 1
+        item._.className = 'next'
+      else
+        item._.className = ''
+
 
     @prev_button[if @hasPrevious() then 'removeClass' else 'addClass']('lui-disabled')
     @next_button[if @hasNext()     then 'removeClass' else 'addClass']('lui-disabled')
@@ -159,6 +173,11 @@ class Slideshow extends Element
 
   # makes the actual sliding effect
   _slide: (index, item, cur_item)->
+
+    item.radioClass('current')
+
+    return
+
     box_size = @_end_size(item)
     old_size = cur_item.size()
     end_size = box_size.item_size

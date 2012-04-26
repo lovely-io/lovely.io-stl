@@ -31,7 +31,7 @@ generate = (projectname, args) ->
 
 
   print "Creating directory: #{projectname}"
-  fs.mkdirSync(directory, 0755)
+  fs.mkdirSync(directory, 0o0755)
 
   # just checking if the file should be copied over
   suitable = (filename) ->
@@ -51,7 +51,7 @@ generate = (projectname, args) ->
 
 
   print " - src/"
-  fs.mkdirSync("#{directory}/src", 0755)
+  fs.mkdirSync("#{directory}/src", 0o0755)
 
   filename = "#{placeholders.projectfile}.#{
     if use_coffee then 'coffee' else 'js'
@@ -75,7 +75,7 @@ generate = (projectname, args) ->
   fs.writeFileSync("#{directory}/src/#{filename}", patch_source(source))
 
   print " - build/"
-  fs.mkdirSync("#{directory}/build", 0755)
+  fs.mkdirSync("#{directory}/build", 0o0755)
 
 
 # fills in all the placeholders

@@ -23,10 +23,10 @@ exports.init = (args) ->
 
     sout " ∙ ".grey + entry.name.ljust(16) + entry.version.grey + " "
 
-    hosting.get_package entry.name, null, (package, build)->
-      if entry.version < package.version
-        repo.save(package, build)
-        sout "→".yellow + " #{package.version}\n"
+    hosting.get_package entry.name, null, (pack, build)->
+      if entry.version < pack.version
+        repo.save(pack, build)
+        sout "→".yellow + " #{pack.version}\n"
       else
         sout "✓ ".grey + "Ok\n".green
 

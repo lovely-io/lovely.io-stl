@@ -150,10 +150,10 @@ exports.get_package = (name, version, callback)->
   url = "/packages/#{name}"
   url+= "/#{version}" if version
 
-  get "#{url}.json", {}, (package)->
-    package.version = version || package.versions[package.versions.length - 1]
-    get "/#{package.name}-#{package.version}.js", {}, (build)->
-      callback package, build
+  get "#{url}.json", {}, (pack)->
+    pack.version = version || pack.versions[pack.versions.length - 1]
+    get "/#{pack.name}-#{pack.version}.js", {}, (build)->
+      callback pack, build
 
 #
 # Downloads the package index from the server

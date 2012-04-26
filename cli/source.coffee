@@ -110,9 +110,10 @@ compile = (directory)->
     source = """
       Lovely("#{module_name}", [#{"'#{name}'" for name in dependencies}], function(undefined) {
         #{source.replace(/(\n)/g, "$1  ")}
-        #{inline_css(directory)}
+
         #{if source.indexOf('var exports = {};') > -1 then "return exports;" else ""}
       });
+      #{inline_css(directory)}
       """
 
   # creating a standard header block
@@ -207,7 +208,7 @@ inline_css = (directory) ->
   """
 
     // embedded css-styles
-    (function(document) {
+    (function() {
       var style = document.createElement('style');
       var rules = document.createTextNode("#{style}");
 
@@ -219,7 +220,7 @@ inline_css = (directory) ->
       } else {
         style.appendChild(rules);
       }
-    })(this.document);
+    })();
 
   """
 

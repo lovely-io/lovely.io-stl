@@ -44,16 +44,16 @@ read_images = (build)->
 # Kicks in the command
 #
 exports.init = (args) ->
-  package = require('../package')
+  pack    = require('../package')
   hosting = require('../hosting')
 
   sout "» Compiling the project".ljust(61)
   system "#{__dirname}/../../bin/lovely build", ->
     sout "Done\n".green
 
-    build = read("build/#{package.name}.js")
+    build = read("build/#{pack.name}.js")
 
-    sout "» Publishing #{lovelyrc.host}/packages/#{package.name} ".ljust(61)
+    sout "» Publishing #{lovelyrc.host}/packages/#{pack.name} ".ljust(61)
     hosting.send_package
       manifest: read('package.json')
       build:    build

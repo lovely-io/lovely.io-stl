@@ -22,7 +22,7 @@ bootstrap = (base_dir) ->
   if path.existsSync(base_dir)
     print " » " + "Already exists".yellow
   else
-    fs.mkdirSync(base_dir, 0755)
+    fs.mkdirSync(base_dir, 0o0755)
 
   print "Initial RC file at: ~/.lovelyrc"
   if path.existsSync("#{home_dir}/.lovelyrc")

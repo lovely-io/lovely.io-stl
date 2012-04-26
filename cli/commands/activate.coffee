@@ -24,21 +24,21 @@ exports.init = (args)->
   path     = require('path')
   location = lovelyrc.base
   path     = require('path')
-  package  = args.shift()
+  pack     = args.shift()
 
 
-  print_error "You should specify the package name" if !package
+  print_error "You should specify the package name" if !pack
 
   location[location.length - 1] == '/' || (location += '/')
-  location += "packages/#{package}"
+  location += "packages/#{pack}"
 
-  print_error "Could't locate package '#{package}'" if !path.existsSync(location)
+  print_error "Could't locate package '#{pack}'" if !path.existsSync(location)
 
   version = args.shift()
   version = find_latest(location) unless version
 
   if !path.existsSync("#{location}/#{version}")
-    print_error "Could't find version '#{version}' of '#{package}'"
+    print_error "Could't find version '#{version}' of '#{pack}'"
 
   system("cd #{location}; rm -f active; ln -s #{version} active")
 

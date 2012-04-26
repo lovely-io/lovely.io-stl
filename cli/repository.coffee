@@ -36,16 +36,16 @@ exports.list = ->
 # @param {Object} package manifest
 # @param {String} build
 #
-exports.save = (package, build)->
+exports.save = (pack, build)->
   location = lovelyrc.base
   location[location.length - 1] == '/' || (location += '/')
-  location += "packages/#{package.name}/#{package.version}"
+  location += "packages/#{pack.name}/#{pack.version}"
 
   system "rm -rf #{location}", ->
     system "mkdir -p #{location}", ->
       fs = require('fs')
 
-      fs.mkdirSync("#{location}/images", 0755)
+      fs.mkdirSync("#{location}/images", 0o0755)
       build = build.replace /('|")([^'"]+\.(gif|png|jpg|jpeg|svg|swf))\1/g,
       (match, q, url)->
         if url.indexOf('http://') > -1
@@ -63,9 +63,9 @@ exports.save = (package, build)->
           url = url.replace(/^\//, '')
           fs.writeFileSync("#{location}/#{url}", fs.readFileSync("#{process.cwd()}/#{url}"))
 
-        "#{q}/#{package.name}/#{package.version}/#{url}#{q}"
+        "#{q}/#{pack.name}/#{pack.version}/#{url}#{q}"
 
       fs.writeFileSync("#{location}/build.js", build)
-      fs.writeFileSync("#{location}/package.json", JSON.stringify(package))
+      fs.writeFileSync("#{location}/package.json", JSON.stringify(pack))
 
-      system "#{__dirname}/../bin/lovely activate #{package.name}"
+      system "#{__dirname}/../bin/lovely activate #{pack.name}"

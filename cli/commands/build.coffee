@@ -8,18 +8,18 @@ exports.init = (args) ->
   path     = require('path')
   source   = require('../source')
   location = process.cwd()
-  package  = require('../package')
+  pack     = require('../package')
 
   location +=  "/build/"
-  path.existsSync(location) || fs.mkdirSync(location, 0755)
+  path.existsSync(location) || fs.mkdirSync(location, 0o0755)
 
-  location += package.name;
+  location += pack.name;
   fs.writeFileSync(location + "-src.js", source.compile())
   fs.writeFileSync(location + ".js",     source.minify())
 
   system("gzip -c #{location}.js > #{location}.js.gz")
 
-  print "» Compiling: #{package.name}".ljust(32) + " Done".green
+  print "» Compiling: #{pack.name}".ljust(32) + " Done".green
 
 
 exports.help = (args) ->
