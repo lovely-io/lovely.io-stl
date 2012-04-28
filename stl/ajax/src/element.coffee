@@ -1,7 +1,7 @@
 #
 # The DOM Element unit AJAX related extensions
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 Element.include
   #
@@ -16,8 +16,8 @@ Element.include
   #
   load: (url, options)->
     @ajax = new Ajax(url, Hash.merge({method: 'get'}, options))
-    @ajax.on('success', bind((ajax)->
-      @update ajax.responseText
+    @ajax.on('success', bind((event)->
+      @update event.ajax.responseText
     , @))
     @ajax.send()
 
