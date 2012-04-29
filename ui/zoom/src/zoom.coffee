@@ -10,6 +10,8 @@ class Zoom extends Modal
       nolock:     true
       fxDuration: 'normal'
 
+    current: null
+
   #
   # Default constructor
   #
@@ -47,7 +49,7 @@ class Zoom extends Modal
     @image = @image.clone().insertTo(@image, 'instead').attr('src', null)
     @image.on('load', =>@loaded()).attr('src', link.attr('href'))
 
-    return @
+    return Zoom.current = @
 
   #
   # Making it to emit the 'hide' event and completely
@@ -56,6 +58,7 @@ class Zoom extends Modal
   # @return {Zoom} self
   #
   hide: ->
+    Zoom.current = null
     @emit('hide').remove()
 
 # private
@@ -88,8 +91,7 @@ class Zoom extends Modal
     end_size   = @dialog.size()
     end_pos    = @dialog.position()
 
-    @dialog.style(position: 'absolute').size(start_size).position(start_pos)
-    @image.style width: '100%', height: '100%'
+    @dialog.addClass('lui-zoom-resizing').size(start_size).position(start_pos)
 
     pos_diff = @dialog.style('top,left')
     pos_diff = x: parseInt(pos_diff.left), y: parseInt(pos_diff.top)
@@ -100,8 +102,6 @@ class Zoom extends Modal
       width:   end_size.x + 'px'
       height:  end_size.y + 'px'
     }, duration: @options.fxDuration, finish: =>
-      @image.style(width: '', height: '')
-      @dialog.style(top: '', left: '', width: '', height: '')
-      @dialog.style(position: 'relative')
+      @dialog.removeClass('lui-zoom-resizing').style(top: '', left: '', width: '', height: '')
       @emit 'show'
     )

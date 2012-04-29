@@ -1,6 +1,9 @@
 #
 # Document level hooks for the widget
 #
+
+default_zoom = null
+
 $(document).on
   click: (event)->
     if link = event.find('a[data-zoom]')
@@ -8,4 +11,15 @@ $(document).on
       default_zoom or= new Zoom()
       default_zoom.show(link)
 
-default_zoom = null
+dummy   = document.createElement('div')
+timeout = new Date()
+
+$(window).on 'resize', ->
+  if Zoom.current isnt null && (new Date() - timeout) > 5
+    timeout = new Date()
+    dialog  = Zoom.current.dialog._
+    dialog.appendChild(dummy)
+
+    window.setTimeout ->
+      dialog.removeChild(dummy) if dummy.parentNode is dialog
+    , 1
