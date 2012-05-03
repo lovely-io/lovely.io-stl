@@ -37,7 +37,7 @@ class Zoom extends Modal
   # @return {Zoom} self
   #
   show: (link)->
-    @setOptions(link.data('zoom')).addClass('lui-modal-nolock')
+    @setOptions(link.data('zoom')).addClass('lui-modal-nolock').addClass('lui-zoom-loading')
 
     @limit_size($(window).size()).dialog.style('display: none')
 
@@ -83,7 +83,7 @@ class Zoom extends Modal
   # Handles the image-load events
   #
   loaded: ->
-    @emit 'load'
+    @removeClass('lui-zoom-loading').emit 'load'
 
     @dialog.style('display: inline-block; opacity: 0')
 
