@@ -11,6 +11,9 @@ $(document).on
       default_zoom or= new Zoom()
       default_zoom.show(link)
 
+    else if Zoom.current && !event.find('.lui-zoom')
+      Zoom.current.hide()
+
 dummy   = document.createElement('div')
 timeout = new Date()
 
