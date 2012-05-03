@@ -15,11 +15,6 @@ dummy   = document.createElement('div')
 timeout = new Date()
 
 $(window).on 'resize', ->
-  if Zoom.current isnt null && (new Date() - timeout) > 5
+  if Zoom.current isnt null && (new Date() - timeout) > 2
     timeout = new Date()
-    dialog  = Zoom.current.dialog._
-    dialog.appendChild(dummy)
-
-    window.setTimeout ->
-      dialog.removeChild(dummy) if dummy.parentNode is dialog
-    , 1
+    Zoom.current.limit_size(@size())

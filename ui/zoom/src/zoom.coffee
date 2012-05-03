@@ -24,7 +24,7 @@ class Zoom extends Modal
     @locker = new Locker()
     @icon   = new Element('i', title: 'Close')
     @image  = new Element('img')
-    @dialog = @first('.lui-inner').append(@icon, @image)
+    @dialog = @first('.lui-inner').append(@image, @icon)
 
     @icon.on('click', => @hide())
 
@@ -39,7 +39,7 @@ class Zoom extends Modal
   show: (link)->
     @setOptions(link.data('zoom')).addClass('lui-modal-nolock')
 
-    @dialog.style('display: none')
+    @limit_size($(window).size()).dialog.style('display: none')
 
     super() # needs to be done _before_ the @locker resize calls
 
@@ -60,6 +60,22 @@ class Zoom extends Modal
   hide: ->
     Zoom.current = null
     @emit('hide').remove()
+
+  #
+  # Sets the size limits for the image
+  #
+  # @param {Object} x: N, y: N size
+  # @return {Zoom} this
+  #
+  limit_size: (size)->
+    size =
+      maxWidth:  size.x - 20 + 'px'
+      maxHeight: size.y -  5 + 'px'
+
+    @image.style  size
+    @dialog.style size
+
+    return @
 
 # private
 
