@@ -1,0 +1,45 @@
+//
+// Dialog main sass file
+//
+// Here should be your HTML structure
+//
+// Copyright (C) 2012 Nikolay Nemshilov
+//
+
+div.lui-dialog
+
+  .lui-inner
+    border:        1px solid rgba(0,0,0,.5)
+    border-radius: .25em
+    background:    #fff
+    box-shadow:    0 0 1em rgba(0,0,0,.5)
+    text-align:    left
+
+    > header, > section, > footer
+      padding: .5em
+
+    > header
+      background-color: rgba(0,0,0,.2)
+      background-image: -webkit-linear-gradient(rgba(0,0,0,.15) 30%, rgba(255,255,255,0) 100%)
+
+      h3
+        font-family: inherit
+        font-size:   inherit
+        margin:      0
+        padding:     0
+        color:       rgba(0,0,0,.5)
+
+      .lui-icon
+        float: right
+        margin-top: -1.3em
+        color: rgba(0,0,0,.5)
+
+    > section
+      min-height: 4em
+      min-width:  20em
+
+    > footer
+      text-align: right
+
+      .lui-button-help
+        float: left
