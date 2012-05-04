@@ -32,11 +32,13 @@ build_spinner_divs = (size)->
   size or= Spinner.DEFAULT_SIZE; i = 1; html = ''
   while i < size
     html += '<div></div>'; i += 1
-  html + '<div class="current"></div>'
+
+  html + '<div class="lui-spinner-current"></div>'
 
 move_spinner = (spinner)->
   window.setInterval ->
-    spinner.insert(spinner.first('div:last-child'), 'top')
+    dot = spinner.first('.lui-spinner-current')
+    (dot.nextSibling() || spinner.first()).radioClass('lui-spinner-current')
   , 400
 
   return spinner

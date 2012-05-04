@@ -12,6 +12,9 @@ class Locker extends Element
   # @return {Locker} self
   #
   constructor: (options)->
-    super('div', merge_options(options, class: 'lui-locker'))
+    options = merge_options(options, class: 'lui-locker')
+    spinner_size = options.size || 5
+    delete(options.size)
+    super('div', options)
     @insert('<div class="lui-aligner"></div>')
-    @insert(@spinner = new Spinner(size: 5, class: 'lui-inner'))
+    @insert(@spinner = new Spinner(size: spinner_size, class: 'lui-inner'))

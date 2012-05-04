@@ -195,14 +195,19 @@
     background:     rgba(0,0,0,.2)
     margin:         0
     padding:        0
-    margin-left:    .2em
+    margin-right:    .2em
     vertical-align: center
     border-radius:  .1em
+    -webkit-transition: all .4s
+    -moz-transition:    all .4s
+    -ms-transition:     all .4s
+    -o-transition:      all .4s
+    transition:         all .4s
 
-    &:first-child
-      margin-left: 0
+    &:last-child
+      margin-right: 0
 
-    &.current
+    &.lui-spinner-current
       background: rgba(0,0,0,.5)
 
 
@@ -239,11 +244,14 @@
     position: relative
 
   > .lui-spinner
-    height:     1.25em
     border:     none
     background: none
+    max-width:  90%
+    height:     auto
+    width:      auto
 
     div
+      height:     1.25em
       width: 1.25em
       border-radius: .25em
 
