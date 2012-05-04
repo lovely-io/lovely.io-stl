@@ -7,6 +7,6 @@
   "license":     "MIT",
   "tags":        "UI, dialog",
   "dependencies": {
-    "ui" : "1.0.0"
+    "ui" : "1.1.0"
   }
 }

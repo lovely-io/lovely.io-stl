@@ -4,7 +4,6 @@
 # Copyright (C) 2012 Nikolay Nemshilov
 #
 class Dialog extends UI.Modal
-  include: core.Options
   extend:
     Options: # default options
       nolock:     false
@@ -39,9 +38,9 @@ class Dialog extends UI.Modal
       </footer>
     """
 
-    @header = @first('header')
-    @body   = @first('body')
-    @footer = @first('footer')
+    @header = @dialog.first('header')
+    @body   = @dialog.first('body')
+    @footer = @dialog.first('footer')
 
     @header.first('.lui-icon-help').on('click',     => @emit('help'))
     @header.first('.lui-icon-delete').on('click',   => @emit('cancel'))
