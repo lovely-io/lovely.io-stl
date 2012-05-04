@@ -25,11 +25,29 @@ class Modal extends Element
     super('div', options)
 
     @_inner = @first('.lui-inner')
-    @_inner.update(html)
+    @_inner.insert(html)
 
     @on 'click', (event)->
       @hide() if event.target is @
 
+
+  #
+  # Bypassing the {Element#html} calls to the inner element
+  #
+  # @return {Modal} self
+  #
+  html: ->
+    @_inner.html.apply(@_inner, arguments)
+    return @
+
+  #
+  # Bypassing the {Element#html} calls to the inner element
+  #
+  # @return {Modal} self
+  #
+  text: ->
+    @_inner.text.apply(@_inner, arguments)
+    return @
 
   #
   # Bypassing the {Element#insert} calls to the inner element
