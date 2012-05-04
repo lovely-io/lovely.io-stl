@@ -88,14 +88,16 @@ class Modal extends Element
     @insertTo(document.body)
     @$super.apply(@, arguments)
 
-    Modal.current = @constructor.current = @
+    Modal.current = @constructor.current = @emit('show')
 
   #
   # Removes the whole thing out of the `document.body`
   #
-  hide: ()->
+  # @return {Modal} self
+  #
+  hide: ->
     Modal.current = @constructor.current = null
-    @remove()
+    @emit('hide').remove()
 
 
 # hides all visible modals on the page
