@@ -8,6 +8,7 @@
 core    = require('core')
 $       = require('dom')
 UI      = require('ui')
+Ajax    = require('ajax')
 
 # local variables assignments
 ext     = core.ext

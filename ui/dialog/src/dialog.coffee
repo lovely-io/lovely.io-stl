@@ -11,6 +11,10 @@ class Dialog extends UI.Modal
       showHelp:    false
       showHeader:  true
       showButtons: true
+      title:       null    # title to preset
+      html:        null    # html to preset
+      url:         null    # an url to load
+      ajax:        null    # ajax options
 
   #
   # The default constructor
@@ -52,6 +56,7 @@ class Dialog extends UI.Modal
 
     @title @options.title if @options.title
     @html  @options.html  if @options.html
+    @load  @options.url, @options.ajax if @options.url
 
     # hooking up the events
     @header.first('.lui-icon-help').on('click',     => @emit('help'))
@@ -73,3 +78,21 @@ class Dialog extends UI.Modal
       @header.first('h3').html(string)
     else
       @header.first('h3').html()
+
+
+  #
+  # Setting up the screen locker while loading
+  #
+  # @param {String} url
+  # @param {Object} ajax options
+  # @return {Dialog} this
+  #
+  load: (url, options)->
+    @append(@locker or= new UI.Locker())
+
+    options or= {}; options.method or= 'get'
+    @ajax = new Ajax(url, options).on('complete', =>
+      @update @ajax.responseText
+    ).send()
+
+    return @

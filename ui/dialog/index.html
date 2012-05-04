@@ -22,21 +22,25 @@
           d('#without-header', {title: 'Hello', html: 'Hello World!', showHeader: false, showButtons: false});
         });
 
-        new Dialog({title: 'Hello', html: 'Hello World!', showHeader: false, showButtons: false}).show();
+        new Dialog({title: 'Hello', url: 'test/dummy.html'}).show();
       });
     </script>
   </head>
   <body>
     <h1>Dialog Demo</h1>
 
-    <p>
-      <ul>
-        <li><a href="#" id="empty-test">An empty dialog</a></li>
-        <li><a href="#" id="with-help">With Help Buttons</a></li>
-        <li><a href="#" id="with-title">With Title And Text</a></li>
-        <li><a href="#" id="without-header">Without Header And Buttons</a></li>
-      </ul>
-    </p>
+    <h2>Basic Options</h2>
+    <ul>
+      <li><a href="#" id="empty-test">An empty dialog</a></li>
+      <li><a href="#" id="with-help">With Help Buttons</a></li>
+      <li><a href="#" id="with-title">With Title And Text</a></li>
+      <li><a href="#" id="without-header">Without Header And Buttons</a></li>
+    </ul>
+
+    <h2>Ajax Reqeust</h2>
+    <ul>
+      <li><a href="#" id="ajax-request">Loaded via Ajax</a></li>
+    </ul>
 
   </body>
 </html>
