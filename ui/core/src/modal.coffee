@@ -31,7 +31,7 @@ class Modal extends Element
     @_inner = @dialog = @first('.lui-inner')
     @_inner.insert(html)
 
-    @limit_size(dom_window.size())
+    return @
 
   #
   # Bypassing the {Element#html} calls to the inner element
@@ -86,6 +86,7 @@ class Modal extends Element
   show: ()->
     hide_all_modals()
 
+    @limit_size(dom_window.size())
     @insertTo(document.body)
     @$super.apply(@, arguments)
 
