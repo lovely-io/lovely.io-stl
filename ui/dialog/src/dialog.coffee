@@ -4,6 +4,7 @@
 # Copyright (C) 2012 Nikolay Nemshilov
 #
 class Dialog extends UI.Modal
+  include: core.Options
   extend:
     Options: # default options
       nolock:     false
@@ -19,6 +20,9 @@ class Dialog extends UI.Modal
   # @return {Dialog} this
   #
   constructor: (options)->
+    @setOptions(options or= {})
+    delete(options[key]) for key of @options
+
     @$super(options).addClass('lui-dialog')
 
     @append """
@@ -39,9 +43,16 @@ class Dialog extends UI.Modal
     """
 
     @header = @dialog.first('header')
-    @body   = @dialog.first('body')
+    @body   = @_inner = @dialog.first('section')
     @footer = @dialog.first('footer')
 
+    # adjusting the view to the options
+    @addClass 'lui-dialog-nohelp' unless @options.showHelp
+
+    @title @options.title if @options.title
+    @html  @options.html  if @options.html
+
+    # hooking up the events
     @header.first('.lui-icon-help').on('click',     => @emit('help'))
     @header.first('.lui-icon-delete').on('click',   => @emit('cancel'))
     @footer.first('.lui-button-help').on('click',   => @emit('help'))
@@ -50,8 +61,6 @@ class Dialog extends UI.Modal
 
     @on 'cancel', 'hide'
 
-    return @
-
   #
   # Sets/Gets the dialog title
   #
@@ -59,5 +68,7 @@ class Dialog extends UI.Modal
   # @return {String|Dialog} the current title or the dialog itself
   #
   title: (string)->
-    return @
-
+    if string?
+      @header.first('h3').html(string)
+    else
+      @header.first('h3').html()

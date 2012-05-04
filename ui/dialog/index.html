@@ -6,7 +6,22 @@
     <script src="/core.js"></script>
     <script type="text/javascript">
       Lovely(["dialog"], function(Dialog) {
-        new Dialog().show();
+        var $ = Lovely.module('dom');
+
+        function d(options) {
+          new Dialog(options).show();
+          return false;
+        }
+
+        $(function() {
+          $('#empty-test').on('click', function() { return d(); });
+          $('#with-help').on('click', function() { return d({showHelp: true}); });
+          $('#with-title').on('click', function() {
+            return d({title: 'Hello', html: 'Hello World!'})
+          })
+        });
+
+        d({title: 'Hello', html: 'Hello World!'});
       });
     </script>
   </head>
@@ -15,7 +30,9 @@
 
     <p>
       <ul>
-        <li><a href="#" id="super-simple">The super simple case</a></li>
+        <li><a href="#" id="empty-test">An empty dialog</a></li>
+        <li><a href="#" id="with-help">With Help Buttons</a></li>
+        <li><a href="#" id="with-title">With Title And Text</a></li>
       </ul>
     </p>
 
