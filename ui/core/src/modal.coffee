@@ -4,6 +4,9 @@
 # Copyright (C) 2012 Nikolay Nemshilov
 #
 class Modal extends Element
+  extend:
+    current: null
+
   #
   # Basic constructor
   #
@@ -87,10 +90,13 @@ class Modal extends Element
     @insertTo(document.body)
     @$super.apply(@, arguments)
 
+    Modal.current = @costructor.current = @
+
   #
   # Removes the whole thing out of the `document.body`
   #
   hide: ()->
+    Modal.current = @costructor.current = null
     @remove()
 
 
