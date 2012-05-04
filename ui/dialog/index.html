@@ -9,20 +9,20 @@
         var $ = Lovely.module('dom');
 
         function d(css, options) {
-          $(css).on('click', function() {
+          $(document).delegate(css, 'click', function() {
             new Dialog(options).show();
             return false;
-          })
+          });
         }
 
-        $(function() {
-          d('#empty-test', {});
-          d('#with-help', {showHelp: true});
-          d('#with-title', {title: 'Hello', html: 'Hello World!'});
-          d('#without-header', {title: 'Hello', html: 'Hello World!', showHeader: false, showButtons: false});
-        });
+        d('#empty-test', {});
+        d('#with-help', {showHelp: true});
+        d('#with-title', {title: 'Hello', html: 'Hello World!'});
+        d('#without-header', {title: 'Hello', html: 'Hello World!', showHeader: false, showButtons: false});
+        d('#ajax-request', {title: 'Hello', url: 'test/dummy.html'});
+        d('#huge-content', {title: "It's Huge!", url: 'test/huge.html'});
 
-        new Dialog({title: 'Hello', url: 'test/dummy.html'}).show();
+        new Dialog({title: "It's Huge!", url: 'test/huge.html'}).show();
       });
     </script>
   </head>
@@ -40,7 +40,9 @@
     <h2>Ajax Reqeust</h2>
     <ul>
       <li><a href="#" id="ajax-request">Loaded via Ajax</a></li>
+      <li><a href="#" id="huge-content">Huge content block</a></li>
     </ul>
 
+    <p class="white-space" style="min-width: 30em"></p>
   </body>
 </html>

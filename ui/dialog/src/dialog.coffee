@@ -93,6 +93,16 @@ class Dialog extends UI.Modal
     options or= {}; options.method or= 'get'
     @ajax = new Ajax(url, options).on('complete', =>
       @update @ajax.responseText
+      @emit 'load'
     ).send()
 
     return @
+
+#
+# Make the inner block scroll
+#
+Dialog::limit_size = (size)->
+  @body._.style.maxHeight = size.y - @header._.offsetHeight - @footer._.offsetHeight - 40 + 'px'
+  @body._.style.maxWidth  = size.x - 40 + 'px'
+
+  return @
