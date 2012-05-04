@@ -3,6 +3,7 @@
   * Version 1.1.0
   * Icons/Buttons better CSS styling
   * Better looking Spinner element
+  * Locker element can accept the Spinner `size` option
   * Darker Modal screen locker
   * Modal now bypasses the #html and #text methods as well
   * Modal now fires the show/hide events automatically
