@@ -6,8 +6,8 @@
 class Modal extends Element
   extend:
     current: null
-    offsetX: 50
-    offsetY: 50
+    offsetX: 40
+    offsetY: 40
 
   #
   # Basic constructor
