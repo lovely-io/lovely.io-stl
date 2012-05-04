@@ -1,5 +1,12 @@
 2012-05-04 Nikolay Nemshilov
 
+  * Version 1.1.1
+  * Modal unit size-limits processing fixes
+  * Modal unit fix with jumpy inner block in tight spaces
+  * Buttons stylesheet fix in case when it's used with links
+
+2012-05-04 Nikolay Nemshilov
+
   * Version 1.1.0
   * Icons/Buttons better CSS styling
   * Better looking Spinner element
