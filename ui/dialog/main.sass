@@ -8,7 +8,7 @@
 
 div.lui-dialog
 
-  .lui-inner
+  > .lui-inner
     border:        1px solid rgba(0,0,0,.5)
     border-radius: .25em
     background:    #fff
@@ -45,6 +45,14 @@ div.lui-dialog
         float: left
 
   &.lui-dialog-nohelp
-    .lui-inner
+    > .lui-inner
       > header .lui-icon-help, > footer .lui-button-help
         display: none
+
+  &.lui-dialog-noheader
+    > .lui-inner > header
+      display: none
+
+  &.lui-dialog-nofooter
+    > .lui-inner > footer
+      display: none

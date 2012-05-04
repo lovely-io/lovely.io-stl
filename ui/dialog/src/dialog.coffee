@@ -7,11 +7,10 @@ class Dialog extends UI.Modal
   include: core.Options
   extend:
     Options: # default options
-      nolock:     false
-      showHeader: true
-      showFooter: true
-      showHelp:   false
-
+      nolock:      false
+      showHelp:    false
+      showHeader:  true
+      showButtons: true
 
   #
   # The default constructor
@@ -47,7 +46,9 @@ class Dialog extends UI.Modal
     @footer = @dialog.first('footer')
 
     # adjusting the view to the options
-    @addClass 'lui-dialog-nohelp' unless @options.showHelp
+    @addClass 'lui-dialog-nohelp'   unless @options.showHelp
+    @addClass 'lui-dialog-noheader' unless @options.showHeader
+    @addClass 'lui-dialog-nofooter' unless @options.showButtons
 
     @title @options.title if @options.title
     @html  @options.html  if @options.html

@@ -8,20 +8,21 @@
       Lovely(["dialog"], function(Dialog) {
         var $ = Lovely.module('dom');
 
-        function d(options) {
-          new Dialog(options).show();
-          return false;
+        function d(css, options) {
+          $(css).on('click', function() {
+            new Dialog(options).show();
+            return false;
+          })
         }
 
         $(function() {
-          $('#empty-test').on('click', function() { return d(); });
-          $('#with-help').on('click', function() { return d({showHelp: true}); });
-          $('#with-title').on('click', function() {
-            return d({title: 'Hello', html: 'Hello World!'})
-          })
+          d('#empty-test', {});
+          d('#with-help', {showHelp: true});
+          d('#with-title', {title: 'Hello', html: 'Hello World!'});
+          d('#without-header', {title: 'Hello', html: 'Hello World!', showHeader: false, showButtons: false});
         });
 
-        d({title: 'Hello', html: 'Hello World!'});
+        new Dialog({title: 'Hello', html: 'Hello World!', showHeader: false, showButtons: false}).show();
       });
     </script>
   </head>
@@ -33,6 +34,7 @@
         <li><a href="#" id="empty-test">An empty dialog</a></li>
         <li><a href="#" id="with-help">With Help Buttons</a></li>
         <li><a href="#" id="with-title">With Title And Text</a></li>
+        <li><a href="#" id="without-header">Without Header And Buttons</a></li>
       </ul>
     </p>
 
