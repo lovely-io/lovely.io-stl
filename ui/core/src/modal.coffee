@@ -6,6 +6,8 @@
 class Modal extends Element
   extend:
     current: null
+    offsetX: 20
+    offsetY: 5
 
   #
   # Basic constructor
@@ -20,8 +22,7 @@ class Modal extends Element
     options = merge_options(options, { class: 'lui-modal lui-locker' })
     html    = options.html || '';
     options.html = """
-      <div class="lui-aligner"></div>
-      <div class="lui-inner"></div>
+      <div class="lui-aligner"></div><div class="lui-inner"></div>
     """
     options['class'] += ' lui-modal-nolock' if options.nolock is true; delete(options.nolock)
 
@@ -30,7 +31,7 @@ class Modal extends Element
     @_inner = @first('.lui-inner')
     @_inner.insert(html)
 
-    return @
+    @limit_size(dom_window.size())
 
   #
   # Bypassing the {Element#html} calls to the inner element
@@ -99,6 +100,18 @@ class Modal extends Element
     Modal.current = @constructor.current = null
     @emit('hide').remove()
 
+  #
+  # Sets the size limits for the image
+  #
+  # @param {Object} x: N, y: N size
+  # @return {Zoom} this
+  #
+  limit_size: (size)->
+    @_inner._.style.maxWidth  = size.x - Modal.offsetX + 'px'
+    @_inner._.style.maxHeight = size.y - Modal.offsetY + 'px'
+
+    return @
+
 
 # hides all visible modals on the page
 hide_all_modals = ->
@@ -109,3 +122,13 @@ dom(document).on('esc', hide_all_modals)
 dom(document).on 'click', (event)->
   if Modal.current && (Modal.current == event.target || !event.find('.lui-modal'))
     Modal.current.hide()
+
+# setting up the dialog max-sizes with the window
+resize_timeout = new Date()
+dom_window = dom(window).on 'resize', ->
+  if Modal.current isnt null && (new Date() - resize_timeout) > 1
+    resize_timeout = new Date()
+    Modal.current.limit_size(@size())
+
+
+
