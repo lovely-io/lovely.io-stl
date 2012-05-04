@@ -1,9 +1,10 @@
 2012-05-04 Nikolay Nemshilov
 
   * Version 1.1.0
-  * Modal bypasses the #html and #text methods as well
-  * Modal fires the show/hide events automatically
+  * Modal now bypasses the #html and #text methods as well
+  * Modal now fires the show/hide events automatically
   * Modal now automatically sets the internal element max sizes
+  * Icons/Buttons better CSS styling
 
 2012-03-25 Nikolay Nemshilov
 
