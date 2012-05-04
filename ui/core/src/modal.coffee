@@ -6,8 +6,8 @@
 class Modal extends Element
   extend:
     current: null
-    offsetX: 20
-    offsetY: 5
+    offsetX: 50
+    offsetY: 50
 
   #
   # Basic constructor
@@ -107,8 +107,8 @@ class Modal extends Element
   # @return {Zoom} this
   #
   limit_size: (size)->
-    @dialog._.style.maxWidth  = size.x - Modal.offsetX + 'px'
-    @dialog._.style.maxHeight = size.y - Modal.offsetY + 'px'
+    @dialog._.style.maxWidth  = size.x - (@constructor.offsetX || Modal.offsetX) + 'px'
+    @dialog._.style.maxHeight = size.y - (@constructor.offsetX || Modal.offsetY) + 'px'
 
     return @
 
