@@ -30,9 +30,7 @@ class Modal extends Element
     @_inner = @first('.lui-inner')
     @_inner.insert(html)
 
-    @on 'click', (event)->
-      @hide() if event.target is @
-
+    return @
 
   #
   # Bypassing the {Element#html} calls to the inner element
@@ -90,13 +88,13 @@ class Modal extends Element
     @insertTo(document.body)
     @$super.apply(@, arguments)
 
-    Modal.current = @costructor.current = @
+    Modal.current = @constructor.current = @
 
   #
   # Removes the whole thing out of the `document.body`
   #
   hide: ()->
-    Modal.current = @costructor.current = null
+    Modal.current = @constructor.current = null
     @remove()
 
 
@@ -106,3 +104,6 @@ hide_all_modals = ->
 
 # hide all modals when the user presses 'escape'
 dom(document).on('esc', hide_all_modals)
+dom(document).on 'click', (event)->
+  if Modal.current && (Modal.current == event.target || !event.find('.lui-modal'))
+    Modal.current.hide()
