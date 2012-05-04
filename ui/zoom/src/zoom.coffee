@@ -7,7 +7,7 @@ class Zoom extends Modal
   include: Options
   extend:
     Options: # default options
-      nolock:     true
+      nolock:     false
       fxDuration: 'normal'
 
     current: null
