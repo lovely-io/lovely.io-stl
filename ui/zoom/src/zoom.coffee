@@ -24,7 +24,8 @@ class Zoom extends Modal
     @locker = new Locker()
     @icon   = new Element('i', title: 'Close')
     @image  = new Element('img')
-    @dialog = @first('.lui-inner').append(@image, @icon)
+
+    @dialog.append(@image, @icon)
 
     @icon.on('click', => @hide())
 
@@ -39,7 +40,7 @@ class Zoom extends Modal
   show: (link)->
     @setOptions(link.data('zoom')).addClass('lui-modal-nolock').addClass('lui-zoom-loading')
 
-    @limit_size($(window).size()).dialog.style('display: none')
+    @dialog.style('display: none')
 
     super() # needs to be done _before_ the @locker resize calls
 
@@ -48,32 +49,6 @@ class Zoom extends Modal
 
     @image = @image.clone().insertTo(@image, 'instead').attr('src', null)
     @image.on('load', =>@loaded()).attr('src', link.attr('href'))
-
-    return Zoom.current = @
-
-  #
-  # Making it to emit the 'hide' event and completely
-  # remove the whole widget out of the document
-  #
-  # @return {Zoom} self
-  #
-  hide: ->
-    Zoom.current = null
-    @emit('hide').remove()
-
-  #
-  # Sets the size limits for the image
-  #
-  # @param {Object} x: N, y: N size
-  # @return {Zoom} this
-  #
-  limit_size: (size)->
-    size =
-      maxWidth:  size.x - 20 + 'px'
-      maxHeight: size.y -  5 + 'px'
-
-    @image.style  size
-    @dialog.style size
 
     return @
 
@@ -93,7 +68,7 @@ class Zoom extends Modal
       @zoom()
     else
       @dialog.style(opacity: 1)
-      @emit 'show'
+      @emit 'zoom'
 
     @locker.hide()
 
@@ -119,5 +94,18 @@ class Zoom extends Modal
       height:  end_size.y + 'px'
     }, duration: @options.fxDuration, finish: =>
       @dialog.removeClass('lui-zoom-resizing').style(top: '', left: '', width: '', height: '')
-      @emit 'show'
+      @emit 'zoom'
     )
+
+
+#
+# Sets the size limits for the image
+#
+# @param {Object} x: N, y: N size
+# @return {Zoom} this
+#
+Zoom::limit_size = (size)->
+  @image._.style.maxWidth  = @dialog._.style.maxWidth  =  size.x - 20 + 'px'
+  @image._.style.maxHeight = @dialog._.style.maxHeight =  size.y -  5 + 'px'
+
+  return @

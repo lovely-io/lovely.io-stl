@@ -42,9 +42,10 @@ You can use the following options with your `Zoom` instances
 In addition to the normal DOM events, instances of the `Zoom` class emit
 the following events
 
-* `show` - when the widget completely appears on the page (after all the fx)
+* `show` - when the thumb locker appears on the screen
 * `hide` - when the widget was hidden
 * `load` - when the image was loaded, but before the widget starts zooming
+* `zoom` - after the zoomed version of the image appears (after all the fx)
 
 
 ## Copyright And License
