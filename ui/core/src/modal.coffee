@@ -28,7 +28,7 @@ class Modal extends Element
 
     super('div', options)
 
-    @_inner = @first('.lui-inner')
+    @_inner = @dialog = @first('.lui-inner')
     @_inner.insert(html)
 
     @limit_size(dom_window.size())
@@ -107,8 +107,8 @@ class Modal extends Element
   # @return {Zoom} this
   #
   limit_size: (size)->
-    @_inner._.style.maxWidth  = size.x - Modal.offsetX + 'px'
-    @_inner._.style.maxHeight = size.y - Modal.offsetY + 'px'
+    @dialog._.style.maxWidth  = size.x - Modal.offsetX + 'px'
+    @dialog._.style.maxHeight = size.y - Modal.offsetY + 'px'
 
     return @
 
