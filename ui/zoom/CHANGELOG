@@ -1,10 +1,14 @@
+2012-05-04 Nikolay Nemshilov
+
+  * Version 1.0.3 release
+  * Switching to UI-core 1.1.0
+
 2012-05-03 Nikolay Nemshilov
 
   * Version 1.0.2 release
   * Images scaling fixes
   * Proper window resize support
   * Stale thumb locker bug fix
-
 
 2012-03-26 Nikolay Nemshilov
 
