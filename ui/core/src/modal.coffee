@@ -86,9 +86,9 @@ class Modal extends Element
   show: ()->
     hide_all_modals()
 
-    @limit_size(dom_window.size())
     @insertTo(document.body)
     @$super.apply(@, arguments)
+    @limit_size(dom_window.size())
 
     Modal.current = @constructor.current = @emit('show')
 
