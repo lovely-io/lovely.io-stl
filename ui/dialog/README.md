@@ -39,6 +39,35 @@ methods. The only difference is that all the content changing methods like `Elem
 Also `Dialog` units have additional bidirectional method `#title` to work with the
 dialog's header caption.
 
+## Standard Dialog Subclasses
+
+Along with the basic `Dialog` class, this package provides a number of standard dialog subclasses
+
+ * `Dialog.Alert`
+ * `Dialog.Confirm`
+ * `Dialog.Prompt`
+
+All three of them are inherited from the basic `Dialog` class and can be used the same way
+
+    :javascript
+    Lovely(['dialog-1.1.0'], function(Dialog) {
+      new Dialog.Alert({html: "Danger!"}).show();
+      new Dialog.Confirm({html: "Are you sure?"}).show();
+      new Dialog.Prompt().show();
+    });
+
+The `Dialog.Prompt` class also can accept the `type` option to define the input field type,
+it can be one of those `text`, `password` or `textarea`
+
+Also the `ok` event fired from a `Dialog.Prompt` object has additional `value` attribute,
+which contains the input field value.
+
+    :javascript
+    new Dialog.Prompt().on('ok', function(event) {
+      console.log('You entered: '+ event.value);
+    });
+
+
 
 ## Copyright And License
 
