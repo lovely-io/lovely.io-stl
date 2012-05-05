@@ -5,7 +5,7 @@
     <link href="/shared.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
     <script type="text/javascript">
-      Lovely(["dom", "ui-core"], function($) {
+      Lovely(["dom", "ui"], function($) {
         function log(text) {
           $('#the-log').insert('<p>'+ text +'</p>', 'top');
         }
@@ -24,7 +24,7 @@
         for (var i=0; i < keys.length; i++) {
           for (var j=0; j < mods.length; j++) {
             (function(name) {
-              $(document).on(name, function() { log(name); });
+              $(document).on(name, function(event) { log("You pressed: '"+name+"' on "+ event.target._); });
             })((mods[j] ? mods[j] + ' '+ keys[i] : keys[i]).toLowerCase());
           }
         }

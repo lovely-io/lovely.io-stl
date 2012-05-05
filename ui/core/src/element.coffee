@@ -33,7 +33,7 @@ for Unit in [Element, Document, Window]
                (!ctrl  or event.ctrlKey) and
                (!shift or event.shiftKey)
 
-              return method.call(this, [event].concat(orig))
+              return method.apply(this, [event].concat(orig))
           ]
 
       original_method.apply(this, args)
