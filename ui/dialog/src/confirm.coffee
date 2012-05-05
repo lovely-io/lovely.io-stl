@@ -11,5 +11,6 @@ class Dialog.Confirm extends Dialog
 
     super(options)
 
+    @addClass('lui-dialog-with-icon')
     @addClass('lui-dialog-confirm')
     @on 'ok', 'hide'

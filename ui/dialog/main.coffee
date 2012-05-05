@@ -14,10 +14,13 @@ Ajax    = require('ajax')
 ext     = core.ext
 Class   = core.Class
 Element = $.Element
+Input   = $.Input
+Modal   = UI.Modal
 
 # glue in your files
 include 'src/dialog'
 include 'src/alert'
+include 'src/prompt'
 include 'src/confirm'
 include 'src/document'
 

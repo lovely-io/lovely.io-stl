@@ -23,8 +23,11 @@
         d('#huge-content', {title: "It's Huge!", url: 'test/huge.html'});
         d('#alert-test', {html: 'We all gonna die!'}, Dialog.Alert);
         d('#confirm-test', {html: "Are you sure?"}, Dialog.Confirm);
+        d('#prompt-text', {}, Dialog.Prompt);
+        d('#prompt-password', {type: 'password'}, Dialog.Prompt);
+        d('#prompt-textarea', {type: 'textarea'}, Dialog.Prompt);
 
-        new Dialog.Confirm({title: "Please confirm", html: "Are you sure?"}).show();
+        //new Dialog.Prompt({type: 'textarea'}).show();
       });
     </script>
   </head>
@@ -49,6 +52,9 @@
     <ul>
       <li><a href='#' id="alert-test">Alert dialog</a></li>
       <li><a href='#' id="confirm-test">Confirm dialog</a></li>
+      <li><a href="#" id="prompt-text">Prompt text line</a></li>
+      <li><a href="#" id="prompt-password">Prompt a password</a></li>
+      <li><a href="#" id="prompt-textarea">Prompt with textarea</a></li>
     </ul>
 
     <p class="white-space" style="min-width: 30em"></p>

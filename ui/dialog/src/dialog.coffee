@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2012 Nikolay Nemshilov
 #
-class Dialog extends UI.Modal
+class Dialog extends Modal
   include: core.Options
   extend:
     Options: # default options
