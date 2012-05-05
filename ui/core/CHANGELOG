@@ -1,3 +1,8 @@
+2012-05-05 Nikolay Nemshilov
+
+  * Version 1.1.2
+  * The fancy events processing fix for correct event objects bypassing
+
 2012-05-04 Nikolay Nemshilov
 
   * Version 1.1.1
