@@ -5,3 +5,68 @@
 //
 // Copyright (C) 2012 Nikolay Nemshilov
 //
+
+.lui-tabs
+  margin:     0
+  padding:    0
+  list-style: none
+
+  > *
+    margin:     0
+    padding:    .5em
+    list-style: none
+    display:    none
+
+  > :nth-child(2)
+    display: block
+
+  > ul li
+    display:        inline-block
+    vertical-align: bottom
+
+  > nav, > ul
+    border-bottom: 1px solid rgba(0,0,0,.3)
+    padding:       0 .5em
+    white-space:   nowrap
+    display:       block
+
+    a
+      display:          inline-block
+      vertical-align:   bottom
+      position:         relative
+      top:              1px
+      padding:          .25em 1em
+      margin:           0px
+      border:           1px solid rgba(0,0,0,.15)
+      border-bottom-color: rgba(0,0,0,.03)
+      border-radius:    .25em .25em 0 0
+      text-decoration:  none
+      font-weight:      normal
+      color:            rgba(0,0,0,.6)
+      background-color: rgba(0,0,0,.15)
+      background-image: -webkit-linear-gradient(rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 100%)
+      background-image:    -moz-linear-gradient(rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 100%)
+      background-image:     -ms-linear-gradient(rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 100%)
+      background-image:      -o-linear-gradient(rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 100%)
+      background-image:         linear-gradient(rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 100%)
+
+      &:hover
+        color:            rgba(0,0,0,.8)
+        text-decoration:  none
+        background-color: rgba(0,0,0,.1)
+        background-image: -webkit-linear-gradient(rgba(255,255,255,.8) 30%, rgba(255,255,255,0) 100%)
+        background-image:    -moz-linear-gradient(rgba(255,255,255,.8) 30%, rgba(255,255,255,0) 100%)
+        background-image:     -ms-linear-gradient(rgba(255,255,255,.8) 30%, rgba(255,255,255,0) 100%)
+        background-image:      -o-linear-gradient(rgba(255,255,255,.8) 30%, rgba(255,255,255,0) 100%)
+        background-image:         linear-gradient(rgba(255,255,255,.8) 30%, rgba(255,255,255,0) 100%)
+        border-bottom-color: rgba(0,0,0,.2)
+
+      &:first-child
+        color:               rgba(0,0,0,.8)
+        background-color:    rgba(255,255,255,1)
+        padding-top:         .3em
+        border-color:        rgba(0,0,0,.3)
+        border-bottom-color: rgba(255,255,255,1)
+
+
+
