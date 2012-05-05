@@ -17,6 +17,7 @@ Element = $.Element
 
 # glue in your files
 include 'src/dialog'
+include 'src/alert'
 
 # export your objects in the module
 exports = ext Dialog,

@@ -8,9 +8,9 @@
       Lovely(["dialog"], function(Dialog) {
         var $ = Lovely.module('dom');
 
-        function d(css, options) {
+        function d(css, options, type) {
           $(document).delegate(css, 'click', function() {
-            new Dialog(options).show();
+            new (type || Dialog)(options).show();
             return false;
           });
         }
@@ -21,8 +21,9 @@
         d('#without-header', {title: 'Hello', html: 'Hello World!', showHeader: false, showButtons: false});
         d('#ajax-request', {title: 'Hello', url: 'test/dummy.html'});
         d('#huge-content', {title: "It's Huge!", url: 'test/huge.html'});
+        d('#alert-test', {title: "Danger!", html: 'We all gonna die!'}, Dialog.Alert);
 
-        //new Dialog({title: "It's Huge!", url: 'test/huge.html'}).show();
+        //new Dialog.Alert().show();
       });
     </script>
   </head>
@@ -41,6 +42,11 @@
     <ul>
       <li><a href="#" id="ajax-request">Loaded via Ajax</a></li>
       <li><a href="#" id="huge-content">Huge content block</a></li>
+    </ul>
+
+    <h2>Specialized Dialogs</h2>
+    <ul>
+      <li><a href='#' id="alert-test">Alert dialog</a></li>
     </ul>
 
     <p class="white-space" style="min-width: 30em"></p>
