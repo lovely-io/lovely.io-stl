@@ -66,25 +66,45 @@ div.lui-dialog
   &.lui-dialog-alert
 
     > .lui-inner
-      > section
-        &:before
-          content:     '!'
-          color:       rgba(200,0,0,.8)
-          font-size:   350%
-          font-weight: bold
-          font-family: Georgia
-          float:       left
-          width:       1em
-          height:      1em
-          line-height: 1em
-          text-align:  center
-          border:     .1em solid rgba(200,0,0,.8)
-          border-radius: .6em
-          background:    rgba(200,0,0,.1)
-          margin-right:  .25em
+      > section:before
+        content:     '!'
+        color:       rgba(200,0,0,.8)
+        font-size:   350%
+        font-weight: bold
+        font-family: Georgia
+        float:       left
+        width:       1em
+        height:      1em
+        line-height: 1em
+        text-align:  center
+        border:     .1em solid rgba(200,0,0,.8)
+        border-radius: .6em
+        background:    rgba(200,0,0,.1)
+        margin-right:  .25em
 
       > footer
         text-align: center
 
         .lui-button-help, .lui-button-cancel
           display: none
+
+  // the confirmation dialog subclass
+
+  &.lui-dialog-confirm
+
+    > .lui-inner
+      > section:before
+        content:     '?'
+        color:       rgba(0,0,200,.8)
+        font-size:   350%
+        font-weight: bold
+        font-family: Georgia
+        float:       left
+        width:       1em
+        height:      1em
+        line-height: 1em
+        text-align:  center
+        border:     .1em solid rgba(0,0,200,.8)
+        border-radius: .6em
+        background:    rgba(0,0,200,.1)
+        margin-right:  .25em
