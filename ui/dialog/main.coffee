@@ -19,6 +19,7 @@ Element = $.Element
 include 'src/dialog'
 include 'src/alert'
 include 'src/confirm'
+include 'src/document'
 
 # export your objects in the module
 exports = ext Dialog,
