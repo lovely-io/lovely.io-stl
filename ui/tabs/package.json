@@ -1,0 +1,14 @@
+{
+  "name":        "tabs",
+  "version":     "1.0.0",
+  "description": "Standard tabs widget",
+  "author":      "Nikolay Nemshilov",
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/tabs",
+  "license":     "MIT",
+  "tags":        "UI, tabs",
+  "dependencies": {
+    "ui"   : "1.1.2",
+    "dom"  : "1.2.0",
+    "ajax" : "1.1.1"
+  }
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tabs Demo</title>
+    <link href="/shared.css" rel="stylesheet" type="text/css" />
+    <script src="/core.js"></script>
+    <script type="text/javascript">
+      Lovely(["tabs"], function() {
+        //console.log(module.version);
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Tabs Demo</h1>
+
+    <h2>Default Tabs</h2>
+    <div class="lui-tabs">
+      <nav>
+        <a href="#tab-1">Tab 1</a>
+        <a href="#tab-2">Tab 1</a>
+        <a href="#tab-3">Tab 1</a>
+        <a href="#tab-4">Tab 1</a>
+      </nav>
+
+      <div id="tab-1">Tab 1 body</div>
+      <div id="tab-2">Tab 2 body</div>
+      <div id="tab-3">Tab 3 body</div>
+      <div id="tab-4">Tab 4 body</div>
+    </div>
+
+    <h2>Legacy List based Tabs</h2>
+    <ul class="lui-tabs" data-tabs="{'idPrefix': 'list'}">
+      <ul>
+        <li><a href="#tab-1">Tab 1</a></li>
+        <li><a href="#tab-2">Tab 2</a></li>
+        <li><a href="#tab-3">Tab 3</a></li>
+        <li><a href="#tab-4">Tab 4</a></li>
+      </ul>
+
+      <li id="list-tab-1">Tab 1 body</li>
+      <li id="list-tab-2">Tab 2 body</li>
+      <li id="list-tab-3">Tab 3 body</li>
+      <li id="list-tab-4">Tab 4 body</li>
+    </ul>
+  </body>
+</html>

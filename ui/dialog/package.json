@@ -3,7 +3,7 @@
   "version":     "1.1.0",
   "description": "The standard dialog UI module",
   "author":      "Nikolay Nemshilov",
-  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/zoom",
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/dialog",
   "license":     "MIT",
   "tags":        "UI, dialog",
   "dependencies": {
