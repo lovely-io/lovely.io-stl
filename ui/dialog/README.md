@@ -7,7 +7,7 @@ This module provides the standard UI dialog solution
 Hook up the Dialog in any standard way and use it as a class
 
     :javascript
-    Lovely(['dialog-1.0.0'], function(Dialog) {
+    Lovely(['dialog-1.1.0'], function(Dialog) {
       new Dialog(title: "Hello", html: "Hello world!").show();
     });
 

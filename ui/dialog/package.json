@@ -1,6 +1,6 @@
 {
   "name":        "dialog",
-  "version":     "1.0.0",
+  "version":     "1.1.0",
   "description": "The standard dialog UI module",
   "author":      "Nikolay Nemshilov",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/zoom",

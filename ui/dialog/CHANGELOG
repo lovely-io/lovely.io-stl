@@ -1,3 +1,10 @@
+2012-05-05 Nikolay Nemshilov
+
+  * Version 1.1.0 release
+  * `Dialog.Alert` added
+  * `Dialog.Confirm` added
+  * `Dialog.Prompt` added
+
 2012-05-04 Nikolay Nemshilov
 
   * Version 1.0.0 release
