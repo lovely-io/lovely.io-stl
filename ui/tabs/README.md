@@ -19,6 +19,9 @@ Just hook it up and make a standard tabs layout like so
       <div id="tab-3">Tab 3 body</div>
     </div>
 
+__NOTE__ the hash tags in your links should correspond to the
+tab panel ids
+
 You also can use the legacy `UL` based layouts like those
 
     :html
@@ -35,6 +38,11 @@ You also can use the legacy `UL` based layouts like those
     </ul>
 
 Then hook up the `tabs` module in any standard way and enjoy the widget!
+
+
+## Options
+
+ * `idPrefix` - `''` - the tab panel ids prefix
 
 
 ## Copyright And License

@@ -10,6 +10,7 @@
   margin:     0
   padding:    0
   list-style: none
+  visibility: hidden
 
   > *
     margin:     0
@@ -17,7 +18,7 @@
     list-style: none
     display:    none
 
-  > :nth-child(2)
+  > .lui-tabs-current
     display: block
 
   > ul li
@@ -32,9 +33,9 @@
 
     a
       display:          inline-block
-      vertical-align:   bottom
       position:         relative
       top:              1px
+      vertical-align:   bottom
       padding:          .25em 1em
       margin:           0px
       border:           1px solid rgba(0,0,0,.15)
@@ -49,6 +50,12 @@
       background-image:     -ms-linear-gradient(rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 100%)
       background-image:      -o-linear-gradient(rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 100%)
       background-image:         linear-gradient(rgba(255,255,255,.5) 30%, rgba(255,255,255,0) 100%)
+      -webkit-transition: background .2s, color .2s
+      -moz-transition:    background .2s, color .2s
+      -ms-transition:     background .2s, color .2s
+      -o-transition:      background .2s, color .2s
+      transition:         background .2s, color .2s
+
 
       &:hover
         color:            rgba(0,0,0,.8)
@@ -61,9 +68,9 @@
         background-image:         linear-gradient(rgba(255,255,255,.8) 30%, rgba(255,255,255,0) 100%)
         border-bottom-color: rgba(0,0,0,.2)
 
-      &:first-child
+      &.lui-tabs-current
         color:               rgba(0,0,0,.8)
-        background-color:    rgba(255,255,255,1)
+        background-color:    inherit
         padding-top:         .3em
         border-color:        rgba(0,0,0,.3)
         border-bottom-color: rgba(255,255,255,1)

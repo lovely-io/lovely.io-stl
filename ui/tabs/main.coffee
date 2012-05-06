@@ -9,14 +9,14 @@ core    = require('core')
 $       = require('dom')
 
 # local variables assignments
+ext     = core.ext
 Class   = core.Class
 Element = $.Element
 
 # glue in your files
 include 'src/tabs'
+include 'src/document'
 
 # export your objects in the module
-exports.version = '%{version}'
-
-# global exports (don't use unless you're really need that)
-global.my_stuff = 'that pollutes the global scope'
+ext Tabs,
+  version: '%{version}'

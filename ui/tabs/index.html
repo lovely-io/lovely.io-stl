@@ -9,6 +9,11 @@
         //console.log(module.version);
       });
     </script>
+    <style>
+      .lui-tabs {
+        visibility: hidden;
+      }
+    </style>
   </head>
   <body>
     <h1>Tabs Demo</h1>
@@ -29,7 +34,7 @@
     </div>
 
     <h2>Legacy List based Tabs</h2>
-    <ul class="lui-tabs" data-tabs="{'idPrefix': 'list'}">
+    <ul class="lui-tabs" data-tabs='{"idPrefix": "list-"}'>
       <ul>
         <li><a href="#tab-1">Tab 1</a></li>
         <li><a href="#tab-2">Tab 2</a></li>
@@ -42,5 +47,7 @@
       <li id="list-tab-3">Tab 3 body</li>
       <li id="list-tab-4">Tab 4 body</li>
     </ul>
+
+    <p class="white-space"></p>
   </body>
 </html>
