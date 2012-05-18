@@ -13,7 +13,7 @@
 #      return { module: 'definition' };
 #    });
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 Lovely = ->
   args     = A(arguments)
@@ -21,7 +21,6 @@ Lovely = ->
   options  = if isObject(args[0])   then args.shift() else {}
   modules  = if isArray(args[0])    then args.shift() else []
   callback = if isFunction(args[0]) then args.shift() else ->
-  deadline = new Date() # the hang up time
 
   # setting up the options
   'hostUrl'     of options || (options.hostUrl     = Lovely.hostUrl || find_host_url())
@@ -30,8 +29,6 @@ Lovely = ->
 
   options.hostUrl[options.hostUrl.length - 1] is '/' || (options.hostUrl += '/')
   options.baseUrl[options.baseUrl.length - 1] is '/' || (options.baseUrl += '/')
-
-  deadline.setTime(deadline.getTime() + options.waitSeconds * 1000)
 
   for name, i in modules
     if name of Lovely.bundle
