@@ -33,6 +33,16 @@
           $('#modal-demo4').on('click', function(event) { event.stop();
             new UI.Modal({html: "Hello Non Lock!", nolock: true}).show();
           });
+          $('#drop-down-menu').on('click', function(event) { event.stop();
+            this.menu = this.menu || new UI.Menu({html:
+              "<a href='#'>Label 1</a>"+
+              "<a href='#'>Label 2</a>"+
+              "<a href='#'>Label 3</a>"+
+              "<a href='#'>Label 4</a>"
+            });
+
+            this.menu.showAt(this);
+          });
         });
       });
     </script>
@@ -176,7 +186,7 @@
 
     <h2>Menu Styles</h2>
     <p>
-      <nav class="lui-menu" style="display: inline-block; position: static">
+      <nav class="lui-menu" style="display: inline-block; position: static; margin-right: 1em">
         <a href="#">Menu item 1</a>
         <a href="#">Menu item 2</a>
         <a href="#">Menu item 3</a>
@@ -184,13 +194,15 @@
         <a href="#">Menu item 4</a>
       </nav>
 
-      <nav class="lui-menu" style="display: inline-block; position: static">
+      <nav class="lui-menu" style="display: inline-block; position: static; margin-right: 1em">
         <a href="#"><i class="lui-icon lui-icon-ok"></i>Menu item 1</a>
         <a href="#"><i class="lui-icon lui-icon-cancel"></i>Menu item 2</a>
         <a href="#"><i class="lui-icon lui-icon-edit"></i>Menu item 3</a>
         <hr>
         <a href="#"><i class="lui-icon lui-icon-delete"></i>Menu item 4</a>
       </nav>
+
+      <a href="#" id="drop-down-menu">Drop down menu</a>
     </p>
 
     <p class="white-space"></p>
