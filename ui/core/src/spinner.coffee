@@ -39,6 +39,6 @@ move_spinner = (spinner)->
   window.setInterval ->
     dot = spinner.first('.lui-spinner-current')
     (dot.nextSibling() || spinner.first()).radioClass('lui-spinner-current')
-  , 400
+  , 300
 
   return spinner
