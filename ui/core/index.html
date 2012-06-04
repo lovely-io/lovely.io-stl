@@ -44,6 +44,10 @@
             this.menu.showAt(this);
           });
         });
+
+        $(document).delegate('nav.lui-menu a', 'click', function(event) {
+          event.preventDefault();
+        })
       });
     </script>
     <style type="text/css">
