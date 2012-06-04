@@ -1,3 +1,9 @@
+2012-06-04 Nikolay Nemshilov
+
+  * Version 1.2.0
+  * The `UI.Menu` unit was added
+  * Spinner stylesheet adjustments
+
 2012-05-05 Nikolay Nemshilov
 
   * Version 1.1.2
