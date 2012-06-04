@@ -280,15 +280,16 @@
 // drop-down menus
 
 nav.lui-menu
-  display:       inline-block
-  position:      absolute
-  z-index:       99999999
-  margin:        0
+  display:        none
+  position:       absolute
+  z-index:        99999999
+  margin:         0
   padding:       .5em 0
-  background:    rgba(255,255,255,1)
-  border:        1px solid rgba(0,0,0,.25)
+  background:     rgba(255,255,255,1)
+  border:         1px solid rgba(0,0,0,.25)
   border-radius: .25em
   box-shadow:    .25em .25em .5em rgba(0,0,0,.2)
+  vertical-align: top
 
   a
     display:         block
@@ -302,6 +303,19 @@ nav.lui-menu
     &:hover
       text-decoration: none
       background:      rgba(0,0,0,.15)
+
+    .lui-icon, .lui-icon:hover, .lui-icon:active
+      border:         none
+      background:     none
+      box-shadow:     none
+      top:            auto
+      height:         1em
+      vertical-align: top
+      margin-left:  -.4em
+      margin-right:  .25em
+      margin-top:   -.2em
+      color:          inherit
+
 
   hr
     border: none
