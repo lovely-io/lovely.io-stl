@@ -187,6 +187,7 @@ inline_css = (directory) ->
   .replace(/\\9;/g, '_ie8_e;')
 
   # compacting the styles
+  .replace(/\\/g, "\\\\")
   .replace(/\/\*[\S\s]*?\*\//img, '')
   .replace(/\n\s*\n/mg, "\n")
   .replace(/\s+/img, ' ')
