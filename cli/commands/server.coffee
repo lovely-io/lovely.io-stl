@@ -75,14 +75,17 @@ exports.init = (args) ->
     content_type = (name)->
       extension = (name || '').split('.')
       switch extension[extension.length - 1]
-        when 'css' then return 'text/css'
-        when 'js'  then return 'text/javascript'
-        when 'ico' then return 'image/icon'
-        when 'png' then return 'image/png'
-        when 'jpg' then return 'image/jpg'
-        when 'gif' then return 'image/gif'
-        when 'swf' then return 'application/x-shockwave-flash'
-        else            return 'text/html'
+        when 'css'  then return 'text/css'
+        when 'js'   then return 'text/javascript'
+        when 'ico'  then return 'image/icon'
+        when 'png'  then return 'image/png'
+        when 'jpg'  then return 'image/jpg'
+        when 'gif'  then return 'image/gif'
+        when 'swf'  then return 'application/x-shockwave-flash'
+        when 'eot'  then return "application/vnd.ms-fontobject"
+        when 'ttf'  then return "application/x-font-ttf"
+        when 'woff' then return "application/x-font-woff"
+        else             return 'text/html'
 
     if req.method is 'POST'
       console.log("\n POST:     ", JSON.stringify(req.body).grey)
