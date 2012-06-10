@@ -19,7 +19,7 @@
           new UI.Spinner({size: 8, 'class': 'green'}).insertTo('#spinners-demo');
 
           new UI.Locker().insertTo('#locker-demo');
-          new UI.Locker({size: 6}).insertTo('#tight-space-locker');
+          new UI.Locker({size: 4}).insertTo('#tight-space-locker');
 
           $('#modal-demo1').on('click', function(event) { event.stop();
             new UI.Modal({html: "HTML Hello World!"}).show();
@@ -75,8 +75,8 @@
       }
       #tight-space-locker {
         position: relative;
-        width:    5em;
-        height:   5em;
+        width:    4.5em;
+        height:   4.5em;
       }
       div.lui-modal div.lui-inner {
         background: pink;
@@ -157,27 +157,6 @@
     <h2>Programmatically Created Buttons</h2>
     <p>
       <div id="buttons-demo"></div>
-    </p>
-
-    <h2>Basic Icons</h2>
-    <p>
-      <i class="lui-icon-add"></i>
-      <i class="lui-icon-edit"></i>
-      <i class="lui-icon-delete"></i>
-      <i class="lui-icon-reply"></i>
-      <i class="lui-icon-star"></i>
-      <i class="lui-icon-like"></i>
-      <i class="lui-icon-ok"></i>
-      <i class="lui-icon-cancel"></i>
-    </p>
-    <p>
-      <i class="lui-icon-back"></i>
-      <i class="lui-icon-forward"></i>
-      <i class="lui-icon-previous"></i>
-      <i class="lui-icon-previous2"></i>
-      <i class="lui-icon-next2"></i>
-      <i class="lui-icon-next"></i>
-      <i class="lui-icon-help"></i>
     </p>
 
     <h2>Programmatically Created Icons</h2>
