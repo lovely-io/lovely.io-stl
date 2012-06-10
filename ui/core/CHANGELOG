@@ -1,3 +1,22 @@
+2012-06-11 Nikolay Nemshilov
+
+  * Version 2.0.0
+  * FontAwesome is the default source of icons
+  * New buttons/icons realations
+
+        :html
+        <a href="" class="lui-button lui-icon-ok">Okay</a>
+
+    This makes an embedded into the button icon with gray background
+
+        :html
+        <a href="" class="lui-button"><i class="lui-icon-ok"></i>Okay</a>
+
+    This makes the icon to be inlined in the button along with the caption text
+
+  * The old button-like icons were moved to the buttons functionality, and `UI.Icon`
+    now just an icon, without any borders or backgrounds
+
 2012-06-04 Nikolay Nemshilov
 
   * Version 1.2.0
