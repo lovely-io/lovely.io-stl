@@ -9,8 +9,8 @@
       Lovely(['ui'], function(UI) {
         var $ = Lovely.module('dom');
         $(function() {
-          ['add', 'edit', 'delete', 'reply'].forEach(function(type) {
-            new UI.Button(type, {'class': 'lui-button-'+ type}).insertTo('#buttons-demo');
+          ['plus', 'edit', 'remove', 'trash'].forEach(function(type) {
+            new UI.Button(type, {'class': 'lui-button lui-icon-'+ type}).insertTo('#buttons-demo');
             new UI.Icon({'class': 'lui-icon-'+ type}).insertTo('#icons-demo')
           });
 
@@ -60,6 +60,9 @@
       .lui-button.green {
         background-color: #cec;
       }
+      .lui-button {
+        margin-bottom: .25em;
+      }
       #icons-demo .lui-icon {
         margin-right: .25em;
       }
@@ -105,24 +108,20 @@
       <button class="lui-button green">Button</button>
     </p>
 
-    <h2>Buttons With Icons</h2>
+    <h2>Buttons With Embedded Icons</h2>
     <p>
-      <a href="" class="lui-button lui-button-add">Add</a>
-      <a href="" class="lui-button lui-button-edit">Edit</a>
-      <a href="" class="lui-button lui-button-delete">Delete</a>
-      <a href="" class="lui-button lui-button-reply">Reply</a>
+      <a href="" class="lui-button lui-icon-ok">Okay</a>
+      <a href="" class="lui-button lui-icon-edit">Edit</a>
+      <a href="" class="lui-button lui-icon-trash">Delete</a>
+      <a href="" class="lui-button lui-icon-signin">Sign In</a>
     </p>
+
+    <h2>Buttons With Inlined Icons</h2>
     <p>
-      <a href="" class="lui-button lui-button-star">Star</a>
-      <a href="" class="lui-button lui-button-play">Play</a>
-      <a href="" class="lui-button lui-button-back">Back</a>
-      <a href="" class="lui-button lui-button-forward">Foward</a>
-    </p>
-    <p>
-      <a href="" class="lui-button lui-button-like">Like</a>
-      <a href="" class="lui-button lui-button-ok">Okay</a>
-      <a href="" class="lui-button lui-button-cancel">Cancel</a>
-      <a href="" class="lui-button lui-button-help">Help</a>
+      <a href="" class="lui-button"><i class="lui-icon-ok"></i>Okay</a>
+      <a href="" class="lui-button"><i class="lui-icon-edit"></i>Edit</a>
+      <a href="" class="lui-button"><i class="lui-icon-trash"></i>Delete</a>
+      <a href="" class="lui-button"><i class="lui-icon-signin"></i>Sign In</a>
     </p>
 
     <h2>Programmatically Created Buttons</h2>
@@ -132,23 +131,23 @@
 
     <h2>Basic Icons</h2>
     <p>
-      <i class="lui-icon lui-icon-add"></i>
-      <i class="lui-icon lui-icon-edit"></i>
-      <i class="lui-icon lui-icon-delete"></i>
-      <i class="lui-icon lui-icon-reply"></i>
-      <i class="lui-icon lui-icon-star"></i>
-      <i class="lui-icon lui-icon-like"></i>
-      <i class="lui-icon lui-icon-ok"></i>
-      <i class="lui-icon lui-icon-cancel"></i>
+      <i class="lui-icon-add"></i>
+      <i class="lui-icon-edit"></i>
+      <i class="lui-icon-delete"></i>
+      <i class="lui-icon-reply"></i>
+      <i class="lui-icon-star"></i>
+      <i class="lui-icon-like"></i>
+      <i class="lui-icon-ok"></i>
+      <i class="lui-icon-cancel"></i>
     </p>
     <p>
-      <i class="lui-icon lui-icon-back"></i>
-      <i class="lui-icon lui-icon-forward"></i>
-      <i class="lui-icon lui-icon-previous"></i>
-      <i class="lui-icon lui-icon-previous2"></i>
-      <i class="lui-icon lui-icon-next2"></i>
-      <i class="lui-icon lui-icon-next"></i>
-      <i class="lui-icon lui-icon-help"></i>
+      <i class="lui-icon-back"></i>
+      <i class="lui-icon-forward"></i>
+      <i class="lui-icon-previous"></i>
+      <i class="lui-icon-previous2"></i>
+      <i class="lui-icon-next2"></i>
+      <i class="lui-icon-next"></i>
+      <i class="lui-icon-help"></i>
     </p>
 
     <h2>Programmatically Created Icons</h2>
@@ -199,11 +198,11 @@
       </nav>
 
       <nav class="lui-menu" style="display: inline-block; position: static; margin-right: 1em">
-        <a href="#"><i class="lui-icon lui-icon-ok"></i>Menu item 1</a>
-        <a href="#"><i class="lui-icon lui-icon-cancel"></i>Menu item 2</a>
-        <a href="#"><i class="lui-icon lui-icon-edit"></i>Menu item 3</a>
+        <a href="#"><i class="lui-icon-ok"></i>Menu item 1</a>
+        <a href="#"><i class="lui-icon-edit"></i>Menu item 2</a>
+        <a href="#"><i class="lui-icon-remove"></i>Menu item 3</a>
         <hr>
-        <a href="#"><i class="lui-icon lui-icon-delete"></i>Menu item 4</a>
+        <a href="#"><i class="lui-icon-trash"></i>Menu item 4</a>
       </nav>
 
       <a href="#" id="drop-down-menu">Drop down menu</a>

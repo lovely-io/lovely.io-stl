@@ -6,9 +6,10 @@
 // Copyright (C) 2012 Nikolay Nemshilov
 //
 
+
 // buttons and icons
 
-.lui-button, .lui-icon
+.lui-button
   position:         relative
   display:          inline-block
   font-family:      Arial, Helvetica
@@ -18,6 +19,7 @@
   border:           1px solid #ccc
   border-radius:    .25em
   text-decoration:  none
+  padding:          0.25em 1em
   -webkit-user-select: none
   -moz-user-select: none
   -ms-user-select:  none
@@ -68,112 +70,6 @@
     background-image: -ms-linear-gradient(    rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.04) 100%)
     background-image: -o-linear-gradient(     rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.04) 100%)
     background-image: linear-gradient(        rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.04) 100%)
-
-
-.lui-button
-  padding: 0.25em 1em
-
-  &:before
-    font-size: 125%
-    width: 1.4em
-
-.lui-icon
-  padding:     0
-  display:     inline-block
-  width:       1.5em
-  height:      1.5em
-  line-height: 1.5em
-  outline:     none
-  font-size:   1em
-
-  &:before
-    position:   absolute
-    width:      100%
-    text-align: center
-    font-size:  1.2em
-    height:     100%
-    top:        0
-    left:       0
-
-
-.lui-button-add,    .lui-button-edit,     .lui-button-delete,
-.lui-button-reply,  .lui-button-play,     .lui-button-like,
-.lui-button-star,   .lui-button-back,     .lui-button-forward,
-.lui-button-ok,     .lui-button-help,     .lui-button-cancel
-  padding-left:  2.5em
-  padding-right: .8em
-
-  &:before
-    border-right: inherit
-    background-color: rgba(0,0,0,0.1)
-    position: absolute
-    top: 0
-    left: 0
-    height: 100%
-    text-align: center
-    line-height: 1.3em
-
-.lui-button-add:before, .lui-icon-add:before
-  content: "\u271A"
-
-.lui-button-edit:before, .lui-icon-edit:before
-  content: "\u270E"
-
-.lui-button-delete:before, .lui-icon-delete:before
-  content: "\u2716"
-
-.lui-button-reply:before, .lui-icon-reply:before
-  content: "\u27A5"
-
-.lui-button-play:before, .lui-icon-play:before
-  content: "\u25BA"
-
-.lui-button-like:before, .lui-icon-like:before
-  content: "\u2764"
-
-.lui-button-ok:before, .lui-icon-ok:before
-  content: "\u2714"
-
-.lui-button-cancel:before, .lui-icon-cancel:before
-  content: "\u2718"
-
-.lui-button-help:before, .lui-icon-help:before
-  content: "?"
-  font-weight: bold
-
-.lui-button-star:before, .lui-icon-star:before
-  content: "\u2605"
-
-.lui-button-back:before, .lui-icon-back:before
-  content: "\u279C"
-  -webkit-transform: rotate(180deg)
-  -moz-transform:    rotate(180deg)
-  -ms-transform:     rotate(180deg)
-  -o-transform:      rotate(180deg)
-  -transform:        rotate(180deg)
-
-.lui-button-forward:before, .lui-icon-forward:before
-  content: "\u279C"
-
-.lui-button-next:before, .lui-icon-next:before
-  content: "\u203A"
-  font-size: 1.8em
-  line-height: .7em
-
-.lui-button-next2:before, .lui-icon-next2:before
-  content: "\u00BB"
-  font-size: 1.8em
-  line-height: .7em
-
-.lui-button-previous:before, .lui-icon-previous:before
-  content: "\u2039"
-  font-size: 1.8em
-  line-height: .7em
-
-.lui-button-previous2:before, .lui-icon-previous2:before
-  content: "\u00AB"
-  font-size: 1.8em
-  line-height: .7em
 
 
 
@@ -320,3 +216,466 @@ nav.lui-menu
   hr
     border: none
     border-top:    1px solid rgba(0,0,0,.25)
+
+
+// FontAwesome icons
+
+@font-face
+  font-family: 'FontAwesome'
+  font-weight:  normal
+  font-style:   normal
+  src: url('images/fontawesome.eot')
+  src: url('images/fontawesome.eot') format('embedded-opentype'), url('images/fontawesome.woff') format('woff'), url('images/fontawesome.ttf') format('truetype')
+
+
+*[class^="lui-icon"]:before, *[class*=" lui-icon"]:before
+  content:         ' '
+  font-family:     FontAwesome
+  font-weight:     normal
+  font-style:      normal
+  display:         inline-block
+  text-decoration: inherit
+  margin-right:    .5em
+
+.lui-button[class^="lui-icon"], .lui-button[class*=" lui-icon"]
+  padding: .25em .8em
+  padding-left: 2.4em
+
+  &:before
+    width:            1.6em
+    border-right:     inherit
+    background-color: rgba(0,0,0,0.1)
+    position:         absolute
+    top:              0
+    left:             0
+    height:           100%
+    text-align:       center
+    line-height:      1.7em
+
+.lui-button[class^="lui-icon"]:before, .lui-button[class*=" lui-icon"]:before,
+.lui-button > *[class^="lui-icon"]:before, .lui-button > *[class*=" lui-icon"]:before
+  font-size:      110%
+  vertical-align: middle
+
+
+.lui-icon-glass:before
+  content: "\f000"
+.lui-icon-music:before
+  content: "\f001"
+.lui-icon-search:before
+  content: "\f002"
+.lui-icon-envelope:before
+  content: "\f003"
+.lui-icon-heart:before
+  content: "\f004"
+.lui-icon-star:before
+  content: "\f005"
+.lui-icon-star-empty:before
+  content: "\f006"
+.lui-icon-user:before
+  content: "\f007"
+.lui-icon-film:before
+  content: "\f008"
+.lui-icon-th-large:before
+  content: "\f009"
+.lui-icon-th:before
+  content: "\f00a"
+.lui-icon-th-list:before
+  content: "\f00b"
+.lui-icon-ok:before
+  content: "\f00c"
+.lui-icon-remove:before
+  content: "\f00d"
+.lui-icon-zoom-in:before
+  content: "\f00e"
+.lui-icon-zoom-out:before
+  content: "\f010"
+.lui-icon-off:before
+  content: "\f011"
+.lui-icon-signal:before
+  content: "\f012"
+.lui-icon-cog:before
+  content: "\f013"
+.lui-icon-trash:before
+  content: "\f014"
+.lui-icon-home:before
+  content: "\f015"
+.lui-icon-file:before
+  content: "\f016"
+.lui-icon-time:before
+  content: "\f017"
+.lui-icon-road:before
+  content: "\f018"
+.lui-icon-download-alt:before
+  content: "\f019"
+.lui-icon-download:before
+  content: "\f01a"
+.lui-icon-upload:before
+  content: "\f01b"
+.lui-icon-inbox:before
+  content: "\f01c"
+.lui-icon-play-circle:before
+  content: "\f01d"
+.lui-icon-repeat:before
+  content: "\f01e"
+
+.lui-icon-refresh:before
+  content: "\f021"
+.lui-icon-list-alt:before
+  content: "\f022"
+.lui-icon-lock:before
+  content: "\f023"
+.lui-icon-flag:before
+  content: "\f024"
+.lui-icon-headphones:before
+  content: "\f025"
+.lui-icon-volume-off:before
+  content: "\f026"
+.lui-icon-volume-down:before
+  content: "\f027"
+.lui-icon-volume-up:before
+  content: "\f028"
+.lui-icon-qrcode:before
+  content: "\f029"
+.lui-icon-barcode:before
+  content: "\f02a"
+.lui-icon-tag:before
+  content: "\f02b"
+.lui-icon-tags:before
+  content: "\f02c"
+.lui-icon-book:before
+  content: "\f02d"
+.lui-icon-bookmark:before
+  content: "\f02e"
+.lui-icon-print:before
+  content: "\f02f"
+.lui-icon-camera:before
+  content: "\f030"
+.lui-icon-font:before
+  content: "\f031"
+.lui-icon-bold:before
+  content: "\f032"
+.lui-icon-italic:before
+  content: "\f033"
+.lui-icon-text-height:before
+  content: "\f034"
+.lui-icon-text-width:before
+  content: "\f035"
+.lui-icon-align-left:before
+  content: "\f036"
+.lui-icon-align-center:before
+  content: "\f037"
+.lui-icon-align-right:before
+  content: "\f038"
+.lui-icon-align-justify:before
+  content: "\f039"
+.lui-icon-list:before
+  content: "\f03a"
+.lui-icon-indent-left:before
+  content: "\f03b"
+.lui-icon-indent-right:before
+  content: "\f03c"
+.lui-icon-facetime-video:before
+  content: "\f03d"
+.lui-icon-picture:before
+  content: "\f03e"
+.lui-icon-pencil:before
+  content: "\f040"
+.lui-icon-map-marker:before
+  content: "\f041"
+.lui-icon-adjust:before
+  content: "\f042"
+.lui-icon-tint:before
+  content: "\f043"
+.lui-icon-edit:before
+  content: "\f044"
+.lui-icon-share:before
+  content: "\f045"
+.lui-icon-check:before
+  content: "\f046"
+.lui-icon-move:before
+  content: "\f047"
+.lui-icon-step-backward:before
+  content: "\f048"
+.lui-icon-fast-backward:before
+  content: "\f049"
+.lui-icon-backward:before
+  content: "\f04a"
+.lui-icon-play:before
+  content: "\f04b"
+.lui-icon-pause:before
+  content: "\f04c"
+.lui-icon-stop:before
+  content: "\f04d"
+.lui-icon-forward:before
+  content: "\f04e"
+.lui-icon-fast-forward:before
+  content: "\f050"
+.lui-icon-step-forward:before
+  content: "\f051"
+.lui-icon-eject:before
+  content: "\f052"
+.lui-icon-chevron-left:before
+  content: "\f053"
+.lui-icon-chevron-right:before
+  content: "\f054"
+.lui-icon-plus-sign:before
+  content: "\f055"
+.lui-icon-minus-sign:before
+  content: "\f056"
+.lui-icon-remove-sign:before
+  content: "\f057"
+.lui-icon-ok-sign:before
+  content: "\f058"
+.lui-icon-question-sign:before
+  content: "\f059"
+.lui-icon-info-sign:before
+  content: "\f05a"
+.lui-icon-screenshot:before
+  content: "\f05b"
+.lui-icon-remove-circle:before
+  content: "\f05c"
+.lui-icon-ok-circle:before
+  content: "\f05d"
+.lui-icon-ban-circle:before
+  content: "\f05e"
+.lui-icon-arrow-left:before
+  content: "\f060"
+.lui-icon-arrow-right:before
+  content: "\f061"
+.lui-icon-arrow-up:before
+  content: "\f062"
+.lui-icon-arrow-down:before
+  content: "\f063"
+.lui-icon-share-alt:before
+  content: "\f064"
+.lui-icon-resize-full:before
+  content: "\f065"
+.lui-icon-resize-small:before
+  content: "\f066"
+.lui-icon-plus:before
+  content: "\f067"
+.lui-icon-minus:before
+  content: "\f068"
+.lui-icon-asterisk:before
+  content: "\f069"
+.lui-icon-exclamation-sign:before
+  content: "\f06a"
+.lui-icon-gift:before
+  content: "\f06b"
+.lui-icon-leaf:before
+  content: "\f06c"
+.lui-icon-fire:before
+  content: "\f06d"
+.lui-icon-eye-open:before
+  content: "\f06e"
+.lui-icon-eye-close:before
+  content: "\f070"
+.lui-icon-warning-sign:before
+  content: "\f071"
+.lui-icon-plane:before
+  content: "\f072"
+.lui-icon-calendar:before
+  content: "\f073"
+.lui-icon-random:before
+  content: "\f074"
+.lui-icon-comment:before
+  content: "\f075"
+.lui-icon-magnet:before
+  content: "\f076"
+.lui-icon-chevron-up:before
+  content: "\f077"
+.lui-icon-chevron-down:before
+  content: "\f078"
+.lui-icon-retweet:before
+  content: "\f079"
+.lui-icon-shopping-cart:before
+  content: "\f07a"
+.lui-icon-folder-close:before
+  content: "\f07b"
+.lui-icon-folder-open:before
+  content: "\f07c"
+.lui-icon-resize-vertical:before
+  content: "\f07d"
+.lui-icon-resize-horizontal:before
+  content: "\f07e"
+.lui-icon-bar-chart:before
+  content: "\f080"
+.lui-icon-twitter-sign:before
+  content: "\f081"
+.lui-icon-facebook-sign:before
+  content: "\f082"
+.lui-icon-camera-retro:before
+  content: "\f083"
+.lui-icon-key:before
+  content: "\f084"
+.lui-icon-cogs:before
+  content: "\f085"
+.lui-icon-comments:before
+  content: "\f086"
+.lui-icon-thumbs-up:before
+  content: "\f087"
+.lui-icon-thumbs-down:before
+  content: "\f088"
+.lui-icon-star-half:before
+  content: "\f089"
+.lui-icon-heart-empty:before
+  content: "\f08a"
+.lui-icon-signout:before
+  content: "\f08b"
+.lui-icon-linkedin-sign:before
+  content: "\f08c"
+.lui-icon-pushpin:before
+  content: "\f08d"
+.lui-icon-external-link:before
+  content: "\f08e"
+.lui-icon-signin:before
+  content: "\f090"
+.lui-icon-trophy:before
+  content: "\f091"
+.lui-icon-github-sign:before
+  content: "\f092"
+.lui-icon-upload-alt:before
+  content: "\f093"
+.lui-icon-lemon:before
+  content: "\f094"
+.lui-icon-phone:before
+  content: "\f095"
+.lui-icon-check-empty:before
+  content: "\f096"
+.lui-icon-bookmark-empty:before
+  content: "\f097"
+.lui-icon-phone-sign:before
+  content: "\f098"
+.lui-icon-twitter:before
+  content: "\f099"
+.lui-icon-facebook:before
+  content: "\f09a"
+.lui-icon-github:before
+  content: "\f09b"
+.lui-icon-unlock:before
+  content: "\f09c"
+.lui-icon-credit-card:before
+  content: "\f09d"
+.lui-icon-rss:before
+  content: "\f09e"
+.lui-icon-hdd:before
+  content: "\f0a0"
+.lui-icon-bullhorn:before
+  content: "\f0a1"
+.lui-icon-bell:before
+  content: "\f0a2"
+.lui-icon-certificate:before
+  content: "\f0a3"
+.lui-icon-hand-right:before
+  content: "\f0a4"
+.lui-icon-hand-left:before
+  content: "\f0a5"
+.lui-icon-hand-up:before
+  content: "\f0a6"
+.lui-icon-hand-down:before
+  content: "\f0a7"
+.lui-icon-circle-arrow-left:before
+  content: "\f0a8"
+.lui-icon-circle-arrow-right:before
+  content: "\f0a9"
+.lui-icon-circle-arrow-up:before
+  content: "\f0aa"
+.lui-icon-circle-arrow-down:before
+  content: "\f0ab"
+.lui-icon-globe:before
+  content: "\f0ac"
+.lui-icon-wrench:before
+  content: "\f0ad"
+.lui-icon-tasks:before
+  content: "\f0ae"
+.lui-icon-filter:before
+  content: "\f0b0"
+.lui-icon-briefcase:before
+  content: "\f0b1"
+.lui-icon-fullscreen:before
+  content: "\f0b2"
+.lui-icon-group:before
+  content: "\f0c0"
+.lui-icon-link:before
+  content: "\f0c1"
+.lui-icon-cloud:before
+  content: "\f0c2"
+.lui-icon-beaker:before
+  content: "\f0c3"
+.lui-icon-cut:before
+  content: "\f0c4"
+.lui-icon-copy:before
+  content: "\f0c5"
+.lui-icon-paper-clip:before
+  content: "\f0c6"
+.lui-icon-save:before
+  content: "\f0c7"
+.lui-icon-sign-blank:before
+  content: "\f0c8"
+.lui-icon-reorder:before
+  content: "\f0c9"
+.lui-icon-list-ul:before
+  content: "\f0ca"
+.lui-icon-list-ol:before
+  content: "\f0cb"
+.lui-icon-strikethrough:before
+  content: "\f0cc"
+.lui-icon-underline:before
+  content: "\f0cd"
+.lui-icon-table:before
+  content: "\f0ce"
+.lui-icon-magic:before
+  content: "\f0d0"
+.lui-icon-truck:before
+  content: "\f0d1"
+.lui-icon-pinterest:before
+  content: "\f0d2"
+.lui-icon-pinterest-sign:before
+  content: "\f0d3"
+.lui-icon-google-plus-sign:before
+  content: "\f0d4"
+.lui-icon-google-plus:before
+  content: "\f0d5"
+.lui-icon-money:before
+  content: "\f0d6"
+.lui-icon-caret-down:before
+  content: "\f0d7"
+.lui-icon-caret-up:before
+  content: "\f0d8"
+.lui-icon-caret-left:before
+  content: "\f0d9"
+.lui-icon-caret-right:before
+  content: "\f0da"
+.lui-icon-columns:before
+  content: "\f0db"
+.lui-icon-sort:before
+  content: "\f0dc"
+.lui-icon-sort-down:before
+  content: "\f0dd"
+.lui-icon-sort-up:before
+  content: "\f0de"
+.lui-icon-envelope-alt:before
+  content: "\f0e0"
+.lui-icon-linkedin:before
+  content: "\f0e1"
+.lui-icon-undo:before
+  content: "\f0e2"
+.lui-icon-legal:before
+  content: "\f0e3"
+.lui-icon-dashboard:before
+  content: "\f0e4"
+.lui-icon-comment-alt:before
+  content: "\f0e5"
+.lui-icon-comments-alt:before
+  content: "\f0e6"
+.lui-icon-bolt:before
+  content: "\f0e7"
+.lui-icon-sitemap:before
+  content: "\f0e8"
+.lui-icon-umbrella:before
+  content: "\f0e9"
+.lui-icon-paste:before
+  content: "\f0ea"
+.lui-icon-user-md:before
+  content: "\f200"
