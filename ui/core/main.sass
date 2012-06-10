@@ -234,7 +234,14 @@ nav.lui-menu
     background: none
     color:      rgba(0,0,0,.5)
     cursor:     default
-    padding-left: .5em
+    padding-left: 1em
+
+  > h4, > h3
+    ~ *
+      padding-left: 1.5em
+
+    ~ h4, ~ h3
+      padding-left: 1em
 
 
   hr, hr:hover
@@ -243,6 +250,9 @@ nav.lui-menu
     padding:       0
     margin:        .5em 0
     border-top:    1px solid rgba(0,0,0,.25)
+
+    ~ *
+      padding-left: 1em
 
 
 // FontAwesome icons
