@@ -18,7 +18,11 @@ class Menu extends Element
   # @return {Menu} this
   #
   constructor: (options)->
-    @$super 'nav', options
+    if element = raw_element(options)
+      @$super element
+    else
+      @$super 'nav', options
+
     @addClass 'lui-menu'
 
     @on 'click', (event)->
@@ -35,18 +39,27 @@ class Menu extends Element
   # Shows the menu at the element
   #
   # @param {String|HTMLElement|dom.Element|dom.NodeList} element reference
+  # @param {String} menu location 'bottom left', 'top-right' and so on
   # @return {Menu} this
   #
-  showAt: (element)->
-    element = dom(element) if typeof(element) is 'string' or element.nodeType is 1
-    element = element[0] if element instanceof dom.NodeList
+  showAt: (element, location)->
+    element    = dom(element) if typeof(element) is 'string' or element.nodeType is 1
+    element    = element[0] if element instanceof dom.NodeList
+    position   = element.position()
+    location or= 'bottom left'
 
     if element
-      @position
-        x: element.position().x
-        y: element.position().y + element.size().y
+      @style(visibility: 'hidden', display: 'block').insertTo(element, 'after')
 
-      @insertTo(element, 'after').show()
+      # adjusting the position for specified location
+      position.y += element.size().y               if location.indexOf('bottom') isnt -1
+      position.x -= (@size().x - element.size().x) if location.indexOf('right')  isnt -1
+      position.y -= @size().y                      if location.indexOf('top')    isnt -1
+
+      position.y = 0 if position.y < 0
+      position.x = 0 if position.x < 0
+
+      @position(position).style(visibility: 'visible').show()
 
     return @
 
@@ -56,7 +69,7 @@ class Menu extends Element
   # @return {Menu} this
   #
   show: ->
-    Modal.current = @constructor.current = @$super().emit('show')
+    Menu.current = @constructor.current = @$super().emit('show')
 
   #
   # Making the menu element to get removed out of the DOM
@@ -64,8 +77,8 @@ class Menu extends Element
   # @return {Menu} this
   #
   hide: ->
-    Modal.current = @constructor.current = null
-    @$super().emit('hide').remove()
+    Menu.current = @constructor.current = null
+    @$super().emit('hide')
 
   #
   # Selects the next link on the menu
@@ -107,22 +120,22 @@ class Menu extends Element
 #
 # Making all the hanging menus to get closed on menu clicks
 #
-dom(document).on 'click', (event)->
-  unless event.find('.lui-menu')
-    dom('.lui-menu').forEach (menu)->
+$(document).on 'click', (event)->
+  unless event.find('.lui-menu') or event.find('[data-toggle]')
+    $('.lui-menu').forEach (menu)->
       menu.hide() if menu.style('position') is 'absolute'
 
 #
 # Handling keyboard navigation
 #
-dom(document).on 'keydown', (event)->
-  if Modal.current isnt null
+$(document).on 'keydown', (event)->
+  if Menu.current isnt null
 
     switch event.keyCode
-      when 40 then event.preventDefault(); Modal.current.selectNext()
-      when 38 then event.preventDefault(); Modal.current.selectPrevious()
-      when 13 then event.preventDefault(); Modal.current.pickCurrent()
-      when 27 then                         Modal.current.hide()
+      when 40 then event.preventDefault(); Menu.current.selectNext()
+      when 38 then event.preventDefault(); Menu.current.selectPrevious()
+      when 13 then event.preventDefault(); Menu.current.pickCurrent()
+      when 27 then                         Menu.current.hide()
 
 
 

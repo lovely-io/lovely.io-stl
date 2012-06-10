@@ -25,6 +25,31 @@
           <a href="" class="lui-button"><i class="lui-icon-remove"></i></a>
         </div>
 
+  * Menu headers support added
+
+        :html
+        <nav class="lui-menu">
+          <h4>Beverages</h4>
+          <a href="#">Coffee</a>
+          <a href="#">Green Tea</a>
+          <a href="#">Orange Juice</a>
+
+          <h4>Starters</h4>
+          <a href="#">Crap salad</a>
+          <a href="#">Crab soup</a>
+        </nav>
+
+  * Dropdown menus for the buttons were added
+
+        :html
+        <a href="#" class="lui-button lui-button-dropdown" data-toggle="#menu-1">Profile</a>
+        <nav id="menu-1" class="lui-menu">
+          <a href="#" class="lui-icon-home">Home</a>
+          <a href='#' class="lui-icon-cog">Settings</a>
+          <hr>
+          <a href="#" class="lui-icon-signout">Sign Out</a>
+        </nav>
+
 2012-06-04 Nikolay Nemshilov
 
   * Version 1.2.0

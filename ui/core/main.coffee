@@ -9,8 +9,10 @@ core     = require('core')
 dom      = require('dom')
 fx       = require('fx')
 
+$        = dom
 A        = core.A
 ext      = core.ext
+isObject = core.isObject
 Class    = core.Class
 Event    = dom.Event
 Element  = dom.Element

@@ -33,16 +33,6 @@
           $('#modal-demo4').on('click', function(event) { event.stop();
             new UI.Modal({html: "Hello Non Lock!", nolock: true}).show();
           });
-          $('#drop-down-menu').on('click', function(event) { event.stop();
-            this.menu = this.menu || new UI.Menu({html:
-              "<a href='#'>Label 1</a>"+
-              "<a href='#'>Label 2</a>"+
-              "<a href='#'>Label 3</a>"+
-              "<a href='#'>Label 4</a>"
-            });
-
-            this.menu.showAt(this);
-          });
         });
 
         $(document).delegate('nav.lui-menu a', 'click', function(event) {
@@ -196,7 +186,7 @@
       <a href="#" id="modal-demo4">Modal{nolock: true}</a>
     </p>
 
-    <h2>Menu Styles</h2>
+    <h2>Basic Menu Styles</h2>
     <p>
       <nav class="lui-menu" style="display: inline-block; position: static; margin-right: 1em">
         <a href="#">Menu item 1</a>
@@ -227,8 +217,17 @@
         <hr>
         <a href="#">Something else</a>
       </nav>
+    </p>
 
-      <a href="#" id="drop-down-menu">Drop down menu</a>
+    <h2>Dropdown Menus</h2>
+    <p>
+      <a href="#" class="lui-button lui-button-dropdown" data-toggle="#menu-1"><i class="lui-icon-user"></i> Profile</a>
+      <nav id="menu-1" class="lui-menu">
+        <a href="#" class="lui-icon-home">Home</a>
+        <a href='#' class="lui-icon-cog">Settings</a>
+        <hr>
+        <a href="#" class="lui-icon-signout">Sign Out</a>
+      </nav>
     </p>
 
     <p class="white-space"></p>

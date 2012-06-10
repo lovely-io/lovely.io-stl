@@ -25,7 +25,7 @@
   -ms-user-select:  none
   -o-user-select:   none
   user-select:      none
-  background-color: rgba(0,0,0,0.1)
+  background-color: rgba(0,0,0,0.08)
   background-image: -webkit-linear-gradient(rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
   background-image: -moz-linear-gradient(   rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
   background-image: -ms-linear-gradient(    rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
@@ -41,7 +41,7 @@
     background-image: -o-linear-gradient(     rgba(255,255,255,0.9) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.07) 100%)
     background-image: linear-gradient(        rgba(255,255,255,0.9) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.07) 100%)
 
-  &:active
+  &:active, &.lui-active
     top: 1px
     text-decoration:  none
     box-shadow: 0 1px 1px rgba(0,0,0,.1) inset
@@ -86,6 +86,41 @@
 
     &:last-child
       border-radius: 0 .3em .3em 0
+
+
+.lui-button[class^="lui-icon"], .lui-button[class*=" lui-icon"]
+  padding-left: 2.5em
+
+  &:before
+    width:            1.8em
+    border-right:     inherit
+    background-color: rgba(0,0,0,0.1)
+    position:         absolute
+    top:              0
+    left:             0
+    height:           100%
+    text-align:       center
+    line-height:      2em
+    vertical-align:   baseline
+    margin:           0
+
+.lui-button[class^="lui-icon"]:before, .lui-button[class*=" lui-icon"]:before,
+.lui-button > *[class^="lui-icon"]:before, .lui-button > *[class*=" lui-icon"]:before
+  font-size:      110%
+  vertical-align: middle
+
+.lui-button > *[class^="lui-icon"]:before, .lui-button > *[class*=" lui-icon"]:before
+  width: .9em
+  text-align: center
+
+
+.lui-button-dropdown:after
+  font-family: FontAwesome
+  content:     '\f0d7'
+  margin-left: .5em
+
+.lui-button-dropdown.lui-active:after
+  content:     '\f0d8'
 
 
 
@@ -264,7 +299,6 @@ nav.lui-menu
   src: url('images/fontawesome.eot')
   src: url('images/fontawesome.eot') format('embedded-opentype'), url('images/fontawesome.woff') format('woff'), url('images/fontawesome.ttf') format('truetype')
 
-
 *[class^="lui-icon"]:before, *[class*=" lui-icon"]:before
   content:         ' '
   font-family:     FontAwesome
@@ -273,29 +307,9 @@ nav.lui-menu
   display:         inline-block
   text-decoration: inherit
 
-.lui-button[class^="lui-icon"], .lui-button[class*=" lui-icon"]
-  padding-left: 2.5em
+a[class^="lui-icon"]:before, a[class*=" lui-icon"]:before
+  margin-right: .5em
 
-  &:before
-    width:            1.8em
-    border-right:     inherit
-    background-color: rgba(0,0,0,0.1)
-    position:         absolute
-    top:              0
-    left:             0
-    height:           100%
-    text-align:       center
-    line-height:      2em
-    vertical-align:   baseline
-
-.lui-button[class^="lui-icon"]:before, .lui-button[class*=" lui-icon"]:before,
-.lui-button > *[class^="lui-icon"]:before, .lui-button > *[class*=" lui-icon"]:before
-  font-size:      110%
-  vertical-align: middle
-
-.lui-button > *[class^="lui-icon"]:before, .lui-button > *[class*=" lui-icon"]:before
-  width: .9em
-  text-align: center
 
 .lui-icon-glass:before
   content: "\f000"

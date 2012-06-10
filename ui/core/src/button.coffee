@@ -20,3 +20,22 @@ class Button extends Input
     super('button', options)
 
     @on 'mousedown', (event)-> event.preventDefault()
+
+
+#
+# Dropdown menus handling
+#
+$(document).delegate '.lui-button[data-toggle]', 'mousedown,touchstart', (event)->
+  if menu = $(@data('toggle'))[0]
+    unless menu instanceof Menu
+      menu = new Menu(menu)
+      menu.on 'show', => @addClass('lui-active')
+      menu.on 'hide', => @removeClass('lui-active')
+
+    if Menu.current
+      Menu.current.hide()
+    else
+      menu.showAt(@, 'bottom-right')
+
+$(document).delegate '.lui-button[data-toggle]', 'click', (event)->
+  event.preventDefault()
