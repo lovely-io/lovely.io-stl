@@ -11,7 +11,7 @@
         $(function() {
           ['plus', 'edit', 'remove', 'trash'].forEach(function(type) {
             new UI.Button(type, {'class': 'lui-button lui-icon-'+ type}).insertTo('#buttons-demo');
-            new UI.Icon({'class': 'lui-icon-'+ type}).insertTo('#icons-demo')
+            new UI.Icon({'class': 'lui-icon-'+ type}).insertTo('#icons-demo');
           });
 
           new UI.Spinner().insertTo('#spinners-demo');
@@ -35,7 +35,7 @@
           });
         });
 
-        $(document).delegate('nav.lui-menu a', 'click', function(event) {
+        $(document).delegate('nav.lui-menu a, a.lui-button', 'click', function(event) {
           event.preventDefault();
         })
       });
