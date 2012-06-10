@@ -17,7 +17,7 @@
   font-style:       normal
   color:            rgba(0,0,0,.8)
   border:           1px solid #ccc
-  border-radius:    .25em
+  border-radius:    .3em
   text-decoration:  none
   padding:          0.4em .6em
   -webkit-user-select: none
@@ -70,6 +70,22 @@
     background-image: -ms-linear-gradient(    rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.04) 100%)
     background-image: -o-linear-gradient(     rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.04) 100%)
     background-image: linear-gradient(        rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.04) 100%)
+
+
+.lui-button-group
+  display: inline-block
+
+  .lui-button
+    float: left
+    border-left-width: 0px
+    border-radius: 0px
+
+    &:first-child
+      border-left-width: 1px
+      border-radius: .3em 0 0 .3em
+
+    &:last-child
+      border-radius: 0 .3em .3em 0
 
 
 

@@ -17,6 +17,14 @@
   * The old button-like icons were moved to the buttons functionality, and `UI.Icon`
     now just an icon, without any borders or backgrounds
 
+  * Button groups added
+
+        :html
+        <div class="lui-button-group">
+          <a href="" class="lui-button"><i class="lui-icon-ok"></i></a>
+          <a href="" class="lui-button"><i class="lui-icon-remove"></i></a>
+        </div>
+
 2012-06-04 Nikolay Nemshilov
 
   * Version 1.2.0
