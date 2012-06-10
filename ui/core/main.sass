@@ -25,6 +25,7 @@
   -ms-user-select:  none
   -o-user-select:   none
   user-select:      none
+  vertical-align:   middle
   background-color: rgba(0,0,0,0.08)
   background-image: -webkit-linear-gradient(rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
   background-image: -moz-linear-gradient(   rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
@@ -42,14 +43,13 @@
     background-image: linear-gradient(        rgba(255,255,255,0.9) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.07) 100%)
 
   &:active, &.lui-active
-    top: 1px
     text-decoration:  none
     box-shadow: 0 1px 1px rgba(0,0,0,.1) inset
-    background-image: -webkit-linear-gradient(rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
-    background-image: -moz-linear-gradient(   rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
-    background-image: -ms-linear-gradient(    rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
-    background-image: -o-linear-gradient(     rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
-    background-image: linear-gradient(        rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
+    background-image: -webkit-linear-gradient(rgba(0,0,0,.01) 15%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,.1) 100%)
+    background-image: -moz-linear-gradient(   rgba(0,0,0,.01) 15%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,.1) 100%)
+    background-image: -ms-linear-gradient(    rgba(0,0,0,.01) 15%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,.1) 100%)
+    background-image: -o-linear-gradient(     rgba(0,0,0,.01) 15%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,.1) 100%)
+    background-image: linear-gradient(        rgba(0,0,0,.01) 15%, rgba(255,255,255,0.1) 75%, rgba(255,255,255,.1) 100%)
 
   &:focus
     outline: 0
@@ -73,18 +73,19 @@
 
 
 .lui-button-group
-  display: inline-block
+  display:        inline-block
+  vertical-align: middle
 
   .lui-button
     float: left
     border-left-width: 0px
     border-radius: 0px
 
-    &:first-child
+    &:first-of-type
       border-left-width: 1px
       border-radius: .3em 0 0 .3em
 
-    &:last-child
+    &:last-of-type
       border-radius: 0 .3em .3em 0
 
 
@@ -116,11 +117,11 @@
 
 .lui-button-dropdown:after
   font-family: FontAwesome
-  content:     '\f0d7'
-  margin-left: .5em
+  content:     ' \f0d7'
+  line-height: 1.2em
 
 .lui-button-dropdown.lui-active:after
-  content:     '\f0d8'
+  content:     ' \f0d8'
 
 
 
@@ -226,7 +227,7 @@
 
 // drop-down menus
 
-nav.lui-menu
+.lui-menu
   display:        none
   position:       absolute
   z-index:        99999999
@@ -247,7 +248,7 @@ nav.lui-menu
     background:      rgba(0,0,0,0)
     position:        relative
 
-    &:hover, &.lui-menu-selected
+    &:hover, &.lui-active
       text-decoration: none
       background-color: rgba(0,0,0,.15)
 

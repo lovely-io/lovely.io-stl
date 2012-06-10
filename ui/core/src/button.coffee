@@ -35,7 +35,10 @@ $(document).delegate '.lui-button[data-toggle]', 'mousedown,touchstart', (event)
     if Menu.current
       Menu.current.hide()
     else
-      menu.showAt(@, 'bottom-right')
+      anchor = @parent('.lui-button-group')
+      anchor = anchor.first('.lui-button') if anchor
+
+      menu.showAt(anchor || @)
 
 $(document).delegate '.lui-button[data-toggle]', 'click', (event)->
   event.preventDefault()

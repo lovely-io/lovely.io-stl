@@ -10,6 +10,8 @@
 # Copyright (C) 2012 Nikolay Nemshilov
 #
 class Menu extends Element
+  extend:
+    current: null # current menu reference
 
   #
   # Basic constructor
@@ -93,7 +95,7 @@ class Menu extends Element
     index = 0                if index < 0
 
     if @currentLink = links[index]
-      @currentLink.radioClass('lui-menu-selected')
+      @currentLink.radioClass('lui-active')
       @emit 'select', link: @currentLink
 
     return @

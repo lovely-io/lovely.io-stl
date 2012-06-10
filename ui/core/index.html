@@ -220,7 +220,7 @@
     </p>
 
     <h2>Dropdown Menus</h2>
-    <p>
+    <div>
       <a href="#" class="lui-button lui-button-dropdown" data-toggle="#menu-1"><i class="lui-icon-user"></i> Profile</a>
       <nav id="menu-1" class="lui-menu">
         <a href="#" class="lui-icon-home">Home</a>
@@ -228,7 +228,27 @@
         <hr>
         <a href="#" class="lui-icon-signout">Sign Out</a>
       </nav>
-    </p>
+      <div class="lui-button-group">
+        <a href="#" class="lui-button"><i class="lui-icon-user"></i> Profile</a>
+        <a href="#" class="lui-button lui-button-dropdown" data-toggle="#menu-2"></a>
+        <nav id="menu-2" class="lui-menu">
+          <a href="#" class="lui-icon-home">Home</a>
+          <a href='#' class="lui-icon-cog">Settings</a>
+          <hr>
+          <a href="#" class="lui-icon-signout">Sign Out</a>
+        </nav>
+      </div>
+      <div class="lui-button-group">
+        <a href="#" class="lui-button"><i class="lui-icon-user"></i></a>
+        <a href="#" class="lui-button lui-button-dropdown" data-toggle="#menu-3"></a>
+        <nav id="menu-3" class="lui-menu">
+          <a href="#" class="lui-icon-home">Home</a>
+          <a href='#' class="lui-icon-cog">Settings</a>
+          <hr>
+          <a href="#" class="lui-icon-signout">Sign Out</a>
+        </nav>
+      </div>
+    </div>
 
     <p class="white-space"></p>
   </body>
