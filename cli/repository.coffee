@@ -46,7 +46,7 @@ exports.save = (pack, build)->
       fs = require('fs')
 
       fs.mkdirSync("#{location}/images", 0o0755)
-      build = build.replace /('|")([^'"]+\.(gif|png|jpg|jpeg|svg|swf))\1/g,
+      build = build.replace /('|")([^'"]+\.(gif|png|jpg|jpeg|svg|swf|eot|ttf|woff))\1/g,
       (match, q, url)->
         if url.indexOf('http://') > -1
           url = url.replace(/http:\/\/[^\/]+/, '')
