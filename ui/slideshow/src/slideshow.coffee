@@ -26,8 +26,8 @@ class Slideshow extends Element
     @$super(element._).setOptions(@data('slideshow'))
 
     @controls = new Element('div', {class: 'lui-slideshow-controls'}).append(
-      @prev_button = new Icon(class: 'lui-icon-previous').on('click', => @previous()),
-      @next_button = new Icon(class: 'lui-icon-next').on('click', => @next()),
+      @prev_button = new Icon('circle-arrow-left').on('click', => @previous()),
+      @next_button = new Icon('circle-arrow-right').on('click', => @next()),
       @pager       = new Element('div', class: 'lui-slideshow-pager'))
 
     if typeof(window.ontouchstart) isnt 'undefined'
@@ -125,13 +125,13 @@ class Slideshow extends Element
 
     for item, i in @items()
       if i is index
-        item._.className = 'current'
+        item._.className = 'lui-slideshow-current'
         @currentIndex    = index
         @currentItem     = item
       else if i is index - 1
-        item._.className = 'previous'
+        item._.className = 'lui-slideshow-previous'
       else if i is index + 1
-        item._.className = 'next'
+        item._.className = 'lui-slideshow-next'
       else
         item._.className = ''
 
@@ -174,7 +174,7 @@ class Slideshow extends Element
   # makes the actual sliding effect
   _slide: (index, item, cur_item)->
 
-    item.radioClass('current')
+    item.radioClass('lui-slideshow-current')
 
     return
 

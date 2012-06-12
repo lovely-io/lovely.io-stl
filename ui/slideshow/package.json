@@ -1,12 +1,12 @@
 {
   "name":        "slideshow",
-  "version":     "1.0.2",
+  "version":     "1.0.3",
   "description": "Simple slideshow widget",
   "author":      "Nikolay Nemshilov",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/slideshow",
   "license":     "MIT",
   "tags":        "UI, slideshow",
   "dependencies": {
-    "ui" : "1.0.1"
+    "ui" : "2.0.0"
   }
 }
