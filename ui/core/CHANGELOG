@@ -1,4 +1,4 @@
-2012-06-11 Nikolay Nemshilov
+2012-06-10 Nikolay Nemshilov
 
   * Version 2.0.0
   * FontAwesome is the default source of icons
@@ -49,6 +49,12 @@
           <hr>
           <a href="#" class="lui-icon-signout">Sign Out</a>
         </nav>
+
+  * `UI.Icon` class API was changed, now you can create icons just by name
+
+        :js
+        var icon = new UI.Icon('edit');
+
 
 2012-06-04 Nikolay Nemshilov
 

@@ -7,9 +7,16 @@ class Icon extends Element
   #
   # Basic constructor
   #
-  # @param {Object} options
+  # @param {Object|String} options or icon name
   # @return {Icon} self
   #
   constructor: (options)->
-    super('i', merge_options(options, {class: 'lui-icon'}))
+    options or= {}
+    options   = {name: options} if typeof(options) is 'string'
+    options['class'] = 'lui-icon-' + options.name if options.name
+
+    delete(options.name)
+
+    super('i', options)
+
     @on 'mousedown', (event)-> event.preventDefault()

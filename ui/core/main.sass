@@ -20,12 +20,6 @@
   border-radius:    .3em
   text-decoration:  none
   padding:          0.4em .6em
-  -webkit-user-select: none
-  -moz-user-select: none
-  -ms-user-select:  none
-  -o-user-select:   none
-  user-select:      none
-  vertical-align:   baseline
   background-color: rgba(0,0,0,0.08)
   background-image: -webkit-linear-gradient(rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
   background-image: -moz-linear-gradient(   rgba(255,255,255,0.7) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.05) 100%)
@@ -71,6 +65,13 @@
     background-image: -o-linear-gradient(     rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.04) 100%)
     background-image: linear-gradient(        rgba(255,255,255,0.6) 25%, rgba(255,255,255,0) 75%, rgba(0,0,0,.04) 100%)
 
+.lui-button, [class^="lui-icon"], [class*=" lui-button"]
+  -webkit-user-select: none
+  -moz-user-select:    none
+  -ms-user-select:     none
+  -o-user-select:      none
+  user-select:         none
+  vertical-align:      baseline
 
 .lui-button-group
   display:        inline-block
