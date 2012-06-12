@@ -30,10 +30,16 @@ div.lui-dialog
         padding:     0
         color:       rgba(0,0,0,.5)
 
-      .lui-icon
+      .lui-button
         float: right
-        margin-top: -1.3em
+        margin-top: -1.5em
         color: rgba(0,0,0,.5)
+        padding: .2em .25em
+
+      .lui-icon-help:before
+        content: '?'
+        line-height: 1em
+        font-weight: bold
 
     > section
       position:   relative
@@ -44,12 +50,16 @@ div.lui-dialog
     > footer
       text-align: right
 
-      .lui-button-help
+      .lui-dialog-help
         float: left
+
+      .lui-icon-help:before
+        content: '?'
+        font-weight: bold
 
   &.lui-dialog-nohelp
     > .lui-inner
-      > header .lui-icon-help, > footer .lui-button-help
+      > header .lui-dialog-help, > footer .lui-dialog-help
         display: none
 
   &.lui-dialog-noheader
@@ -66,21 +76,19 @@ div.lui-dialog
       white-space: nowrap
 
       > section:before
-        content:     '\u27A5'
+        content:     '\f044'
         color:       rgba(0,0,0,.7)
-        font-size:   300%
-        font-weight: bold
-        font-family: Georgia
+        font-size:   400%
+        font-weight: normal
+        font-family:  FontAwesome
         display:     inline-block
         vertical-align: middle
         width:       1.2em
         height:      1.2em
         line-height: 1.2em
         text-align:  center
-        border:     .075em solid rgba(0,0,0,.7)
-        border-radius: .7em
-        background:    rgba(0,0,0,.1)
-        margin-right:  .2em
+        margin-right:  .1em
+        margin-top:    .1em
 
 
   // alert dialog subclass
@@ -89,15 +97,13 @@ div.lui-dialog
 
     > .lui-inner
       > section:before
-        content:      '!'
-        color:        rgba(200,0,0,.8)
-        border-color: rgba(200,0,0,.8)
-        background:   rgba(200,0,0,.1)
+        content:      '\f071'
+        color:        rgba(150, 0,0, .8)
 
       > footer
         text-align: center
 
-        .lui-button-help, .lui-button-cancel
+        .lui-dialog-help, .lui-dialog-cancel
           display: none
 
   // the confirmation dialog subclass
@@ -106,10 +112,8 @@ div.lui-dialog
 
     > .lui-inner
       > section:before
-        content:      '?'
+        content:      '\f059'
         color:        rgba(0,0,200,.8)
-        border-color: rgba(0,0,200,.8)
-        background:   rgba(0,0,200,.1)
 
   // the prompt dialog subclass
 

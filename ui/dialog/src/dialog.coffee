@@ -32,16 +32,16 @@ class Dialog extends Modal
       <header>
         <h3>&nbsp;</h3>
 
-        <button class="lui-icon lui-icon-delete"></button>
-        <button class="lui-icon lui-icon-help"></button>
+        <button class="lui-dialog-cancel lui-button"><i class="lui-icon-remove"></i></button>
+        <button class="lui-dialog-help   lui-button"><i class="lui-icon-help"></i></button>
       </header>
       <section>
 
       </section>
       <footer>
-        <button class="lui-button lui-button-help">Help</button>
-        <button class="lui-button lui-button-ok">Ok</button>
-        <button class="lui-button lui-button-cancel">Cancel</button>
+        <button class="lui-dialog-help   lui-button lui-icon-help">Help</button>
+        <button class="lui-dialog-ok     lui-button lui-icon-ok">Ok</button>
+        <button class="lui-dialog-cancel lui-button lui-icon-remove">Cancel</button>
       </footer>
     """
 
@@ -59,11 +59,11 @@ class Dialog extends Modal
     @load  @options.url, @options.ajax if @options.url
 
     # hooking up the events
-    @header.first('.lui-icon-help').on('click',     => @emit('help'))
-    @header.first('.lui-icon-delete').on('click',   => @emit('cancel'))
-    @footer.first('.lui-button-help').on('click',   => @emit('help'))
-    @footer.first('.lui-button-ok').on('click',     => @emit('ok'))
-    @footer.first('.lui-button-cancel').on('click', => @emit('cancel'))
+    @header.first('.lui-dialog-help').on('click',   => @emit('help'))
+    @header.first('.lui-dialog-cancel').on('click', => @emit('cancel'))
+    @footer.first('.lui-dialog-ok').on('click',     => @emit('ok'))
+    @footer.first('.lui-dialog-help').on('click',   => @emit('help'))
+    @footer.first('.lui-dialog-cancel').on('click', => @emit('cancel'))
 
     @on 'cancel', 'hide'
 

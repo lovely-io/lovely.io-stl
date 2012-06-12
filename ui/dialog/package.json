@@ -1,14 +1,13 @@
 {
   "name":        "dialog",
-  "version":     "1.1.0",
+  "version":     "1.2.0",
   "description": "The standard dialog UI module",
   "author":      "Nikolay Nemshilov",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/dialog",
   "license":     "MIT",
   "tags":        "UI, dialog",
   "dependencies": {
-    "ui"   : "1.1.2",
-    "dom"  : "1.2.0",
+    "ui"   : "2.0.0",
     "ajax" : "1.1.1"
   }
 }

@@ -16,8 +16,7 @@ class Dialog.Prompt extends Dialog
     @addClass('lui-dialog-with-icon')
     @addClass('lui-dialog-prompt')
 
-    @input = new Input(type: input_type)
-    @append(@input)
+    @input = new Input(type: input_type).insertTo(@)
 
     unless input_type is 'textarea'
       @input.on 'enter', => @emit('ok')
