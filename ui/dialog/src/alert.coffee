@@ -11,6 +11,8 @@ class Dialog.Alert extends Dialog
 
     super(options)
 
+    @addClass('lui-dialog-only-ok')
     @addClass('lui-dialog-with-icon')
     @addClass('lui-dialog-alert')
+
     @on 'ok', 'hide'

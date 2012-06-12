@@ -70,6 +70,13 @@ div.lui-dialog
     > .lui-inner > footer
       display: none
 
+  &.lui-dialog-only-ok
+    > .lui-inner > footer
+      text-align: center
+
+      .lui-dialog-help, .lui-dialog-cancel
+        display: none
+
 
   &.lui-dialog-with-icon
     > .lui-inner
@@ -98,12 +105,6 @@ div.lui-dialog
         content: '\f05a'
         color:        rgba(0,0,200,.8)
 
-      > footer
-        text-align: center
-
-        .lui-dialog-help, .lui-dialog-cancel
-          display: none
-
 
   // alert dialog subclass
 
@@ -114,11 +115,6 @@ div.lui-dialog
         content:      '\f071'
         color:        rgba(150, 0,0, .8)
 
-      > footer
-        text-align: center
-
-        .lui-dialog-help, .lui-dialog-cancel
-          display: none
 
   // the confirmation dialog subclass
 

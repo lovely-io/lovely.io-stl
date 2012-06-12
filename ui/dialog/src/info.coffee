@@ -11,6 +11,8 @@ class Dialog.Info extends Dialog
 
     super(options)
 
+    @addClass('lui-dialog-only-ok')
     @addClass('lui-dialog-with-icon')
     @addClass('lui-dialog-info')
+
     @on 'ok', 'hide'
