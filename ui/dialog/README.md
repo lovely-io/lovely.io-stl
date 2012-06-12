@@ -20,6 +20,7 @@ Hook up the Dialog in any standard way and use it as a class
 * `onlyOk` - `false` - show the `Okay` button only
 * `title` - `null` - title text
 * `html`  - `null` - default html content
+* `icon` - `null` - UI-core icon name without the `lui-icon-` prefix
 * `url` - `null` - an url address to load via ajax
 * `ajax` - `null` - ajax options (when the `url` option is specified)
 

@@ -4,6 +4,7 @@
   * UI core 2.0.0 support
   * `Dialog.Info` class added
   * `onlyOk` option and the `lui-dialog-only-ok` css class added
+  * `icon` option added for quick icon creating
 
 2012-05-05 Nikolay Nemshilov
 

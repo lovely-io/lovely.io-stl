@@ -8,12 +8,10 @@ class Dialog.Info extends Dialog
   constructor: (options)->
     options       or= {}
     options.title or= 'Info'
+    options.icon  or= 'info-sign'
     options.onlyOk  = true unless 'onlyOk' in options
 
     super(options)
 
-    @addClass('lui-dialog-only-ok')
-    @addClass('lui-dialog-with-icon')
-    @addClass('lui-dialog-info')
-
-    @on 'ok', 'hide'
+    @addClass 'lui-dialog-info'
+    @on       'ok', 'hide'

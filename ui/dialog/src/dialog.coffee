@@ -11,8 +11,10 @@ class Dialog extends Modal
       showHelp:    false
       showHeader:  true
       showButtons: true
+      onlyOk:      false
       title:       null    # title to preset
       html:        null    # html to preset
+      icon:        null    # UI-core icon name without the `lui-icon-` prefix
       url:         null    # an url to load
       ajax:        null    # ajax options
 
@@ -55,9 +57,10 @@ class Dialog extends Modal
     @addClass 'lui-dialog-nofooter' unless @options.showButtons
     @addClass 'lui-dialog-only-ok'  if     @options.onlyOk
 
-    @title @options.title if @options.title
-    @html  @options.html  if @options.html
-    @load  @options.url, @options.ajax if @options.url
+    @body.insert(@_icon  = new UI.Icon(@options.icon)) if @options.icon
+    @title  @options.title              if @options.title
+    @html   @options.html               if @options.html
+    @load   @options.url, @options.ajax if @options.url
 
     # hooking up the events
     @header.first('.lui-dialog-help').on('click',   => @emit('help'))
@@ -98,6 +101,29 @@ class Dialog extends Modal
     ).send()
 
     return @
+
+  #
+  # Overloading the method to place the icon in place all the time
+  #
+  # @param {mixed} content
+  # @return {Dialog} this
+  #
+  update: ->
+    Modal::update.apply(@, arguments)
+    @body.insert(@_icon, 'top') if @_icon
+    return @
+
+  #
+  # Overloading the method to place the icon in place all the time
+  #
+  # @param {mixed} content
+  # @return {Dialog} this
+  #
+  html: ->
+    Modal::update.apply(@, arguments)
+    @body.insert(@_icon, 'top') if @_icon
+    return @
+
 
 #
 # Make the inner block scroll

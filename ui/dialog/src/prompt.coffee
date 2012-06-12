@@ -8,12 +8,13 @@ class Dialog.Prompt extends Dialog
   constructor: (options)->
     options       or= {}
     options.title or= 'Prompt'
+    options.icon  or= 'edit'
 
     input_type = options.type || 'text'
     delete(options.type)
 
     super(options)
-    @addClass('lui-dialog-with-icon')
+
     @addClass('lui-dialog-prompt')
 
     @input = new Input(type: input_type).insertTo(@)

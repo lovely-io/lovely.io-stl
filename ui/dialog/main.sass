@@ -77,70 +77,53 @@ div.lui-dialog
       .lui-dialog-help, .lui-dialog-cancel
         display: none
 
+  // generic large icon styles
 
-  &.lui-dialog-with-icon
-    > .lui-inner
-      white-space: nowrap
-
-      > section:before
-        content:     '\f044'
-        color:       rgba(0,0,0,.7)
-        font-size:   400%
-        font-weight: normal
-        font-family:  FontAwesome
-        display:     inline-block
-        vertical-align: middle
-        width:       1.2em
-        height:      1.2em
-        line-height: 1.2em
-        text-align:  center
-        margin-right:  .1em
-        margin-top:    .1em
+  &.lui-dialog
+    > .lui-inner > section > i[class^="lui-icon"]
+      font-size:      400%
+      display:        inline-block
+      vertical-align: middle
+      text-align:     center
+      margin-right:  .2em
+      line-height:   .9em
 
   // info dialog subclass
 
   &.lui-dialog-info
-    > .lui-inner
-      > section:before
-        content: '\f05a'
-        color:        rgba(0,0,200,.8)
+    > .lui-inner > section > i[class^="lui-icon"]
+      color:        rgba(0,0,200,.8)
 
 
   // alert dialog subclass
 
   &.lui-dialog-alert
-
-    > .lui-inner
-      > section:before
-        content:      '\f071'
-        color:        rgba(150, 0,0, .8)
+    > .lui-inner > section > i[class^="lui-icon"]
+      color:        rgba(150, 0,0, .8)
 
 
   // the confirmation dialog subclass
 
   &.lui-dialog-confirm
-
-    > .lui-inner
-      > section:before
-        content:      '\f059'
-        color:        rgba(0,0,200,.8)
+    > .lui-inner > section > i[class^="lui-icon"]
+      color:        rgba(0,0,200,.8)
 
   // the prompt dialog subclass
 
   &.lui-dialog-prompt
+    > .lui-inner > section
+      white-space: nowrap
 
-    > .lui-inner
-      > section
-        input[type="text"], input[type="password"], input[type="search"], textarea
-          vertical-align: middle
-          font-size:      inherit
-          border:         1px solid rgba(0,0,0,.5)
-          border-radius: .25em
-          width:          15em
-          padding:       .25em
-          margin:         0
+      input[type="text"], input[type="password"], input[type="search"], textarea
+        vertical-align: middle
+        font-size:      inherit
+        border:         1px solid rgba(0,0,0,.5)
+        border-radius: .25em
+        width:          15em
+        padding:       .25em
+        margin:         0
 
-        textarea
-          vertical-align: top
-          width:  20em
-          height: 8em
+      textarea
+        vertical-align: top
+        width:  20em
+        height: 8em
