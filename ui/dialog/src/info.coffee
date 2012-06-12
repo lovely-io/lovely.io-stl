@@ -8,6 +8,7 @@ class Dialog.Info extends Dialog
   constructor: (options)->
     options       or= {}
     options.title or= 'Info'
+    options.onlyOk  = true unless 'onlyOk' in options
 
     super(options)
 

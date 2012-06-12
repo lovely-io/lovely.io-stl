@@ -3,7 +3,7 @@
   * Version 1.2.0 release
   * UI core 2.0.0 support
   * `Dialog.Info` class added
-  * `lui-dialog-only-ok` css class added
+  * `onlyOk` option and the `lui-dialog-only-ok` css class added
 
 2012-05-05 Nikolay Nemshilov
 

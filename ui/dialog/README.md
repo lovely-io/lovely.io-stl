@@ -13,10 +13,11 @@ Hook up the Dialog in any standard way and use it as a class
 
 ## Available Options
 
-* `nolock` - `false` - show the screenlock or not
+* `nolock` - `false` - show the screen lock or not
 * `showHelp` - `false` - show the help buttons or not
 * `showHeader` - `true` - show the header block or not
-* `showButtons`- `true` - show the bottom buttons block or not
+* `showButtons` - `true` - show the bottom buttons block or not
+* `onlyOk` - `false` - show the `Okay` button only
 * `title` - `null` - title text
 * `html`  - `null` - default html content
 * `url` - `null` - an url address to load via ajax
@@ -46,6 +47,7 @@ Along with the basic `Dialog` class, this package provides a number of standard 
  * `Dialog.Alert`
  * `Dialog.Confirm`
  * `Dialog.Prompt`
+ * `Dialog.Info`
 
 All three of them are inherited from the basic `Dialog` class and can be used the same way
 

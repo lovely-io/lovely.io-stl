@@ -53,6 +53,7 @@ class Dialog extends Modal
     @addClass 'lui-dialog-nohelp'   unless @options.showHelp
     @addClass 'lui-dialog-noheader' unless @options.showHeader
     @addClass 'lui-dialog-nofooter' unless @options.showButtons
+    @addClass 'lui-dialog-only-ok'  if     @options.onlyOk
 
     @title @options.title if @options.title
     @html  @options.html  if @options.html
