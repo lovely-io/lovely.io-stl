@@ -21,6 +21,7 @@
         d('#without-header', {title: 'Hello', html: 'Hello World!', showHeader: false, showButtons: false});
         d('#ajax-request', {title: 'Hello', url: 'test/dummy.html'});
         d('#huge-content', {title: "It's Huge!", url: 'test/huge.html'});
+        d('#info-test', {html: "Some info text"}, Dialog.Info);
         d('#alert-test', {html: 'We all gonna die!'}, Dialog.Alert);
         d('#confirm-test', {html: "Are you sure?"}, Dialog.Confirm);
         d('#prompt-text', {}, Dialog.Prompt);
@@ -50,6 +51,7 @@
 
     <h2>Specialized Dialogs</h2>
     <ul>
+      <li><a href="#" id="info-test">Info dialog</a></li>
       <li><a href='#' id="alert-test">Alert dialog</a></li>
       <li><a href='#' id="confirm-test">Confirm dialog</a></li>
       <li><a href="#" id="prompt-text">Prompt text line</a></li>

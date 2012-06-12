@@ -19,6 +19,7 @@ Modal   = UI.Modal
 
 # glue in your files
 include 'src/dialog'
+include 'src/info'
 include 'src/alert'
 include 'src/prompt'
 include 'src/confirm'

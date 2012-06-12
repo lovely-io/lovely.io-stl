@@ -90,6 +90,20 @@ div.lui-dialog
         margin-right:  .1em
         margin-top:    .1em
 
+  // info dialog subclass
+
+  &.lui-dialog-info
+    > .lui-inner
+      > section:before
+        content: '\f05a'
+        color:        rgba(0,0,200,.8)
+
+      > footer
+        text-align: center
+
+        .lui-dialog-help, .lui-dialog-cancel
+          display: none
+
 
   // alert dialog subclass
 
