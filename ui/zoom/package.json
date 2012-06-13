@@ -7,6 +7,6 @@
   "license":     "MIT",
   "tags":        "UI, zoom",
   "dependencies": {
-    "ui" : "1.1.0"
+    "ui" : "2.0.0"
   }
 }

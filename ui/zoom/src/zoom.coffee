@@ -22,7 +22,7 @@ class Zoom extends Modal
     @$super(options).addClass('lui-zoom')
 
     @locker = new Locker()
-    @icon   = new Element('i', title: 'Close')
+    @icon   = new Icon('remove')
     @image  = new Element('img')
 
     @dialog.append(@image, @icon)
