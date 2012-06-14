@@ -1,3 +1,9 @@
+2012-06-14 Nikolay Nemshilov
+
+  * Version 1.1.2
+  * JSONP interface fixes
+  * Making it to extract JSON data on 'complete' instead of on 'success'
+
 2012-04-28 Nikolay Nemshilov
 
   * Version 1.1.1
