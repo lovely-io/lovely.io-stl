@@ -61,8 +61,8 @@ class Ajax
     @options = ext(@options, options)
 
     # attaching the standard listeners
+    @on 'complete', 'evalScripts'
     @on
-      success:  'evalScripts'
       create:   'showSpinner'
       complete: 'hideSpinner'
       cancel:   'hideSpinner'
@@ -204,7 +204,7 @@ class Ajax
     else if options.evalJSON and /json/i.test(content_type)
       @responseJSON = JSON.parse(@responseText)
 
-    if (options = @header('X-JSON'))
+    if options = @header('X-JSON')
       this.headerJSON = JSON.parse(options)
 
     return;
