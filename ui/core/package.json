@@ -1,6 +1,6 @@
 {
   "name":        "ui",
-  "version":     "1.4.0",
+  "version":     "2.0.0",
   "description": "Standarad UI core module",
   "author":      "Nikolay Nemshilov",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/core",
