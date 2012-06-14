@@ -13,6 +13,8 @@ exports.init = (args) ->
   express = require('express')
   server  = express.createServer(express.bodyParser())
   port    = args[0] || lovelyrc.port || 3000
+  domain  = '127.0.0.1'
+  host    = "http://#{domain}:#{port}"
   base    = lovelyrc.base
   minify  = false
 
@@ -48,6 +50,9 @@ exports.init = (args) ->
       console.log(" Serving:   ".magenta + "/#{module}.js -> ~/.lovely/packages#{src}".grey)
       src = fs.readFileSync("#{base}/#{src}").toString()
 
+      # adding the local domain-name/port to the CSS sources
+      for match in (src.match(/url\(('|")[^'"]+?\/images\/[^'"]+?\1\)/g) || [])
+        src = src.replace(match, match.replace(/^url\(('|")/, "url($1#{host}"))
 
     res.charset = 'utf-8'
     res.header('Cache-Control', 'no-cache')
@@ -115,7 +120,7 @@ exports.init = (args) ->
 
   server.listen(port)
 
-  print "Listening: http://127.0.0.1:#{port}\n"+
+  print "Listening: #{host}\n"+
     "Press Ctrl+C to hung up".grey
 
 
