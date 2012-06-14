@@ -14,7 +14,7 @@ class JSONP
     @ajax  = ajax
     @name  = '__lovely_jsonp' + new Date().getTime()
     @param = ajax.options.jsonp
-    @param = 'callback' if typeof(@jsonp) isnt 'string'
+    @param = 'callback' if typeof(@param) isnt 'string'
     @param += "="+ @name
 
     @script = new Element 'script',
@@ -57,6 +57,7 @@ class JSONP
     @readyState = 4
 
     @ajax.responseJSON = data
+    @script.remove()
 
     @onreadystatechange()
 
@@ -72,4 +73,5 @@ class JSONP
 
   # XMLHttpRequest dummy methods
   setRequestHeader:   ->
+  getResponseHeader:  ->
   onreadystatechange: ->
