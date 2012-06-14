@@ -1,7 +1,7 @@
 #
 # JSONP tunnel for the 'Ajax' interface
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 class JSONP
 
@@ -14,7 +14,7 @@ class JSONP
     @ajax  = ajax
     @name  = '__lovely_jsonp' + new Date().getTime()
     @param = ajax.options.jsonp
-    @param = 'callback' if typeof(@jsonp) is 'string'
+    @param = 'callback' if typeof(@jsonp) isnt 'string'
     @param += "="+ @name
 
     @script = new Element 'script',
