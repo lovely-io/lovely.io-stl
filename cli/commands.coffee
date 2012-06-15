@@ -45,11 +45,13 @@ global.print_error = (str)->
 # @return {String} of that length
 #
 String.prototype.ljust = (length, filler) ->
-  str = this + ''
+  str      = this + ''
   filler or= ' '
+  cur_len  = str.length
 
-  while str.length < length
-    str += filler
+  while cur_len < length
+    str += filler.grey
+    cur_len += 1
 
   str
 

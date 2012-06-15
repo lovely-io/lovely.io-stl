@@ -6,9 +6,11 @@
 
 fs        = require('fs')
 path      = require('path')
+generate  = require('../documentation')
 cwd       = process.cwd()
 docs      = 'docs/'
 overwrite = false
+index     = []
 
 
 #
@@ -17,7 +19,23 @@ overwrite = false
 # @param {String} filename
 #
 generate_docs_for = (filename)->
-  print "   ■ ".yellow + filename
+  doc_file = "#{cwd}/#{filename.replace(/^src\//, docs)}.md"
+  index.push(doc_file)
+
+  sout ("   ■ ".yellow + filename + ' ').ljust(60, '.') + ' '
+
+  return sout("Already exists\n".yellow) if path.existsSync(doc_file)
+
+  content = fs.readFileSync("#{cwd}/#{filename}")
+
+  if /\.coffee$/.test(filename)
+    content = generate.from_coffee(content)
+
+  else
+    return sout("Not supported yet".yellow)
+
+  fs.writeFileSync(doc_file, content)
+  sout "Ok\n".green
 
 
 #
@@ -41,17 +59,18 @@ exports.init = (args) ->
 
   print "Generating the API docs for the project\n".magenta
 
-  sout  (" • ".grey + "Creating the ")+ (docs.yellow) + (" directory ".ljust(80, '.'.grey))
+  sout  (" • ".grey + "Creating the "+ docs.yellow + " directory ").ljust(70, '.') + " "
 
   if path.existsSync(docs_dir)
-    sout " Already exists\n".yellow
+    sout "Already exists\n".yellow
   else
-    fs.mkdirSync(docs_dir, 0o0755); sout  " Ok\n".green
+    fs.mkdirSync(docs_dir, 0o0755); sout  "Ok\n".green
 
-  print " • ".grey + "Generating documentation"
+  print " • ".grey + "Generating documentation from sources"
 
-  generate_docs_for('main.coffee') if path.existsSync("#{cwd}/main.coffee")
   loop_directory_recursively('src')
+
+  print "\nDONE".green
 
 #
 # Prints out the help
