@@ -26,13 +26,8 @@ generate_docs_for = (filename)->
 
   return sout("Already exists\n".yellow) if path.existsSync(doc_file)
 
-  content = fs.readFileSync("#{cwd}/#{filename}")
-
-  if /\.coffee$/.test(filename)
-    content = generate.from_coffee(content)
-
-  else
-    return sout("Not supported yet".yellow)
+  content = generate.from_file("#{cwd}/#{filename}")
+  return sout("Not supported yet".yellow) if content is false
 
   fs.writeFileSync(doc_file, content)
   sout "Ok\n".green
