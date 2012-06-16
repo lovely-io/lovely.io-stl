@@ -20,11 +20,15 @@ index     = []
 #
 generate_docs_for = (filename)->
   doc_file = "#{cwd}/#{filename.replace(/^src\//, docs)}.md"
+  doc_dir  = doc_file.replace(/\/[^\/]+$/, '')
+
   index.push(doc_file)
 
   sout ("   ■ ".yellow + filename + ' ').ljust(60, '.') + ' '
 
   return sout("Already exists\n".yellow) if path.existsSync(doc_file)
+
+  fs.mkdirSync(doc_dir, 0o0755) unless path.existsSync(doc_dir)
 
   content = generate.from_file("#{cwd}/#{filename}")
   return sout("Not supported yet".yellow) if content is false
@@ -41,7 +45,7 @@ generate_docs_for = (filename)->
 loop_directory_recursively = (dirname)->
   for filename in fs.readdirSync("#{cwd}/#{dirname}")
     if fs.statSync("#{cwd}/#{dirname}/#{filename}").isDirectory()
-      loop_directory_recursively("#{cwd}/#{dirname}/#{filename}")
+      loop_directory_recursively("#{dirname}/#{filename}")
     else
       generate_docs_for("#{dirname}/#{filename}")
 
