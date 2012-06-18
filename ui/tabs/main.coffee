@@ -18,5 +18,5 @@ include 'src/tabs'
 include 'src/document'
 
 # export your objects in the module
-ext Tabs,
+exports = ext Tabs,
   version: '%{version}'
