@@ -40,7 +40,7 @@ exports.from_coffee = from_coffee = (source)->
           source += "#{line}\n"
         else
           in_comment = false
-          source += "#{line}\n```coffee\n"
+          source += "#{line}\n```coffee-aside\n"
       else
         in_comment = true
         source += "```\n" unless i is 0
@@ -52,7 +52,7 @@ exports.from_coffee = from_coffee = (source)->
 
   source += "\n```" unless comment_re.test(line)
 
-  source = source.replace(/\n```coffee\s+/g, "\n```coffee\n")
+  source = source.replace(/\n```coffee\s*\n(\s*\S)/g, "\n```coffee\n$1")
   source = source.replace(/\s+\n```(\n|$)/g, "\n```\n")
 
   source = source.replace(/^\s+|\s+$/, '')

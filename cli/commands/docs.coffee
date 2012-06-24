@@ -54,22 +54,32 @@ loop_directory_recursively = (dirname)->
 # Kicks in the documentation generator
 #
 exports.init = (args) ->
-  docs_dir = "#{cwd}/#{docs}"
+  docs_dir   = "#{cwd}/#{docs}"
+  build_docs = ->
+    sout  (" • ".grey + "Creating the "+ docs.yellow + " directory ").ljust(70, '.') + " "
+
+    if path.existsSync(docs_dir)
+      sout "Already exists\n".yellow
+    else
+      fs.mkdirSync(docs_dir, 0o0755); sout  "Ok\n".green
+
+    print " • ".grey + "Generating documentation from sources"
+
+    loop_directory_recursively('src')
+
+    print "\nDONE".green
+
 
   print "Generating the API docs for the project\n".magenta
 
-  sout  (" • ".grey + "Creating the "+ docs.yellow + " directory ").ljust(70, '.') + " "
-
-  if path.existsSync(docs_dir)
-    sout "Already exists\n".yellow
+  if args.indexOf('rebuild') isnt -1
+    sout  (" • ".grey + "Deleting the "+ docs.yellow + " directory ").ljust(70, '.') + " "
+    system "rm -rf #{docs_dir}", ->
+      sout  "Ok\n".green
+      build_docs()
   else
-    fs.mkdirSync(docs_dir, 0o0755); sout  "Ok\n".green
+    build_docs()
 
-  print " • ".grey + "Generating documentation from sources"
-
-  loop_directory_recursively('src')
-
-  print "\nDONE".green
 
 #
 # Prints out the help
@@ -79,6 +89,10 @@ exports.help = (args) ->
   Automatic API-documentation generator
 
   Usage:
-      lovely docs
+      lovely docs[ rebuild]
+
+  If you want to erase and rebuild the current docs folder call
+
+      lovely docs rebuild
 
   """

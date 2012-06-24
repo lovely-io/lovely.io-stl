@@ -42,6 +42,33 @@ read_images = (build)->
   return images
 
 #
+# Collects the documentation from the current directory
+#
+# @return {Object} documentation index
+#
+collect_documentation = ->
+  fs   = require('fs')
+  path = require('path')
+  cwd  = process.cwd()
+  docs =
+    index:     read('README.md')
+    demo:      read("demo.html") || read("index.html")
+    changelog: read('CHANGELOG')
+
+  loop_recursively = (dirname)->
+    for filename in fs.readdirSync("#{cwd}/#{dirname}")
+      if fs.statSync("#{cwd}/#{dirname}/#{filename}").isDirectory()
+        loop_recursively("#{dirname}/#{filename}")
+      else
+        docs["#{dirname}/#{filename}"] = read("#{dirname}/#{filename}")
+
+  loop_recursively('docs') if path.existsSync("#{cwd}/docs")
+
+  return docs
+
+
+
+#
 # Kicks in the command
 #
 exports.init = (args) ->
@@ -56,13 +83,10 @@ exports.init = (args) ->
 
     sout "» Publishing #{lovelyrc.host}/packages/#{pack.name} ".ljust(61)
     hosting.send_package
-      manifest: read('package.json')
-      build:    build
-      images:   read_images(build)
-      documents:
-        index:     read('README.md')
-        demo:      read("demo.html") || read("index.html")
-        changelog: read('CHANGELOG')
+      manifest:  read('package.json')
+      build:     build
+      images:    read_images(build)
+      documents: collect_documentation()
 
     sout "Done\n".green
 
