@@ -90,6 +90,7 @@ exports.init = (args) ->
         when 'eot'  then return "application/vnd.ms-fontobject"
         when 'ttf'  then return "application/x-font-ttf"
         when 'woff' then return "application/x-font-woff"
+        when 'json' then return "application/json"
         else             return 'text/html'
 
     if req.method is 'POST'
