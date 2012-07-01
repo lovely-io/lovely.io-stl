@@ -19,7 +19,7 @@ index     = []
 # @param {String} filename
 #
 generate_docs_for = (filename)->
-  doc_file = "#{cwd}/#{filename.replace(/^src\//, docs)}.md"
+  doc_file = "#{cwd}/#{docs}#{filename.replace(/^src\//, '')}.md"
   doc_dir  = doc_file.replace(/\/[^\/]+$/, '')
 
   index.push(doc_file)
@@ -65,6 +65,8 @@ exports.init = (args) ->
 
     print " • ".grey + "Generating documentation from sources"
 
+    generate_docs_for('main.coffee') if path.existsSync('main.coffee')
+    generate_docs_for('main.js')     if path.existsSync('main.js')
     loop_directory_recursively('src')
 
     print "\nDONE".green
