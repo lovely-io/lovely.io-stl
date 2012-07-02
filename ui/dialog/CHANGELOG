@@ -1,3 +1,8 @@
+2012-07-02 Nikolay Nemshilov
+
+  * Version 1.2.1 release
+  * Making it bypass `ui.Modal` options
+
 2012-06-12 Nikolay Nemshilov
 
   * Version 1.2.0 release

@@ -26,7 +26,7 @@ class Dialog extends Modal
   #
   constructor: (options)->
     @setOptions(options or= {})
-    delete(options[key]) for key of @options
+    delete(options[key]) for key of Dialog.Options when key isnt 'nolock'
 
     @$super(options).addClass('lui-dialog')
 
