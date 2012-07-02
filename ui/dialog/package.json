@@ -7,7 +7,7 @@
   "license":     "MIT",
   "tags":        "UI, dialog",
   "dependencies": {
-    "ui"   : "2.0.0",
+    "ui"   : "2.0.1",
     "ajax" : "1.1.1"
   }
 }
