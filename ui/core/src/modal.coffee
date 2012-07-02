@@ -21,9 +21,8 @@ class Modal extends Element
   constructor: (options)->
     options = merge_options(options, { class: 'lui-modal lui-locker' })
     html    = options.html || '';
-    options.html = """
-      <div class="lui-aligner"></div><div class="lui-inner"></div>
-    """
+    options.html = '<div class="lui-inner"></div>'
+
     options['class'] += ' lui-modal-nolock'  if options.nolock is true; delete(options.nolock)
     options['class'] += ' lui-modal-overlap' if options.overlap is true; delete(options.overlap)
 

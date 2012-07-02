@@ -10,6 +10,9 @@
         m1.show(); // shows the first modal
         m2.show(); // doesn't hide the first modal automatically and shows the new one over it
 
+  * Getting rid of the '.lui-aligner' element in favor of the `:before` generated element
+    in the `UI.Locker` and `UI.Modal` widgets
+
 
 
 2012-06-10 Nikolay Nemshilov

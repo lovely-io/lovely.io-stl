@@ -16,5 +16,4 @@ class Locker extends Element
     spinner_size = options.size || 5
     delete(options.size)
     super('div', options)
-    @insert('<div class="lui-aligner"></div>')
     @insert(@spinner = new Spinner(size: spinner_size, class: 'lui-inner'))
