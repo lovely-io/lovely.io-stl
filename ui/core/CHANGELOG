@@ -1,3 +1,17 @@
+2012-07-02 Nikolay Nemshilov
+
+  * Version 2.0.1
+  * UI.Modal `overlap` option was added
+
+        :js
+        var m1 = new UI.Modal();
+        var m2 = new UI.Modal({overlap: true});
+
+        m1.show(); // shows the first modal
+        m2.show(); // doesn't hide the first modal automatically and shows the new one over it
+
+
+
 2012-06-10 Nikolay Nemshilov
 
   * Version 2.0.0

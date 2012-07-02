@@ -33,6 +33,9 @@
           $('#modal-demo4').on('click', function(event) { event.stop();
             new UI.Modal({html: "Hello Non Lock!", nolock: true}).show();
           });
+          $('#modal-demo5').on('click', function(event) { event.stop();
+            new UI.Modal({html: "Hello Overlap!", overlap: true}).show();
+          });
         });
 
         $(document).delegate('nav.lui-menu a, a.lui-button', 'click', function(event) {
@@ -180,10 +183,13 @@
 
     <h2>Modal Screen</h2>
     <p>
-      <a href="#" id="modal-demo1">Modal{html: Hello World!}</a> |
+      <a href="#" id="modal-demo1">Modal {html: Hello World!}</a> |
       <a href="#" id="modal-demo2">Modal#insert test</a> |
-      <a href="#" id="modal-demo3">Modal#update test</a> |
-      <a href="#" id="modal-demo4">Modal{nolock: true}</a>
+      <a href="#" id="modal-demo3">Modal#update test</a>
+    </p>
+    <p>
+      <a href="#" id="modal-demo4">Modal {nolock: true}</a> |
+      <a href="#" id="modal-demo5">Modal {overlap: true}</a>
     </p>
 
     <h2>Basic Menu Styles</h2>

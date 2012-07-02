@@ -24,7 +24,8 @@ class Modal extends Element
     options.html = """
       <div class="lui-aligner"></div><div class="lui-inner"></div>
     """
-    options['class'] += ' lui-modal-nolock' if options.nolock is true; delete(options.nolock)
+    options['class'] += ' lui-modal-nolock'  if options.nolock is true; delete(options.nolock)
+    options['class'] += ' lui-modal-overlap' if options.overlap is true; delete(options.overlap)
 
     super('div', options)
 
@@ -84,7 +85,7 @@ class Modal extends Element
   # @return {Modal} self
   #
   show: ()->
-    hide_all_modals()
+    hide_all_modals() unless @hasClass('lui-modal-overlap')
 
     @insertTo(document.body)
     @$super.apply(@, arguments)
@@ -116,13 +117,18 @@ class Modal extends Element
 
 # hides all visible modals on the page
 hide_all_modals = ->
-  dom('div.lui-modal').forEach('remove')
+  modals = dom('div.lui-modal'); last_modal = modals[modals.length - 1]
+  if last_modal && last_modal.hasClass('lui-modal-overlap')
+    last_modal.remove()
+  else
+    modals.forEach('remove')
 
 # hide all modals when the user presses 'escape'
 dom(document).on('esc', hide_all_modals)
 dom(document).on 'click', (event)->
   if Modal.current && (Modal.current == event.target || !event.find('.lui-modal'))
     Modal.current.hide()
+    Modal.current = dom('div.lui-modal').pop() || null
 
 # setting up the dialog max-sizes with the window
 resize_timeout = new Date()
