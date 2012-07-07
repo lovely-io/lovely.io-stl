@@ -1,20 +1,20 @@
-#
-# The visual effects basic class. It doesn't do anything
-# practical itself, just defines the common interface
-# and handles timers and queues
-#
-# Events that can be used with this one
-#
-#  * `start`  - when an effect starts
-#  * `finish` - when an effect finishes
-#  * `cancel` - when an effect was interrupted manually
-#  * `stop`   - when all scheduled effects are finished
-#
-# it also will fire events on the related element
-#   `fx:start`, `fx:finish`, `fx:cancel`
-#
-# Copyright (C) 2011-2012 Nikolay Nemshilov
-#
+The visual effects basic class. It doesn't do anything
+practical itself, just defines the common interface
+and handles timers and queues
+
+Events that can be used with this one
+
+ * `start`  - when an effect starts
+ * `finish` - when an effect finishes
+ * `cancel` - when an effect was interrupted manually
+ * `stop`   - when all scheduled effects are finished
+
+it also will fire events on the related element
+  `fx:start`, `fx:finish`, `fx:cancel`
+
+Copyright (C) 2011-2012 Nikolay Nemshilov
+
+```coffee-aside
 class Fx
   include: [core.Options, core.Events]
 
@@ -32,14 +32,15 @@ class Fx
       short:  200
       normal: 400
       long:   800
+```
 
-  #
-  # Basic constructor
-  #
-  # @param {Element|HTMLElement|String} elemnt reference
-  # @param {Object} fx options
-  # @return {Fx} this
-  #
+Basic constructor
+
+@param {Element|HTMLElement|String} elemnt reference
+@param {Object} fx options
+@return {Fx} this
+
+```coffee-aside
   constructor: (element, options)->
     @setOptions(options)
 
@@ -52,12 +53,13 @@ class Fx
 
     Fx_register(@)
     return @
+```
 
-  #
-  # Starts the effect
-  #
-  # @return {Fx} this
-  #
+Starts the effect
+
+@return {Fx} this
+
+```coffee-aside
   start: ->
     return @ if Fx_add_to_queue(@, arguments)
 
@@ -68,39 +70,40 @@ class Fx
     Fx_start_timer(@)
 
     return @emit('start')
+```
 
-  #
-  # Handles the post-effect logic
-  #
-  # @return {Fx} this
-  #
+Handles the post-effect logic
+
+@return {Fx} this
+
+```coffee-aside
   finish: ->
     Fx_stop_timer @
     Fx_remove_from_queue @
     @emit 'finish'
     Fx_run_next @
     return @
+```
 
+Manually interrupts the effect
 
-  #
-  # Manually interrupts the effect
-  #
-  # NOTE: cancels all the scheduled effects
-  #
-  # @return {Fx} this
-  #
+NOTE: cancels all the scheduled effects
+
+@return {Fx} this
+
+```coffee-aside
   cancel: ->
     Fx_stop_timer @
     Fx_remove_from_queue @
     return @emit('cancel').emit('stop')
+```
 
+Overloading the original method
 
-  #
-  # Overloading the original method
-  #
-  # @param {String} event name
-  # @return {Fx} this
-  #
+@param {String} event name
+@return {Fx} this
+
+```coffee-aside
   emit: (name)->
     core.Events.emit.apply(@, arguments)
     @element.emit "fx:#{name}", fx: @
@@ -113,34 +116,36 @@ class Fx
   # render:  ->
 
 # private
+```
 
-##################################################################
-# Utility functions to handle queues and timers
-##################################################################
+Utility functions to handle queues and timers
+
+```coffee-aside
 
 # global effects registry
 Fx_scheduled = new List()
 Fx_running   = new List()
+```
 
-#
-# Registers the element in the effects queue
-#
-# @param {Fx} effect
-# @return void
-#
+Registers the element in the effects queue
+
+@param {Fx} effect
+@return void
+
+```coffee-aside
 Fx_register = (fx)->
   uid = $.uid((fx.element || {})._ || {})
   fx._ch = (Fx_scheduled[uid] = Fx_scheduled[uid] || new List())
   fx._cr = (Fx_running[uid]   = Fx_running[uid]   || new List())
+```
 
+Registers the effect in the effects queue
 
-#
-# Registers the effect in the effects queue
-#
-# @param {Fx} fx
-# @param {Arguments} original arguments list
-# @return {Boolean} true if it queued and false if it's ready to go
-#
+@param {Fx} fx
+@param {Arguments} original arguments list
+@return {Boolean} true if it queued and false if it's ready to go
+
+```coffee-aside
 Fx_add_to_queue = (fx, args)->
   chain = fx._ch
   queue = fx.options.queue
@@ -150,34 +155,35 @@ Fx_add_to_queue = (fx, args)->
   chain.push([args, fx]) if queue
 
   return queue and chain[0][1] isnt fx
+```
 
+Puts the fx into the list of currently running effects
 
-#
-# Puts the fx into the list of currently running effects
-#
-# @param {Fx} fx
-# @return void
-#
+@param {Fx} fx
+@return void
+
+```coffee-aside
 Fx_mark_current = (fx)->
   fx._cr.push(fx) if fx._cr
+```
 
+Removes the fx from the queue
 
-#
-# Removes the fx from the queue
-#
-# @param {Fx} fx
-# @return void
-#
+@param {Fx} fx
+@return void
+
+```coffee-aside
 Fx_remove_from_queue = (fx)->
   currents = fx._cr
   currents.splice(currents.indexOf(fx), 1) if currents
+```
 
-#
-# Tries to invoke the next effect in the queue
-#
-# @param {Fx} fx
-# @return void
-#
+Tries to invoke the next effect in the queue
+
+@param {Fx} fx
+@return void
+
+```coffee-aside
 Fx_run_next = (fx)->
   chain = fx._ch
   next  = chain.shift()
@@ -189,14 +195,15 @@ Fx_run_next = (fx)->
     fx.emit('stop')
 
   return # nothing
+```
 
-#
-# Cancels all currently running and scheduled effects
-# on the element
-#
-# @param {Element} element
-# @return void
-#
+Cancels all currently running and scheduled effects
+on the element
+
+@param {Element} element
+@return void
+
+```coffee-aside
 Fx_cancel_all = (element)->
   uid = $.uid(element._)
 
@@ -204,13 +211,14 @@ Fx_cancel_all = (element)->
   Fx_scheduled_fx[uid].splice(0)    if Fx_scheduled_fx[uid]
 
   return ;
+```
 
-#
-# Initializes the fx rendering timer
-#
-# @param {Fx} fx
-# @return void
-#
+Initializes the fx rendering timer
+
+@param {Fx} fx
+@return void
+
+```coffee-aside
 Fx_start_timer = (fx, options)->
   options    = fx.options
   duration   = Fx.Durations[options.duration] || options.duration
@@ -226,23 +234,22 @@ Fx_start_timer = (fx, options)->
       fx.render(transition[number])
       number++
   , interval)
+```
 
-#
-# Cancels the Fx rendering timer (if any)
-#
-# @param {Fx} fx
-# @return void
-#
+Cancels the Fx rendering timer (if any)
+
+@param {Fx} fx
+@return void
+
+```coffee-aside
 Fx_stop_timer = (fx)->
   clearInterval(fx._timer) if fx._timer
+```
 
+CSS3 Cubic Bezier sequentions emulator
+http://st-on-it.blogspot.com/2011/05/calculating-cubic-bezier-function.html
 
-
-
-##################################################################
-# CSS3 Cubic Bezier sequentions emulator
-# http://st-on-it.blogspot.com/2011/05/calculating-cubic-bezier-function.html
-##################################################################
+```coffee-aside
 
 # CSS3 cubic-bezier presets
 Bezier_presets =
@@ -303,3 +310,4 @@ Bezier_sequence = (params, size)->
 
 
   return Bezier_cache[name]
+```
