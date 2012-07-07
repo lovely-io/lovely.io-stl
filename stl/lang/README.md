@@ -11,10 +11,12 @@ etc.
 Install it locally with `lovely install lang` or hook up from
 `http://cdn.lovely.io`, and then
 
-    Lovely(['lang'], function() {
-      'boo-hoo'.endsWith('-hoo'); // -> true
-      [1,2,3,4].includes(2);      // -> true
-    });
+```js
+Lovely(['lang'], function() {
+  'boo-hoo'.endsWith('-hoo'); // -> true
+  [1,2,3,4].includes(2);      // -> true
+});
+```
 
 See the API docs for the actual usage information
 
