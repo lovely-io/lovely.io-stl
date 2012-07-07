@@ -1,8 +1,9 @@
 #
 # This module provides correctly bubbling 'focus' and 'blur' events
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
+
 
 #
 # Bypasses the 'focus'/'blur' events to the parent element when needed

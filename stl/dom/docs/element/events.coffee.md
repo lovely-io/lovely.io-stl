@@ -1,48 +1,52 @@
-#
-# This file provides the standard events handling interface.
-# Basically it uses the {core.Events} mixin
-# but adoptes it for the dom-events handling
-#
-# Copyright (C) 2011-2012 Nikolay Nemshilov
-#
+This file provides the standard events handling interface.
+Basically it uses the {core.Events} mixin
+but adoptes it for the dom-events handling
+
+Copyright (C) 2011-2012 Nikolay Nemshilov
+
+```coffee-aside
 Element.include Element_events =
   _listeners: null  # the listeners index
+```
 
-  #
-  # Attaching an event listener
-  #
-  # See the {core.Events} for the actual API
-  #
+Attaching an event listener
+
+See the {core.Events} for the actual API
+
+```coffee-aside
   on: ->
     @_listeners is null && Element_make_listeners(@)
     Lovely.Events.on.apply(@, arguments)
+```
 
-  #
-  # Removes an event listener
-  #
-  # See the {core.Events} for the actual API
-  #
+Removes an event listener
+
+See the {core.Events} for the actual API
+
+```coffee-aside
   no: ->
     @_listeners is null && Element_make_listeners(@)
     Lovely.Events.no.apply(@, arguments)
+```
 
-  #
-  # Checks if an event listener is attached
-  #
-  # See the {core.Events} for the actual API
-  #
+Checks if an event listener is attached
+
+See the {core.Events} for the actual API
+
+```coffee-aside
   ones: Lovely.Events.ones
+```
 
-  #
-  # Fires an event on the element
-  #
-  # __NOTE__: the event will propogate through
-  # the dom structure, up to the document!
-  #
-  # @param {String} event name
-  # @param {Object} event attributes
-  # @return {Wrapper} this
-  #
+Fires an event on the element
+
+__NOTE__: the event will propogate through
+the dom structure, up to the document!
+
+@param {String} event name
+@param {Object} event attributes
+@return {Wrapper} this
+
+```coffee-aside
   emit: (event, options) ->
     parent = wrap(this._.parentNode)
 
@@ -63,24 +67,25 @@ Element.include Element_events =
     parent.emit(event) if !event.stopped && parent
 
     return @
+```
 
-  #
-  # A shortcut for calls-by-name
-  #
-  #     :js
-  #     event.on('click', 'stopEvent')
-  #
-  # @return {Boolean} false
-  #
+A shortcut for calls-by-name
+
+    :js
+    event.on('click', 'stopEvent')
+
+@return {Boolean} false
+
+```coffee-aside
   stopEvent: ->
     return false
+```
 
+Makes a smart event listeners registry
+that will add/remove event listeners autmoatically
+to the real dom-element
 
-#
-# Makes a smart event listeners registry
-# that will add/remove event listeners autmoatically
-# to the real dom-element
-#
+```coffee-aside
 Element_make_listeners = (instance) ->
   list = []
 
@@ -126,4 +131,4 @@ Element_make_listeners = (instance) ->
 
   # return the list
   instance._listeners = list
-
+```

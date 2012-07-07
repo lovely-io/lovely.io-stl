@@ -1,27 +1,28 @@
 #
 # This module handles the events delegation API
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 Events_delegation =
   #
   # Attaches a delegative event listener to the element/document
   #
-  #    $(element).delegate('#css.rule', 'click', function() {...});
-  #    $(element).delegate('#css.rule', 'click', 'addClass', 'boo');
-  #    $(element).delegate('#css.rule', 'click', 'hide');
+  #     :js
+  #     $(element).delegate('#css.rule', 'click', function() {...});
+  #     $(element).delegate('#css.rule', 'click', 'addClass', 'boo');
+  #     $(element).delegate('#css.rule', 'click', 'hide');
   #
-  #    $(element).delegate('#css.rule', {
-  #      click: function() {},
-  #      focus: 'hide',
-  #      blur:  ['addClass', 'boo']
-  #    });
+  #     $(element).delegate('#css.rule', {
+  #       click: function() {},
+  #       focus: 'hide',
+  #       blur:  ['addClass', 'boo']
+  #     });
   #
   # @param {String} css-rule
   # @param {String|Object} event-name or a hash of event handlers
   # @param {Function} callback
   # @return {Wrapper} this
-  #/
+  #
   delegate: (css_rule, event)->
     if typeof(event) is 'string'
       args     = A(arguments).slice(2)
@@ -50,23 +51,24 @@ Events_delegation =
   #
   # Removes a delegative event listener from the element
   #
-  #    $(element).undelegate('#css.rule');
-  #    $(element).undelegate('#css.rule', 'click');
-  #    $(element).undelegate('#css.rule', 'click', function() {});
-  #    $(element).undelegate('#css.rule', 'click', 'addClass', 'boo');
-  #    $(element).undelegate('#css.rule', 'click', 'hide');
+  #     :js
+  #     $(element).undelegate('#css.rule');
+  #     $(element).undelegate('#css.rule', 'click');
+  #     $(element).undelegate('#css.rule', 'click', function() {});
+  #     $(element).undelegate('#css.rule', 'click', 'addClass', 'boo');
+  #     $(element).undelegate('#css.rule', 'click', 'hide');
   #
-  #    $(element).undelegate('#css.rule', {
-  #      click: function() {},
-  #      focus: 'hide',
-  #      blur:  ['addClass', 'boo']
-  #    });
+  #     $(element).undelegate('#css.rule', {
+  #       click: function() {},
+  #       focus: 'hide',
+  #       blur:  ['addClass', 'boo']
+  #     });
   #
   # @param {String} css-rule
   # @param {String|Object} event-name or a hash of event handlers
   # @param {Function} callback
   # @return {Wrapper} this
-  #/
+  #
   undelegate: (event)->
     for hash in delegation_listeners(arguments, @)
       @no(hash.e, hash.c)
@@ -76,21 +78,21 @@ Events_delegation =
   #
   # Checks if there is sucha delegative event listener
   #
-  #    $(element).delegates('#css.rule');
-  #    $(element).delegates('#css.rule', 'click');
-  #    $(element).delegates('#css.rule', 'click', function() {});
-  #    $(element).delegates('#css.rule', 'click', 'addClass', 'boo');
-  #    $(element).delegates('#css.rule', 'click', 'hide');
+  #     :js
+  #     $(element).delegates('#css.rule');
+  #     $(element).delegates('#css.rule', 'click');
+  #     $(element).delegates('#css.rule', 'click', function() {});
+  #     $(element).delegates('#css.rule', 'click', 'addClass', 'boo');
+  #     $(element).delegates('#css.rule', 'click', 'hide');
   #
-  #    $(element).delegates('#css.rule', {
-  #      click: function() {},
-  #      focus: 'hide',
-  #      blur:  ['addClass', 'boo']
-  #    });
+  #     $(element).delegates('#css.rule', {
+  #       click: function() {},
+  #       focus: 'hide',
+  #       blur:  ['addClass', 'boo']
+  #     });
   #
-  # NOTE:
-  #    if several rules are specified then it will check if
-  #    _any_ of them are delegateed
+  # __NOTE__: if several rules are specified then it will check if
+  #       _any_ of them are delegateed
   #
   # @param {String} css-rule
   # @param {String|Object} event-name or a hash of event handlers

@@ -1,7 +1,7 @@
 #
 # The window dom-wrapper
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 class Window extends Wrapper
   # copying the standard events handling interface from `Element.prototype`
@@ -21,6 +21,7 @@ class Window extends Wrapper
   #
   # Handles the _inner_ size of a window
   #
+  #     :js
   #     $(window).size();             // -> x:NNN, y:NNN size
   #     $(window).size(x:NNN, y:NNN); // sets the inner size
   #     $(window).size(x:NNN);        // sets the horizontal size
@@ -55,6 +56,7 @@ class Window extends Wrapper
   #
   # Reads or sets window scrolling positions
   #
+  #     :js
   #     $(window).scrolls();             // -> x:NNN, y:NNN scrolls
   #     $(window).scrolls(x:NNN, y:NNN); // sets the scrolling position
   #     $(window).scrolls(x:NNN);        // sets the horizontal scrolling

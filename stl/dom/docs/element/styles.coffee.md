@@ -1,94 +1,103 @@
-#
-# This module handles the dom-elements styles manipulations
-#
-# Copyright (C) 2011-2012 Nikolay Nemshilov
-#
+This module handles the dom-elements styles manipulations
+
+Copyright (C) 2011-2012 Nikolay Nemshilov
+
+```coffee-aside
 Element.include
-  #
-  # Returns the current class-names of the element
-  #
-  # @return {String} class-names
-  #
+```
+
+Returns the current class-names of the element
+
+@return {String} class-names
+
+```coffee-aside
   getClass: ->
     this._.className
+```
 
-  #
-  # Sets the entire `className` property and replaces
-  # and currently active css-classes
-  #
-  # @param {String} class-name
-  # @return {Element} this
-  #
+Sets the entire `className` property and replaces
+and currently active css-classes
+
+@param {String} class-name
+@return {Element} this
+
+```coffee-aside
   setClass: (name) ->
     this._.className = name
     this
+```
 
-  #
-  # Checks if current element has the tagName
-  #
-  # @param {String} class-name
-  # @return {Element} this
-  #
+Checks if current element has the tagName
+
+@param {String} class-name
+@return {Element} this
+
+```coffee-aside
   hasClass: (name) ->
     " #{this._.className} ".indexOf(" #{name} ") isnt -1
+```
 
-  #
-  # Adds the class name to the list
-  #
-  # @param {String} class-name
-  # @return {Element} this
-  #
+Adds the class name to the list
+
+@param {String} class-name
+@return {Element} this
+
+```coffee-aside
   addClass: (name) ->
     testee = " #{this._.className} "
     if testee.indexOf(" #{name} ") is -1
       this._.className += (if testee is '  ' then '' else ' ') + name
     this
+```
 
-  #
-  # Removes the class name out of the list
-  #
-  # @param {String} class-name
-  # @return {Element} this
-  #
+Removes the class name out of the list
+
+@param {String} class-name
+@return {Element} this
+
+```coffee-aside
   removeClass: (name) ->
     this._.className = trim(" #{this._.className} ".replace(" #{name} ", ' '))
     this
+```
 
-  #
-  # Toggles the class-name existance in the element
-  #
-  # @param {String} class-name
-  # @return {Element} this
-  #
+Toggles the class-name existance in the element
+
+@param {String} class-name
+@return {Element} this
+
+```coffee-aside
   toggleClass: (name) ->
     if this.hasClass(name) then this.removeClass(name)
     else this.addClass(name)
+```
 
-  #
-  # Removes the class name out of all the sibling elements
-  # and adds it to the current one
-  #
-  # @param {String} class-name
-  # @return {Element} this
-  #
+Removes the class name out of all the sibling elements
+and adds it to the current one
+
+@param {String} class-name
+@return {Element} this
+
+```coffee-aside
   radioClass: (name) ->
     this.siblings().forEach('removeClass', name)
     this.addClass(name)
+```
 
-  #
-  # Main method to work with the element styles
-  #
-  #     :js
-  #     element.style('name')          // -> {String} style value
-  #     element.style('name1,name2')   // -> {Object} style values
-  #     element.style('name', 'value') // -> {Element} sets the style
-  #     element.style('name:value')    // -> {Element} sets the style
-  #     element.style(name: value)     // -> {Element} also sets the style
-  #
-  # @param {String|Hash} style name or style definition
-  # @param {String} style value
-  # @return {String|Object|Element} style, styles or self reference
-  #
+Main method to work with the element styles
+
+    :js
+    element.style('name')          // -> {String} style value
+    element.style('name1,name2')   // -> {Object} style values
+    element.style('name', 'value') // -> {Element} sets the style
+    element.style('name:value')    // -> {Element} sets the style
+    element.style(name: value)     // -> {Element} also sets the style
+
+@param {String|Hash} style name or style definition
+@param {String} style value
+@return {String|Object|Element} style, styles or self reference
+
+```coffee-aside
   style: (name, value) ->
     if typeof(name) is 'string'
       if name.indexOf(':') isnt -1 # setting style as a string
@@ -158,5 +167,4 @@ Element_clean_style = (style, name) ->
 # finding computed styles of a dom-element
 Element_computed_styles = (element) ->
   element.ownerDocument.defaultView.getComputedStyle(element, null)
-
-
+```

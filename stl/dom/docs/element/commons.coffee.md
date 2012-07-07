@@ -1,33 +1,34 @@
-#
-# This file contains the common use methods
-#
-# NOTE: some methods, like `#show`, `#hide`, etc
-# might take a visual effect settings, those settings
-# will work only if the `fx` module is included on the page,
-# otherwise the element will be immediately shown/hidden
-#
-# Copyright (C) 2011-2012 Nikolay Nemshilov
-#
-Element.include
+This file contains the common use methods
 
-  #
-  # The basic attributes handling method
-  #
-  #     :coffee
-  #     element.attr('name')          # -> getting attribute
-  #     element.attr('name', 'value') # -> setting attribute
-  #     element.attr('name', null)    # -> removing attribute
-  #     element.attr('name') is null  # -> checking attribute
-  #
-  #     element.attr
-  #       name1: 'value1'
-  #       name2: 'value2'
-  #       ....
-  #
-  # @param {String|Object} attribute name or a hash of attributes
-  # @param {String|undefined} attribute value
-  # @return {String|Element} attribute value or element reference
-  #
+NOTE: some methods, like `#show`, `#hide`, etc
+might take a visual effect settings, those settings
+will work only if the `fx` module is included on the page,
+otherwise the element will be immediately shown/hidden
+
+Copyright (C) 2011-2012 Nikolay Nemshilov
+
+```coffee-aside
+Element.include
+```
+
+The basic attributes handling method
+
+    :coffee
+    element.attr('name')          # -> getting attribute
+    element.attr('name', 'value') # -> setting attribute
+    element.attr('name', null)    # -> removing attribute
+    element.attr('name') is null  # -> checking attribute
+
+    element.attr
+      name1: 'value1'
+      name2: 'value2'
+      ....
+
+@param {String|Object} attribute name or a hash of attributes
+@param {String|undefined} attribute value
+@return {String|Element} attribute value or element reference
+
+```coffee-aside
   attr: (name, value) ->
     if typeof(name) is 'string'
 
@@ -52,15 +53,16 @@ Element.include
         @attr(value, name[value])
 
     return @
+```
 
-  #
-  # Sets/gets the `data-smth` data attribute and
-  # automatically converts everything in/out JSON
-  #
-  # @param {String} key name
-  # @param {mixed} data or `undefined` to erase
-  # @return {Element|mixed} self or extracted data
-  #
+Sets/gets the `data-smth` data attribute and
+automatically converts everything in/out JSON
+
+@param {String} key name
+@param {mixed} data or `undefined` to erase
+@return {Element|mixed} self or extracted data
+
+```coffee-aside
   data: (key, value)->
     if isObject(key)
       for name of key
@@ -102,40 +104,44 @@ Element.include
       value = @
 
     return value
+```
 
-  #
-  # Checks if the element is hidden
-  #
-  # @return {Boolean} check result
-  #
+Checks if the element is hidden
+
+@return {Boolean} check result
+
+```coffee-aside
   hidden: ->
     @style('display') is 'none'
+```
 
-  #
-  # Checks if the element is visible
-  #
-  # @return {Boolean} check result
-  #
+Checks if the element is visible
+
+@return {Boolean} check result
+
+```coffee-aside
   visible: ->
     !@hidden()
+```
 
-  #
-  # Hides an element (optionally with fx)
-  #
-  # @return {Element} this
-  #
+Hides an element (optionally with fx)
+
+@return {Element} this
+
+```coffee-aside
   hide: ->
     if @visible()
       @_old_display = @style('display')
       @_.style.display = 'none'
 
     return @
+```
 
-  #
-  # Shows an element (optionally with fx)
-  #
-  # @return {Element} this
-  #
+Shows an element (optionally with fx)
+
+@return {Element} this
+
+```coffee-aside
   show: ->
     if @hidden()
       element = @_
@@ -149,37 +155,42 @@ Element.include
       element.style.display = if value is 'none' then 'block' else value
 
     return @
+```
 
-  #
-  # Toggles an element's visual state (optionally with fx)
-  #
-  # @return {Element} this
-  #
+Toggles an element's visual state (optionally with fx)
+
+@return {Element} this
+
+```coffee-aside
   toggle: ->
     if @hidden() then @show() else @hide()
+```
 
-  #
-  # hides all the sibling elements and shows this one (optionally with fx)
-  #
-  # @return {Element} this
-  #
+hides all the sibling elements and shows this one (optionally with fx)
+
+@return {Element} this
+
+```coffee-aside
   radio: ->
     @siblings().forEach('hide')
     @show()
+```
 
-  #
-  # Returns the element's owner document reference
-  #
-  # @return {Document} wrapped owner document
-  #
+Returns the element's owner document reference
+
+@return {Document} wrapped owner document
+
+```coffee-aside
   document: ->
     wrap @_.ownerDocument
+```
 
-  #
-  # Returns the element's owner window reference
-  #
-  # @return {Window} wrapped owner window
-  #
-  #
+Returns the element's owner window reference
+
+@return {Window} wrapped owner window
+
+
+```coffee-aside
   window: ->
     @document().window()
+```

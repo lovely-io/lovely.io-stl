@@ -1,14 +1,14 @@
-#
-# This module tries to figure out the current browser type
-#
-# __NOTE__: it's just a dummy `userAgent` based check
-#
-#     Lovely ['dom'], ($)->
-#       if $.Browser is 'IE'
-#         alert("Cry baby cry!")
-#
-# Copyright (C) 2011-2012 Nikolay Nemshilov
-#
+This module tries to figure out the current browser type
+
+__NOTE__: it's just a dummy `userAgent` based check
+
+    Lovely ['dom'], ($)->
+      if $.Browser is 'IE'
+        alert("Cry baby cry!")
+
+Copyright (C) 2011-2012 Nikolay Nemshilov
+
+```coffee-aside
 Browser = navigator.userAgent
 
 if 'attachEvent' of document && !/Opera/.test(Browser)
@@ -25,3 +25,4 @@ else if /AppleWebKit/.test(Browser)
   Browser = 'WebKit'
 else
   Browser = 'Unknown'
+```

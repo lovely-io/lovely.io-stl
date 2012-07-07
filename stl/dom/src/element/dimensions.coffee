@@ -1,14 +1,14 @@
 #
 # Element's dimensions handling methods
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 Element.include
   #
   # Element's size manipulation method. Handles both
   # setting and getting
   #
-  # USAGE:
+  #     :js
   #     element.size()             // -> x: NNN, y: NNN
   #     element.size(x:NNN, y:NNN) // -> element self
   #     element.size(x:NNN)        // -> element self
@@ -16,7 +16,7 @@ Element.include
   #     element.size(null, y)      // -> element self
   #     element.size(x, null)      // -> element self
   #
-  # NOTE: this method will adjust the element size
+  # __NOTE__: this method will adjust the element size
   #       accordingly to provide the given size regardless
   #       to the paddings and internal element margins
   #
@@ -44,7 +44,7 @@ Element.include
   #
   # Handles the element scrolling position
   #
-  # USAGE:
+  #     :js
   #     element.scrolls()             // -> x: NNN, y: NNN
   #     element.scrolls(x:NNN, y:NNN) // -> element self
   #     element.scrolls(x:NNN)        // -> element self
@@ -68,13 +68,17 @@ Element.include
   #
   # Handles the element's absolute position
   #
-  # USAGE:
+  #     :js
   #     element.position()             // -> x: NNN, y:NNN
   #     element.position(x:NNN, y:NNN) // -> element self
   #     element.position(x:NNN)        // -> element self
   #     element.position(x, y)         // -> element self
   #     element.position(x, null)      // -> element self
   #     element.position(null, y)      // -> element self
+  #
+  # __NOTE__: if the element is in a relative positions space, this method
+  #           will automatically correct the actual CSS values so that the
+  #           element appeared in the specified absolute position
   #
   # @param {Object|Number} absolute position x:NNN, y:NNN or NNN x-position
   # @param {Number} y-position in case of a two numbers call
@@ -122,7 +126,7 @@ Element.include
   #
   # Returns the element index among it's siblings
   #
-  # NOTE: this method skips the text nodes!
+  # __NOTE__: this method skips the text nodes!
   #
   # @return {Number} index
   #

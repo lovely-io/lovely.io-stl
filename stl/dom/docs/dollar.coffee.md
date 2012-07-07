@@ -1,32 +1,32 @@
-#
-# The main function of the DOM API, it can take several types of arguments
-#
-# Search:
-#
-#     :js
-#     $('some#css.rule'[, optionally a context]) // -> NodeList
-#
-# Creation:
-#
-#     :js
-#     $('<div>bla bla bla</div>') // -> NodeList
-#
-# DOM-Ready:
-#
-#     :js
-#     $(function() { /* dom-ready content */ }); // -> Document
-#
-# DOM-Wrapper:
-#
-#     :js
-#     $(element)  // -> Element
-#     $(document) // -> Document
-#     $(window)   // -> Window
-#     ...
-#
-# @param {String|Function|Element|Document} stuff
-# @return {NodeList|Wrapper} result
-#
+The main function of the DOM API, it can take several types of arguments
+
+Search:
+
+    :js
+    $('some#css.rule'[, optionally a context]) // -> NodeList
+
+Creation:
+
+    :js
+    $('<div>bla bla bla</div>') // -> NodeList
+
+DOM-Ready:
+
+    :js
+    $(function() { /* dom-ready content */ }); // -> Document
+
+DOM-Wrapper:
+
+    :js
+    $(element)  // -> Element
+    $(document) // -> Document
+    $(window)   // -> Window
+    ...
+
+@param {String|Function|Element|Document} stuff
+@return {NodeList|Wrapper} result
+
+```coffee-aside
 $ = (value, context) ->
   switch typeof(value)
     when 'string'
@@ -50,3 +50,4 @@ $ = (value, context) ->
     when 'object'   then value = wrap(value)
 
   return value
+```

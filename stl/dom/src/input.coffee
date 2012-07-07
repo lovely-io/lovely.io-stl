@@ -1,20 +1,24 @@
 #
 # Input fields common dom-wrappers
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 class Input extends Element
   #
   # Constructor
   #
-  # NOTE: this constructor can be called in several ways
+  # __NOTE__: this constructor can be called in several ways
   #
-  #  Like normal Element
-  #   var input = new Input('texarea', {...});
-  #   var input = new Input(document.createElement('select'));
+  # Like normal Element
   #
-  #  Or with options only which will make an INPUT element by default
-  #    var input = new Input({type: 'password', name: 'password'});
+  #     :js
+  #     var input = new Input('texarea', {...});
+  #     var input = new Input(document.createElement('select'));
+  #
+  # Or with options only which will make an INPUT element by default
+  #
+  #     :js
+  #     var input = new Input({type: 'password', name: 'password'});
   #
   # @param {HTMLElement|String|Object} raw dom elemnt, tag name or options
   # @param {Object} options
@@ -106,7 +110,7 @@ Input.include
   # Places the focus on this input field
   #
   # @return {Input} this
-  #/
+  #
   focus: ->
     @_.focus()
     @focused = true
