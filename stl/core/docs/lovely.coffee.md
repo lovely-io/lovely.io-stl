@@ -1,20 +1,20 @@
-#
-# The top function, handles async modules loading/definition
-#
-#     :js
-#     Lovely(['module1', 'module2'], function(module1, module2) {
-#       // do stuff
-#     });
-#
-# Modules Definition:
-#
-#     :js
-#     Lovely('module-name', ['dep1', 'dep2'], function(dep1, dep2) {
-#       return { module: 'definition' };
-#     });
-#
-# Copyright (C) 2011-2012 Nikolay Nemshilov
-#
+The top function, handles async modules loading/definition
+
+    :js
+    Lovely(['module1', 'module2'], function(module1, module2) {
+      // do stuff
+    });
+
+Modules Definition:
+
+    :js
+    Lovely('module-name', ['dep1', 'dep2'], function(dep1, dep2) {
+      return { module: 'definition' };
+    });
+
+Copyright (C) 2011-2012 Nikolay Nemshilov
+
+```coffee-aside
 Lovely = ->
   args     = A(arguments)
   current  = if isString(args[0])   then args.shift() else null
@@ -65,10 +65,11 @@ Lovely = ->
 
 # modules load_listeners registery
 modules_load_listeners = []
+```
 
-#
-# Checks all the awaiting module loaders in the registery
-#
+Checks all the awaiting module loaders in the registery
+
+```coffee-aside
 check_all_waiting_loaders = ->
   global.setTimeout ->
     clean_list = []
@@ -83,16 +84,17 @@ check_all_waiting_loaders = ->
 
     return # nothing
   , 0 # using an async call to let the script run
+```
 
-#
-# Builds an event listener that checks if the modules are
-# loaded and if so then calls the callback
-#
-# @param {Array}     modules list
-# @param {Function}  callback
-# @param {String}    currently awaiting module name
-# @return {Function} listener
-#
+Builds an event listener that checks if the modules are
+loaded and if so then calls the callback
+
+@param {Array}     modules list
+@param {Function}  callback
+@param {String}    currently awaiting module name
+@return {Function} listener
+
+```coffee-aside
 modules_load_listener_for = (modules, callback, name)->
   ->
     packages=[]
@@ -111,15 +113,15 @@ modules_load_listener_for = (modules, callback, name)->
       delete(Lovely.loading[name])
 
     return true # successfully loaded everything
+```
 
+Searches for an already loaded module
 
-#
-# Searches for an already loaded module
-#
-# @param {String} full module name (including the version)
-# @param {Object} modules registery
-# @param {Object} matching module
-#
+@param {String} full module name (including the version)
+@param {Object} modules registery
+@param {Object} matching module
+
+```coffee-aside
 find_module = (module, registry)->
   registry = registry || Lovely.modules
   version  = (module.match(/\-\d+\.\d+\.\d+.*$/) || [''])[0]
@@ -137,13 +139,13 @@ find_module = (module, registry)->
     module = registry[versions.sort()[versions.length - 1]]
 
   module
+```
 
+Searches for the Lovely hosting url from the scripts 'src' attribute
 
-#
-# Searches for the Lovely hosting url from the scripts 'src' attribute
-#
-# @return {String} location
-#
+@return {String} location
+
+```coffee-aside
 find_host_url = ->
   if global.document
     scripts = document.getElementsByTagName('script')
@@ -154,3 +156,4 @@ find_host_url = ->
         return match[1]
 
   Lovely.hostUrl
+```

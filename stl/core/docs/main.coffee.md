@@ -1,8 +1,8 @@
-#
-# Lovely IO core module
-#
-# Copyright (C) 2011-2012 Nikolay Nemshilov
-#
+Lovely IO core module
+
+Copyright (C) 2011-2012 Nikolay Nemshilov
+
+```coffee-aside
 
 include 'src/lovely'
 include 'src/util'
@@ -47,3 +47,4 @@ Lovely.modules["core-#{Lovely.version}"] = Lovely
 
 # making the main object globally available
 global.Lovely = Lovely
+```

@@ -1,7 +1,6 @@
 #
 # A standard options handling interface mixin
 #
-# USAGE:
 #     MyClass = new Lovely.Class
 #       include: Lovely.Options,
 #       extend:
@@ -12,7 +11,7 @@
 #       initialize: (options) ->
 #         this.setOptions options
 #
-#  Copyright (C) 2011 Nikolay Nemshilov
+#  Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 Options =
   options: {}  # instance options object
@@ -20,7 +19,7 @@ Options =
   #
   # Sets the current options
   #
-  # NOTE: will deep-merge the Klass.Options
+  # __NOTE__: this method will _deep-merge_ the klass.Options
   #
   # @param {Object} options
   # @return {Class} this

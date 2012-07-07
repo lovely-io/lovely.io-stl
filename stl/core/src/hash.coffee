@@ -2,17 +2,17 @@
 # Hash is a little inheritable wrapper over Object
 # to handle key-value things
 #
-# NOTE: Hash filters all the lists like keys/values
+# __NOTE__: Hash filters all the lists like keys/values
 #       and so one by the `hasOwnProperty` check
 #
-# NOTE: For every instance method, there is a corresponding
+# __NOTE__: For every instance method, there is a corresponding
 #       class level method, that does the same thing but
 #       works with raw javascript objects. f.e.
 #
-#     new Hash({a:1}).merge({b:2}) // -> new Hash(a:1, b:2)
-#     Hash.merge({a:1}, {b:2})     // -> {a:1, b:2}
+#     new Hash({a:1}).merge({b:2}) # -> new Hash(a:1, b:2)
+#     Hash.merge({a:1}, {b:2})     # -> {a:1, b:2}
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 class Hash
   _: null # the real object reference

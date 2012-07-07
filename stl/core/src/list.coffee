@@ -3,10 +3,10 @@
 #
 # The goal in here is to provide a quick, steady and inheritable
 # JavaScript 1.7 Array like interface with some additional
-# features, so that we could iterate through anything in a civilize
-# maner, without tempering with the JavaScript core.
+# features so that we could iterate through anything in a civilized
+# maner without tempering with the JavaScript core.
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 class List extends Array
 

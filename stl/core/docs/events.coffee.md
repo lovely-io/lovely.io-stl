@@ -1,31 +1,32 @@
-#
-# The standard events handling interface mixin
-#
-#     MyClass = new core.Class
-#       inclunde: core.Events
-#
-#     my = new MyClass
-#
-#     my.on 'event', (one, two, three)->
-#       console.log(one, two, three)
-#
-#     my.emit 'event', 1, 2, 3
-#
-# Copyright (C) 2011-2012 Nikolay Nemshilov
-#
+The standard events handling interface mixin
+
+    MyClass = new core.Class
+      inclunde: core.Events
+
+    my = new MyClass
+
+    my.on 'event', (one, two, three)->
+      console.log(one, two, three)
+
+    my.emit 'event', 1, 2, 3
+
+Copyright (C) 2011-2012 Nikolay Nemshilov
+
+```coffee-aside
 Events =
   _listeners: null # this object listeners stash
+```
 
-  #
-  # Adds event listeners
-  #
-  #     object.on 'event', callback
-  #     object.on 'event1,event2,event3', callback
-  #     object.on event1: callback1, event2: callback2
-  #     object.on 'event', 'methodname'[, arg1, arg2, ..]
-  #
-  # @return {Class} this
-  #
+Adds event listeners
+
+    object.on 'event', callback
+    object.on 'event1,event2,event3', callback
+    object.on event1: callback1, event2: callback2
+    object.on 'event', 'methodname'[, arg1, arg2, ..]
+
+@return {Class} this
+
+```coffee-aside
   on: ->
     args     = A(arguments)
     events   = args.shift()
@@ -48,19 +49,20 @@ Events =
           this.on event, events[event]
 
     this
+```
 
-  #
-  # Removes event listeners
-  #
-  #     object.no 'event'
-  #     object.no 'event1,event2'
-  #     object.no callback
-  #     object.no 'event', callback
-  #     object.no event1: callback1, event2: callback2
-  #     object.no 'event', 'methodname'
-  #
-  # @return {Class} this
-  #
+Removes event listeners
+
+    object.no 'event'
+    object.no 'event1,event2'
+    object.no callback
+    object.no 'event', callback
+    object.no event1: callback1, event2: callback2
+    object.no 'event', 'methodname'
+
+@return {Class} this
+
+```coffee-aside
   no: ->
     args     = A(arguments)
     events   = args.shift()
@@ -90,22 +92,23 @@ Events =
           this.no event, events[event]
 
     this
+```
 
-  #
-  # Checks if this object listens to the events
-  #
-  #     object.ones 'event'
-  #     object.ones 'event1,event2'
-  #     object.ones callback
-  #     object.ones 'event', callback
-  #     object.ones event1: callback1, event2: callback2
-  #     object.ones 'event', 'methodname'
-  #
-  # __NOTE__: if several event names are specified then it
-  #       will check if _any_ of them are satisfied
-  #
-  # @return {boolean} check result
-  #
+Checks if this object listens to the events
+
+    object.ones 'event'
+    object.ones 'event1,event2'
+    object.ones callback
+    object.ones 'event', callback
+    object.ones event1: callback1, event2: callback2
+    object.ones 'event', 'methodname'
+
+__NOTE__: if several event names are specified then it
+      will check if _any_ of them are satisfied
+
+@return {boolean} check result
+
+```coffee-aside
   ones: ->
     result   = no
     args     = A(arguments)
@@ -131,15 +134,16 @@ Events =
           result |= this.ones event, events[event]
 
     result is 1 # converting to boolean after the `|=` operations
+```
 
-  #
-  # Triggers an event on the object
-  #
-  #     object.emit 'event'
-  #     object.emit 'event', arg1, arg2, arg3
-  #
-  # @return {Class} this
-  #
+Triggers an event on the object
+
+    object.emit 'event'
+    object.emit 'event', arg1, arg2, arg3
+
+@return {Class} this
+
+```coffee-aside
   emit: ->
     args  = A(arguments)
     event = args.shift()
@@ -149,4 +153,4 @@ Events =
         entry.c.apply(this, entry.a.concat(args))
 
     this
-
+```

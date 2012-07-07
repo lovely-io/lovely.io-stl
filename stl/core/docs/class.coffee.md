@@ -1,8 +1,8 @@
-##
-# `Class` is the main classes handler for Lovely
-#
-# Copyright (C) 2011-2012 Nikolay Nemshilov
-#
+`Class` is the main classes handler for Lovely
+
+Copyright (C) 2011-2012 Nikolay Nemshilov
+
+```coffee-aside
 Class = (parent, params) ->
   unless isFunction(parent)
     params = parent
@@ -37,32 +37,34 @@ Class = (parent, params) ->
 
   # loading the main properties
   Klass.include(params)
+```
+
+the class-level utils to manipulate class properties
+
+Principles are the same as in Ruby
+
+ * 'extend'  - extends the class level
+ * 'include' - extends the prototype level
 
 
-#
-# the class-level utils to manipulate class properties
-#
-# Principles are the same as in Ruby
-#
-#  * 'extend'  - extends the class level
-#  * 'include' - extends the prototype level
-#
-#
+```coffee-aside
 ext Class,
-  ##
-  # Extends the prototype-level attributes
-  #
-  #     :js
-  #     MyClass.include({
-  #       myMethod: function() { return 'boo' }
-  #     });
-  #
-  #     new MyClass().myMethod(); // -> 'boo'
-  #
-  # @param {Object} module
-  # ....
-  # @return {Class} this
-  #
+```
+
+Extends the prototype-level attributes
+
+    :js
+    MyClass.include({
+      myMethod: function() { return 'boo' }
+    });
+
+    new MyClass().myMethod(); // -> 'boo'
+
+@param {Object} module
+....
+@return {Class} this
+
+```coffee-aside
   include: ->
     for module in arguments
       module or= {}
@@ -89,23 +91,25 @@ ext Class,
 
 
     return this
+```
 
-  ##
-  # Adds a class-level attributes
-  #
-  #     :js
-  #     MyClass.extend({
-  #       myMethod: function() { return 'boo' }
-  #     });
-  #
-  #     MyClass.myMethod(); // -> 'boo'
-  #
-  # @param {Object} module
-  # ...
-  # @return {Class} this
-  #
+Adds a class-level attributes
+
+    :js
+    MyClass.extend({
+      myMethod: function() { return 'boo' }
+    });
+
+    MyClass.myMethod(); // -> 'boo'
+
+@param {Object} module
+...
+@return {Class} this
+
+```coffee-aside
   extend: ->
     for module in arguments
       ext(this, module)
 
     return this
+```
