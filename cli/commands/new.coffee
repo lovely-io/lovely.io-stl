@@ -1,10 +1,9 @@
 #
 # The new project generator tool
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 fs   = require('fs')
-path = require('path')
 
 placeholders = {}
 
@@ -102,7 +101,7 @@ exports.init = (args) ->
   if !name_re.test(project_name)
     print_error "Project name should match: " + name_re.toString().yellow
 
-  if path.existsSync("#{process.cwd()}/#{project_name}")
+  if fs.existsSync("#{process.cwd()}/#{project_name}")
     print_error "Directory already exists"
 
   generate(project_name, args)

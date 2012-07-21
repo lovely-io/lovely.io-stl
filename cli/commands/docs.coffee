@@ -5,7 +5,6 @@
 #
 
 fs        = require('fs')
-path      = require('path')
 generate  = require('../documentation')
 cwd       = process.cwd()
 docs      = 'docs/'
@@ -26,9 +25,9 @@ generate_docs_for = (filename)->
 
   sout ("   ■ ".yellow + filename + ' ').ljust(60, '.') + ' '
 
-  return sout("Already exists\n".yellow) if path.existsSync(doc_file)
+  return sout("Already exists\n".yellow) if fs.existsSync(doc_file)
 
-  fs.mkdirSync(doc_dir, 0o0755) unless path.existsSync(doc_dir)
+  fs.mkdirSync(doc_dir, 0o0755) unless fs.existsSync(doc_dir)
 
   content = generate.from_file("#{cwd}/#{filename}")
   return sout("Not supported yet".yellow) if content is false
@@ -58,15 +57,15 @@ exports.init = (args) ->
   build_docs = ->
     sout  (" • ".grey + "Creating the "+ docs.yellow + " directory ").ljust(70, '.') + " "
 
-    if path.existsSync(docs_dir)
+    if fs.existsSync(docs_dir)
       sout "Already exists\n".yellow
     else
       fs.mkdirSync(docs_dir, 0o0755); sout  "Ok\n".green
 
     print " • ".grey + "Generating documentation from sources"
 
-    generate_docs_for('main.coffee') if path.existsSync('main.coffee')
-    generate_docs_for('main.js')     if path.existsSync('main.js')
+    generate_docs_for('main.coffee') if fs.existsSync('main.coffee')
+    generate_docs_for('main.js')     if fs.existsSync('main.js')
     loop_directory_recursively('src')
 
     print "\nDONE".green

@@ -1,7 +1,7 @@
 #
 # The initial bootstraping task
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 
 #
@@ -12,20 +12,19 @@
 #
 bootstrap = (base_dir) ->
   fs       = require('fs')
-  path     = require('path')
   home_dir = process.env.HOME
 
   base_dir or= "#{home_dir}/.lovely/"
 
   print "Making the base at: #{base_dir}"
 
-  if path.existsSync(base_dir)
+  if fs.existsSync(base_dir)
     print " » " + "Already exists".yellow
   else
     fs.mkdirSync(base_dir, 0o0755)
 
   print "Initial RC file at: ~/.lovelyrc"
-  if path.existsSync("#{home_dir}/.lovelyrc")
+  if fs.existsSync("#{home_dir}/.lovelyrc")
     print " » " + "Already exists".yellow
   else
     lovelyrc.base = base_dir
@@ -35,7 +34,7 @@ bootstrap = (base_dir) ->
 
 
   print "Copying shared server content"
-  if path.existsSync("#{base_dir}/server")
+  if fs.existsSync("#{base_dir}/server")
     print " » " + "Already exists".yellow
   else
     system "cp -r #{__dirname + "/../server"} #{base_dir}"

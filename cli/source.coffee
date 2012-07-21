@@ -2,11 +2,10 @@
 # This module handles source code compilation
 # for a standard project
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-fs   = require('fs')
-path = require('path')
 
+fs   = require('fs')
 
 #
 # Preconverts coffe-script into javascript
@@ -58,7 +57,7 @@ compile = (directory)->
   directory or= process.cwd()
 
   options = require('./package').read(directory)
-  format  = path.existsSync("#{directory}/main.coffee")
+  format  = fs.existsSync("#{directory}/main.coffee")
   format  = if format then 'coffee' else 'js'
   source  = fs.readFileSync("#{directory}/main.#{format}").toString()
 
@@ -166,7 +165,7 @@ minify = (directory)->
 #
 inline_css = (directory) ->
   for format in ['css', 'sass', 'styl']
-    if path.existsSync("#{directory}/main.#{format}")
+    if fs.existsSync("#{directory}/main.#{format}")
       style = fs.readFileSync("#{directory}/main.#{format}").toString()
 
   return "" if !style

@@ -1,7 +1,7 @@
 #
 # The console commands front interface.
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 require './lovelyrc'
 
@@ -85,7 +85,7 @@ exports.init = (args) ->
 
   filename = "#{__dirname}/commands/#{args[0]}.coffee"
 
-  if require('path').existsSync(filename)
+  if require('fs').existsSync(filename)
     require(filename).init(args.slice(1))
   else
     print "Unknown command '#{args[0]}'"

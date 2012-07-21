@@ -2,7 +2,7 @@
 # A nice proxy to ready/write configurations
 # from/into the ~/.lovelyrc file
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 lovelyrc = global.lovelyrc = {};
 location = "#{process.env.HOME}/.lovelyrc";
@@ -52,7 +52,7 @@ save_options = ->
 #
 # reading the current set of options if available
 #
-if require('path').existsSync(location)
+if require('fs').existsSync(location)
   src = require('fs').readFileSync(location).toString()
   src.replace /(^|\n)\s*(\w+)\s*=\s*([^#\n]+)/g, (m, s, key, value) ->
     options[key] = value.trim()

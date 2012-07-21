@@ -2,7 +2,7 @@
 # This command is used to switch which version of
 # a package should be used as the default one
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 
 # searches for the latest version of the package in the directory
@@ -21,9 +21,7 @@ find_latest = (location)->
 # the main function
 exports.init = (args)->
   fs       = require('fs')
-  path     = require('path')
   location = lovelyrc.base
-  path     = require('path')
   pack     = args.shift()
 
 
@@ -32,12 +30,12 @@ exports.init = (args)->
   location[location.length - 1] == '/' || (location += '/')
   location += "packages/#{pack}"
 
-  print_error "Could't locate package '#{pack}'" if !path.existsSync(location)
+  print_error "Could't locate package '#{pack}'" if !fs.existsSync(location)
 
   version = args.shift()
   version = find_latest(location) unless version
 
-  if !path.existsSync("#{location}/#{version}")
+  if !fs.existsSync("#{location}/#{version}")
     print_error "Could't find version '#{version}' of '#{pack}'"
 
   system("cd #{location}; rm -f active; ln -s #{version} active")

@@ -1,7 +1,7 @@
 #
 # Updates all the locally installed packages
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 
 #
@@ -12,10 +12,9 @@
 #
 read = (filename)->
   fs       = require('fs')
-  path     = require('path')
   filename = process.cwd() + "/" + filename
 
-  if path.existsSync(filename)
+  if fs.existsSync(filename)
     fs.readFileSync(filename).toString()
   else
     ''
@@ -27,7 +26,6 @@ read = (filename)->
 #
 read_images = (build)->
   fs     = require('fs')
-  path   = require('path')
   folder = "#{process.cwd()}/images/"
   images = {}
 
@@ -36,7 +34,7 @@ read_images = (build)->
       file = file.substr(1, file.length - 2)
       file = file.substr(0, file.length - 1) if file[file.length-1] is "\\"
       if file = file.split('images/')[1]
-        if path.existsSync(folder + file)
+        if fs.existsSync(folder + file)
           images[file] = fs.readFileSync(folder + file).toString('base64')
 
   return images
@@ -48,7 +46,6 @@ read_images = (build)->
 #
 collect_documentation = ->
   fs   = require('fs')
-  path = require('path')
   cwd  = process.cwd()
   docs =
     index:     read('README.md')
@@ -62,7 +59,7 @@ collect_documentation = ->
       else
         docs["#{dirname}/#{filename}"] = read("#{dirname}/#{filename}")
 
-  loop_recursively('docs') if path.existsSync("#{cwd}/docs")
+  loop_recursively('docs') if fs.existsSync("#{cwd}/docs")
 
   return docs
 

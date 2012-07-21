@@ -1,17 +1,16 @@
 #
 # Package, local building command
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 exports.init = (args) ->
   fs       = require('fs')
-  path     = require('path')
   source   = require('../source')
   location = process.cwd()
   pack     = require('../package')
 
   location +=  "/build/"
-  path.existsSync(location) || fs.mkdirSync(location, 0o0755)
+  fs.existsSync(location) || fs.mkdirSync(location, 0o0755)
 
   location += pack.name;
   fs.writeFileSync(location + "-src.js", source.compile())

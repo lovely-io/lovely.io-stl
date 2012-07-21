@@ -3,11 +3,10 @@
 # package on fly alowing to effectively split it
 # apart and work with it in a nice environment
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 exports.init = (args) ->
   fs      = require('fs')
-  path    = require('path')
   source  = require('../source')
   pack    = require('../package')
   express = require('express')
@@ -34,7 +33,7 @@ exports.init = (args) ->
       size = Math.round(src.length/102.4)/10
       console.log(" Compiling: ".cyan+ "/#{module}.js (#{size}Kb #{if minify then 'minified' else 'source'})".grey)
 
-    else if path.existsSync("#{process.cwd()}/#{module}.js")
+    else if fs.existsSync("#{process.cwd()}/#{module}.js")
       src = fs.readFileSync("#{process.cwd()}/#{module}.js")
       console.log(" Sending:   "+ "/#{module}.js (text/javascript)".grey)
 
@@ -72,7 +71,7 @@ exports.init = (args) ->
       for ext in ['', '.html', 'index.html', '/index.html']
         relname  = "#{req.params[0]}#{ext}"
         fullname = "#{directory}/#{relname}"
-        if path.existsSync(fullname) and !fs.statSync(fullname).isDirectory()
+        if fs.existsSync(fullname) and !fs.statSync(fullname).isDirectory()
           return relname
 
       return false
