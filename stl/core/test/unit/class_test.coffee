@@ -1,203 +1,192 @@
 #
 # The `Class` unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, Lovely} = require('../test_helper')
+{assert, Lovely} = require('../test_helper')
 
 Class = Lovely.Class
 
-describe 'Class', module,
+describe 'Class', ->
 
-  "new Class({..})":
-    topic: -> new Class
+  describe "new Class({..})", ->
+    Klass = new Class
       getName:        -> return this.name
       setName: (name) -> this.name = name
 
-    'should be typeof a Function': (Klass) ->
-      assert.isFunction Klass
+    it 'should be typeof a Function', ->
+      Klass.should.be.a 'function'
 
-    'should have those methods in its prototype': (Klass) ->
-      assert.isFunction Klass.prototype.getName
-      assert.isFunction Klass.prototype.setName
+    it 'should have those methods in its prototype', ->
+      Klass.prototype.getName.should.be.a 'function'
+      Klass.prototype.setName.should.be.a 'function'
 
-    'should refer to the class with prototype.constructor': (Klass) ->
-      assert.same Klass.prototype.constructor, Klass
+    it 'should refer to the class with prototype.constructor', ->
+      Klass.should.be.equal Klass.prototype.constructor
 
-    'should not have anything besides those names': (Klass) ->
-      assert.deepEqual(
-        key for key of Klass.prototype,
-        ['getName', 'setName']
-      )
+    it 'should not have anything besides those names', ->
+      (key for key of Klass.prototype).should.eql ['getName', 'setName']
 
-    'should allow to make instances of it': (Klass) ->
-      assert.instanceOf new Klass(), Klass
+    it 'should allow to make instances of it', ->
+      new Klass().should.be.instanceOf Klass
 
-    'should have those methods working': (Klass) ->
+    it 'should have those methods working', ->
       klass = new Klass()
       klass.setName 'boo-hoo'
-      assert.equal 'boo-hoo', klass.getName()
+      klass.getName().should.eql 'boo-hoo'
 
 
 
-  'new Class({initialize: ...})':
-    topic: -> new Class
+  describe 'new Class({initialize: ...})', ->
+    Klass = new Class
       constructor: (a, b) ->
         this.name = a + '-' + b
         this
 
-    'should call the constructor on the instance': (Klass) ->
-      assert.equal 'boo-hoo', new Klass('boo', 'hoo').name
+    it 'should call the constructor on the instance', ->
+      new Klass('boo', 'hoo').name.should.eql 'boo-hoo'
 
     "should return the constructor's result if sent": ->
       Klass = new Class constructor: -> ['some-other-data']
 
-      assert.deepEqual new Klass(), ['some-other-data']
+      new Klass().should.eql ['some-other-data']
 
 
-  'new Class() with a multilevel constructor inheritance':
-    topic: ->
-      this.Klass0 = new Class
-        constructor: -> this.property = 'value'
-      this.Klass1 = new Class this.Klass0,
-        method1: 'method1'
-      this.Klass2 = new Class this.Klass1,
-        method2: 'method2'
-      this.Klass3 = new Class this.Klass2,
-        method3: 'method3'
+  describe 'new Class() with a multilevel constructor inheritance', ->
+    Klass0 = new Class
+      constructor: -> this.property = 'value'
+    Klass1 = new Class Klass0,
+      method1: 'method1'
+    Klass2 = new Class Klass1,
+      method2: 'method2'
+    Klass3 = new Class Klass2,
+      method3: 'method3'
 
 
-    "should handle the first level inheritance": ->
-      klass = new this.Klass1()
+    it "should handle the first level inheritance", ->
+      klass = new Klass1()
 
-      assert.instanceOf klass, this.Klass1
-      assert.instanceOf klass, this.Klass0
-      assert.equal      klass.property, 'value'
-      assert.equal      klass.method1,  'method1'
-
-
-    "should handle the second level inheritance": ->
-      klass = new this.Klass2()
-
-      assert.instanceOf klass, this.Klass2
-      assert.instanceOf klass, this.Klass1
-      assert.instanceOf klass, this.Klass0
-      assert.equal      klass.property, 'value'
-      assert.equal      klass.method1,  'method1'
-      assert.equal      klass.method2,  'method2'
+      klass.should.be.instanceOf Klass1
+      klass.should.be.instanceOf Klass0
+      klass.property.should.eql 'value'
+      klass.method1.should.eql  'method1'
 
 
-    "should handle the third level inheritance": ->
-      klass = new this.Klass3()
+    it "should handle the second level inheritance", ->
+      klass = new Klass2()
 
-      assert.instanceOf klass, this.Klass3
-      assert.instanceOf klass, this.Klass2
-      assert.instanceOf klass, this.Klass1
-      assert.instanceOf klass, this.Klass0
-      assert.equal      klass.property, 'value'
-      assert.equal      klass.method1,  'method1'
-      assert.equal      klass.method2,  'method2'
-      assert.equal      klass.method3,  'method3'
+      klass.should.be.instanceOf Klass2
+      klass.should.be.instanceOf Klass1
+      klass.should.be.instanceOf Klass0
+      klass.property.should.eql 'value'
+      klass.method1.should.eql  'method1'
+      klass.method2.should.eql  'method2'
 
 
+    it "should handle the third level inheritance", ->
+      klass = new Klass3()
 
-  'new Class':
-    topic: ->
-      this.ParentKlass = new Class
-        constructor: -> this.prop = this.method(); this
-        method: (data) -> data || 'parent'
-
-    '\b(Parent)':
-      topic: (Parent) -> new Class(Parent)
-
-      "should refer '.__super__' to the parent class": (Klass) ->
-        assert.same Klass.__super__, this.ParentKlass
-
-      "should keep the parent's 'method'": (Klass) ->
-        assert.same Klass.prototype.method, this.ParentKlass.prototype.method
+      klass.should.be.instanceOf Klass3
+      klass.should.be.instanceOf Klass2
+      klass.should.be.instanceOf Klass1
+      klass.should.be.instanceOf Klass0
+      klass.property.should.eql 'value'
+      klass.method1.should.eql  'method1'
+      klass.method2.should.eql  'method2'
+      klass.method3.should.eql  'method3'
 
 
-    '\b(Parent, {...})':
-      topic: (Parent) ->
-        new Class Parent, method: -> 'child'
 
-      "should refer '.__super__' to the parent class": (Klass) ->
-        assert.same Klass.__super__, this.ParentKlass
+  describe 'new Class', ->
+    ParentKlass = new Class
+      constructor: -> this.prop = this.method(); this
+      method: (data) -> data || 'parent'
 
-      "should replace the parent class method": (Klass) ->
-        assert.notEqual Klass.prototype.method, this.ParentKlass.prototype.method
+    describe '\b(Parent)', ->
+      Klass = new Class(ParentKlass)
 
-      "should inherit the parent's class type": (Klass) ->
+      it "should refer '.__super__' to the parent class", ->
+        Klass.__super__.should.equal ParentKlass
+
+      it "should keep the parent's 'method'", ->
+        Klass.prototype.method.should.equal ParentKlass.prototype.method
+
+
+    describe '\b(Parent, {...})', ->
+      Klass = new Class ParentKlass, method: -> 'child'
+
+      it "should refer '.__super__' to the parent class", ->
+        Klass.__super__.should.be.equal ParentKlass
+
+      it "should replace the parent class method", ->
+        Klass.prototype.method.should.not.equal ParentKlass.prototype.method
+
+      it "should inherit the parent's class type", ->
         klass = new Klass()
 
-        assert.instanceOf klass, Klass
-        assert.instanceOf klass, this.ParentKlass
+        klass.should.be.instanceOf Klass
+        klass.should.be.instanceOf ParentKlass
 
-      "should call this class methods": (Klass) ->
-        assert.equal new Klass().method(), 'child'
+      it "should call this class methods", ->
+        new Klass().method().should.eql 'child'
 
 
-    '\b(Parent, {...}) and $super calls':
-      topic: (Parent) ->
-        new Class Parent,
-          method: -> this.$super('parent-data + ') + 'child-data'
+    describe '\b(Parent, {...}) and $super calls', ->
+      Klass = new Class ParentKlass,
+        method: -> this.$super('parent-data + ') + 'child-data'
 
-      "should preform a proper super-call": (Klass) ->
-        assert.equal new Klass().method(), 'parent-data + child-data'
+      it "should preform a proper super-call", ->
+        new Klass().method().should.eql 'parent-data + child-data'
 
-    '\b(Parent, {constructor: ->})':
-      topic: (Parent) ->
-        new Class Parent,
-          constructor: ->
-            this.prop = this.$super().prop + ' + constructor'
-            this
+    describe '\b(Parent, {constructor: ->})', ->
+      Klass = new Class ParentKlass,
+        constructor: ->
+          this.prop = this.$super().prop + ' + constructor'
+          this
 
-          method: ->
-            this.$super() + ' + child'
+        method: ->
+          this.$super() + ' + child'
 
-      "should still refer the constructor to the correct class": (Klass) ->
-        assert.same Klass.prototype.constructor, Klass
+      it "should still refer the constructor to the correct class", ->
+        Klass.prototype.constructor.should.be.equal Klass
 
-      "should correctly refer the __super__ property": (Klass) ->
-        assert.same Klass.__super__, this.ParentKlass
+      it "should correctly refer the __super__ property", ->
+        Klass.__super__.should.be.equal ParentKlass
 
-      "should call everything in correct scopes": (Klass) ->
+      it "should call everything in correct scopes", ->
         klass = new Klass()
-        assert.equal klass.prop, 'parent + child + constructor'
+        klass.prop.should.eql 'parent + child + constructor'
 
 
 
-  'new Class() with shared modules':
-    topic: ->
-      this.ext = a: -> b: ->
-      this.inc = c: -> d: ->
+  describe 'new Class() with shared modules', ->
+    ext = a: [], b: []
+    inc = c: [], d: []
 
-      return new Class
-        include: this.inc
-        extend:  this.ext
+    Klass = new Class
+      include: inc
+      extend:  ext
 
-    "should extend the class-level with the 'extend' module": (Klass) ->
-      assert.same Klass.a, this.ext.a
-      assert.same Klass.b, this.ext.b
+    it "should extend the class-level with the 'extend' module", ->
+      Klass.a.should.be.same ext.a
+      Klass.b.should.be.same ext.b
 
-      assert.isFalse 'c' of Klass
-      assert.isFalse 'd' of Klass
+      Klass.should.not.have.keys(['c'])
+      Klass.should.not.have.keys(['d'])
 
-    "should extend the prototype with the 'include' module": (Klass) ->
-      assert.same Klass.prototype.c, this.inc.c
-      assert.same Klass.prototype.d, this.inc.d
+    it "should extend the prototype with the 'include' module", ->
+      Klass.prototype.c.should.be.same inc.c
+      Klass.prototype.d.should.be.same inc.d
 
-      assert.isFalse 'a' of Klass.prototype
-      assert.isFalse 'b' of Klass.prototype
+      Klass.prototype.should.not.have.keys(['a'])
+      Klass.prototype.should.not.have.keys(['b'])
 
-  "in class methods overloading":
-    topic: ->
-      Klass = new Class
-        method: -> "original"
+  describe "in class methods overloading", ->
+    Klass = new Class
+      method: -> "original"
 
-      Klass.include
-        method: -> this.$super() + "+overload"
+    Klass.include
+      method: -> this.$super() + "+overload"
 
-    "should overload the method right in the class": (Klass)->
-      assert.equal new Klass().method(), "original+overload"
-
+    it "should overload the method right in the class", ->
+      new Klass().method().should.be.eql "original+overload"

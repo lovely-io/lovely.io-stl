@@ -1,10 +1,11 @@
 #
 # Node.js envinronment initializer for Lovely IO
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 fs  = require('fs')
 sys = require('util')
+
 src = require('../../../cli/source')
 
 # packing and initializing Lovely core
@@ -13,22 +14,12 @@ eval(src = src.compile(__dirname + "/../"))
 # globalizing those ones so we didn't need to reinit them all the time
 exports.Lovely  = this.Lovely
 exports.util    = require('util')
-exports.assert  = assert = require('assert')
+exports.should  = should = require('should')
 
-assert.same    = assert.strictEqual
-assert.notSame = assert.notStrictEqual
+should.Assertion.prototype.same   =
+should.Assertion.prototype.sameAs =
+  should.Assertion.prototype.equal
 
-#
-# A simple shortcut over the Vows to make
-# a single batch descriptions
-#
-# @param {String} name
-# @param {Object} current module
-# @param {Object} batch hash
-# @return void
-#
-exports.describe = (thing, module, batch) ->
-  require('vows').describe(thing).addBatch(batch).export(module)
 
 # making a little local server with 'express' to load the fixtures into the zombie
 global.server or= require('express').createServer()
@@ -63,7 +54,7 @@ exports.Browser = Browser = require('zombie').Browser
 # the domain-name, port and things
 #
 # @param {String} relative url address
-# @param {Function} vows async callback
+# @param {Function} vows callback
 #
 Browser.open = (url, callback) ->
   if !server.active
@@ -78,4 +69,6 @@ Browser.open = (url, callback) ->
 
   browser.visit 'http://localhost:3000' + url, (err, browser) ->
     throw err if err
-    browser.wait(callback)
+    browser.wait -> callback(browser.alerts)
+
+  return # nothing
