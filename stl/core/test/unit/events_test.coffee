@@ -1,187 +1,182 @@
 #
 # The events handling interface unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, Lovely} = require('../test_helper')
+{Lovely} = require('../test_helper')
 
 
-# a dummy class to test the interface
-Dummy = new Lovely.Class
-  include: Lovely.Events
-  method: -> # some dummy method
+describe 'Events',
+  # a dummy class to test the interface
+  Dummy = new Lovely.Class
+    include: Lovely.Events
+    method:  -> # some dummy method
 
 
-describe 'Events', module,
+  describe "#on", ->
 
-  "#on":
+    describe "\b('event', callback)", ->
+      dummy  = new Dummy()
+      object = dummy.on('event', fun = ->)
 
-    "\b('event', callback)":
-      topic: -> this.dummy = new Dummy().on('event', this.cb = ->)
+      it "should return the same object back", ->
+        object.should.equal dummy
 
-      "should return the same object back": (object) ->
-        assert.same object, this.dummy
+      it "should start listen to the 'event'", ->
+        object.ones('event', fun).should.be.true
 
-      "should start listen to the 'event'": (object) ->
-        assert.isTrue object.ones('event', this.cb)
+    describe "\b('event', 'callback', arg1, arg2, arg3)", ->
+      object = new Dummy().on('event', 'method', 1, 2, 3)
 
-    "\b('event', 'callback', arg1, arg2, arg3)":
-      topic: -> new Dummy().on('event', 'method', 1, 2, 3)
+      it "should start listen to the 'event' with the 'method'", ->
+        object.ones('event', object.method).should.be.true
 
-      "should start listen to the 'event' with the 'method'": (object) ->
-        assert.isTrue object.ones('event', object.method)
+      it "should stash the additional arguments for later use", ->
+        object._listeners[0].a.should.eql [1,2,3]
 
-      "should stash the additional arguments for later use": (object) ->
-        assert.deepEqual object._listeners[0].a, [1,2,3]
+    describe "\b('event1,event2', callback)", ->
+      object = new Dummy().on('event1,event2', fun = ->)
 
-    "\b('event1,event2', callback)":
-      topic: -> new Dummy().on('event1,event2', this.cb = ->)
+      it "should start listening to the event1", ->
+        object.ones('event1', fun).should.be.true
 
-      "should start listening to the event1": (object) ->
-        assert.isTrue object.ones('event1', this.cb)
+      it "should start listening to the event2", ->
+        object.ones('event2', fun).should.be.true
 
-      "should start listening to the event2": (object) ->
-        assert.isTrue object.ones('event2', this.cb)
+    describe "\b({event1: callback1, event2: callback2})", ->
+      object = new Dummy().on(event1: (fn1 = ->), event2: (fn2 = ->))
 
-    "\b({event1: callback1, event2: callback2})":
-      topic: -> new Dummy()
-        .on(event1: (this.cb1 = ->), event2: (this.cb2 = ->))
+      it "should start listening to the event1", ->
+        object.ones('event1', fn1).should.be.true
 
-      "should start listening to the event1": (object) ->
-        assert.isTrue object.ones('event1', this.cb1)
-
-      "should start listening to the event2": (object) ->
-        assert.isTrue object.ones('event2', this.cb2)
+      it "should start listening to the event2", ->
+        object.ones('event2', fn2).should.be.true
 
 
-  "#ones":
+  describe "#ones", ->
 
-    "\b('event')":
-      topic: -> this.dummy = new Dummy
+    describe "\b('event')", ->
+      dummy = new Dummy()
 
-      "should return 'false' by default": ->
-        assert.isFalse this.dummy.ones('something')
+      it "should return 'false' by default", ->
+        dummy.ones('something').should.be.false
 
-      "should return 'true' when listens to the event": ->
-        object = this.dummy.on('event', ->)
-        assert.isTrue object.ones('event')
+      it "should return 'true' when listens to the event", ->
+        dummy.on('event', ->).ones('event').should.be.true
 
-    "\b('event', callback)":
-      topic: -> new Dummy().on('event', this.cb = ->)
+    describe "\b('event', callback)", ->
+      object = new Dummy().on('event', fun = ->)
 
-      "should say 'true' for used callback": (object) ->
-        assert.isTrue object.ones('event', this.cb)
+      it "should say 'true' for used callback", ->
+        object.ones('event', fun).should.be.true
 
-      "should say 'false' for another callback": (object) ->
-        assert.isFalse object.ones('event', ->)
+      it "should say 'false' for another callback", ->
+        object.ones('event', ->).should.be.false
 
-    "\b(callback)":
-      topic: -> new Dummy().on('event', this.cb = ->)
+    describe "\b(callback)", ->
+      object = new Dummy().on('event', cb = ->)
 
-      "should say 'true' for used callback": (object) ->
-        assert.isTrue object.ones(this.cb)
+      it "should say 'true' for used callback", ->
+        object.ones(cb).should.be.true
 
-      "should say 'false' for another callback": (object) ->
-        assert.isFalse object.ones(->)
+      it "should say 'false' for another callback", ->
+        object.ones(->).should.be.false
 
 
-  "#no":
+  describe "#no", ->
 
-    "\b('event')":
-      topic: -> this.dummy = new Dummy()
+    describe "\b('event')", ->
+      dummy = this.dummy = new Dummy()
         .on('event', ->)
         .on('other', ->)
-        .no('event')
+      object = dummy.no('event')
 
-      "should return the same object back": (object) ->
-        assert.same object, this.dummy
+      it "should return the same object back", ->
+        object.should.be.same dummy
 
-      "should stop listening to the event": (object) ->
-        assert.isFalse object.ones('event')
+      it "should stop listening to the event", ->
+        object.ones('event').should.be.false
 
-      "should not touch the 'other' event": (object) ->
-        assert.isTrue object.ones('other')
+      it "should not touch the 'other' event", ->
+        object.ones('other').should.be.true
 
-    "\b('event', callback)":
-      topic: -> new Dummy()
-        .on('event', this.cb1 = ->)
-        .on('event', this.cb2 = ->)
-        .no('event', this.cb1)
+    describe "\b('event', callback)", ->
+      object = new Dummy()
+        .on('event', cb1 = ->)
+        .on('event', cb2 = ->)
+        .no('event', cb1)
 
-      "should stop listening to the first callback": (object) ->
-        assert.isFalse object.ones('event', this.cb1)
+      it "should stop listening to the first callback", ->
+        object.ones('event', cb1).should.be.false
 
-      "should keep listening to the second callback": (object) ->
-        assert.isTrue object.ones('event', this.cb2)
+      it "should keep listening to the second callback", ->
+        object.ones('event', cb2).should.be.true
 
-    "\b(callback)":
-      topic: -> new Dummy()
-        .on('event1,event2', this.cb1 = ->)
-        .on('event1,event2', this.cb2 = ->)
-        .no(this.cb1)
+    describe "\b(callback)", ->
+      object = new Dummy()
+        .on('event1,event2', cb1 = ->)
+        .on('event1,event2', cb2 = ->)
+        .no(cb1)
 
-      "should listening all events for the callback": (object)->
-        assert.isFalse object.ones('event1', this.cb1)
-        assert.isFalse object.ones('event2', this.cb1)
+      it "should listening all events for the callback", ->
+        object.ones('event1', cb1).should.be.false
+        object.ones('event2', cb1).should.be.false
 
-      "should not detach other callbacks": (object)->
-        assert.isTrue object.ones('event1', this.cb2)
-        assert.isTrue object.ones('event2', this.cb2)
+      it "should not detach other callbacks", ->
+        object.ones('event1', this.cb2).should.be.true
+        object.ones('event2', this.cb2).should.be.true
 
-    "\b('event1,event2')":
-      topic: -> new Dummy()
-        .on('event1,event2,event3', this.cb = ->)
+    describe "\b('event1,event2')", ->
+      object = new Dummy()
+        .on('event1,event2,event3', cb = ->)
         .no('event1,event2')
 
-      "should stop listening to the 'event1'": (object) ->
-        assert.isFalse object.ones('event1')
+      it "should stop listening to the 'event1'", ->
+        object.ones('event1').should.be.false
 
-      "should stop listening to the 'event2'": (object) ->
-        assert.isFalse object.ones('event2')
+      it "should stop listening to the 'event2'", ->
+        object.ones('event2').should.be.false
 
-      "should keep listening to the 'event3'": (object) ->
-        assert.isTrue object.ones('event3')
+      it "should keep listening to the 'event3'", ->
+        object.ones('event3').should.be.true
 
-    "\b({event1: callback1, event2: callback2})":
-      topic: -> new Dummy()
-        .on(event1: (this.cb1 = ->), event2: (this.cb2 = ->), event3: (this.cb3 = ->))
-        .no(event1: this.cb1, event2: this.cb2)
+    describe "\b({event1: callback1, event2: callback2})", ->
+      object = new Dummy()
+        .on(event1: (cb1 = ->), event2: (cb2 = ->), event3: (cb3 = ->))
+        .no(event1: cb1, event2: cb2)
 
-      "should stop listening to the 'event1'": (object) ->
-        assert.isFalse object.ones('event1')
+      it "should stop listening to the 'event1'", ->
+        object.ones('event1').should.be.false
 
-      "should stop listening to the 'event2'": (object) ->
-        assert.isFalse object.ones('event2')
+      it "should stop listening to the 'event2'", ->
+        object.ones('event2').should.be.false
 
-      "should keep listening to the 'event3'": (object) ->
-        assert.isTrue object.ones('event3')
+      it "should keep listening to the 'event3'", ->
+        object.ones('event3').should.be.true
 
 
 
-  "#emit":
+  describe "#emit", ->
 
-      "\b('event')":
-        topic: ->
-          result = this.result = {}
-          this.dummy = new Dummy()
-            .on('event', -> result.scope = this)
-            .emit('event')
+    describe "\b('event')", ->
+      result = this.result = {}
+      dummy  = new Dummy().on('event', -> result.scope = this)
+      object = dummy.emit('event')
 
-        "should return the same object back": (object) ->
-          assert.same object, this.dummy
+      it "should return the same object back", ->
+        object.should.be.equal dummy
 
-        "should call the listener in the scope of the object": (object) ->
-          assert.same this.result.scope, object
+      it "should call the listener in the scope of the object", ->
+        result.scope.should.be.equal object
 
-      "\b('event', arg1, arg2, arg3)":
-        topic: ->
-          result = this.result = {}
-          new Dummy()
-            .on('event', -> result.args = Lovely.A(arguments))
-            .emit('event', 1, 2, 3)
+    describe "\b('event', arg1, arg2, arg3)", ->
+      result = {}
+      object = new Dummy()
+        .on('event', -> result.args = Lovely.A(arguments))
+        .emit('event', 1, 2, 3)
 
-          "should pass the arguments into the listener": (object) ->
-            assert.deepEqual this.result.args, [1,2,3]
+      it "should pass the arguments into the listener", ->
+        result.args.should.eql [1,2,3]
 
 
 

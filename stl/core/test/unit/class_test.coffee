@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{assert, Lovely} = require('../test_helper')
+{Lovely} = require('../test_helper')
 
 Class = Lovely.Class
 
