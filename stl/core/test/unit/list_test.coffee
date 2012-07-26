@@ -1,329 +1,317 @@
 #
 # The {List} unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, Lovely} = require('../test_helper')
+{Lovely, should} = require('../test_helper')
 
-List  = Lovely.List
-array = [1,2,3,4,5]
-list  = new List(array)
 
-A     = Lovely.A
+describe "List", ->
 
-ensure_new_list = (object) ->
-  assert.instanceOf object, List
-  assert.notSame    object, list
+  List  = Lovely.List
+  array = [1,2,3,4,5]
+  olist = new List(array)
+  A     = Lovely.A
 
-assert.listEqual = (list, array) ->
-  assert.instanceOf list, List
-  assert.deepEqual  A(list), A(array)
+  # just a dummy class to test calls-by-name
+  Foo = new Lovely.Class
+    value:      null
+    constructor: (v) -> @value = v
+    getValue:    ( ) -> @value
+    addValue:    (v) -> @value += v
+    even:        ( ) -> @value % 2 is 0
+    biggerThan:  (v) -> @value > v
 
-# just a dummy class to test calls-by-name
-Foo = new Lovely.Class
-  value:      null
-  constructor: (v) -> this.value = v
-  getValue:    ( ) -> this.value
-  addValue:    (v) -> this.value += v
-  even:        ( ) -> this.value % 2 is 0
-  biggerThan:  (v) -> this.value > v
 
+  # making a list of Foo stuff to test various things
+  FooList = new Lovely.Class List,
+    constructor: (args)->
+      @$super(args || [
+        new Foo(1)
+        new Foo(2)
+        new Foo(3)
+        new Foo(4)
+      ])
 
-# making a list of Foo stuff to test various things
-FooList = new Lovely.Class List,
-  constructor: (args)->
-    this.$super(args || [
-      new Foo(1)
-      new Foo(2)
-      new Foo(3)
-      new Foo(4)
-    ])
 
+  describe '\b#constructor', ->
+    it 'should copy the array into itself', ->
+      A(olist).should.eql array
 
-describe "List", module,
+    it "should make an instance of 'List'", ->
+      olist.should.be.instanceOf List
 
-  'constructor':
-    topic: list
 
-    'should copy the array into itself': (list) ->
-      assert.listEqual list, array
+  describe '\b#forEach(callback)', ->
+    items   = []
+    indexes = []
+    result  = olist.forEach (item, index) ->
+      items.push(item)
+      indexes.push(index)
 
-    "should make an instance of 'List'": (list) ->
-      assert.instanceOf list, List
+    it 'should get through all the items on the list', ->
+      items.should.eql [1,2,3,4,5]
 
+    it 'should send the index into the callback', ->
+      indexes.should.eql [0,1,2,3,4]
 
-  '#forEach(callback)':
-    topic: ->
-      this.items   = []
-      this.indexes = []
+    it 'should return the list object back', ->
+      result.should.equal olist
 
-      list.forEach (item, index) ->
-        this.items.push(item)
-        this.indexes.push(index)
-      , this
 
-    'should get through all the items on the list': (items) ->
-      assert.deepEqual this.items, [1,2,3,4,5]
+  describe '\b#forEach("name", "arg")', ->
+    list = new FooList().forEach("addValue", 2)
 
-    'should send the index into the callback': (items) ->
-      assert.deepEqual this.indexes, [0,1,2,3,4]
+    it 'should add 2 to every value on the list', ->
+      list.should.be.instanceOf FooList
+      list.should.be.instanceOf List
+      A(list.map((i) -> i.value)).should.eql [3,4,5,6]
 
-    'should return the list object back': (result) ->
-      assert.same result, list
 
+  describe '\b#map(callback)', ->
+    list = olist.map (item) -> item * 2
 
-  '#forEach("name", "arg")':
-    topic: new FooList().forEach("addValue", 2)
+    it 'should make a new list', ->
+      list.should.be.instanceOf List
+      list.should.not.equal olist
 
-    'should add 2 to every value on the list': (list) ->
-      assert.instanceOf list, FooList
-      assert.listEqual  list.map((i) -> i.value), [3,4,5,6]
+    it 'should pack all the mapping results', ->
+      A(list).should.eql [2,4,6,8,10]
 
+  describe '\b#map("attr_name")', ->
+    list = new FooList().map("value")
 
-  '#map(callback)':
-    topic: list.map (item) -> item * 2
+    it "should map the 'value' properties of the list", ->
+      list.should.be.instanceOf List
+      A(list).should.eql [1,2,3,4]
 
-    'should make a new list': ensure_new_list,
+  describe '\b#map("method_name")', ->
+    list = new FooList().map('getValue')
 
-    'should pack all the mapping results': (list) ->
-      assert.listEqual list, [2,4,6,8,10]
+    it "should map the results of the 'getValue()' calls on the list the list", ->
+      list.should.be.instanceOf List
+      A(list).should.eql [1,2,3,4]
 
-  '#map("attr_name")':
-    topic: new FooList().map("value")
+  describe '\b#map("method_name", "argument")', ->
+    list = new FooList().map('addValue', 3)
 
-    "should map the 'value' properties of the list": (list) ->
-      assert.listEqual list, [1,2,3,4]
+    it "should map the results of the 'addValue(3)' method calls", ->
+      list.should.be.instanceOf List
+      A(list).should.eql [4,5,6,7]
 
-  '#map("method_name")':
-    topic: new FooList().map('getValue')
+  describe '\b#map("method_name", "arg1", "arg2")', ->
+    list = new List(['boo', 'hoo']).map('replace', 'oo', 'aa')
 
-    "should map the results of the 'getValue()' calls on the list the list": (list) ->
-      assert.listEqual list, [1,2,3,4]
+    it "should map the result of calls", ->
+      list.should.be.instanceOf List
+      A(list).should.eql ['baa', 'haa']
 
-  '#map("method_name", "argument")':
-    topic: new FooList().map('addValue', 3)
 
-    "should map the results of the 'addValue(3)' method calls": (list) ->
-      assert.listEqual list, [4,5,6,7]
+  describe '\b#filter(callback)', ->
+    list = olist.filter (item) -> item % 2
 
-  '#map("method_name", "arg1", "arg2")':
-    topic: new List(['boo', 'hoo']).map('replace', 'oo', 'aa')
+    it 'should create a new List', ->
+      list.should.be.instanceOf List
+      list.should.not.equal olist
 
-    "should map the result of calls": (list) ->
-      assert.listEqual list, ['baa', 'haa']
+    it 'should pack it with filtered data', ->
+      A(list).should.eql [1,3,5]
 
+  describe '\b#filter("method_name")', ->
+    list = new FooList().filter('even')
 
-  '#filter(callback)':
-    topic: list.filter (item) -> item % 2
+    it "should filter the list by the method name calls", ->
+      list.should.be.instanceOf List
+      A(list.map('value')).should.eql [2,4]
 
-    'should create a new List': ensure_new_list,
 
-    'should pack it with filtered data': (list) ->
-      assert.listEqual list, [1,3,5]
+  describe '\b#reject(callback)', ->
+    list = olist.reject (item) -> item % 2
 
-  '#filter("method_name")':
-    topic: new FooList().filter('even')
+    it 'should create a new List', ->
+      list.should.be.instanceOf List
+      list.should.not.equal olist
 
-    "should filter the list by the method name calls": (list) ->
-      assert.listEqual list.map('value'), [2,4]
+    it 'should filter out all matching elements', ->
+      A(list).should.eql [2,4]
 
+  describe '\b#reject("method_name")', ->
+    list = new FooList().reject("even")
 
-  '#reject(callback)':
-    topic: list.reject (item) -> item % 2
+    it "should reject values based on the name call", ->
+      list.should.be.instanceOf FooList
+      list.should.be.instanceOf List
+      A(list.map('value')).should.eql [1,3]
 
-    'should create a new List': ensure_new_list,
 
-    'should filter out all matching elements': (list) ->
-      assert.listEqual list, [2,4]
+  describe '\b#some(callback)', ->
+    it "should return 'true' when some of the items match", ->
+      (olist.some (item)-> item > 2).should.be.true
 
-  '#reject("method_name")':
-    topic: new FooList().reject("even")
+    it "should return 'false' when none of the items match", ->
+      (olist.some (item)-> item > Infinity).should.be.false
 
-    "should reject values based on the name call": (list) ->
-      assert.listEqual list.map('value'), [1,3]
+  describe '\b#some("method_name")', ->
+    list = new FooList()
 
+    it "should return 'true' when some the items match", ->
+      list.some("biggerThan", 2).should.be.true
 
-  '#some(callback)':
-    topic: list
+    it "should return 'false' when none of the items match", ->
+      list.some("biggerThan", Infinity).should.be.false
 
-    "should return 'true' when some of the items match": (list)->
-      assert.isTrue list.some (item)-> item > 2
 
-    "should return 'false' when none of the items match": (list)->
-      assert.isFalse list.some (item)-> item > Infinity
+  describe '\b#every(callback)', ->
+    it "should return 'true' when every item match", ->
+      (olist.every (item)-> item > -1).should.be.true
 
-  '#some("method_name")':
-    topic: new FooList()
+    it "should return 'false' when some of the items don't match", ->
+      (olist.every (item)-> item > 2).should.be.false
 
-    "should return 'true' when some the items match": (list)->
-      assert.isTrue list.some("biggerThan", 2)
+  describe '\b#every("method_name")', ->
+    list = new FooList()
 
-    "should return 'false' when none of the items match": (list)->
-      assert.isFalse list.some("biggerThan", Infinity)
+    it "should return 'true' when every item match", ->
+      list.every("biggerThan", -1).should.be.true
 
+    it "should return 'false' when some of items don't match", ->
+      list.every("biggerThan", 2).should.be.false
 
-  '#every(callback)':
-    topic: list
 
-    "should return 'true' when every item match": (list)->
-      assert.isTrue list.every (item)-> item > -1
+  describe '\b#toArray()', ->
+    array = olist.toArray()
 
-    "should return 'false' when some of the items don't match": (list)->
-      assert.isFalse list.every (item)-> item > 2
+    it 'should make an array out of the list', ->
+      array.should.be.instanceOf Array
+      array.should.not.be.instanceOf List
 
-  '#every("method_name")':
-    topic: new FooList()
+    it 'should feed it with the original data', ->
+      array.should.eql A(olist)
 
-    "should return 'true' when every item match": (list)->
-      assert.isTrue list.every("biggerThan", -1)
+    it 'should make a clone of the list not refer it by a link', ->
+      array.should.not.equal A(olist)
 
-    "should return 'false' when some of items don't match": (list)->
-      assert.isFalse list.every("biggerThan", 2)
+  describe '\b#indexOf', ->
+    index = olist.indexOf(2)
 
+    it 'should return left index for the item', ->
+      index.should.eql array.indexOf(2)
 
-  '#toArray()':
-    topic: list.toArray()
 
-    'should make an array out of the list': (array) ->
-      assert.isArray array
+  describe '\b#lastIndexOf', ->
+    index = olist.lastIndexOf(2)
 
-    'should feed it with the original data': (array) ->
-      assert.deepEqual array, A(list)
+    it 'should return the right index for the item', ->
+      index.should.eql array.lastIndexOf(2)
 
-    'should make a clone of the list not refer it by a link': (array) ->
-      assert.notSame array, A(list)
+  describe '\b#push', ->
+    list = new List([1,2,3])
+    list.push(4)
 
-  '#indexOf':
-    topic: list.indexOf(2)
+    it 'should push the item into the list', ->
+      A(list).should.eql [1,2,3,4]
 
-    'should return left index for the item': (index) ->
-      assert.equal index, array.indexOf(2)
 
+  describe '\b#pop', ->
+    list = new List([1,2,3,4])
+    item = list.pop()
 
-  '#lastIndexOf':
-    topic: list.lastIndexOf(2)
+    it "should return the last item out of the list", ->
+      item.should.equal 4
 
-    'should return the right index for the item': (index) ->
-      assert.equal index, array.lastIndexOf(2)
+    it "should subtract the list", ->
+      list.should.be.instanceOf List
+      A(list).should.eql [1,2,3]
 
-  '#push':
-    topic: ->
-      this.list = new List([1,2,3])
-      this.list.push(4)
-      this.list
 
-    'should push the item into the list': (list) ->
-      assert.listEqual list, [1,2,3,4]
+  describe '\b#shift', ->
+    list = new List([1,2,3,4])
+    item = list.shift()
 
+    it 'should return the first item', ->
+      item.should.eql 1
 
-  '#pop':
-    topic: ->
-      this.list = new List([1,2,3,4])
-      this.list.pop()
+    it 'should subtract the list itself', ->
+      A(list).should.eql [2,3,4]
 
-    "should return the last item out of the list": (item) ->
-      assert.equal item, 4
+  describe '\b#unshift', ->
+    list = new List([2,3,4])
+    list.unshift(1)
 
-    "should subtract the list": ->
-      assert.listEqual this.list, [1,2,3]
+    it 'should unshift the item into the list', ->
+      A(list).should.eql [1,2,3,4]
 
+  describe '\b#slice', ->
+    list = olist.slice(2)
 
-  '#shift':
-    topic: ->
-      this.list = new List([1,2,3,4])
-      this.list.shift()
+    it 'should make a new list', ->
+      list.should.be.instanceOf List
+      list.should.not.equal olist
 
-    'should return the first item': (item) ->
-      assert.equal item, 1
+    it 'should slice the original list', ->
+      A(list).should.eql [3,4,5]
 
-    'should subtract the list itself': ->
-      assert.listEqual this.list, [2,3,4]
+  describe '\b#splice', ->
+    list  = new List([1,2,3,4])
+    items = list.splice(1,2,5,6,7)
 
-  '#unshift':
-    topic: ->
-      this.list = new List([2,3,4])
-      this.list.unshift(1)
-      this.list
+    it "should return the extracted items", ->
+      items.should.eql [2,3]
 
-    'should unshift the item into the list': (list) ->
-      assert.listEqual list, [1,2,3,4]
+    it "should remove and insert items correctly", ->
+      A(list).should.eql [1,5,6,7,4]
 
-  '#slice':
-    topic: list.slice(2)
+  describe '\b#reverse', ->
+    list   = new List([1,2,3,4])
+    result = list.reverse()
 
-    'should make a new list': ensure_new_list
+    it "should not create a new list", ->
+      result.should.equal list
 
-    'should slice the original list': (list) ->
-      assert.listEqual list, [3,4,5]
+    it "should reverse it's entries order", ->
+      A(list).should.eql [4,3,2,1]
 
-  '#splice':
-    topic: ->
-      this.list = new List([1,2,3,4])
-      this.list.splice(1,2,5,6,7)
+  describe '\b#concat', ->
+    list   = new List([1,2])
+    result = list.concat([3,4])
 
-    "should return the extracted items": (items)->
-      assert.deepEqual items, [2,3]
+    it "should create a new list", ->
+      result.should.be.instanceOf List
+      result.should.not.equal list
 
-    "should remove and insert items correctly":->
-      assert.listEqual this.list, [1,5,6,7,4]
+    it "should add the new values", ->
+      A(result).should.eql [1,2,3,4]
 
-  '#reverse':
-    topic: ->
-      this.list = new List([1,2,3,4])
-      this.list.reverse()
+  describe '\b#sort', ->
+    list   = new List(['c', 'd', 'b', 'a'])
+    result = list.sort()
 
-    "should not create a new list": (list)->
-      assert.same list, this.list
+    it "should return the same list back to the code", ->
+      result.should.equal list
 
-    "should reverse it's entries order": (list)->
-      assert.listEqual list, [4,3,2,1]
+    it "should sort the list items", ->
+      A(list).should.eql ['a', 'b', 'c', 'd']
 
-  '#concat':
-    topic: ->
-      this.list = new List([1,2])
-      this.list.concat([3,4])
+  describe '\b#join', ->
+    result = new List([1,2,3,4,5]).join('-')
 
-    "should create a new list": ensure_new_list
+    it "should join the list items using separator", ->
+      result.should.eql '1-2-3-4-5'
 
-    "should add the new values": (list)->
-      assert.listEqual list, [1,2,3,4]
+  describe '\bsubclass', ->
+    list = new FooList()
 
-  '#sort':
-    topic: ->
-      this.list = new List(['c', 'd', 'b', 'a'])
-      this.list.sort()
+    it "should return the subclass instance with the #slice operation", ->
+      list.slice(1,2).should.be.instanceOf FooList
 
-    "should return the same list back to the code": (list)->
-      assert.same list, this.list
+    it "should return a List instance with the #map operation", ->
+      list.map('getValue').should.be.instanceOf List
 
-    "should sort the list items": (list)->
-      assert.listEqual list, ['a', 'b', 'c', 'd']
+    it "should return the subclass instance with the #filter operation", ->
+      list.filter('odd').should.be.instanceOf FooList
 
-  '#join':
-    topic: new List([1,2,3,4,5]).join('-')
+    it "should return the subclass instance with the #reject operation", ->
+      list.reject('event').should.be.instanceOf FooList
 
-    "should join the list items using separator": (result)->
-      assert.equal result, '1-2-3-4-5'
-
-  'subclass':
-    topic: -> new FooList()
-
-    "should return the subclass instance with the #slice operation": (list)->
-      list = list.slice(1,2)
-      assert.instanceOf list, FooList
-
-    "should return a List instance with the #map operation": (list)->
-      list = list.map('getValue')
-      assert.instanceOf list, List
-
-    "should return the subclass instance with the #filter operation": (list)->
-      list = list.filter('odd')
-      assert.instanceOf list, FooList
-
-    "should return the subclass instance with the #reject operation": (list)->
-      list = list.reject('event')
-      assert.instanceOf list, FooList
-
-    "should return the subclass instance with the #concat operation": (list)->
-      list = list.concat([1,2,3])
-      assert.instanceOf list, FooList
+    it "should return the subclass instance with the #concat operation", ->
+      list.concat([1,2,3]).should.be.instanceOf FooList

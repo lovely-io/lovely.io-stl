@@ -216,8 +216,8 @@ describe 'Hash', ->
         ['a', 1, obj], ['b', 2, obj]
       ]
 
-    it "should return the object itself back": (result) ->
-      result.should.equal obj
+    it "should return the object itself back", ->
+      hash.should.equal obj
 
   describe "\b.map", ->
     it "should map the results of callbacks on every key-value pairs", ->
