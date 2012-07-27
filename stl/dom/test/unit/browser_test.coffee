@@ -19,6 +19,6 @@ describe 'Browser', ->
   for name of user_agents
     do (name)->
       it "should say it's '#{name}' for #{name} browser", (done)->
-        Browser.open "/test.html", userAgent: user_agents[name], (browser)->
-          browser.window.Lovely.module('dom').Browser.should.eql name
+        Browser.open "/test.html", userAgent: user_agents[name], ($)->
+          $.Browser.should.eql name
           done()

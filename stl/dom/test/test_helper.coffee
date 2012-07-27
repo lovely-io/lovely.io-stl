@@ -1,7 +1,7 @@
 #
 # Local test-helper
 #
-# Copyright (C) 2011 Nikoaly Nemshilov
+# Copyright (C) 2011-2012 Nikoaly Nemshilov
 #
 Source   = require('../../../cli/source')
 
@@ -51,33 +51,6 @@ server.respond = (defs) ->
         resp.send(response)
 
 #
-# A helper method to load stuff into
-# the browser and then access it from a test
-#
-# @param {String} url address
-# @param {Vows} test erference
-# @param {Function} optional callback
-# @return void
-#
-exports.load = load = (url, test, callback)->
-  Browser.open url, (browser) ->
-    test.browser  = browser
-    test.window   = browser.window
-    test.document = browser.document
-    test.Lovely   = browser.window.Lovely
-    test.dom      = test.Lovely.module('dom')
-    test.Wrapper  = test.dom.Wrapper
-    test.Element  = test.dom.Element
-    test.Document = test.dom.Document
-    test.Window   = test.dom.Window
-    test.Event    = test.dom.Event
-    test.NodeList = test.dom.NodeList
-    test.Form     = test.dom.Form
-    test.Input    = test.dom.Input
-
-    test.callback(err, if callback then callback.call(test, test.dom) else test.dom)
-
-#
 # Another shortcut. Loads up the url, finds
 # and element with the specified 'id' and wraps
 # it into the dom.Element object
@@ -120,4 +93,6 @@ Browser.open = (url, options, callback) ->
 
   browser.visit 'http://localhost:3000' + url, (err, browser) ->
     throw err if err
-    browser.wait callback(browser)
+    browser.wait ->
+      callback(browser.window.Lovely.module('dom'), browser.window, browser)
+
