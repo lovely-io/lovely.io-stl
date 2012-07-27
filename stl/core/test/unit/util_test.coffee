@@ -1,9 +1,9 @@
 #
 # Utility function tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, util, Lovely} = require('../test_helper')
+{util, Lovely} = require('../test_helper')
 
 #
 # A shortcut for the type check functions mass-testing
@@ -13,149 +13,145 @@
 # @return void
 #
 assertTypeCheck = (name, options) ->
-  def = topic: -> Lovely[name]
+  ->
+    for value in options.ok
+      do (value) ->
+        it "should return 'true' for: "+ util.inspect(value), ->
+          Lovely[name](value).should.be.true
 
-  for value in options.ok
-    do (value) ->
-      def["should return 'true' for: "+ util.inspect(value)] = (method) ->
-        assert.isTrue(method(value))
-
-  for value in options.fail
-    do (value) ->
-      def["should return 'false' for: "+ util.inspect(value)] = (method) ->
-        assert.isFalse(method(value))
-
-  def
+    for value in options.fail
+      do (value) ->
+        it "should return 'false' for: "+ util.inspect(value), ->
+          Lovely[name](value).should.be.false
 
 
-describe 'Core Utils', module,
-  "ext(a,b)":
-    topic: -> Lovely.ext
+describe 'Core Utils', ->
+  describe "ext(a,b)", ->
+    ext = Lovely.ext
 
-    'should extend one object with another': (ext) ->
+    it 'should extend one object with another', ->
       a = a: 1
       b = b: 2
       c = ext(a, b)
 
-      assert.deepEqual {a:1, b:2}, c
-      assert.same      a, c
+      c.should.eql     {a:1, b:2}
+      c.should.be.same a
 
-    "should accept 'null' as the second argument": (ext) ->
-      assert.deepEqual {a: 1}, ext({a: 1}, null)
+    it "should accept 'null' as the second argument", ->
+      ext({a: 1}, null).should.eql {a: 1}
 
-    "should accept 'undefined' as the second argument": (ext) ->
-      assert.deepEqual {a: 1}, ext({a: 1}, undefined)
+    it "should accept 'undefined' as the second argument", ->
+      ext({a: 1}, undefined).should.eql {a: 1}
 
-    "should skip the prototype values": (ext)->
+    it "should skip the prototype values", ->
       o1 = ->
       o2 = ->
 
       ext(o1, o2)
 
-      assert.notSame o1.prototype, o2.prototype
+      o1.prototype.should.not.be.same o2.prototype
 
 
-  "bind":
-    topic: ->
-      result = this.result = {}
+  describe "bind", ->
+    bind     = Lovely.bind
+    result   = {}
+    original = ->
+      result.context = this
+      result.args    = Lovely.A(arguments)
 
-      return ->
-        result.context = this
-        result.args    = Lovely.A(arguments)
+    describe '\b(context)', ->
+      callback = bind(original, context = {})
 
-    '\r(context)':
-      topic: (original) -> Lovely.bind(original, this.context = {})
-
-      "should execute the original in the prebinded context": (callback) ->
+      it "should execute the original in the prebinded context", ->
         callback()
 
-        assert.same this.result.context, this.context
-        assert.deepEqual this.result.args, []
+        result.context.should.be.same context
+        result.args.should.eql        []
 
-      "should execute the original even when called in a different context": (callback) ->
+      it "should execute the original even when called in a different context", ->
         callback.apply other: 'context'
 
-        assert.same  this.result.context, this.context
-        assert.deepEqual this.result.args, []
+        result.context.should.be.same context
+        result.args.should.eql        []
 
-      "should bypass the arguments to the original function": (callback) ->
+      it "should bypass the arguments to the original function", ->
         callback(1,2,3)
 
-        assert.same this.result.context, this.context
-        assert.deepEqual this.result.args, [1,2,3]
+        result.context.should.be.same context
+        result.args.should.eql        [1,2,3]
 
-    '\r(context, arg1, arg2,..)':
-      topic: (original) -> Lovely.bind(original, this.context = {}, 1,2,3)
+    describe '\b(context, arg1, arg2,..)', ->
+      callback = bind(original, context = {}, 1,2,3)
 
-      "should pass the prebinded arguments into the original function": (callback) ->
+      it "should pass the prebinded arguments into the original function", ->
         callback()
 
-        assert.same this.result.context, this.context
-        assert.deepEqual this.result.args, [1,2,3]
+        result.context.should.be.same context
+        result.args.should.eql        [1,2,3]
 
-      "should handle additional arguments if specified": (callback) ->
+      it "should handle additional arguments if specified", ->
         callback(4,5,6)
 
-        assert.same  this.result.context, this.context
-        assert.deepEqual this.result.args, [1,2,3,4,5,6]
+        result.context.should.be.same context
+        result.args.should.eql        [1,2,3,4,5,6]
 
 
 
-  'trim(string)':
-    topic: Lovely.trim("  boo hoo!\n\t ")
+  describe 'trim(string)', ->
+    string = Lovely.trim("  boo hoo!\n\t ")
 
-    "should trim the excessive spaces out": (string) ->
-      assert.equal string, "boo hoo!"
+    it "should trim the excessive spaces out", ->
+      string.should.be.equal "boo hoo!"
 
 
-  "isString(value)": assertTypeCheck('isString',
+  describe "isString(value)", assertTypeCheck('isString',
     ok:   ['']
     fail: [1, 2.2, true, false, null, undefined, [], {}, ->])
 
-  "isNumber(value)": assertTypeCheck('isNumber',
+  describe "isNumber(value)", assertTypeCheck('isNumber',
     ok:   [1, 2.2]
     fail: ['11', '2.2', true, false, null, undefined, [], {}, NaN, ->])
 
-  "isFunction(value)": assertTypeCheck('isFunction',
+  describe "isFunction(value)", assertTypeCheck('isFunction',
     ok:   [`function(){}`, new Function('return 1')]
     fail: ['', 1, 2.2, true, false, null, undefined, [], {}, /\s/])
 
-  "isArray(value)": assertTypeCheck('isArray',
+  describe "isArray(value)", assertTypeCheck('isArray',
     ok:   [[], new Lovely.List()]
     fail: ['', 1, 2.2, true, false, null, undefined, {}, ->])
 
-  "isObject(value)": assertTypeCheck('isObject',
+  describe "isObject(value)", assertTypeCheck('isObject',
     ok:   [{}]
     fail: ['', 1, 2.2, true, false, null, undefined, [], ->])
 
 
-  "A(iterable)":
-    topic: -> Lovely.A
+  describe "A(iterable)", ->
+    A = Lovely.A
 
-    "should convert arguments into arrays": (A) ->
+    it "should convert arguments into arrays", ->
       dummy = -> arguments
       array = A(dummy(1,2,3))
 
-      assert.isArray   array
-      assert.deepEqual [1,2,3], array
+      array.should.be.instanceOf Array
+      array.should.eql           [1,2,3]
 
 
-  "L(iterable)":
-    topic: -> Lovely.L
+  describe "L(iterable)", ->
+    L = Lovely.L
 
-    "should make a List": (L) ->
+    it "should make a List", ->
       l = L([1,2,3])
 
-      assert.instanceOf l, Lovely.List
-      assert.deepEqual  l.toArray(), [1,2,3]
+      l.should.be.instanceOf Lovely.List
+      l.toArray().should.eql [1,2,3]
 
 
-  "H(object)":
-    topic: -> Lovely.H
+  describe "H(object)", ->
+    H = Lovely.H
 
-    "should make a Hash": (H) ->
+    it "should make a Hash", ->
       hash = H(a:1)
 
-      assert.instanceOf hash, Lovely.Hash
-      assert.deepEqual  hash.toObject(), a:1
+      hash.should.be.instanceOf Lovely.Hash
+      hash.toObject().should.eql a:1
 
