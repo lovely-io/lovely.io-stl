@@ -9,25 +9,11 @@ src =
   core: Source.compile(__dirname + "/../../core/")
   dom:  Source.compile(__dirname + "/../")
 
-exports.assert = assert = require('assert')
+exports.should  = should = require('should')
 
-assert.same    = assert.strictEqual
-assert.notSame = assert.notStrictEqual
-assert.lengthOf = (list, size)-> # ligthweightened lengthOf assertion that doesn't stuck
-  if list.length isnt size
-    assert.fail list.size, size, "#{list}\n\tshould have #{size} items but it has #{list.length} entries instead"
-
-#
-# A simple shortcut over the Vows to make
-# a single batch descriptions
-#
-# @param {String} name
-# @param {Object} current module
-# @param {Object} batch hash
-# @return void
-#
-exports.describe = (thing, module, batch) ->
-  require('vows').describe(thing).addBatch(batch).export(module)
+should.Assertion.prototype.same   =
+should.Assertion.prototype.sameAs =
+  should.Assertion.prototype.equal
 
 # making a little local server with 'express' to load the fixtures into the zombie
 global.server or= require('express').createServer()
@@ -74,7 +60,7 @@ server.respond = (defs) ->
 # @return void
 #
 exports.load = load = (url, test, callback)->
-  Browser.open url, (err, browser) ->
+  Browser.open url, (browser) ->
     test.browser  = browser
     test.window   = browser.window
     test.document = browser.document
@@ -134,4 +120,4 @@ Browser.open = (url, options, callback) ->
 
   browser.visit 'http://localhost:3000' + url, (err, browser) ->
     throw err if err
-    browser.wait callback
+    browser.wait callback(browser)
