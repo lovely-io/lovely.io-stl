@@ -1,11 +1,11 @@
 #
 # The modules loading/defining interface tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, Browser, server, Lovely} = require('../test_helper')
+{Browser, Lovely} = require('../test_helper')
 
-server.respond
+Browser.respond
   '/load.html': """
    <html><head>
     <script src="/core.js"></script>
@@ -174,83 +174,81 @@ server.respond
   });
   """
 
-describe 'Lovely', module,
-  # 'should find itself by a short name': ->
-  #     assert.same Lovely.module('core'), Lovely
-  #
-  #   'should find itself by a long name': ->
-  #     assert.same Lovely.module("core-#{Lovely.version}"), Lovely
-  #
-  #   "should return nothing if a module doesn't exist": ->
-  #     assert.isUndefined Lovely.module('unknown')
+describe 'Lovely AMD', ->
+  it 'should find itself by a short name', ->
+    Lovely.module('core').should.equal Lovely
 
-  'standard modules loading':
-    topic: -> Browser.open('/load.html', @callback)
+  it 'should find itself by a long name', ->
+    Lovely.module("core-#{Lovely.version}").should.equal Lovely
 
-    'should load the scripts and initialize them in order': (alerts) ->
-      console.log(alerts)
-      # assert.deepEqual browser.alerts.sort(), [
-      #         'Initializing: module3',
-      #         'Initializing: module4',
-      #         'Initializing: module5',
-      #         'Received: module5',
-      #         'Initializing: module2',
-      #         'Received: module3',
-      #         'Received: module4',
-      #         'Initializing: module1',
-      #         'Received: module1',
-      #         'Received: module2',
-      #         'Done!'
-      #       ].sort()
+  it "should return nothing if a module doesn't exist", ->
+    (Lovely.module('unknown') is undefined).should.be.true
 
-  # 'double loading attempt':
-  #   topic: -> Browser.open('/double.html', this.callback)
-  #
-  #   'should not load the same module twice': (browser) ->
-  #     assert.deepEqual browser.alerts.sort(), [
-  #       'Initializing: module5',
-  #       'Received: module5',
-  #       'Received: module5',
-  #       'Done!'
-  #     ].sort()
-  #
-  # 'local modules loading':
-  #   topic: -> Browser.open('/local.html', this.callback)
-  #
-  #   'should load local modules': (browser) ->
-  #     assert.deepEqual browser.alerts.sort(), [
-  #       'Initializing: module8',
-  #       'Initializing: module3',
-  #       'Initializing: module4',
-  #       'Initializing: module7',
-  #       'Received: module7',
-  #       'Initializing: module6',
-  #       'Received: module3',
-  #       'Received: module4',
-  #       'Initializing: module1',
-  #       'Received: module1',
-  #       'Received: module6',
-  #       'Received: module8',
-  #       'Done!'
-  #     ].sort()
-  #
-  # 'different host location':
-  #   topic: -> Browser.open('/relocated.html', @callback)
-  #
-  #   "should still load everything properly": (browser) ->
-  #     assert.deepEqual browser.alerts, [
-  #       'Initializing: m11',
-  #       'Initializing: m12',
-  #       'Received: m11',
-  #       'Received: m12',
-  #       'Done!'
-  #     ]
-  #
-  # 'bundled versions':
-  #   topic: -> Browser.open('/version-configured.html', @callback)
-  #
-  #   "should load the bundled version" : (browser)->
-  #     assert.deepEqual browser.alerts, [
-  #       'Version 2.0.0'
-  #     ]
-  #
+  it 'should load the scripts and initialize them in order', (done)->
+    Browser.open '/load.html', (browser)->
+
+      browser.alerts.sort().should.eql [
+        'Initializing: module3',
+        'Initializing: module4',
+        'Initializing: module5',
+        'Received: module5',
+        'Initializing: module2',
+        'Received: module3',
+        'Received: module4',
+        'Initializing: module1',
+        'Received: module1',
+        'Received: module2',
+        'Done!'
+      ].sort()
+
+      done()
+
+  it 'should not load the same module twice', (done)->
+    Browser.open '/double.html', (browser)->
+      browser.alerts.sort().should.eql [
+        'Initializing: module5',
+        'Received: module5',
+        'Received: module5',
+        'Done!'
+      ].sort()
+
+      done()
+
+  it 'should load local modules', (done)->
+    Browser.open '/local.html', (browser)->
+      browser.alerts.sort().should.eql [
+        'Initializing: module8',
+        'Initializing: module3',
+        'Initializing: module4',
+        'Initializing: module7',
+        'Received: module7',
+        'Initializing: module6',
+        'Received: module3',
+        'Received: module4',
+        'Initializing: module1',
+        'Received: module1',
+        'Received: module6',
+        'Received: module8',
+        'Done!'
+      ].sort()
+      done()
+
+  it "should still load everything properly", (done)->
+    Browser.open '/relocated.html', (browser) ->
+      browser.alerts.should.eql [
+        'Initializing: m11',
+        'Initializing: m12',
+        'Received: m11',
+        'Received: m12',
+        'Done!'
+      ]
+      done()
+
+
+  it "should load the bundled version", (done)->
+    Browser.open '/version-configured.html', (browser)->
+      browser.alerts.should.eql [
+        'Version 2.0.0'
+      ]
+      done()
+

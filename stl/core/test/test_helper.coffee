@@ -20,7 +20,6 @@ should.Assertion.prototype.same   =
 should.Assertion.prototype.sameAs =
   should.Assertion.prototype.equal
 
-
 # making a little local server with 'express' to load the fixtures into the zombie
 global.server or= require('express').createServer()
 exports.server = server
@@ -48,6 +47,10 @@ server.respond = (defs) ->
 # a global zombie-browser reference
 exports.Browser = Browser = require('zombie').Browser
 
+# a shortcut to define server responses via the Browser API
+Browser.respond = (defs)->
+  server.respond(defs)
+
 #
 # Our own shortcut for the browser load
 # so that you didn't need to carry around
@@ -69,6 +72,4 @@ Browser.open = (url, callback) ->
 
   browser.visit 'http://localhost:3000' + url, (err, browser) ->
     throw err if err
-    browser.wait -> callback(browser.alerts)
-
-  return # nothing
+    browser.wait -> callback(browser)
