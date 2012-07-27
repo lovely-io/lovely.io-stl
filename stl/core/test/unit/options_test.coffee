@@ -1,68 +1,67 @@
 #
 # The 'Options' mixin unit-tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, Lovely} = require('../test_helper')
-
-Class   = Lovely.Class
-Options = Lovely.Options
+{Lovely} = require('../test_helper')
 
 
-# a simple options module usage
-Simple  = new Class
-  include: Options
-  extend:
-    Options:
-      one:     'thing'
-      another: 'one'
+describe 'Options', ->
 
-  constructor: (options) ->
-    this.setOptions options
+  Class   = Lovely.Class
+  Options = Lovely.Options
 
 
+  # a simple options module usage
+  Simple  = new Class
+    include: Options
+    extend:
+      Options:
+        one:     'thing'
+        another: 'one'
 
-# a subclass options usage
-SubSimple = new Class Simple,
-  constructor: (options) ->
-    this.$super(options)
+    constructor: (options) ->
+      this.setOptions options
 
 
 
-# deep options merge check
-Deep = new Class
-  include: Options
-  extend:
-    Options:
-      one: 'thing'
-      another:
-        one: 1
-        two: 2
-
-  constructor: (options) ->
-    this.setOptions options
+  # a subclass options usage
+  SubSimple = new Class Simple,
+    constructor: (options) ->
+      this.$super(options)
 
 
-describe 'Options', module,
-  'simple case':
 
-    'should use defaults without options': ->
-      assert.deepEqual new Simple().options,
-        one: 'thing', another: 'one'
+  # deep options merge check
+  Deep = new Class
+    include: Options
+    extend:
+      Options:
+        one: 'thing'
+        another:
+          one: 1
+          two: 2
 
-    'should overwrite defaults with custom options': ->
-      assert.deepEqual new Simple(one: 'new').options,
-        one: 'new', another: 'one'
+    constructor: (options) ->
+      this.setOptions options
 
 
-  'with inheritance':
 
-    'should find the defaults in super classes': ->
-      assert.deepEqual new SubSimple(one: 'new').options,
-        one: 'new', another: 'one'
+  describe 'simple case', ->
 
-  'nested options':
+    it 'should use defaults without options', ->
+      new Simple().options.should.eql one: 'thing', another: 'one'
 
-    'should deep-merge nested options': ->
-      assert.deepEqual new Deep(one: 'new', another: one: 3).options,
-        one: 'new', another: one: 3, two: 2
+    it 'should overwrite defaults with custom options', ->
+      new Simple(one: 'new').options.should.eql one: 'new', another: 'one'
+
+
+  describe 'with inheritance', ->
+
+    it 'should find the defaults in super classes', ->
+      new SubSimple(one: 'new').options.should.eql one: 'new', another: 'one'
+
+  describe 'nested options', ->
+
+    it 'should deep-merge nested options', ->
+      new Deep(one: 'new', another: one: 3).options.should.eql one: 'new', another: one: 3, two: 2
