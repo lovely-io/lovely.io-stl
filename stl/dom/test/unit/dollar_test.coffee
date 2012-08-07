@@ -1,151 +1,153 @@
 #
 # The `$` function unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, load} = require('../test_helper')
+{Browser} = require('../test_helper')
 
-server.respond "/dollar.html": """
-  <html>
-    <head>
-      <script src="/core.js"></script>
-      <script src="/dom.js"></script>
-    </head>
-    <body>
-      <div id="one">
-        <div class="one">#one .one</div>
-        <div class="two">#one .two</div>
-      </div>
-      <div id="two">
-        <div class="one">#two .one</div>
-        <div class="two">#two .two</div>
-      </div>
-      <div id="three">
-        <div class="one">#three .one</div>
-        <div class="two">#three .two</div>
-      </div>
-    </body>
-  </html>
-"""
 
 dom = ->
   load "/dollar.html", this, (d) -> d
 
-describe '$', module,
+describe '$', ->
+  Browser.respond "/dollar.html": """
+    <html>
+      <head>
+        <script src="/core.js"></script>
+        <script src="/dom.js"></script>
+      </head>
+      <body>
+        <div id="one">
+          <div class="one">#one .one</div>
+          <div class="two">#one .two</div>
+        </div>
+        <div id="two">
+          <div class="one">#two .one</div>
+          <div class="two">#two .two</div>
+        </div>
+        <div id="three">
+          <div class="one">#three .one</div>
+          <div class="two">#three .two</div>
+        </div>
+      </body>
+    </html>
+  """
 
-  'css search':
-    topic: dom
+  dom = (callback)->
+    (done)->
+      Browser.open "/dollar.html", ($, window)->
+        callback($, window, window.document)
+        done()
 
-    "should correctly find elements by ID": ($)->
+
+  describe 'css search', ->
+
+    it "should correctly find elements by ID", dom ($, window, document)->
       search = $('#one')
 
-      assert.instanceOf search,      this.NodeList
-      assert.lengthOf   search,      1
-      assert.instanceOf search[0],   this.Element
-      assert.same       search[0]._, this.document.getElementById('one')
+      (search instanceof $.NodeList).should.be.true
+      (search.length is 1).should.be.true
+      (search[0] instanceof $.Element).should.be.true
+      search[0]._.should.be.same     document.getElementById('one')
 
-
-    "should correctly find elements by class name": ($)->
+    it "should correctly find elements by class name", dom ($, window, document)->
       search = $('.one')
 
-      assert.instanceOf search,      this.NodeList
-      assert.lengthOf   search,      3
-      assert.instanceOf search[0],   this.Element
-      assert.instanceOf search[1],   this.Element
-      assert.instanceOf search[2],   this.Element
-      assert.same       search[0]._, this.document.querySelector('#one   .one')
-      assert.same       search[1]._, this.document.querySelector('#two   .one')
-      assert.same       search[2]._, this.document.querySelector('#three .one')
+      (search instanceof $.NodeList).should.be.true
+      search.length.should.eql 3
+      (search[0] instanceof $.Element).should.be.true
+      (search[1] instanceof $.Element).should.be.true
+      (search[2] instanceof $.Element).should.be.true
+      search[0]._.should.be.same document.querySelector('#one   .one')
+      search[1]._.should.be.same document.querySelector('#two   .one')
+      search[2]._.should.be.same document.querySelector('#three .one')
 
 
-    "should correctly find elements in a context": ($)->
-      search = $('.one, .two', this.document.getElementById('one'))
+    it "should correctly find elements in a context", dom ($, window, document)->
+      search = $('.one, .two', document.getElementById('one'))
 
-      assert.instanceOf search,      this.NodeList
-      assert.lengthOf   search,      2
-      assert.same       search[0]._, this.document.querySelector('#one .one')
-      assert.same       search[1]._, this.document.querySelector('#one .two')
+      (search instanceof $.NodeList).should.be.true
+      search.length.should.eql 2
+      search[0]._.should.be.same document.querySelector('#one .one')
+      search[1]._.should.be.same document.querySelector('#one .two')
 
 
-    "should accept dom-wrappers as the context": ($)->
-      element = $(this.document.getElementById('two'))
+    it "should accept dom-wrappers as the context", dom ($, window, document)->
+      element = $(document.getElementById('two'))
       search  = $('.one, .two', element)
 
-      assert.instanceOf search,      this.NodeList
-      assert.lengthOf   search,      2
-      assert.same       search[0]._, this.document.querySelector('#two .one')
-      assert.same       search[1]._, this.document.querySelector('#two .two')
+      (search instanceof $.NodeList).should.be.true
+      search.length.should.eql      2
+      search[0]._.should.be.same document.querySelector('#two .one')
+      search[1]._.should.be.same document.querySelector('#two .two')
 
 
-    'should return an empty list when nothing found by id': ($)->
+    it 'should return an empty list when nothing found by id', dom ($)->
       result = $('#non-existing')
 
-      assert.instanceOf result, this.NodeList
-      assert.lengthOf   result, 0
+      (result instanceof $.NodeList).should.be.true
+      result.length.should.eql 0
 
-    'should return an empty list when nothing was found by a css selector': ($)->
+
+    it 'should return an empty list when nothing was found by a css selector', dom ($)->
       result = $('div.non .existing')
 
-      assert.instanceOf result, this.NodeList
-      assert.lengthOf   result, 0
+      (result instanceof $.NodeList).should.be.true
+      result.length.should.eql 0
 
 
-    'HTML to NodeList conversion':
-      topic: dom
+  describe 'HTML to NodeList conversion', ->
 
-      "should create a node-list out of a piece of HTML": ($)->
-        search = $('<span>one</span><b>two</b>')
+    it "should create a node-list out of a piece of HTML", dom ($)->
+      search = $('<span>one</span><b>two</b>')
 
-        assert.instanceOf search,    this.NodeList
-        assert.lengthOf   search,    2
-        assert.instanceOf search[0], this.Element
-        assert.instanceOf search[1], this.Element
-        assert.equal      search[0]._.tagName, 'SPAN'
-        assert.equal      search[1]._.tagName, 'B'
-        assert.equal      search[0]._.innerHTML, 'one'
-        assert.equal      search[1]._.innerHTML, 'two'
+      (search instanceof $.NodeList).should.be.true
+      search.length.should.eql    2
+      (search[0] instanceof $.Element).should.be.true
+      (search[1] instanceof $.Element).should.be.true
+      search[0]._.tagName.should.eql   'SPAN'
+      search[1]._.tagName.should.eql   'B'
+      search[0]._.innerHTML.should.eql 'one'
+      search[1]._.innerHTML.should.eql 'two'
 
 
-  'window wrapping':
-    topic: dom
+  describe 'window wrapping', ->
 
-    'should return a window wrapper for a window': ($)->
-      win = $(this.window)
+    it 'should return a window wrapper for a window', dom ($, window)->
+      win = $(window)
 
-      assert.isTrue win instanceof $.Window
-      assert.isTrue     win._ is this.window
+      (win instanceof $.Window).should.be.true
+      win._.should.be.same window
 
-    'should return the same window wrapper back': ($)->
-      win = $(this.window)
+    it 'should return the same window wrapper back', dom ($, window)->
+      win = $(window)
 
-      assert.isTrue $(win) is win
+      ($(win) is win).should.be.true
 
-  'document wrapping':
-    topic: dom
+  describe 'document wrapping', ->
 
-    'should wrap a document': ($)->
-      doc = $(this.document)
+    it 'should wrap a document', dom ($, window, document)->
+      doc = $(document)
 
-      assert.instanceOf doc,   this.Document
-      assert.same       doc._, this.document
+      (doc instanceof $.Document).should.be.true
+      doc._.should.be.same document
 
-    'should return the same wrapper if already wrapped': ($)->
-      doc = $(this.document)
+    it 'should return the same wrapper if already wrapped', dom ($, window, document)->
+      doc = $(document)
 
-      assert.same doc, $(doc)
+      (doc is $(doc)).should.be.true
 
-  'element wrapping':
-    topic: dom
+  describe 'element wrapping', ->
 
-    'should return a wrapper for a dom-element': ($)->
-      div = this.document.getElementById('one')
+    it 'should return a wrapper for a dom-element', dom ($, window, document)->
+      div = document.getElementById('one')
       element = $(div)
 
-      assert.instanceOf element,   this.Element
-      assert.same       element._, div
+      (element instanceof $.Element).should.be.true
+      element._.should.be.same div
 
-    'should return the same wrapper if an element is already wrapped': ($)->
-      div = this.document.getElementById('one')
+    it 'should return the same wrapper if an element is already wrapped', dom ($, window, document)->
+      div = document.getElementById('one')
       element = $(div)
 
-      assert.same element, $(element)
+      (element is $(element)).should.be.true
