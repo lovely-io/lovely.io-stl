@@ -16,7 +16,7 @@ describe "Document", ->
   describe "\b#constructor", ->
 
     it "should create an instance of 'Document'", get (document, $, window)->
-      (document instanceof $.Document).should.be.true
+      document.should.be.instanceOf $.Document
 
     it "should refer to the raw dom-document via the '_' property", get (document, $, window)->
       document._.should.equal window.document
@@ -45,9 +45,9 @@ describe "Document", ->
     it "should return the owner window wrapper", get (document, $, dom_window)->
       window = document.window()
 
-      (window instanceof $.Window).should.be.true
+      window.should.be.instanceOf $.Window
       window._.should.be.equal dom_window
 
     it "should return the same wrapper all the time", get (document)->
-      (document.window() is document.window()).should.be.true
+      document.window().should.equal document.window()
 

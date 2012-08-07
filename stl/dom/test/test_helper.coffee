@@ -38,17 +38,6 @@ server.get '/test.html', (req, resp) ->
   </html>
   """
 
-#
-# A shortcut to dynamically define the server responses
-#
-# @param {Object} routes and responses
-# @return {undefined}
-#
-server.respond = (defs) ->
-  for route, response of defs
-    do (route, response) ->
-      server.get route, (req, resp) ->
-        resp.send(response)
 
 #
 # Another shortcut. Loads up the url, finds
@@ -66,6 +55,18 @@ exports.load_element = (url, test, id) ->
 
 # a global zombie-browser reference
 exports.Browser = Browser = require('zombie').Browser
+
+#
+# A shortcut to dynamically define the server responses
+#
+# @param {Object} routes and responses
+# @return {undefined}
+#
+Browser.respond = (defs) ->
+  for route, response of defs
+    do (route, response) ->
+      server.get route, (req, resp) ->
+        resp.send(response)
 
 #
 # Our own shortcut for the browser load
@@ -94,5 +95,15 @@ Browser.open = (url, options, callback) ->
   browser.visit 'http://localhost:3000' + url, (err, browser) ->
     throw err if err
     browser.wait ->
-      callback(browser.window.Lovely.module('dom'), browser.window, browser)
+      dom = browser.window.Lovely.module('dom')
+
+      # patching the Object prototype again so ti worked inside of the zombie browser
+      for klass in [dom.NodeList, dom.Wrapper]
+        Object.defineProperty klass.prototype, 'should',
+          set: ->
+          get: -> new should.Assertion(Object(@).valueOf())
+          configurable: true
+
+
+      callback(dom, browser.window, browser)
 
