@@ -11,48 +11,51 @@ window = ->
 
 
 describe 'Window', ->
-  'constructor':
-    topic: window
+  get = (callback)->
+    (done)->
+      Browser.open "/test.html", ($, window)->
+        callback(new $.Window(window), $, window)
+        done()
 
-    "should make an instance of 'Window' class": (window)->
-      assert.instanceOf window, this.Window
+  describe 'constructor', ->
 
-    "should refer to the original window via '_'": (window)->
-      assert.same window._, this.window
+    it "should make an instance of 'Window' class", get (win, $)->
+      win.should.be.instanceOf $.Window
 
-  'events handling interface':
-    topic: window
+    it "should refer to the original window via '_'", get (win, $, window)->
+      win._.should.equal window
 
-    "should copy #on from Element#on": (window)->
-      assert.same this.Window.prototype.on, this.Element.prototype.on
+  describe 'events handling interface', ->
 
-    "should copy #no from Element#no": (window)->
-      assert.same this.Window.prototype.no, this.Element.prototype.no
+    it "should copy #on from Element#on", get (win, $)->
+      ($.Window.prototype.on is $.Element.prototype.on).should.be.true
 
-    "should copy #ones from Element#ones": (window)->
-      assert.same this.Window.prototype.ones, this.Element.prototype.ones
+    it "should copy #no from Element#no", get (win, $)->
+      ($.Window.prototype.no is $.Element.prototype.no).should.be.true
 
-    "should copy #emit from Element#emit": (window)->
-      assert.same this.Window.prototype.emit, this.Element.prototype.emit
+    it "should copy #ones from Element#ones", get (win, $)->
+      ($.Window.prototype.ones is $.Element.prototype.ones).should.be.true
+
+    it "should copy #emit from Element#emit", get (win, $)->
+      ($.Window.prototype.emit is $.Element.prototype.emit).should.be.true
 
 
-  '#window':
-    topic: window
+  describe '#window', ->
 
-    "should return itself with this method": (window)->
-      assert.same window.window(), window
+    it "should return itself with this method", get (window)->
+      window.window().should.be.same window
 
-  '#size':
-    "\b()":
-      topic: window
+  describe '#size', ->
 
-      "should return the window sizes in a hash": (window)->
-        assert.deepEqual window.size(), x: 1024, y: 768
+    describe "\b()", ->
 
-    "\b(x:NNN, y:NNN)":
-      topic: window
+      it "should return the window sizes in a hash", get (window)->
+        window.size().x.should.eql 1024
+        window.size().y.should.eql 768
 
-      "should set the new window inner size": (window)->
+    describe "\b(x:NNN, y:NNN)", ->
+
+      it "should set the new window inner size", get (window)->
         size_x = []; size_y = []
 
         window._.resizeTo = (x, y) ->
@@ -60,26 +63,25 @@ describe 'Window', ->
 
         window.size x: 800, y: 600
 
-        assert.equal size_x[0], 800
-        assert.equal size_y[0], 600
+        size_x[0].should.eql 800
+        size_y[0].should.eql 600
 
-        assert.equal size_x[1], 2 * 800 - 1024
-        assert.equal size_y[1], 2 * 600 - 768
+        size_x[1].should.eql 2 * 800 - 1024
+        size_y[1].should.eql 2 * 600 - 768
 
-      "should return the window object itself back": (window)->
-        assert.same window.size(100, 200), window
+      it "should return the window object itself back", get (window)->
+        window.size(100, 200).should.equal window
 
-  "#scrolls":
-    "\b()":
-      topic: window
+  describe "#scrolls", ->
+    describe "\b()", ->
 
-      "should return the current scrolling position": (window) ->
-        assert.deepEqual window.scrolls(), x: 0, y: 0
+      it "should return the current scrolling position", get (window)->
+        window.scrolls().x.should.eql 0
+        window.scrolls().y.should.eql 0
 
-    "\b(x:NNN, y:NNN)":
-      topic: window
+    describe "\b(x:NNN, y:NNN)", ->
 
-      "should assign new scrolling position": (window) ->
+      it "should assign new scrolling position", get (window)->
         pos_x = null; pos_y = null
 
         window._.scrollTo = (x,y)->
@@ -87,10 +89,10 @@ describe 'Window', ->
 
         window.scrolls x: 100, y: 200
 
-        assert.equal pos_x, 100
-        assert.equal pos_y, 200
+        pos_x.should.eql 100
+        pos_y.should.eql 200
 
-      "should accept just one direction": (window)->
+      it "should accept just one direction", get (window)->
         pos_x = null; pos_y = null
 
         window._.scrollTo = (x,y)->
@@ -98,15 +100,15 @@ describe 'Window', ->
 
         window.scrolls x: 100
 
-        assert.equal pos_x, 100
-        assert.equal pos_y, 0
+        pos_x.should.eql 100
+        pos_y.should.eql 0
 
         window.scrolls y: 200
 
-        assert.equal pos_x, 0
-        assert.equal pos_y, 200
+        pos_x.should.eql 0
+        pos_y.should.eql 200
 
-      "should work with two-number calls": (window) ->
+      it "should work with two-number calls", get (window) ->
         pos_x = null; pos_y = null
 
         window._.scrollTo = (x,y)->
@@ -114,8 +116,8 @@ describe 'Window', ->
 
         window.scrolls 300, 400
 
-        assert.equal pos_x, 300
-        assert.equal pos_y, 400
+        pos_x.should.eql 300
+        pos_y.should.eql 400
 
-      "should return the window reference back": (window)->
-        assert.same window.scrolls(x:100), window
+      it "should return the window reference back", get (window)->
+        window.scrolls(x:100).should.be.same window
