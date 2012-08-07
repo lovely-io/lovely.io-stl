@@ -1,16 +1,16 @@
 #
 # The `Window` wrapper unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, load} = require('../test_helper')
+{Browser} = require('../test_helper')
 
 window = ->
   load "/test.html", this, (dom)->
     new dom.Window(this.window)
 
 
-describe 'Window', module,
+describe 'Window', ->
   'constructor':
     topic: window
 

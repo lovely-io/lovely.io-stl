@@ -29,7 +29,7 @@ exports.describe = (thing, module, batch) ->
   require('vows').describe(thing).addBatch(batch).export(module)
 
 # making a little local server with 'express' to load the fixtures into the zombie
-global.server or= require('express').createServer()
+global.server or= require('express')()
 exports.server = server
 
 server.get '/core.js', (req, resp) ->

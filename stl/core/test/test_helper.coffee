@@ -21,7 +21,7 @@ should.Assertion.prototype.sameAs =
   should.Assertion.prototype.equal
 
 # making a little local server with 'express' to load the fixtures into the zombie
-global.server or= require('express').createServer()
+global.server or= require('express')()
 exports.server = server
 
 server.get '/', (req, resp) ->
