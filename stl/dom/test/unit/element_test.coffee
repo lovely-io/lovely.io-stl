@@ -1,88 +1,96 @@
 #
 # The `Element` unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, load} = require('../test_helper')
-
-load_Element = (test, callback) ->
-  load "/test.html", test, (dom) ->
-    if callback then callback.call(test, dom.Element)
-    else dom.Element
+{Browser} = require('../test_helper')
 
 
-describe 'Element', module,
-  "direct instance":
-    topic: -> load_Element(this)
+describe 'Element', ->
 
-    "should allow to create new elements": (Element) ->
+  describe "direct instance", ->
+    get = (callback)->
+      (done)->
+        Browser.open "/test.html", ($, window)->
+          callback($.Element, $, window)
+          done()
+
+    it "should allow to create new elements", get (Element) ->
       element = new Element('div')
 
-      assert.instanceOf element, Element
-      assert.equal element._.tagName, 'DIV'
+      element.should.be.instanceOf Element
+      element._.tagName.should.eql 'DIV'
 
-    "should bypass the properties in place": (Element) ->
+    it "should bypass the properties in place", get (Element)->
       element = new Element('div', id: 'my-id', html: 'my-html', class: 'my-class')
 
-      assert.equal element._.id,        'my-id'
-      assert.equal element._.innerHTML, 'my-html'
-      assert.equal element._.className, 'my-class'
+      element._.id.should.eql        'my-id'
+      element._.innerHTML.should.eql 'my-html'
+      element._.className.should.eql 'my-class'
 
-    "should accept raw dom-elements as the first attribute": (Element) ->
-      raw_dom = this.browser.document.createElement('div')
+    it "should accept raw dom-elements as the first attribute", get (Element, $, window)->
+      raw_dom = window.document.createElement('div')
       element = new Element(raw_dom)
 
-      assert.same element._, raw_dom
+      element._.should.be.equal raw_dom
 
 
-  "inheritance usage":
-    topic: -> load_Element this, (Element) ->
-      new this.Lovely.Class Element,
-        constructor: (tag, id, html) ->
-          this.$super(tag, id: id, html: html)
+  describe "inheritance usage", ->
+    get = (callback)->
+      (done)->
+        Browser.open "/test.html", ($, window)->
+          MyElement = new window.Lovely.Class $.Element,
+            constructor: (tag, id, html) ->
+              this.$super(tag, id: id, html: html)
 
-    "should inherit the Element": (MyElement) ->
+          callback(MyElement, $, window)
+          done()
+
+    it "should inherit the Element", get (MyElement, $) ->
       element = new MyElement('div')
 
-      assert.instanceOf element, MyElement
-      assert.instanceOf element, this.Element
+      element.should.be.instanceOf MyElement
+      element.should.be.instanceOf $.Element
 
-    "should use correct tag name": (MyElement) ->
+    it "should use correct tag name", get (MyElement) ->
       element = new MyElement('div')
 
-      assert.equal element._.tagName, 'DIV'
+      element._.tagName.should.eql 'DIV'
 
-    "should bypass the 'id' and 'html' properties": (MyElement) ->
+    it "should bypass the 'id' and 'html' properties", get (MyElement) ->
       element = new MyElement('div', 'my-id', 'my-html')
 
-      assert.equal element._.id,        'my-id'
-      assert.equal element._.innerHTML, 'my-html'
+      element._.id.should.eql        'my-id'
+      element._.innerHTML.should.eql 'my-html'
 
-  "dynamic typecasting":
-    topic: -> load_Element this, (Element) ->
-      this.Wrapper.set 'table', new this.Lovely.Class Element,
-        constructor: (one, two) ->
-          this.$super(one, two)
+  describe "dynamic typecasting", ->
+    get = (callback)->
+      (done)->
+        Browser.open "/test.html", ($, window)->
+          $.Wrapper.set 'table', new window.Lovely.Class $.Element,
+            constructor: (one, two) ->
+              this.$super(one, two)
 
-      return Element
+          callback($.Element, $, window)
+          done()
 
-    "should automatically typecast elements by tag name": (Element) ->
+    it "should automatically typecast elements by tag name", get (Element, $)->
       table = new Element('table')
 
-      assert.instanceOf table, this.Wrapper.get('table')
-      assert.instanceOf table, Element
+      table.should.be.instanceOf $.Wrapper.get('table')
+      table.should.be.instanceOf $.Element
 
-    "should bypass the attributes in place": (Element) ->
+    it "should bypass the attributes in place", get (Element)->
       table = new Element('table', id: 'my-id', class: 'my-class')
 
-      assert.equal table._.id,        'my-id'
-      assert.equal table._.className, 'my-class'
+      table._.id.should.eql        'my-id'
+      table._.className.should.eql 'my-class'
 
-    "should work with raw dom-elements as well": (Element) ->
-      raw_dom = this.browser.document.createElement('table')
+    it "should work with raw dom-elements as well", get (Element, $, window)->
+      raw_dom = window.document.createElement('table')
       element = new Element(raw_dom)
 
-      assert.instanceOf element, this.Wrapper.get('table')
-      assert.instanceOf element, Element
+      element.should.be.instanceOf $.Wrapper.get('table')
+      element.should.be.instanceOf Element
 
 
