@@ -1,19 +1,20 @@
 #
 # The `Event` unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, load} = require('../test_helper')
+{Browser} = require('../test_helper')
 
-Event = ->
-  load "/test.html", this, (dom)-> dom.Event
+describe 'Event', ->
+  get = (callback)->
+    (done)->
+      Browser.open "/dollar.html", ($, window)->
+        callback($.Event, $, window, window.document)
+        done()
 
+  describe "constructor", ->
 
-describe 'Event', module,
-  "constructor":
-    topic: Event
-
-    "should copy properties from a raw dom-event": (Event)->
+    it "should copy properties from a raw dom-event", get (Event)->
       raw =
         type:     'check'
         pageX:    222
@@ -27,144 +28,138 @@ describe 'Event', module,
 
       event = new Event(raw)
 
-      assert.equal event.type,     raw.type
-      assert.equal event.which,    raw.which
-      assert.equal event.keyCode,  raw.keyCode
-      assert.equal event.pageX,    raw.pageX
-      assert.equal event.pageY,    raw.pageY
-      assert.equal event.altKey,   raw.altKey
-      assert.equal event.metaKey,  raw.metaKey
-      assert.equal event.ctrlKey,  raw.ctrlKey
-      assert.equal event.shiftKey, raw.shiftKey
+      event.type.should.equal     raw.type
+      event.which.should.equal    raw.which
+      event.keyCode.should.equal  raw.keyCode
+      event.pageX.should.equal    raw.pageX
+      event.pageY.should.equal    raw.pageY
+      event.altKey.should.equal   raw.altKey
+      event.metaKey.should.equal  raw.metaKey
+      event.ctrlKey.should.equal  raw.ctrlKey
+      event.shiftKey.should.equal raw.shiftKey
 
 
-    "should wrap the target elements": (Event)->
-      target  = this.document.createElement('div')
-      related = this.document.createElement('div')
-      current = this.document.createElement('div')
+    it "should wrap the target elements", get (Event, $, window, document)->
+      target  = document.createElement('div')
+      related = document.createElement('div')
+      current = document.createElement('div')
 
       event = new Event
         target:        target
         relatedTarget: related
         currentTarget: current
 
-      assert.instanceOf event.target,        this.Element
-      assert.instanceOf event.currentTarget, this.Element
-      assert.instanceOf event.relatedTarget, this.Element
+      event.target.should.be.instanceOf        $.Element
+      event.currentTarget.should.be.instanceOf $.Element
+      event.relatedTarget.should.be.instanceOf $.Element
 
-      assert.same event.target._,        target
-      assert.same event.currentTarget._, current
-      assert.same event.relatedTarget._, related
+      event.target._.should.equal        target
+      event.currentTarget._.should.equal current
+      event.relatedTarget._.should.equal related
 
-    "should handle the webkit text-node triggered events": (Event)->
-      text    = this.document.createTextNode('boo')
-      element = this.document.createElement('div')
+    it "should handle the webkit text-node triggered events", get (Event, $, window, document)->
+      text    = document.createTextNode('boo')
+      element = document.createElement('div')
       element.appendChild(text)
 
       event   = new Event(target: text)
 
-      assert.same event.target._, element
+      event.target._.should.equal element
 
-    "should allow to create events just by name": (Event)->
+    it "should allow to create events just by name", get (Event)->
       event = new Event('my-event')
 
-      assert.instanceOf event, Event
-      assert.equal      event.type, 'my-event'
-      assert.deepEqual  event._,    type: 'my-event'
+      event.should.be.instanceOf Event
+      event.type.should.equal    'my-event'
+      event._.should.eql         type: 'my-event'
 
-    "should copy custom properties to the custom events": (Event)->
+    it "should copy custom properties to the custom events", get (Event)->
       event = new Event('my-event', myProperty: 'my-value')
 
-      assert.equal event.myProperty, 'my-value'
-      assert.deepEqual event._,
+      event.myProperty.should.equal 'my-value'
+      event._.should.eql
         type:       'my-event'
         myProperty: 'my-value'
 
 
 
-  "#stopPropagation()":
-    topic: Event
+  describe "#stopPropagation()", ->
 
-    "should call 'stopPropagation()' on raw event when available": (Event)->
+    it "should call 'stopPropagation()' on raw event when available", get (Event)->
       raw   = type: 'click', stopPropagation: -> @called = true
       event = new Event(raw)
 
       event.stopPropagation()
 
-      assert.isTrue      raw.called
-      assert.isUndefined raw.cancelBubble
+      raw.called.should.be.true
+      (raw.cancelBubble is undefined).should.be.true
 
-    "should set the @stopped = true property": (Event)->
+    it "should set the @stopped = true property", get (Event)->
       event = new Event('my-event')
 
       event.stopPropagation()
 
-      assert.isTrue event.stopped
+      event.stopped.should.be.true
 
-    "should return the event itself back": (Event)->
+    it "should return the event itself back", get (Event)->
       event = new Event('my-event')
-      assert.same event.stopPropagation(), event
+      event.stopPropagation().should.equal event
 
-  "#preventDefault":
-    topic: Event
+  describe "#preventDefault()", ->
 
-    "should call 'preventDefault()' on a raw event when available": (Event)->
+    it "should call 'preventDefault()' on a raw event when available", get (Event)->
       raw   = type: 'click', preventDefault: -> @called = true
       event = new Event(raw)
 
       event.preventDefault()
 
-      assert.isTrue      raw.called
-      assert.isUndefined raw.returnValue
+      raw.called.should.be.true
+      (raw.returnValue is undefined).should.be.true
 
-    "should return the event itself back to the code": (Event)->
+    it "should return the event itself back to the code", get (Event)->
       event = new Event('my-event')
-      assert.same event.preventDefault(), event
+      event.preventDefault().should.equal event
 
-  "#stop()":
-    topic: Event
+  describe "#stop()", ->
 
-    "should call 'preventDefault' and 'stopPropagation' methods": (Event)->
+    it "should call 'preventDefault' and 'stopPropagation' methods", get (Event)->
       event = new Event('my-event')
       event.stopPropagation = -> @stopped   = true; return @
       event.preventDefault  = -> @prevented = true; return @
 
       event.stop()
 
-      assert.isTrue event.stopped
-      assert.isTrue event.prevented
+      event.stopped.should.be.true
+      event.prevented.should.be.true
 
-    "should return event itself back to the code": (Event)->
+    it "should return event itself back to the code", get (Event)->
       event = new Event('my-event')
-      assert.same event.stop(), event
+      event.stop().should.equal event
 
 
-  "#position()":
-    topic: Event
+  describe "#position()", ->
 
-    "should return the event's position in a standard x:NNN, y:NNN hash": (Event)->
+    it "should return the event's position in a standard x:NNN, y:NNN hash", get (Event)->
       event = new Event pageX: 222, pageY: 444
 
-      assert.deepEqual event.position(), x: 222, y: 444
+      event.position().should.eql x: 222, y: 444
 
-  "#offset()":
-    topic: Event
+  describe "#offset()", ->
 
-    "should return event's relative position in a standard x:NNN, y:NNN hash": (Event)->
-      target = new this.Element('div')
+    it "should return event's relative position in a standard x:NNN, y:NNN hash", get (Event, $)->
+      target = new $.Element('div')
       target.position = -> x: 200, y: 300
       event  = new Event type: 'click', target: target, pageX: 250, pageY: 360
 
-      assert.deepEqual event.offset(), x: 50, y: 60
+      event.offset().should.eql x: 50, y: 60
 
-    "should return 'null' if target is not an element": (Event)->
-      event = new Event type: 'click', target: new this.Document(this.document)
+    it "should return 'null' if target is not an element", get (Event, $, window, document)->
+      event = new Event type: 'click', target: new $.Document(document)
 
-      assert.isNull event.offset()
+      (event.offset() is null).should.be.true
 
-  "#find('css-rule')":
-    topic: Event
+  describe "#find('css-rule')", ->
 
-    "should return 'null' if there is no 'target' property": (Event)->
+    it "should return 'null' if there is no 'target' property", get (Event)->
       event = new Event('my-event')
-      assert.isNull event.find('something')
+      (event.find('something') is null).should.be.true

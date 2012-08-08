@@ -6,9 +6,6 @@
 {Browser} = require('../test_helper')
 
 
-dom = ->
-  load "/dollar.html", this, (d) -> d
-
 describe '$', ->
   Browser.respond "/dollar.html": """
     <html>

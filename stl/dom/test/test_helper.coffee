@@ -95,15 +95,12 @@ Browser.open = (url, options, callback) ->
   browser.visit 'http://localhost:3000' + url, (err, browser) ->
     throw err if err
     browser.wait ->
-      dom = browser.window.Lovely.module('dom')
 
-      # patching the Object prototype again so ti worked inside of the zombie browser
-      for klass in [dom.NodeList, dom.Wrapper]
-        Object.defineProperty klass.prototype, 'should',
-          set: ->
-          get: -> new should.Assertion(Object(@).valueOf())
-          configurable: true
+      Object.defineProperty browser.window.getGlobal().Object.prototype, 'should',
+        set: ->
+        get: -> new should.Assertion(Object(@).valueOf())
+        configurable: true
 
 
-      callback(dom, browser.window, browser)
+      callback(browser.window.Lovely.module('dom'), browser.window, browser)
 
