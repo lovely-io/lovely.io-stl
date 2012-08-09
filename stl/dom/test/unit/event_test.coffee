@@ -8,7 +8,7 @@
 describe 'Event', ->
   get = (callback)->
     (done)->
-      Browser.open "/dollar.html", ($, window)->
+      Browser.open "/test.html", ($, window)->
         callback($.Event, $, window, window.document)
         done()
 

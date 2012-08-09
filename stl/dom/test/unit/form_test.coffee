@@ -1,11 +1,11 @@
 #
 # The `Form` unit test
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, server, load} = require('../test_helper')
+{Browser} = require('../test_helper')
 
-server.respond "/form.html": """
+Browser.respond "/form.html": """
 <html>
   <head>
     <script src="/core.js"></script>
@@ -64,43 +64,43 @@ server.respond "/form.html": """
 </html>
 """
 
-test_form = ->
-  load "/form.html", this, ->
-    this._form = this.document.getElementById('test')
-    new this.Form(this._form)
+describe "Form", ->
+  get = (callback)->
+    (done)->
+      Browser.open "/form.html", ($, window)->
+        form = window.document.getElementById('test')
+        callback(new $.Form(form), $, window, window.document)
+        done()
 
+  describe "constructor", ->
 
-describe "Form", module,
-  "constructor":
-    topic: test_form
+    it "should make an instance of a form", get (form, $)->
+      form.should.be.instanceOf $.Form
 
-    "should make an instance of a form": (form)->
-      assert.instanceOf form, this.Form
+    it "should refer to the raw dom-element correctly", get (form, $, window, document)->
+      form._.should.be.same document.getElementById('test')
 
-    "should refer to the raw dom-element correctly": (form)->
-      assert.same form._, this._form
+    it "should allow to create new forms programmatically", get (form, $)->
+      form = new $.Form(action: '/some.url', method: 'post')
 
-    "should allow to create new forms programmatically": ->
-      form = new this.Form(action: '/some.url', method: 'post')
+      form.should.be.instanceOf  $.Form
+      form._.action.should.equal '/some.url'
+      form._.method.should.equal 'post'
 
-      assert.instanceOf form, this.Form
-      assert.equal      form._.action, '/some.url'
-      assert.equal      form._.method, 'post'
+    it "should be dynamically used with the 'Element' constructor", get (form, $)->
+      form = new $.Element('form', action: '/some.url')
 
-    "should be dynamically used with the 'Element' constructor": ->
-      form = new this.Element('form', action: '/some.url')
-      assert.instanceOf form, this.Form
-      assert.equal      form._.tagName, 'FORM'
-      assert.equal      form._.action,  '/some.url'
+      form.should.be.instanceOf   $.Form
+      form._.tagName.should.eql   'FORM'
+      form._.action.should.equal  '/some.url'
 
-  "#elements()":
-    topic: test_form
+  describe "\b#elements()", ->
 
-    "should return the list of all the form elements": (form)->
+    it "should return the list of all the form elements", get (form, $)->
       result = form.elements()
 
-      assert.instanceOf result, this.NodeList
-      assert.deepEqual  result.map('attr', 'id').toArray(), [
+      result.should.be.instanceOf $.NodeList
+      result.map('attr', 'id').toArray().should.eql [
         'input-name',
         'input-password',
         'input-checkbox',
@@ -115,14 +115,13 @@ describe "Form", module,
         'type-image'
       ]
 
-  "#inputs()":
-    topic: test_form
+  describe "\b#inputs()", ->
 
-    "should return the list of input fields only": (form)->
+    it "should return the list of input fields only", get (form, $)->
       result = form.inputs()
 
-      assert.instanceOf result, this.NodeList
-      assert.deepEqual  result.map('attr', 'id').toArray(), [
+      result.should.be.instanceOf $.NodeList
+      result.map('attr', 'id').toArray().should.eql [
         'input-name',
         'input-password',
         'input-checkbox',
@@ -133,26 +132,24 @@ describe "Form", module,
         'radio-2'
       ]
 
-  '#input("name")':
-    topic: test_form
+  describe '\b#input("name")', ->
 
-    "should return an input field by it's name": (form)->
+    it "should return an input field by it's name", get (form, $, window, document)->
       field1 = form.input('name')
       field2 = form.input('password')
 
-      assert.instanceOf field1, this.Element
-      assert.instanceOf field2, this.Element
+      field1.should.be.instanceOf $.Input
+      field2.should.be.instanceOf $.Input
 
-      assert.same field1._, this.document.getElementById('input-name')
-      assert.same field2._, this.document.getElementById('input-password')
+      field1._.should.equal document.getElementById('input-name')
+      field2._.should.equal document.getElementById('input-password')
 
-    "should return 'null' of there is no such field": (form)->
-      assert.isUndefined form.input('non-existing')
+    it "should return 'null' of there is no such field", get (form)->
+      (form.input('non-existing') is undefined).should.be.true
 
-  '#focus()':
-    topic: test_form
+  describe '\b#focus()', ->
 
-    "should try to put the focus on the first input field": (form)->
+    it "should try to put the focus on the first input field", get (form)->
       field = form.inputs()[0]
       focus = false
       field.focus = ->
@@ -161,22 +158,21 @@ describe "Form", module,
 
       form.focus()
 
-      assert.isTrue focus
+      focus.should.be.true
 
-    "should return the form itself back to the code": (form)->
-      assert.same form.focus(), form
+    it "should return the form itself back to the code", get (form)->
+      form.focus().should.be.same form
 
-  "#blur()":
-    topic: test_form
+  describe "\b#blur()", ->
 
-    "should call 'blur' on every form element": (form)->
+    it "should call 'blur' on every form element", get (form)->
       ids = []
       form.elements().forEach (element)->
         element.blur = -> ids.push(@_.id)
 
       form.blur()
 
-      assert.deepEqual ids,   [
+      ids.should.eql [
         'input-name',
         'input-password',
         'input-checkbox',
@@ -191,20 +187,19 @@ describe "Form", module,
         'type-image'
       ]
 
-    "should return the form itself back to the code": (form)->
-      assert.same form.blur(), form
+    it "should return the form itself back to the code", get (form)->
+      form.blur().should.equal form
 
-  "#disable()":
-    topic: test_form
+  describe "\b#disable()", ->
 
-    "should call 'disable' on every form element": (form)->
+    it "should call 'disable' on every form element", get (form)->
       ids = []
       form.elements().forEach (element)->
         element.disable = -> ids.push(@_.id)
 
       form.disable()
 
-      assert.deepEqual ids,   [
+      ids.should.eql [
         'input-name',
         'input-password',
         'input-checkbox',
@@ -219,20 +214,19 @@ describe "Form", module,
         'type-image'
       ]
 
-    "should return the form itself back to the code": (form)->
-      assert.same form.disable(), form
+    it "should return the form itself back to the code", get (form)->
+      form.disable().should.be.same form
 
-  "#enable()":
-    topic: test_form
+  describe "\b#enable()", ->
 
-    "should call 'enable' on every form element": (form)->
+    it "should call 'enable' on every form element", get (form)->
       ids = []
       form.elements().forEach (element)->
         element.enable = -> ids.push(@_.id)
 
       form.enable()
 
-      assert.deepEqual ids,   [
+      ids.should.eql [
         'input-name',
         'input-password',
         'input-checkbox',
@@ -247,17 +241,16 @@ describe "Form", module,
         'type-image'
       ]
 
-    "should return the form itself back to the code": (form)->
-      assert.same form.enable(), form
+    it "should return the form itself back to the code", get (form)->
+      form.enable().should.be.same form
 
-  "#values()":
-    topic: test_form
+  describe "\b#values()", ->
 
-    "should return a hash of all the form input field values": (form)->
+    it "should return a hash of all the form input field values", get (form)->
       form.inputs().forEach (element)->
         element.value = -> @_.value
 
-      assert.deepEqual form.values(),
+      form.values().should.eql
         name:     'Bob'
         password: 'secret'
         text:     'Boo boo boo'
@@ -265,8 +258,8 @@ describe "Form", module,
         options:  '2'
 
 
-    "should make a multi-dimensional hash when smth[smth] used": (form)->
-      form = new this.Form html: """
+    it "should make a multi-dimensional hash when smth[smth] used", get (form, $)->
+      form = new $.Form html: """
         <input name="token" value="some token" />
         <input name="person[email]" value="bobby@mountain.com" />
         <input name="person[name][first]"  value="Bobby" />
@@ -276,7 +269,7 @@ describe "Form", module,
         <input name="person[guns][]" value="Glock"   checked="true" />
       """
 
-      assert.deepEqual form.values(),
+      form.values().should.eql
         token: 'some token'
         person:
           email: 'bobby@mountain.com'
@@ -286,36 +279,33 @@ describe "Form", module,
           guns: [ 'Shotgun', 'M16', 'Glock' ]
 
 
-  "#submit()":
-    topic: test_form
+  describe "\b#submit()", ->
 
-    "should call 'submit' on the raw form": (form)->
+    it "should call 'submit' on the raw form", get (form)->
       called = false
       form._.submit = -> called = true
       form.submit()
-      assert.isTrue called
+      called.should.be.true
 
-    "should return the form itself back to the code": (form)->
-      assert.same form.submit(), form
+    it "should return the form itself back to the code", get (form)->
+      form.submit().should.equal form
 
-  "#reset()":
-    topic: test_form
+  describe "\b#reset()", ->
 
-    "should call 'reset' on the raw form": (form)->
+    it "should call 'reset' on the raw form", get (form)->
       called = false
       form._.reset = -> called = true
       form.reset()
-      assert.isTrue called
+      called.should.be.true
 
-    "should return the form itself back to the code": (form)->
-      assert.same form.reset(), form
+    it "should return the form itself back to the code", get (form)->
+      form.reset().should.be.same form
 
-  'NodeList extension':
-    topic: test_form
+  describe 'NodeList extension', ->
 
-    "should create 'values()' method": (form)->
-      search = new this.NodeList([form])
+    it "should create 'values()' method", get (form, $)->
+      search = new $.NodeList([form])
 
-      assert.isTrue    'values' of search
-      assert.deepEqual search.values(), form.values()
+      ('values' of search).should.be.true
+      search.values().should.eql form.values()
 

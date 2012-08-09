@@ -96,11 +96,11 @@ Browser.open = (url, options, callback) ->
     throw err if err
     browser.wait ->
 
+      # patching the in-browser Object.prototype, so that the should.js worked in there
       Object.defineProperty browser.window.getGlobal().Object.prototype, 'should',
         set: ->
         get: -> new should.Assertion(Object(@).valueOf())
         configurable: true
-
 
       callback(browser.window.Lovely.module('dom'), browser.window, browser)
 
