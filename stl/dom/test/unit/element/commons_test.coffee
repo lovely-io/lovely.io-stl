@@ -1,11 +1,11 @@
 #
 # The Element common methods section unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, server, load_element} = require('../../test_helper')
+{Browser} = require('../../test_helper')
 
-server.respond "/commons.html": """
+Browser.respond "/commons.html": """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -17,163 +17,155 @@ server.respond "/commons.html": """
   </html>
   """
 
-test_element = ->
-  load_element("/commons.html", this, 'test')
+
+describe 'Element Commons', ->
+  get = (callback)->
+    (done)->
+      Browser.open "/commons.html", ($, window)->
+        element = new $.Element(window.document.getElementById('test'))
+        callback(element, $, window, window.document)
+        done()
+
+  describe "#attr", ->
+
+    describe "\b('name')", ->
+
+      it "should read a property attribute", get (element) ->
+        element.attr('id').should.equal 'test'
+
+      it "should read the 'data-test' attribute", get (element) ->
+        element.attr('data-test').should.eql 'test'
+
+      it "should return 'null' for non existing attributes", get (element) ->
+        (element.attr('nonexistent') is null).should.be.true
 
 
-describe 'Element Commons', module,
-  "#attr":
+    describe "\b('name', 'value')", ->
 
-    "\b('name')":
-      topic: test_element
+      it "should return the element back", get (element) ->
+        element.attr('title', 'text').should.equal element
 
-      "should read a property attribute": (element) ->
-        assert.equal element.attr('id'), 'test'
-
-      "should read the 'data-test' attribute": (element) ->
-        assert.equal element.attr('data-test'), 'test'
-
-      "should return 'null' for non existing attributes": (element) ->
-        assert.isNull element.attr('nonexistent')
-
-
-    "\b('name', 'value')":
-      topic: test_element
-
-      "should return the element back": (element) ->
-        assert.same element.attr('title', 'text'), element
-
-      "should set property attributes": (element) ->
+      it "should set property attributes", get (element) ->
         element.attr('title', 'new value')
-        assert.equal element._.title, 'new value'
+        element._.title.should.eql 'new value'
 
-      "should set non-property attributes": (element) ->
+      it "should set non-property attributes", get (element) ->
         element.attr('data-new', 'something')
-        assert.equal element._.getAttribute('data-new'), 'something'
+        element._.getAttribute('data-new').should.eql 'something'
 
 
-    "\b({name: 'value'})":
-      topic: test_element
+    describe "\b({name: 'value'})", ->
 
-      "should return the element back afterwards": (element) ->
-        assert.same element.attr(smth: 'value'), element
+      it "should return the element back afterwards", get (element) ->
+        element.attr(smth: 'value').should.equal element
 
-      "should set all the attributes from the hash": (element) ->
+      it "should set all the attributes from the hash", get (element) ->
         element.attr
           test_attr1: 'value1'
           test_attr2: 'value2'
 
-        assert.equal element._.getAttribute('test_attr1'), 'value1'
-        assert.equal element._.getAttribute('test_attr2'), 'value2'
+        element._.getAttribute('test_attr1').should.eql 'value1'
+        element._.getAttribute('test_attr2').should.eql 'value2'
 
 
-    "\b('name', null)":
-      topic: test_element
+    describe "\b('name', null)", ->
 
-      "should remove the attribute": (element) ->
+      it "should remove the attribute", get (element) ->
         element.attr('something', 'something')
-        assert.equal element.attr('something'), 'something'
+        element.attr('something').should.eql 'something'
 
         element.attr('something', null)
-        assert.isNull element.attr('something')
+        (element.attr('something') is null).should.be.true
 
 
-  "#hidden()":
-    topic: test_element
+  describe "#hidden()", ->
 
-    "should say 'true' when the element is hidden": (element)->
+    it "should say 'true' when the element is hidden", get (element)->
       element._.style.display = 'none'
-      assert.isTrue element.hidden()
+      element.hidden().should.be.true
 
-    "should say 'false' when the element is visible": (element)->
+    it "should say 'false' when the element is visible", get (element)->
       element._.style.display = 'block'
-      assert.isFalse element.hidden()
+      element.hidden().should.be.false
 
-  "#visible()":
-    topic: test_element
+  describe "#visible()", ->
 
-    "should say 'false' when the element is hidden": (element)->
+    it "should say 'false' when the element is hidden", get (element)->
       element._.style.display = 'none'
-      assert.isFalse element.visible()
+      element.visible().should.be.false
 
-    "should say 'true' when the element is visible": (element)->
+    it "should say 'true' when the element is visible", get (element)->
       element._.style.display = 'block'
-      assert.isTrue element.visible()
+      element.visible().should.be.true
 
-  "#hide()":
-    topic: test_element
+  describe "#hide()", ->
 
-    "should hide the element when it is visible": (element)->
+    it "should hide the element when it is visible", get (element)->
       element._.style.display = 'block'
       element.hide()
-      assert.equal element._.style.display, 'none'
+      element._.style.display.should.eql 'none'
 
-    "should leave element hidden when it is not visible": (element)->
+    it "should leave element hidden when it is not visible", get (element)->
       element._.style.display = 'none'
       element.hide()
-      assert.equal element._.style.display, 'none'
+      element._.style.display.should.eql 'none'
 
-    "should return the element reference back": (element)->
-      assert.same element.hide(), element
+    it "should return the element reference back", get (element)->
+      element.hide().should.equal element
 
-  "#show()":
-    topic: test_element
+  describe "#show()", ->
 
-    "should show an element if it's hidden": (element)->
+    it "should show an element if it's hidden", get (element)->
       element._.style.display = 'none'
       element.show()
-      assert.equal element._.style.display, 'block'
+      element._.style.display.should.eql 'block'
 
-    "should leave a visible element visible": (element)->
+    it "should leave a visible element visible", get (element)->
       element._.style.display = 'inline'
       element.show()
-      assert.equal element._.style.display, 'inline'
+      element._.style.display.should.eql 'inline'
 
-    "should return the element reference back": (element)->
-      assert.same element.show(), element
+    it "should return the element reference back", get (element)->
+      element.show().should.equal element
 
-  "#toggle()":
-    topic: test_element
+  describe "#toggle()", ->
 
-    "should show an element if it is hidden": (element)->
+    it "should show an element if it is hidden", get (element)->
       element._.style.display = 'none'
       element.toggle()
-      assert.equal element._.style.display, 'block'
+      element._.style.display.should.eql 'block'
 
-    "should hide an element if it's visible": (element)->
+    it "should hide an element if it's visible", get (element)->
       element._.style.display = 'block'
       element.toggle()
-      assert.equal element._.style.display, 'none'
+      element._.style.display.should.eql 'none'
 
-    "should return back a reference to the element": (element)->
-      assert.same element.toggle(), element
+    it "should return back a reference to the element", get (element)->
+      element.toggle().should.equal element
 
 
-  "#document()":
-    topic: test_element
+  describe "#document()", ->
 
-    "should return the owner document wrapper": (element)->
+    it "should return the owner document wrapper", get (element, $, window, raw_document)->
       document = element.document()
 
-      assert.instanceOf document, this.Document
-      assert.same       document._, this.document
+      document.should.be.instanceOf $.Document
+      document._.should.equal raw_document
 
-    "should return the same wrapper all the time": (element)->
-      assert.same element.document(), element.document()
+    it "should return the same wrapper all the time", get (element)->
+      element.document().should.equal element.document()
 
-  "#window()":
-    topic: test_element
+  describe "#window()", ->
 
-    "should return the owner window wrapper": (element)->
+    it "should return the owner window wrapper", get (element, $, raw_window)->
       window = element.window()
 
-      assert.instanceOf window,          this.Window
-      assert.same       window._.window, this.window.window
+      window.should.be.instanceOf $.Window
+      window._.should.be.same     raw_window
 
-  "#data()":
-    topic: test_element
+  describe "#data()", ->
 
-    "should read data- attributes": (element)->
+    it "should read data- attributes", get (element)->
       element.attr({
         'data-false':  'false'
         'data-true':   'true'
@@ -184,57 +176,57 @@ describe 'Element Commons', module,
         'data-plain':  'plain text'
       })
 
-      assert.equal     element.data('false'), false
-      assert.equal     element.data('true'), true
-      assert.equal     element.data('number'), 1.23
-      assert.equal     element.data('string'), 'string'
-      assert.deepEqual element.data('array'), [1,2,3]
-      assert.deepEqual element.data('object'), {boo: "hoo"}
-      assert.equal     element.data('plain'), 'plain text'
-      assert.isNull    element.data('non-existing')
+      element.data('false').should.equal  false
+      element.data('true').should.equal   true
+      element.data('number').should.equal 1.23
+      element.data('string').should.equal 'string'
+      element.data('array').should.eql    [1,2,3]
+      element.data('object').should.eql   {boo: "hoo"}
+      element.data('plain').should.equal  'plain text'
+      (element.data('non-existing') is null).should.be.true
 
-    "should read nested attributes": (element)->
+    it "should read nested attributes", get (element)->
       element.attr({
         'data-thing-one': '1'
         'data-thing-two': '2'
         'data-thing-three-one': '3.1'
       })
 
-      assert.deepEqual element.data('thing'), {
+      element.data('thing').should.eql {
         one: 1, two: 2, threeOne: 3.1
       }
 
-    "should write data- attributes": (element)->
-      assert.same  element,  element.data('string', 'string')
-      assert.equal 'string', element._.getAttribute('data-string')
-      assert.isTrue element['data-string'] is undefined
+    it "should write data- attributes", get (element)->
+      element.data('string', 'string').should.equal element
+      element._.getAttribute('data-string').should.equal 'string'
+      (element['data-string'] is undefined).should.be.true
 
-      assert.equal 'false',   element.data('false', false)._.getAttribute('data-false')
-      assert.equal 'true',    element.data('true', true)._.getAttribute('data-true')
-      assert.equal '1.23',    element.data('number', 1.23)._.getAttribute('data-number')
-      assert.equal '[1,2,3]', element.data('array', [1,2,3])._.getAttribute('data-array')
+      element.data('false', false)._.getAttribute('data-false').should.equal   'false'
+      element.data('true', true)._.getAttribute('data-true').should.equal      'true'
+      element.data('number', 1.23)._.getAttribute('data-number').should.equal  '1.23'
+      element.data('array', [1,2,3])._.getAttribute('data-array').should.equal '[1,2,3]'
 
-    "should allow to write data as a plain hash": (element)->
-      assert.same element, element.data({
+    it "should allow to write data as a plain hash", get (element)->
+      element.data({
         one: 1, two: 2, three: 3
-      })
+      }).should.equal element
 
-      assert.equal '1', element._.getAttribute('data-one')
-      assert.equal '2', element._.getAttribute('data-two')
-      assert.equal '3', element._.getAttribute('data-three')
+      element._.getAttribute('data-one').should.equal   '1'
+      element._.getAttribute('data-two').should.equal   '2'
+      element._.getAttribute('data-three').should.equal '3'
 
-    "should allow to write data as a nested hash": (element)->
-      assert.same element, element.data('test', {
+    it "should allow to write data as a nested hash", get (element)->
+      element.data('test', {
         'one': 1, two: 2, 'three-one': 3.1, 'threeTwo': 3.2
-      })
+      }).should.equal element
 
-      assert.equal '1',   element._.getAttribute('data-test-one')
-      assert.equal '2',   element._.getAttribute('data-test-two')
-      assert.equal '3.1', element._.getAttribute('data-test-three-one')
-      assert.equal '3.2', element._.getAttribute('data-test-three-two')
+      element._.getAttribute('data-test-one').should.equal       '1'
+      element._.getAttribute('data-test-two').should.equal       '2'
+      element._.getAttribute('data-test-three-one').should.equal '3.1'
+      element._.getAttribute('data-test-three-two').should.equal '3.2'
 
-    "should allow to remove data- attributes": (element)->
+    it "should allow to remove data- attributes", get (element)->
       element.attr {'data-something': 'something'}
 
-      assert.equal  element, element.data('something', null)
-      assert.equal '', element._.getAttribute('data-something')
+      element.data('something', null).should.equal          element
+      (element._.getAttribute('data-something') is null).should.be.true
