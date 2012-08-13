@@ -1,11 +1,11 @@
 #
 # The `Input` unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, server, load} = require('../test_helper')
+{Browser} = require('../test_helper')
 
-server.respond "/input.html": """
+Browser.respond "/input.html": """
 <html>
   <head>
     <script src="/core.js"></script>
@@ -26,303 +26,296 @@ server.respond "/input.html": """
 </html>
 """
 
-Input = ->
-  load "/input.html", this, ->
-    this.Input
+describe "Input", ->
+  get_Input = (callback)->
+    (done)->
+      Browser.open "/input.html", ($, window)->
+        callback($.Input, $, window, window.document)
+        done()
 
-test_input = ->
-  load "/input.html", this, ->
-    new this.Input(this.document.getElementById('input-name'))
+  get_input = (callback)->
+    (done)->
+      Browser.open "/input.html", ($, window)->
+        callback(new $.Input(window.document.getElementById('input-name')), $, window, window.document)
+        done()
 
-test_multiselect = ->
-  load "/input.html", this, ->
-    new this.Input(this.document.getElementById('multi-select'))
+  get_multiselect = (callback)->
+    (done)->
+      Browser.open "/input.html", ($, window)->
+        callback(new $.Input(window.document.getElementById('multi-select')), $, window, window.document)
+        done()
 
+  describe "constructor", ->
 
-describe "Input", module,
-  "constructor":
-    topic: Input
-
-    "should create new input fields on raw elements": (Input)->
-      raw   = this.document.getElementById('input-name')
+    it "should create new input fields on raw elements", get_Input (Input, $, window, document)->
+      raw   = document.getElementById('input-name')
       input = new Input(raw)
 
-      assert.instanceOf input,   Input
-      assert.same       input._, raw
+      input.should.be.instanceOf Input
+      input._.should.equal       raw
 
-    "should create new inputs by a tag name and options": (Input)->
+    it "should create new inputs by a tag name and options", get_Input (Input)->
       input = new Input('textarea', name: 'boo')
 
-      assert.instanceOf input,           Input
-      assert.equal      input._.tagName, 'TEXTAREA'
-      assert.equal      input._.name,    'boo'
+      input.should.be.instanceOf Input
+      input._.tagName.should.eql 'TEXTAREA'
+      input._.name.should.eql    'boo'
 
-    "should be dynamically used with the 'Element' constructor": (Input)->
-      input = new this.Element('input', type: 'radio', name: 'boo')
+    it "should be dynamically used with the 'Element' constructor", get_Input (Input, $)->
+      input = new $.Element('input', type: 'radio', name: 'boo')
 
-      assert.instanceOf input,           Input
-      assert.equal      input._.tagName, 'INPUT'
-      assert.equal      input._.type,    'radio'
-      assert.equal      input._.name,    'boo'
+      input.should.be.instanceOf Input
+      input._.tagName.should.eql 'INPUT'
+      input._.type.should.eql    'radio'
+      input._.name.should.eql    'boo'
 
-    "should create input[type=text] by default": (Input)->
+    it "should create input[type=text] by default", get_Input (Input)->
       input = new Input(name: 'test')
 
-      assert.instanceOf input,           Input
-      assert.equal      input._.tagName, 'INPUT'
-      assert.equal      input._.type,    'text'
-      assert.equal      input._.name,    'test'
+      input.should.be.instanceOf Input
+      input._.tagName.should.eql 'INPUT'
+      input._.type.should.eql    'text'
+      input._.name.should.eql    'test'
 
-    "should allow to specify the input field 'type'": (Input)->
+    it "should allow to specify the input field 'type'", get_Input (Input)->
       input = new Input(type: 'password', name: 'test')
 
-      assert.instanceOf input,           Input
-      assert.equal      input._.tagName, 'INPUT'
-      assert.equal      input._.type,    'password'
-      assert.equal      input._.name,    'test'
+      input.should.be.instanceOf Input
+      input._.tagName.should.eql 'INPUT'
+      input._.type.should.eql    'password'
+      input._.name.should.eql    'test'
 
-    "should create textareas with the {type: 'textarea'} option": (Input)->
+    it "should create textareas with the {type: 'textarea'} option", get_Input (Input)->
       input = new Input(type: 'textarea', name: 'test')
 
-      assert.instanceOf input,           Input
-      assert.equal      input._.tagName, 'TEXTAREA'
-      assert.equal      input._.name,    'test'
+      input.should.be.instanceOf Input
+      input._.tagName.should.eql 'TEXTAREA'
+      input._.name.should.eql    'test'
 
-    "should create select element with the {type: 'select'} option": (Input)->
+    it "should create select element with the {type: 'select'} option", get_Input (Input)->
       input = new Input(type: 'select', name: 'test')
 
-      assert.instanceOf input,           Input
-      assert.equal      input._.tagName, 'SELECT'
-      assert.equal      input._.name,    'test'
+      input.should.be.instanceOf Input
+      input._.tagName.should.eql 'SELECT'
+      input._.name.should.eql    'test'
 
-  "#form":
-    topic: test_input
 
-    "should return reference to it's form object": (input)->
+  describe "\b#form()", ->
+
+    it "should return reference to it's form object", get_input (input, $, window, document)->
       form = input.form()
 
-      assert.instanceOf form,   this.Form
-      assert.same       form._, this.document.getElementById('test-form')
+      form.should.be.instanceOf $.Form
+      form._.should.be.same     document.getElementById('test-form')
 
-  '#value()':
-    "with a plain input field":
-      topic: test_input
 
-      "should return the value of the field": (input)->
-        assert.equal input.value(), input._.value
+  describe '\b#value()', ->
+    describe "with a plain input field", ->
 
-    "with a multi-select field":
-      topic: test_multiselect
+      it "should return the value of the field", get_input (input)->
+        input.value().should.eql input._.value
 
-      "should return an array of selected values": (input)->
-        assert.deepEqual input.value(), ['two', 'three']
+    describe "with a multi-select field", ->
+      it "should return an array of selected values", get_multiselect (input)->
+        input.value().should.eql ['two', 'three']
 
-  '#value("data")':
-    topic: Input
+  describe '\b#value("data")', ->
 
-    "with a plain input field":
-      topic: (Input)-> new Input(value: 'old value')
+    describe "with a plain input field", ->
 
-      "should assign the new value for the field": (input)->
+      it "should assign the new value for the field", get_input (input)->
+        input._.value = 'old value'
         input.value('new value')
-        assert.equal input._.value, 'new value'
+        input._.value.should.eql 'new value'
 
-      "should return the input field itself back to the code": (input)->
-        assert.same input.value('another value'), input
+      it "should return the input field itself back to the code", get_input (input)->
+        input.value('another value').should.equal input
 
-    "with multi-select":
-      topic: (Input)->
-        input = new Input(type: 'select', multiple: true)
-        input.html """
-          <option value="one">One</option>
-          <option value="two" selected="true">Two</option>
-          <option value="three" selected="true">Three</option>
-          <option value="four">Four</option>
-        """
+    describe "with multi-select", ->
+      get = (callback)->
+        (done)->
+          Browser.open "/input.html", ($, window)->
+            input = new $.Input(type: 'select', multiple: true)
+            input.html """
+              <option value="one">One</option>
+              <option value="two" selected="true">Two</option>
+              <option value="three" selected="true">Three</option>
+              <option value="four">Four</option>
+            """
+            callback(input, $, window, window.document)
+            done()
 
-      "should assign a new value as an array": (input)->
+      it "should assign a new value as an array", get (input)->
         input.value(['one', 'four'])
 
-        assert.deepEqual input.value(), ['one', 'four']
+        input.value().should.eql ['one', 'four']
 
-      "should assign a new value as a string": (input)->
+      it "should assign a new value as a string", get (input)->
         input.value('two')
 
-        assert.deepEqual input.value(), ['two']
+        input.value().should.eql ['two']
 
-  '#focus()':
-    topic: test_input
+  describe '\b#focus()', ->
 
-    "should call the raw 'focus' method": (input)->
+    it "should call the raw 'focus' method", get_input (input)->
       called = false
       input._.focus = -> called = true
 
       input.focus()
 
-      assert.isTrue called
+      called.should.be.true
 
-    "should set the 'focused' property of the wrapper": (input)->
+    it "should set the 'focused' property of the wrapper", get_input (input)->
       delete(input.focused)
 
       input.focus()
 
-      assert.isTrue input.focused
+      input.focused.should.be.true
 
-    "should return the input field itself back to the code": (input)->
-      assert.same input.focus(), input
+    it "should return the input field itself back to the code", get_input (input)->
+      input.focus().should.equal input
 
-  '#blur()':
-    topic: test_input
+  describe '\b#blur()', ->
 
-    "should call the raw 'blur' method": (input)->
+    it "should call the raw 'blur' method", get_input (input)->
       called = false
       input._.blur = -> called = true
 
       input.blur()
 
-      assert.isTrue called
+      called.should.be.true
 
-    "should set the 'focused' property of the wrapper to 'false'": (input)->
+    it "should set the 'focused' property of the wrapper to 'false'", get_input (input)->
       delete(input.focused)
 
       input.blur()
 
-      assert.isFalse input.focused
+      input.focused.should.be.false
 
-    "should return the input field itself back to the code": (input)->
-      assert.same input.blur(), input
+    it "should return the input field itself back to the code", get_input (input)->
+      input.blur().should.equal input
 
-  '#select()':
-    topic: test_input
+  describe '#select()', ->
 
-    "should call the raw 'select' method": (input)->
+    it "should call the raw 'select' method", get_input (input)->
       called = false
       input._.select = -> called = true
 
       input.select()
 
-      assert.isTrue called
+      called.should.be.true
 
-    "should set the 'focused' property of the wrapper": (input)->
+    it "should set the 'focused' property of the wrapper", get_input (input)->
       delete(input.focused)
 
       input.select()
 
-      assert.isTrue input.focused
+      input.focused.should.be.true
 
-    "should return the input field itself back to the code": (input)->
-      assert.same input.select(), input
+    it "should return the input field itself back to the code", get_input (input)->
+      input.select().should.equal input
 
 
-  '#disable()':
-    topic: test_input
+  describe '\b#disable()', ->
 
-    "should set the 'disabled' property to 'true'": (input)->
+    it "should set the 'disabled' property to 'true'", get_input (input)->
       input._.disabled = false
       input.disable()
 
-      assert.isTrue input._.disabled
+      input._.disabled.should.be.true
 
-    "should emit the 'disable' event": (input)->
+    it "should emit the 'disable' event", get_input (input)->
       emitted = false
       input.on('disable', -> emitted = true)
       input.disable()
 
-      assert.isTrue emitted
+      emitted.should.be.true
 
-    "should return the field itself back to the code": (input)->
-      assert.same input.disable(), input
+    it "should return the field itself back to the code", get_input (input)->
+      input.disable().should.equal input
 
 
-  '#enable()':
-    topic: test_input
+  describe '\b#enable()', ->
 
-    "should set the 'disabled' property to 'false'": (input)->
+    it "should set the 'disabled' property to 'false'", get_input (input)->
       input._.disabled = true
       input.enable()
 
-      assert.isFalse input._.disabled
+      input._.disabled.should.be.false
 
-    "should emit the 'enable' event": (input)->
+    it "should emit the 'enable' event", get_input (input)->
       emitted = false
       input.on('enable', -> emitted = true)
       input.enable()
 
-      assert.isTrue emitted
+      emitted.should.be.true
 
-    "should return the field itself back to the code": (input)->
-      assert.same input.enable(), input
+    it "should return the field itself back to the code", get_input (input)->
+      input.enable().should.equal input
 
-  '#disabled':
-    topic: Input
+  describe '\b#disabled', ->
 
-    "\b()":
-      topic: (Input)-> new Input(name: 'test')
+    describe "\b()", ->
 
-      "should return 'true' when a field is disabled": (input)->
+      it "should return 'true' when a field is disabled", get_input (input)->
         input._.disabled = true
-        assert.isTrue input.disabled()
+        input.disabled().should.be.true
 
-      "should return 'false' when a field is not disabled": (input)->
+      it "should return 'false' when a field is not disabled", get_input (input)->
         input._.disabled = false
-        assert.isFalse input.disabled()
+        input.disabled().should.be.false
 
-     "\b(value)":
-       topic: (Input)-> new Input(name: 'test')
+     describe "\b(value)", ->
 
-       "should call 'disable' when the value is 'true'": (input)->
+       it "should call 'disable' when the value is 'true'", get_input (input)->
          called = false
          input.disable = -> called = true; return @
          input.disabled(true)
 
-         assert.isTrue called
+         called.should.be.true
 
-       "should call 'enable' when the value is 'false'": (input)->
+       it "should call 'enable' when the value is 'false'", get_input (input)->
          called = false
          input.enable = -> called = true; return @
          input.disabled(false)
 
-         assert.isTrue called
+         called.should.be.true
 
-       "should return the field itself back to the code": (input)->
-         assert.same input.disabled(true), input
+       it "should return the field itself back to the code", get_input (input)->
+         input.disabled(true).should.equal input
 
-  '#checked':
-    topic: Input
+  describe '\b#checked', ->
 
-    "\b()":
-      topic: (Input)-> new Input(type: 'checkbox')
+    describe "\b()", ->
 
-      "should return 'true' when the field is checked": (input)->
+      it "should return 'true' when the field is checked", get_input (input)->
         input._.checked = true
-        assert.isTrue input.checked()
+        input.checked().should.be.true
 
-      "should return 'false' when the field is not checked": (input)->
+      it "should return 'false' when the field is not checked", get_input (input)->
         input._.checked = false
-        assert.isFalse input.checked()
+        input.checked().should.be.false
 
-    "\b(value)":
-      topic: (Input)-> new Input(type: 'checkbox')
+    describe "\b(value)", ->
 
-      "should make the field checked when called with 'true'": (input)->
+      it "should make the field checked when called with 'true'", get_input (input)->
         input._.checked = false
         input.checked(true)
-        assert.isTrue input._.checked
+        input._.checked.should.be.true
 
-      "should make the field unchecked when called with 'false'": (input)->
+      it "should make the field unchecked when called with 'false'", get_input (input)->
         input._.checked = true
         input.checked(false)
-        assert.isFalse input._.checked
+        input._.checked.should.be.false
 
-      "should return the input field itself back to the code": (input)->
-        assert.same input.checked(true), input
+      it "should return the input field itself back to the code", get_input (input)->
+        input.checked(true).should.equal input
 
-  'NodeList extension':
-    topic: Input,
+  describe 'NodeList extension', ->
 
-    "'should add the 'value()' method": (Input)->
+    it "should add the 'value()' method", get_Input (Input, $)->
       input = new Input(name: 'boo', value: 'hoo')
-      search = new this.NodeList([input])
+      search = new $.NodeList([input])
 
-      assert.isTrue 'value' of search
-      assert.same   search.value(), input.value()
+      search.value.should.be.a 'function'
+      search.value().should.equal input.value()
