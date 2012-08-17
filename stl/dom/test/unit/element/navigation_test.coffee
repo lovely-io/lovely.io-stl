@@ -1,11 +1,11 @@
 #
 # Element navigation module unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, server, load} = require('../../test_helper')
+{Browser} = require('../../test_helper')
 
-server.respond "/navigation.html": """
+Browser.respond "/navigation.html": """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -29,207 +29,201 @@ server.respond "/navigation.html": """
   </html>
   """
 
-find_element = (css_rule)->
-  ->
-    load "/navigation.html", this, (dom)->
-      dom(this.document.querySelector(css_rule))
+describe "Element Navigation", ->
+  get = (css_rule, callback)->
+    (done)->
+      Browser.open "/navigation.html", ($, window)->
+        element = new $.Element(window.document.querySelector(css_rule))
+        callback(element, $, window, window.document)
+        done()
 
+  describe "#match('css_rule')", ->
 
-describe "Element Navigation", module,
-  "#match('css_rule')":
-    topic: find_element('#one .one')
+    it "should say 'true' if it match the rule", get '#one .one', (element)->
+      element.match('#one .one').should.be.true
 
-    "should say 'true' if it match the rule": (element)->
-      assert.isTrue element.match('#one .one')
+    it "should say 'false' if it doesn't match the rule", get '#one .one', (element)->
+      element.match('#one .two').should.be.false
 
-    "should say 'false' if it doesn't match the rule": (element)->
-      assert.isFalse element.match('#one .two')
+  describe "#find('css_rule')", ->
 
-  "#find('css_rule')":
-    topic: find_element('#one')
-
-    "should search in the element": (element)->
+    it "should search in the element", get '#one', (element, $, window, document)->
       search = element.find('.one')
 
-      assert.instanceOf search, this.NodeList
-      assert.lengthOf   search, 1
-      assert.instanceOf search[0], this.Element
-      assert.same       search[0]._, this.document.querySelector('#one .one')
+      search.should.be.instanceOf    $.NodeList
+      search.should.have.length      1
+      search[0].should.be.instanceOf $.Element
+      search[0]._.should.equal document.querySelector('#one .one')
 
-    "should return an empty list if nothing found": (element)->
+    it "should return an empty list if nothing found", get '#one', (element, $)->
       search = element.find('.non-existing')
 
-      assert.instanceOf search, this.NodeList
-      assert.lengthOf   search, 0
+      search.should.be.instanceOf $.NodeList
+      search.should.have.length   0
 
-    "should allow a raw DOM elements search": (element)->
+    it "should allow a raw DOM elements search", get '#one', (element, $, window, document)->
       search = element.find('.one, .two', true)
 
-      assert.isFalse  search instanceof this.NodeList
-      assert.lengthOf search, 2
-      assert.equal    search[0], this.document.querySelector('#one .one')
-      assert.equal    search[1], this.document.querySelector('#one .two')
+      search.should.not.be.instanceOf $.NodeList
+      search.should.be.instanceOf     Array
+      search.should.have.length       2
+      search[0].should.equal document.querySelector('#one .one')
+      search[1].should.equal document.querySelector('#one .two')
 
-  "#first('css_rule')":
-    topic: find_element('#one')
+  describe "#first('css_rule')", ->
 
-    "should find the first matching element": (element)->
+    it "should find the first matching element", get '#one', (element, $, window, document)->
       first = element.first('.two')
 
-      assert.instanceOf first, this.Element
-      assert.same       first._, this.document.querySelector('#one .two')
+      first.should.be.instanceOf $.Element
+      first._.should.equal       document.querySelector('#one .two')
 
-    "should find the very first element when called without a css-rule": (element)->
+    it "should find the very first element when called without a css-rule", get '#one', (element, $, window, document)->
       first = element.first()
 
-      assert.instanceOf first, this.Element
-      assert.same       first._, this.document.querySelector('#one .one')
+      first.should.be.instanceOf $.Element
+      first._.should.equal       document.querySelector('#one .one')
 
-  "#parent('css-rule')":
-    topic: find_element('#one .one')
+  describe "#parent('css-rule')", ->
 
-    "should return the first parent when called without a css-rule": (element)->
+    it "should return the first parent when called without a css-rule", get '#one .one', (element, $, window, document)->
       parent = element.parent()
 
-      assert.instanceOf parent,   this.Element
-      assert.same       parent._, this.document.querySelector('#one')
+      parent.should.be.instanceOf $.Element
+      parent._.should.equal       document.querySelector('#one')
 
-    "should return the first matching parent when called with a css-rule": (element)->
+    it "should return the first matching parent when called with a css-rule", get '#one .one', (element, $, window, document)->
       parent = element.parent('body')
 
-      assert.instanceOf parent,   this.Element
-      assert.same       parent._, this.document.body
+      parent.should.be.instanceOf $.Element
+      parent._.should.equal       document.body
 
-  "#parents('css-rule')":
-    topic: find_element('#one .one')
+  describe "#parents('css-rule')", ->
 
-    "should return the list of all parents when called with a css-rule": (element)->
+    it "should return the list of all parents when called with a css-rule", get '#one .one', (element, $, window, document)->
       parents = element.parents()
 
-      assert.instanceOf parents, this.NodeList
-      assert.lengthOf   parents, 3
-      assert.same       parents[0]._, this.document.querySelector('#one')
-      assert.same       parents[1]._, this.document.body
-      assert.same       parents[2]._, this.document.documentElement
+      parents.should.be.instanceOf $.NodeList
+      parents.should.have.length   3
+      parents[0]._.should.equal    document.querySelector('#one')
+      parents[1]._.should.equal    document.body
+      parents[2]._.should.equal    document.documentElement
 
-    "should filter the list by a given css-rule": (element)->
+    it "should filter the list by a given css-rule", get '#one .one', (element, $, window, document)->
       parents = element.parents('body')
 
-      assert.instanceOf parents, this.NodeList
-      assert.lengthOf   parents, 1
-      assert.same       parents[0]._, this.document.body
+      parents.should.be.instanceOf $.NodeList
+      parents.should.have.length   1
+      parents[0]._.should.equal    document.body
 
 
-  "#children('css_rule')":
-    topic: find_element('#one')
+  describe "#children('css_rule')", ->
 
-    "should return all child elements when called without a css-rule": (element)->
+    it "should return all child elements when called without a css-rule", get '#one', (element, $, window, document)->
       result = element.children()
 
-      assert.instanceOf result, this.NodeList
-      assert.lengthOf   result, 2
-      assert.instanceOf result[0],   this.Element
-      assert.instanceOf result[1],   this.Element
-      assert.same       result[0]._, this.document.querySelector('#one .one')
-      assert.same       result[1]._, this.document.querySelector('#one .two')
+      result.should.be.instanceOf    $.NodeList
+      result.should.have.length      2
+      result[0].should.be.instanceOf $.Element
+      result[1].should.be.instanceOf $.Element
+      result[0]._.should.equal       document.querySelector('#one .one')
+      result[1]._.should.equal       document.querySelector('#one .two')
 
-    "should filter the result by the css-rule": (element)->
+    it "should filter the result by the css-rule", get '#one', (element, $, window, document)->
       result = element.children('.one')
 
-      assert.lengthOf   result, 1
-      assert.same       result[0]._, this.document.querySelector('#one .one')
+      result.should.have.length 1
+      result[0]._.should.equal document.querySelector('#one .one')
 
 
-  "#siblings('css-rule')":
-    topic: find_element('#three .two')
+  describe "#siblings('css-rule')", ->
 
-    "should return the list of all siblings when called without a css-rule": (element)->
+    it "should return the list of all siblings when called without a css-rule", get '#three .two', (element, $, window, document)->
       siblings = element.siblings()
 
-      assert.instanceOf siblings,      this.NodeList
-      assert.lengthOf   siblings,      2
-      assert.instanceOf siblings[0],   this.Element
-      assert.instanceOf siblings[1],   this.Element
-      assert.same       siblings[0]._, this.document.querySelector('#three .one')
-      assert.same       siblings[1]._, this.document.querySelector('#three .three')
+      siblings.should.be.instanceOf    $.NodeList
+      siblings.should.have.length      2
+      siblings[0].should.be.instanceOf $.Element
+      siblings[1].should.be.instanceOf $.Element
+      siblings[0]._.should.equal       document.querySelector('#three .one')
+      siblings[1]._.should.equal       document.querySelector('#three .three')
 
-    "should return the list of matching siblings only when called with a css-rule": (element)->
-          siblings = element.siblings('.one')
+    it "should return the list of matching siblings only when called with a css-rule", get '#three .two', (element, $, window, document)->
+      siblings = element.siblings('.one')
 
-          assert.instanceOf siblings,      this.NodeList
-          assert.lengthOf   siblings,      1
-          assert.instanceOf siblings[0],   this.Element
-          assert.same       siblings[0]._, this.document.querySelector('#three .one')
+      siblings.should.be.instanceOf    $.NodeList
+      siblings.should.have.length      1
+      siblings[0].should.be.instanceOf $.Element
+      siblings[0]._.should.equal       document.querySelector('#three .one')
 
 
-   "#nextSiblings('css-rule')":
-    topic: find_element('#three .one')
+  describe "#nextSiblings('css-rule')", ->
 
-    "should return a list of all the next siblings when called without a css-rule": (element)->
+    it "should return a list of all the next siblings when called without a css-rule", get '#three .one', (element, $, window, document)->
       siblings = element.nextSiblings()
 
-      assert.instanceOf siblings,      this.NodeList
-      assert.lengthOf   siblings,      2
-      assert.instanceOf siblings[0],   this.Element
-      assert.instanceOf siblings[1],   this.Element
-      assert.same       siblings[0]._, this.document.querySelector('#three .two')
-      assert.same       siblings[1]._, this.document.querySelector('#three .three')
+      siblings.should.be.instanceOf    $.NodeList
+      siblings.should.have.length      2
+      siblings[0].should.be.instanceOf $.Element
+      siblings[1].should.be.instanceOf $.Element
+      siblings[0]._.should.equal       document.querySelector('#three .two')
+      siblings[1]._.should.equal       document.querySelector('#three .three')
 
-    "should return only matching siblings when called with a css-rule": (element)->
+    it "should return only matching siblings when called with a css-rule", get '#three .one', (element, $, window, document)->
       siblings = element.nextSiblings('.two')
 
-      assert.instanceOf siblings,      this.NodeList
-      assert.lengthOf   siblings,      1
-      assert.instanceOf siblings[0],   this.Element
-      assert.same       siblings[0]._, this.document.querySelector('#three .two')
+      siblings.should.be.instanceOf    $.NodeList
+      siblings.should.have.length      1
+      siblings[0].should.be.instanceOf $.Element
+      siblings[0]._.should.equal       document.querySelector('#three .two')
 
-  "#previousSiblings('css-rule')":
-    topic: find_element('#three .three')
 
-    "should return a list of all the next siblings when called without a css-rule": (element)->
+  describe "#previousSiblings('css-rule')", ->
+
+    it "should return a list of all the next siblings when called without a css-rule", get '#three .three', (element, $, window, document)->
       siblings = element.previousSiblings()
 
-      assert.instanceOf siblings,      this.NodeList
-      assert.lengthOf   siblings,      2
-      assert.instanceOf siblings[0],   this.Element
-      assert.instanceOf siblings[1],   this.Element
-      assert.same       siblings[0]._, this.document.querySelector('#three .two')
-      assert.same       siblings[1]._, this.document.querySelector('#three .one')
+      siblings.should.be.instanceOf    $.NodeList
+      siblings.should.have.length      2
+      siblings[0].should.be.instanceOf $.Element
+      siblings[1].should.be.instanceOf $.Element
+      siblings[0]._.should.equal       document.querySelector('#three .two')
+      siblings[1]._.should.equal       document.querySelector('#three .one')
 
-    "should return only matching siblings when called with a css-rule": (element)->
+    it "should return only matching siblings when called with a css-rule", get '#three .three', (element, $, window, document)->
       siblings = element.previousSiblings('.two')
 
-      assert.instanceOf siblings,      this.NodeList
-      assert.lengthOf   siblings,      1
-      assert.instanceOf siblings[0],   this.Element
-      assert.same       siblings[0]._, this.document.querySelector('#three .two')
+      siblings.should.be.instanceOf    $.NodeList
+      siblings.should.have.length      1
+      siblings[0].should.be.instanceOf $.Element
+      siblings[0]._.should.equal       document.querySelector('#three .two')
 
-  "#nextSibling('css-rule')":
-    topic: find_element('#three .one')
 
-    "should return the very next sibling element when called without a css-rule": (element)->
+  describe "#nextSibling('css-rule')", ->
+
+    it "should return the very next sibling element when called without a css-rule", get '#three .one', (element, $, window, document)->
       sibling = element.nextSibling()
 
-      assert.instanceOf sibling,   this.Element
-      assert.same       sibling._, this.document.querySelector('#three .two')
+      sibling.should.be.instanceOf $.Element
+      sibling._.should.equal       document.querySelector('#three .two')
 
-    "should return a matching next sibling when called with a css-rule": (element)->
+    it "should return a matching next sibling when called with a css-rule", get '#three .one', (element, $, window, document)->
       sibling = element.nextSibling('.three')
 
-      assert.instanceOf sibling,   this.Element
-      assert.same       sibling._, this.document.querySelector('#three .three')
+      sibling.should.be.instanceOf $.Element
+      sibling._.should.equal       document.querySelector('#three .three')
 
-  "#previousSibling('css-rule')":
-    topic: find_element('#three .three')
 
-    "should return the very previous sibling element when called without a css-rule": (element)->
+  describe "#previousSibling('css-rule')", ->
+
+    it "should return the very previous sibling element when called without a css-rule", get '#three .three', (element, $, window, document)->
       sibling = element.previousSibling()
 
-      assert.instanceOf sibling,   this.Element
-      assert.same       sibling._, this.document.querySelector('#three .two')
+      sibling.should.be.instanceOf $.Element
+      sibling._.should.equal       document.querySelector('#three .two')
 
-    "should return a matching previous sibling when called with a css-rule": (element)->
+    it "should return a matching previous sibling when called with a css-rule", get '#three .three', (element, $, window, document)->
       sibling = element.previousSibling('.one')
 
-      assert.instanceOf sibling,   this.Element
-      assert.same       sibling._, this.document.querySelector('#three .one')
+      sibling.should.be.instanceOf $.Element
+      sibling._.should.equal       document.querySelector('#three .one')
