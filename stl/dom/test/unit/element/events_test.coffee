@@ -1,11 +1,11 @@
 #
 # The Element events handling module unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, server, load_element} = require('../../test_helper')
+{Browser} = require('../../test_helper')
 
-server.respond "/events.html": """
+Browser.respond "/events.html": """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -17,143 +17,142 @@ server.respond "/events.html": """
   </html>
   """
 
-test_element = ->
-  load_element "/events.html", this, "test"
+describe "Element Events", ->
+  get = (callback)->
+    (done)->
+      Browser.open "/events.html", ($, window, browser)->
+        element = new $.Element(window.document.getElementById('test'))
+        callback(element, $, window, window.document, browser)
+        done()
 
+  describe "#on", ->
 
-describe "Element Events", module,
-  "#on":
-    topic: test_element
-
-    "should attach event listeners": (element)->
+    it "should attach event listeners", get (element)->
       callback = ->
       element.on('click', callback)
-      assert.isTrue element.ones('click', callback)
+      element.ones('click', callback).should.be.true
 
 
-    "should actually listen to the events": (element)->
+    it "should actually listen to the events", get (element, $, window, document, browser)->
       event    = null
       context  = null
 
       element.on('click', (e) -> event = e; context = @)
 
-      this.browser.fire 'click', element._
+      browser.fire 'click', element._
 
-      assert.instanceOf event, this.Event
+      event.should.be.instanceOf $.Event
 
-      assert.same event.target, element
-      assert.same context,      element
+      event.target.should.equal element
+      context.should.equal      element
 
-    "should handle calls by name": (element)->
+    it "should handle calls by name", get (element, $, window, document, browser)->
       element.setClass('')
       element.on('click', 'setClass', 'call-by-name')
 
-      this.browser.fire 'click', element._
+      browser.fire 'click', element._
 
-      assert.equal element._.className, 'call-by-name'
+      element._.className.should.equal 'call-by-name'
 
-    "should stop event when the callback returns 'false'": (element)->
+    it "should stop event when the callback returns 'false'", get (element, $, window, document, browser)->
       event = null
       element.no('click').on('click', (e) -> event = e; false)
 
-      this.browser.fire 'click', element._
+      browser.fire 'click', element._
 
-      assert.isTrue event.stopped
-
-
-    "should return the element itself back": (element)->
-      assert.same element.on('click', ->), element
+      event.stopped.should.be.true
 
 
-  "#no":
-    topic: test_element
+    it "should return the element itself back", get (element)->
+      element.on('click', ->).should.equal element
 
-    "should remove event listener": (element)->
+
+  describe "#no", ->
+
+    it "should remove event listener", get (element, $, window, document, browser)->
       event = null
       element.on('click', (e)-> event)
 
       element.no('click')
 
-      this.browser.fire 'click', element._
+      browser.fire 'click', element._
 
-      assert.isNull event
+      (event is null).should.be.true
 
-    "should return element itself back to the code": (element)->
-      assert.same element.no('click'), element
+    it "should return element itself back to the code", get (element)->
+      element.no('click').should.equal element
 
 
-  "#ones":
-    topic: test_element
+  describe "#ones", ->
 
-    "should return 'true' for registered events": (element)->
+    it "should return 'true' for registered events", get (element)->
       callback = ->
       element.on('click', callback)
 
-      assert.isTrue element.ones('click')
-      assert.isTrue element.ones('click', callback)
+      element.ones('click').should.be.true
+      element.ones('click', callback).should.be.true
 
 
-    "should return 'false' for unregistered events": (element)->
+    it "should return 'false' for unregistered events", get (element)->
       callback = ->
       element.on('click', callback)
 
-      assert.isFalse element.ones('mouseover')
-      assert.isFalse element.ones('click', other_callback = ->)
+      element.ones('mouseover').should.be.false
+      element.ones('click', other_callback = ->).should.be.false
 
 
-  "#emit":
-    topic: test_element
+  describe "#emit", ->
 
-    "should emit an event on an element": (element)->
+    it "should emit an event on an element", get (element, $)->
       event = null
       element.on('click', (e) -> event = e)
       element.emit('click')
 
-      assert.instanceOf event,  this.Event
-      assert.equal event.type,  'click'
-      assert.same  event.target, element
+      event.should.be.instanceOf $.Event
+      event.type.should.equal    'click'
+      event.target.should.equal  element
 
-    "should attach any sort of event properties": (element)->
+    it "should attach any sort of event properties", get (element)->
       event = null
       element.on('click', (e) -> event = e)
       element.emit('click', attr1: 1, attr2: 2)
 
-      assert.equal event.attr1, 1
-      assert.equal event.attr2, 2
+      event.attr1.should.eql 1
+      event.attr2.should.eql 2
 
 
-    "should bypass the event to it's parent": (element)->
+    it "should bypass the event to it's parent", get (element, $, window, document)->
       event1 = null
       event2 = null
-      body   = new this.Element(this.document.body)
+      body   = new $.Element(document.body)
 
       element.on 'click', (e) -> event1 = e
       body.on    'click', (e) -> event2 = e
 
       element.emit('click')
 
-      assert.instanceOf event1, this.Event
-      assert.same       event1, event2
+      event1.should.be.instanceOf $.Event
+      event1.should.equal         event2
 
 
-    "should not bypass the event if it was stopped": (element)->
+    it "should not bypass the event if it was stopped", get (element, $, window, document)->
       event1 = null
       event2 = null
-      body   = new this.Element(this.document.body)
+      body   = new $.Element(document.body)
 
       element.on 'click', (e) -> event1 = e.stop()
       body.on    'click', (e) -> event2 = e
 
       element.emit('click')
 
-      assert.instanceOf event1, this.Event
-      assert.isNull     event2
+      event1.should.be.instanceOf $.Event
+      (event2 is null).should.be.true
 
 
-    "should change the 'currentTarget' property as the event bubbles": (element)->
+    it "should change the 'currentTarget' property as the event bubbles", get (element, $, window, document)->
       current1 = null
       current2 = null
-      body     = new this.Element(this.document.body)
+      body     = new $.Element(document.body)
 
       element.no 'click'
       element.on 'click', (e) -> current1 = e.currentTarget
@@ -161,9 +160,9 @@ describe "Element Events", module,
 
       element.emit('click')
 
-      assert.same current1, element
-      assert.same current2, body
+      current1.should.equal element
+      current2.should.equal body
 
 
-    "should return the element itself back to the code": (element)->
-      assert.same element.emit('click'), element
+    it "should return the element itself back to the code", get (element)->
+      element.emit('click').should.equal element
