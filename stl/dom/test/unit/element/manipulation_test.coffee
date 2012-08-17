@@ -1,11 +1,11 @@
 #
 # The Element dom-manipulations module unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, server, load} = require('../../test_helper')
+{Browser} = require('../../test_helper')
 
-server.respond "/manipulations.html": """
+Browser.respond "/manipulations.html": """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -18,150 +18,146 @@ server.respond "/manipulations.html": """
   """
 
 
-test_element = ->
-  load "/manipulations.html", this, (dom)->
-    this.dummy = new dom.Element('div', html: 'dummy')
-    new dom.Element(this.document.getElementById('test'))
+describe "Element Manipulations", ->
+  get = (callback)->
+    (done)->
+      Browser.open "/manipulations.html", ($, window)->
+        callback(new $.Element(window.document.getElementById('test')), $, window, window.document)
+        done()
 
+  describe "#clone()", ->
 
-describe "Element Manipulations", module,
-  "#clone()":
-    topic: test_element
-
-    "should clone content and attributes": (element)->
+    it "should clone content and attributes", get (element)->
       element._.innerHTML = "bla <b>bla</b> bla"
       clone = element.clone()
 
-      assert.equal clone._.innerHTML, element._.innerHTML
-      assert.equal clone._.id, element._.id
+      clone._.innerHTML.should.eql element._.innerHTML
+      clone._.id.should.eql element._.id
 
-    "should create a new instance of Element": (element)->
-      assert.instanceOf element.clone(), this.Element
+    it "should create a new instance of Element", get (element, $)->
+      element.clone().should.be.instanceOf $.Element
 
-    "should attach a new dom-element in it": (element)->
-      assert.notSame element.clone()._, element._
+    it "should attach a new dom-element in it", get (element)->
+      element.clone()._.should.not.equal element._
 
-  "#clear()":
-    topic: test_element
+  describe "#clear()", ->
 
-    "should remove all the child elements": (element)->
+    it "should remove all the child elements", get (element)->
       element._.innerHTML = 'some <b>content</b>'
       element.clear()
 
-      assert.equal element._.innerHTML, ''
+      element._.innerHTML.should.equal ''
 
-    "should return the element itself back": (element)->
-      assert.same element.clear(), element
+    it "should return the element itself back", get (element)->
+      element.clear().should.equal element
 
-  "#empty()":
-    topic: test_element
+  describe "#empty()", ->
 
-    "should say 'true' for an empty element": (element)->
+    it "should say 'true' for an empty element", get (element)->
       element._.innerHTML = ''
-      assert.isTrue element.empty()
+      element.empty().should.be.true
 
-    "should say 'true' for an element with spaces only": (element)->
+    it "should say 'true' for an element with spaces only", get (element)->
       element._.innerHTML = "  \n\t\n  "
-      assert.isTrue element.empty()
+      element.empty().should.be.true
 
-    "should say 'false' for an element with actual content": (element)->
+    it "should say 'false' for an element with actual content", get (element)->
       element._.innerHTML = '0'
-      assert.isFalse element.empty()
+      element.empty().should.be.false
 
-  "#html()":
-    topic: test_element
+  describe "#html()", ->
 
-    "should return the element's innerHTML": (element)->
+    it "should return the element's innerHTML", get (element)->
       element._.innerHTML = 'some <b>content</b>'
-      assert.equal element.html(), 'some <b>content</b>'
+      element.html().should.equal 'some <b>content</b>'
 
-  "#html('content')":
-    topic: test_element
+  describe "#html('content')", ->
 
-    "should assign the new content": (element)->
+    it "should assign the new content", get (element)->
       element.html('some <b>new</b> content')
 
-      assert.equal element._.innerHTML, 'some <b>new</b> content'
+      element._.innerHTML.should.equal 'some <b>new</b> content'
 
-    "should return element itself back": (element)->
-      assert.same element.html('boo hoo'), element
+    it "should return element itself back", get (element)->
+      element.html('boo hoo').should.equal element
 
-  "#text()":
-    topic: test_element
+  describe "#text()", ->
 
-    "should return the element's content as a text": (element)->
+    it "should return the element's content as a text", get (element)->
       element._.innerHTML = 'some <b>inner <u>text</u></b>'
-      assert.equal element.text(), 'some inner text'
+      element.text().should.equal 'some inner text'
 
-    "should convert HTML escapees into normal chars": (element)->
+    it "should convert HTML escapees into normal chars", get (element)->
       element._.innerHTML = 'Beevis &amp; Butthead'
-      assert.equal element.text(), 'Beevis & Butthead'
+      element.text().should.equal 'Beevis & Butthead'
 
-  "#text('content')":
-    topic: test_element
+  describe "#text('content')", ->
 
-    "should assign the text and escape special chars": (element)->
+    it "should assign the text and escape special chars", get (element)->
       element.text('<b>Beevis</b> & <u>Butthead</u>')
 
-      assert.equal element._.innerHTML,
-        '&lt;b&gt;Beevis&lt;/b&gt; &amp; &lt;u&gt;Butthead&lt;/u&gt;'
+      element._.innerHTML.should.equal '&lt;b&gt;Beevis&lt;/b&gt; &amp; &lt;u&gt;Butthead&lt;/u&gt;'
 
-    "should return the element itself back": (element)->
-      assert.same element.text('boo hoo'), element
+    it "should return the element itself back", get (element)->
+      element.text('boo hoo').should.equal element
 
-  "#remove()":
-    topic: test_element
+  describe "#remove()", ->
 
-    "should remove the element out of it's parent element": (element)->
-      element._.appendChild(this.dummy._)
+    it "should remove the element out of it's parent element", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
 
-      this.dummy.remove()
+      element._.appendChild(dummy._)
 
-      assert.equal element._.innerHTML, ''
+      dummy.remove()
 
-    "should return the element itself back": (element)->
-      assert.same element.remove(), element
+      element._.innerHTML.should.equal ''
 
-  "#replace('some content')":
-    topic: test_element
+    it "should return the element itself back", get (element)->
+      element.remove().should.equal element
 
-    "should replace itself with a given content": (element)->
-      element.clear()._.appendChild(this.dummy._)
-      result = this.dummy.replace('some text')
+  describe "#replace('some content')", ->
 
-      assert.equal element._.innerHTML, 'some text'
-      assert.same  result, this.dummy
+    it "should replace itself with a given content", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+
+      element.clear()._.appendChild(dummy._)
+      result = dummy.replace('some text')
+
+      element._.innerHTML.should.equal 'some text'
+      result.should.equal dummy
 
 
-  "#update(...)":
-    topic: test_element
+  describe "#update(...)", ->
 
-    "should replace all the element's content": (element)->
+    it "should replace all the element's content", get (element)->
       element._.innerHTML = 'old content'
       element.update('new content')
 
-      assert.equal element._.innerHTML, 'new content'
+      element._.innerHTML.should.equal 'new content'
 
-    "should accept dom-wrappers as an argument": (element)->
-      element.update(this.dummy)
+    it "should accept dom-wrappers as an argument", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      element.update(dummy)
 
-      assert.equal element._.innerHTML, '<div>dummy</div>'
+      element._.innerHTML.should.equal '<div>dummy</div>'
 
-    "should accept raw dom-elements": (element)->
-      element.update(this.dummy._)
+    it "should accept raw dom-elements", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      element.update(dummy._)
 
-      assert.equal element._.innerHTML, '<div>dummy</div>'
+      element._.innerHTML.should.equal '<div>dummy</div>'
 
-    "should accept arrays of elements": (element)->
-      element.update([this.dummy])
+    it "should accept arrays of elements", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      element.update([dummy])
 
-      assert.equal element._.innerHTML, '<div>dummy</div>'
+      element._.innerHTML.should.equal '<div>dummy</div>'
 
-    "should accept numbers as values": (element)->
+    it "should accept numbers as values", get (element)->
       element.update 888
-      assert.equal element._.innerHTML, '888'
+      element._.innerHTML.should.equal '888'
 
-    "should eval any embedded scripts": (element)->
+    it "should eval any embedded scripts", get (element, $, window)->
       element.update """
         bla bla bla
         <script>var test1 = 'test-1'</script>
@@ -169,99 +165,110 @@ describe "Element Manipulations", module,
         <script type="text/javascript">
           var test2 = 'test-2';
         </script>
-        """
+        it """
 
-      assert.equal this.window.test1, 'test-1'
-      assert.equal this.window.test2, 'test-2'
+      window.test1.should.equal 'test-1'
+      window.test2.should.equal 'test-2'
 
-    "should return the element itself back": (element)->
-      assert.same element.update('text'), element
+    it "should return the element itself back", get (element)->
+      element.update('text').should.equal element
 
-  "#append(item, item, item)":
-    topic: test_element
+  describe "#append(item, item, item)", ->
 
-    "should append elements to the end": (element)->
+    it "should append elements to the end", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+
       element._.innerHTML = '<b>boo</b>'
-      element.append this.dummy, new this.Element('div', html: 'new')
+      element.append dummy, new $.Element('div', html: 'new')
 
-      assert.equal element._.innerHTML, '<b>boo</b><div>dummy</div><div>new</div>'
+      element._.innerHTML.should.equal '<b>boo</b><div>dummy</div><div>new</div>'
 
-    "should append strings to the end": (element)->
+    it "should append strings to the end", get (element)->
       element._.innerHTML = '<b>boo</b>'
       element.append '<i>eee</i>', '<u>uuu</u>'
 
-      assert.equal element._.innerHTML, '<b>boo</b><i>eee</i><u>uuu</u>'
+      element._.innerHTML.should.equal '<b>boo</b><i>eee</i><u>uuu</u>'
 
 
-  "#insertTo(...)":
-    topic: test_element
+  describe "#insertTo(...)", ->
 
-    "should insert it into the specified elements": (element)->
+    it "should insert it into the specified elements", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
       element._.innerHTML = ''
-      this.dummy.insertTo(element)
-      assert.equal element._.innerHTML, '<div>dummy</div>'
+      dummy.insertTo(element)
+      element._.innerHTML.should.equal '<div>dummy</div>'
 
-    "should insert it into raw dom-elements": (element)->
+    it "should insert it into raw dom-elements", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
       element._.innerHTML = ''
-      this.dummy.insertTo(element._)
-      assert.equal element._.innerHTML, '<div>dummy</div>'
+      dummy.insertTo(element._)
+      element._.innerHTML.should.equal '<div>dummy</div>'
 
-    "should insert it into elements by '#element-id'": (element)->
+    it "should insert it into elements by '#element-id'", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+
       element._.innerHTML = ''
-      this.dummy.insertTo('#test')
+      dummy.insertTo('#test')
 
-      assert.equal element._.innerHTML, '<div>dummy</div>'
+      element._.innerHTML.should.equal '<div>dummy</div>'
 
-    "should return the element itself back": (element)->
-      assert.same this.dummy.insertTo('#test'), this.dummy
+    it "should return the element itself back", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      dummy.insertTo('#test').should.be.same dummy
 
 
-  "#insert(...)":
-    topic: test_element
+  describe "#insert(...)", ->
 
-    "should insert dom-wrappers": (element)->
-      element.clear().insert(this.dummy)
-      assert.equal element._.innerHTML, '<div>dummy</div>'
+    it "should insert dom-wrappers", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      element.clear().insert(dummy)
+      element._.innerHTML.should.equal '<div>dummy</div>'
 
-    "should insert raw dom-elements": (element)->
-      element.clear().insert(this.dummy)
-      assert.equal element._.innerHTML, '<div>dummy</div>'
+    it "should insert raw dom-elements", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      element.clear().insert(dummy)
+      element._.innerHTML.should.equal '<div>dummy</div>'
 
-    "should insert arrays of elements": (element)->
-      element.clear().insert([this.dummy])
-      assert.equal element._.innerHTML, '<div>dummy</div>'
+    it "should insert arrays of elements", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      element.clear().insert([dummy])
+      element._.innerHTML.should.equal '<div>dummy</div>'
 
-    "should insert plain html content": (element)->
+    it "should insert plain html content", get (element)->
       element.clear().insert('<b>dummy</b>')
-      assert.equal element._.innerHTML, '<b>dummy</b>'
+      element._.innerHTML.should.equal '<b>dummy</b>'
 
-    "should insert numerical data": (element)->
+    it "should insert numerical data", get (element)->
       element.clear().insert 4.44
-      assert.equal element._.innerHTML, '4.44'
+      element._.innerHTML.should.equal '4.44'
 
-    "should return element itself back": (element)->
-      assert.same element.insert('something'), element
+    it "should return element itself back", get (element)->
+      element.insert('something').should.equal element
 
-    "should allow insert on top of the elements": (element)->
+    it "should allow insert on top of the elements", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
       element._.innerHTML = "<b>boo</b>"
-      element.insert(this.dummy, 'top')
+      element.insert(dummy, 'top')
 
-      assert.equal element._.innerHTML, '<div>dummy</div><b>boo</b>'
+      element._.innerHTML.should.equal '<div>dummy</div><b>boo</b>'
 
-    "should allow to insert an element before another": (element)->
-      element.clear().insert(this.dummy)
-      this.dummy.insert(new this.Element('b', html: 'boo'), 'before')
+    it "should allow to insert an element before another", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      element.clear().insert(dummy)
+      dummy.insert(new $.Element('b', html: 'boo'), 'before')
 
-      assert.equal element._.innerHTML, '<b>boo</b><div>dummy</div>'
+      element._.innerHTML.should.equal '<b>boo</b><div>dummy</div>'
 
-    "should allow to insert things after the element": (element)->
-      element.clear().insert(this.dummy)
-      this.dummy.insert(new this.Element('b', html: 'boo'), 'after')
+    it "should allow to insert things after the element", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      element.clear().insert(dummy)
+      dummy.insert(new $.Element('b', html: 'boo'), 'after')
 
-      assert.equal element._.innerHTML, '<div>dummy</div><b>boo</b>'
+      element._.innerHTML.should.equal '<div>dummy</div><b>boo</b>'
 
-    "should allow to insert things instead of the element": (element)->
-      element.clear().insert(this.dummy)
-      this.dummy.insert(new this.Element('b', html: 'boo'), 'instead')
+    it "should allow to insert things instead of the element", get (element, $)->
+      dummy = new $.Element('div', html: 'dummy')
+      element.clear().insert(dummy)
+      dummy.insert(new $.Element('b', html: 'boo'), 'instead')
 
-      assert.equal element._.innerHTML, '<b>boo</b>'
+      element._.innerHTML.should.equal '<b>boo</b>'
