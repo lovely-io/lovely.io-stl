@@ -69,8 +69,9 @@ collect_documentation = ->
 # Kicks in the command
 #
 exports.init = (args) ->
-  pack    = require('../package')
-  hosting = require('../hosting')
+  pack     = require('../package')
+  hosting  = require('../hosting')
+  lovelyrc = require('../lovelyrc')
 
   sout "» Compiling the project".ljust(61)
   system "#{__dirname}/../../bin/lovely build", ->

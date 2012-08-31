@@ -3,7 +3,8 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-fs   = require('fs')
+fs       = require('fs')
+lovelyrc = require('../lovelyrc')
 
 placeholders = {}
 

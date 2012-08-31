@@ -21,6 +21,7 @@ find_latest = (location)->
 # the main function
 exports.init = (args)->
   fs       = require('fs')
+  lovelyrc = require('../lovelyrc')
   location = lovelyrc.base
   pack     = args.shift()
 

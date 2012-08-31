@@ -3,7 +3,6 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-require './lovelyrc'
 
 #
 # A shortcut to make the system calls

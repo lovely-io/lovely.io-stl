@@ -12,6 +12,7 @@
 #
 bootstrap = (base_dir) ->
   fs       = require('fs')
+  lovelyrc = require('../lovelyrc')
   home_dir = process.env.HOME
 
   base_dir or= "#{home_dir}/.lovely/"

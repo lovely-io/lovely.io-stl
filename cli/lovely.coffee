@@ -1,9 +1,7 @@
 #
 # NodeJS lovely API
 #
-lovely = require('./lovelyrc')
 source = require('./source')
-
 
 # the packages building tools
 sources_cache  = {}
@@ -19,7 +17,7 @@ exports.Lovely = this.Lovely
 for key of this.Lovely
   exports[key] = this.Lovely[key]
 
-# Defining the development tools
+# Defining the development tools initialization
 Test = null
 exports.__defineGetter__ 'Test', ->
   Test or= require('./lovely/test')

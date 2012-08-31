@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-lovelyrc = global.lovelyrc = {};
+
 location = "#{process.env.HOME}/.lovelyrc";
 options  = {}; # a local copy fo the options
 params   =
@@ -28,11 +28,11 @@ params   =
 #
 for key of params
   do (key) ->
-    lovelyrc.__defineSetter__ key, (value) ->
+    exports.__defineSetter__ key, (value) ->
       options[key] = value
       save_options()
 
-    lovelyrc.__defineGetter__ key, ->
+    exports.__defineGetter__ key, ->
       options[key]
 
 #

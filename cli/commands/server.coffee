@@ -6,16 +6,17 @@
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 exports.init = (args) ->
-  fs      = require('fs')
-  source  = require('../source')
-  pack    = require('../package')
-  express = require('express')
-  server  = express(express.bodyParser())
-  port    = args[0] || lovelyrc.port || 3000
-  domain  = '127.0.0.1'
-  host    = "http://#{domain}:#{port}"
-  base    = lovelyrc.base
-  minify  = false
+  fs       = require('fs')
+  source   = require('../source')
+  pack     = require('../package')
+  express  = require('express')
+  lovelyrc = require('../lovelyrc')
+  server   = express(express.bodyParser())
+  port     = args[0] || lovelyrc.port || 3000
+  domain   = '127.0.0.1'
+  host     = "http://#{domain}:#{port}"
+  base     = lovelyrc.base
+  minify   = false
 
   base[base.length - 1] isnt '/' and base += '/'
   base += "packages"

@@ -1,13 +1,14 @@
 #
 # Updates all the locally installed packages
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 
 exports.init = (args) ->
   fs        = require('fs')
   hosting   = require('../hosting')
   repo      = require('../repository')
+  lovelyrc  = require('../lovelyrc')
   location  = lovelyrc.base
   installed = []
 

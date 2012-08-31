@@ -4,18 +4,18 @@
 # Copyright (C) 2012
 #
 
-zombie = require('zombie')
-server = require('express')()
-should = require('should')
+fs       = require('fs')
+zombie   = require('zombie')
+server   = require('express')()
+should   = require('should')
+lovelyrc = require('../lovelyrc')
 
 # patching up the 'should' to have the 'same' and 'sameAs' assertions
 should.Assertion.prototype.same   =
 should.Assertion.prototype.sameAs =
   should.Assertion.prototype.equal
 
-
 # making the development server
-fs      = require('fs')
 base    = lovelyrc.base
 base[base.length - 1] isnt '/' and base += '/'
 base += "packages"

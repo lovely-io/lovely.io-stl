@@ -1,8 +1,9 @@
 #
 # The hosting server connection interface
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
+lovelyrc = require('./lovelyrc')
 
 #
 # Generic request method

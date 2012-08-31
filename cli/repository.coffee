@@ -1,7 +1,7 @@
 #
 # The packages repositry handlers
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 
 #
@@ -11,8 +11,9 @@
 # @return {Object} list
 #
 exports.list = ->
-  fs   = require('fs')
-  list = {}
+  fs       = require('fs')
+  lovelyrc = require('./lovelyrc')
+  list     = {}
 
   location = lovelyrc.base
   location[location.length - 1] == '/' || (location += '/')
