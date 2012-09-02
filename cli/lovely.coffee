@@ -3,17 +3,13 @@
 #
 source = require('./source')
 
-# the packages building tools
-sources_cache  = {}
-compile_source = (name)->
-  sources_cache[name] or= source.compile(__dirname + "/../stl/#{name}/")
 
 #
 # building the core package
 #
 # NOTE: we're exporting the `Lovely` object itself
 #
-eval(core = compile_source('core'))
+eval(source.compile(__dirname + "/../stl/core/"))
 module.exports = this.Lovely
 
 
