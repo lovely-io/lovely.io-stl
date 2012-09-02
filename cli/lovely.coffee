@@ -20,4 +20,4 @@ for key of this.Lovely
 # Defining the development tools initialization
 Test = null
 exports.__defineGetter__ 'Test', ->
-  Test or= require('./lovely/test')
+  Test or= require('./test/core')
