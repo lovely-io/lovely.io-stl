@@ -88,4 +88,4 @@ exports.get = (url, options, callback) ->
         get: -> new should.Assertion(Object(@).valueOf())
         configurable: true
 
-      callback(browser.window, browser)
+      callback(browser)
