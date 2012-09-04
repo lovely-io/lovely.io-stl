@@ -20,15 +20,25 @@ exports.get = server.get
 
 
 # source building tools
-fs     = require('fs')
-path   = require('path')
-source = require('../source')
+fs      = require('fs')
+path    = require('path')
+source  = require('../source')
+packg   = require('../package')
 
-exports.build = (module)->
+moddir  = (module)->
   dirname = path.dirname(module.filename)
 
   while dirname != '/'
-    break if fs.existsSync("#{dirname}/package.json")
+    return dirname if fs.existsSync("#{dirname}/package.json")
     dirname = path.join(dirname, '..')
 
-  source.compile(dirname)
+exports.build = build = (module)->
+  source.compile(moddir(module))
+
+exports.bind = (module)->
+  pack = packg.read(moddir(module))
+  src  = build(module)
+
+  server.set "/#{pack.name}.js", src
+
+  return src

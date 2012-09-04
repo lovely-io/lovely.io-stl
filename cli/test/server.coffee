@@ -46,7 +46,10 @@ server.get '/', (req, resp) ->
 # @param {Object} routes and responses
 # @return {undefined}
 #
-exports.set = (defs) ->
+exports.set = (defs, resp) ->
+  if typeof(defs) is 'string'
+    t = {}; t[defs] = resp; defs = t
+
   for route, response of defs
     do (route, response) ->
       server.get route, (req, resp) ->
