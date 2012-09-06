@@ -11,7 +11,6 @@ should.Assertion.prototype.same   =
 should.Assertion.prototype.sameAs =
   should.Assertion.prototype.equal
 
-
 # exporting the server API
 server   = require('./server')
 

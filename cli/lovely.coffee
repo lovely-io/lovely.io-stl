@@ -21,3 +21,9 @@ module.exports = this.Lovely
 Test = null
 module.exports.__defineGetter__ 'Test', ->
   Test or= require('./test/core')
+
+#
+# Deffering access to the patched asserts library
+#
+module.exports.__defineGetter__ 'assert', ->
+  require('./test/assert')
