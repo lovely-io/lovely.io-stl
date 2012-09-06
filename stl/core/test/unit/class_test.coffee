@@ -3,9 +3,10 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Lovely} = require('../test_helper')
+{Test} = require('../../../../cli/lovely')
 
-Class = Lovely.Class
+eval(Test.build(module))
+Class = this.Lovely.Class
 
 describe 'Class', ->
 

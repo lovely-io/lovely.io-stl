@@ -3,18 +3,23 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser, Lovely} = require('../test_helper')
 
-Browser.respond
+{Test} = require('../../../../cli/lovely')
+
+eval(core = Test.bind(module))
+Lovely = this.Lovely
+
+Test.set
+
   '/load.html': """
    <html><head>
     <script src="/core.js"></script>
     <script>
       Lovely(["module1", "module2"], function(m1, m2) {
-      alert("Received: "+ m1);
-      alert("Received: "+ m2);
-      alert("Done!");
-    });
+        alert("Received: "+ m1);
+        alert("Received: "+ m2);
+        alert("Done!");
+      });
     </script>
   </head></html>
   """
@@ -126,7 +131,7 @@ Browser.respond
   </head></html>
   """
 
-  "/lovely.io/core.js": require('../../../../cli/source').compile(__dirname + "/../../")
+  "/lovely.io/core.js": core
 
   "/lovely.io/module11.js": """
   Lovely('module11', function() {
@@ -185,7 +190,7 @@ describe 'Lovely AMD', ->
     (Lovely.module('unknown') is undefined).should.be.true
 
   it 'should load the scripts and initialize them in order', (done)->
-    Browser.open '/load.html', (browser)->
+    Test.get '/load.html', (browser)->
 
       browser.alerts.sort().should.eql [
         'Initializing: module3',
@@ -204,7 +209,7 @@ describe 'Lovely AMD', ->
       done()
 
   it 'should not load the same module twice', (done)->
-    Browser.open '/double.html', (browser)->
+    Test.get '/double.html', (browser)->
       browser.alerts.sort().should.eql [
         'Initializing: module5',
         'Received: module5',
@@ -215,7 +220,7 @@ describe 'Lovely AMD', ->
       done()
 
   it 'should load local modules', (done)->
-    Browser.open '/local.html', (browser)->
+    Test.get '/local.html', (browser)->
       browser.alerts.sort().should.eql [
         'Initializing: module8',
         'Initializing: module3',
@@ -234,7 +239,7 @@ describe 'Lovely AMD', ->
       done()
 
   it "should still load everything properly", (done)->
-    Browser.open '/relocated.html', (browser) ->
+    Test.get '/relocated.html', (browser) ->
       browser.alerts.should.eql [
         'Initializing: m11',
         'Initializing: m12',
@@ -246,7 +251,7 @@ describe 'Lovely AMD', ->
 
 
   it "should load the bundled version", (done)->
-    Browser.open '/version-configured.html', (browser)->
+    Test.get '/version-configured.html', (browser)->
       browser.alerts.should.eql [
         'Version 2.0.0'
       ]

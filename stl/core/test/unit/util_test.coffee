@@ -3,7 +3,12 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{util, Lovely} = require('../test_helper')
+util   = require('util')
+{Test} = require('../../../../cli/lovely')
+
+eval(Test.build(module))
+Lovely = this.Lovely
+
 
 #
 # A shortcut for the type check functions mass-testing
