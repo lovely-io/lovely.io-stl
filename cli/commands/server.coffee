@@ -15,11 +15,8 @@ exports.init = (args) ->
   port     = args[0] || lovelyrc.port || 3000
   domain   = '127.0.0.1'
   host     = "http://#{domain}:#{port}"
-  base     = lovelyrc.base
+  base     = lovelyrc.base + "/packages"
   minify   = false
-
-  base[base.length - 1] isnt '/' and base += '/'
-  base += "packages"
 
   #
   # serving the modules

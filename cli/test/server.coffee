@@ -12,10 +12,7 @@ lovelyrc = require('../lovelyrc')
 cache    = {}
 
 # making the development server
-base    = lovelyrc.base
-base[base.length - 1] isnt '/' and base += '/'
-base += "packages"
-
+base     = lovelyrc.base + "/packages"
 
 server.get '/', (req, resp) ->
   resp.send("<html><body>What a lovely day, isn't it?</body></html>")

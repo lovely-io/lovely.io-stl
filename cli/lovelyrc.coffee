@@ -29,6 +29,8 @@ params   =
 for key of params
   do (key) ->
     exports.__defineSetter__ key, (value) ->
+      value = value.substr(0, value.length-1) if key is 'base' && value[value.length - 1] is '/'
+
       options[key] = value
       save_options()
 
@@ -55,4 +57,6 @@ save_options = ->
 if require('fs').existsSync(location)
   src = require('fs').readFileSync(location).toString()
   src.replace /(^|\n)\s*(\w+)\s*=\s*([^#\n]+)/g, (m, s, key, value) ->
-    options[key] = value.trim()
+    value = value.trim()
+    value = value.substr(0, value.length-1) if key is 'base' && value[value.length - 1] is '/'
+    options[key] = value
