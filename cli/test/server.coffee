@@ -29,10 +29,10 @@ server.get '/:name.js', (req, res)->
 
   filename = "#{base}/#{name}/#{version}/build.js"
 
-  if fs.existsSync(filename)
+  if "/#{name}.js" of cache
+    src = cache["/#{name}.js"]
+  else if fs.existsSync(filename)
     src = fs.readFileSync(filename).toString()
-  else if name of cache
-    src = cache[name]
   else
     src = "404: can't find '#{name}'"
 
