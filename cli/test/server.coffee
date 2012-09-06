@@ -5,6 +5,7 @@
 #
 
 fs       = require('fs')
+should   = require('should')
 zombie   = require('zombie')
 server   = require('express')()
 lovelyrc = require('../lovelyrc')
