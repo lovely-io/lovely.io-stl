@@ -8,6 +8,7 @@ fs       = require('fs')
 zombie   = require('zombie')
 server   = require('express')()
 lovelyrc = require('../lovelyrc')
+cache    = {}
 
 # making the development server
 base    = lovelyrc.base
@@ -19,25 +20,32 @@ server.get '/', (req, resp) ->
   resp.send("<html><body>What a lovely day, isn't it?</body></html>")
 
 
-#server.get '/:name.js', (req, res)->
-#  module = req.params.name
-#
-#  if match = module.match(/^(.+?)\-(\d+\.\d+\.\d+.*?)$/)
-#    module  = match[1]
-#    version = match[2]
-#  else
-#    version = 'active'
-#
-#  src = fs.readFileSync("#{base}/#{module}/#{version}/build.js").toString()
-#
-#  # adding the local domain-name/port to the CSS sources
-#  for match in (src.match(/url\(('|")[^'"]+?\/images\/[^'"]+?\1\)/g) || [])
-#    src = src.replace(match, match.replace(/^url\(('|")/, "url($1#{host}"))
-#
-#  res.charset = 'utf-8'
-#  res.header('Cache-Control', 'no-cache')
-#  res.header('Content-Type',  'text/javascript')
-#  res.send src
+server.get '/:name.js', (req, res)->
+  name = req.params.name
+
+  if match = name.match(/^(.+?)\-(\d+\.\d+\.\d+.*?)$/)
+    name    = match[1]
+    version = match[2]
+  else
+    version = 'active'
+
+  filename = "#{base}/#{name}/#{version}/build.js"
+
+  if fs.existsSync(filename)
+    src = fs.readFileSync(filename).toString()
+  else if name of cache
+    src = cache[name]
+  else
+    src = "404: can't find '#{name}'"
+
+  # adding the local domain-name/port to the CSS sources
+  for match in (src.match(/url\(('|")[^'"]+?\/images\/[^'"]+?\1\)/g) || [])
+    src = src.replace(match, match.replace(/^url\(('|")/, "url($1#{host}"))
+
+  res.charset = 'utf-8'
+  res.header('Cache-Control', 'no-cache')
+  res.header('Content-Type',  'text/javascript')
+  res.send src
 
 
 #
@@ -52,8 +60,9 @@ exports.set = (defs, resp) ->
 
   for route, response of defs
     do (route, response) ->
-      server.get route, (req, resp) ->
-        resp.send(response)
+      cache[route] = response
+      server.get route, (req, res)->
+        res.send response
 
 
 
