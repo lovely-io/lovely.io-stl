@@ -3,9 +3,9 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../../test_helper')
+{Test} = require('../../../../../cli/lovely')
 
-Browser.respond "/navigation.html": """
+Test.set "/navigation.html", """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -31,11 +31,9 @@ Browser.respond "/navigation.html": """
 
 describe "Element Navigation", ->
   get = (css_rule, callback)->
-    (done)->
-      Browser.open "/navigation.html", ($, window)->
-        element = new $.Element(window.document.querySelector(css_rule))
-        callback(element, $, window, window.document)
-        done()
+    Test.load module, "/navigation.html", ($, window)->
+      element = new $.Element(window.document.querySelector(css_rule))
+      callback(element, $, window, window.document)
 
   describe "#match('css_rule')", ->
 

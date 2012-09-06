@@ -3,9 +3,9 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../../test_helper')
+{Test} = require('../../../../../cli/lovely')
 
-Browser.respond "/commons.html": """
+Test.set "/commons.html", """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -20,11 +20,9 @@ Browser.respond "/commons.html": """
 
 describe 'Element Commons', ->
   get = (callback)->
-    (done)->
-      Browser.open "/commons.html", ($, window)->
-        element = new $.Element(window.document.getElementById('test'))
-        callback(element, $, window, window.document)
-        done()
+    Test.load module, "/commons.html", ($, window)->
+      element = new $.Element(window.document.getElementById('test'))
+      callback(element, $, window, window.document)
 
   describe "#attr", ->
 

@@ -3,11 +3,11 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../test_helper')
+{Test} = require('../../../../cli/lovely')
 
 
 describe '$', ->
-  Browser.respond "/dollar.html": """
+  Test.set "/dollar.html": """
     <html>
       <head>
         <script src="/core.js"></script>
@@ -31,11 +31,8 @@ describe '$', ->
   """
 
   dom = (callback)->
-    (done)->
-      Browser.open "/dollar.html", ($, window)->
-        callback($, window, window.document)
-        done()
-
+    Test.load module, "/dollar.html", ($, window)->
+      callback($, window, window.document)
 
   describe 'css search', ->
 

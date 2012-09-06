@@ -3,9 +3,9 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../../test_helper')
+{Test} = require('../../../../../cli/lovely')
 
-Browser.respond "/manipulations.html": """
+Test.set "/manipulations.html": """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -20,10 +20,8 @@ Browser.respond "/manipulations.html": """
 
 describe "Element Manipulations", ->
   get = (callback)->
-    (done)->
-      Browser.open "/manipulations.html", ($, window)->
-        callback(new $.Element(window.document.getElementById('test')), $, window, window.document)
-        done()
+    Test.load module, "/manipulations.html", ($, window)->
+      callback(new $.Element(window.document.getElementById('test')), $, window, window.document)
 
   describe "#clone()", ->
 

@@ -3,17 +3,15 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../test_helper')
+{Test} = require('../../../../cli/lovely')
 
 
 describe 'Element', ->
 
   describe "direct instance", ->
     get = (callback)->
-      (done)->
-        Browser.open "/test.html", ($, window)->
-          callback($.Element, $, window)
-          done()
+      Test.load module, ($, window)->
+        callback($.Element, $, window)
 
     it "should allow to create new elements", get (Element) ->
       element = new Element('div')
@@ -37,14 +35,13 @@ describe 'Element', ->
 
   describe "inheritance usage", ->
     get = (callback)->
-      (done)->
-        Browser.open "/test.html", ($, window)->
-          MyElement = new window.Lovely.Class $.Element,
-            constructor: (tag, id, html) ->
-              this.$super(tag, id: id, html: html)
+      Test.load module, ($, window)->
+        MyElement = new window.Lovely.Class $.Element,
+          constructor: (tag, id, html) ->
+            this.$super(tag, id: id, html: html)
 
-          callback(MyElement, $, window)
-          done()
+        callback(MyElement, $, window)
+
 
     it "should inherit the Element", get (MyElement, $) ->
       element = new MyElement('div')
@@ -65,14 +62,12 @@ describe 'Element', ->
 
   describe "dynamic typecasting", ->
     get = (callback)->
-      (done)->
-        Browser.open "/test.html", ($, window)->
-          $.Wrapper.set 'table', new window.Lovely.Class $.Element,
-            constructor: (one, two) ->
-              this.$super(one, two)
+      Test.load module, ($, window)->
+        $.Wrapper.set 'table', new window.Lovely.Class $.Element,
+          constructor: (one, two) ->
+            this.$super(one, two)
 
-          callback($.Element, $, window)
-          done()
+        callback($.Element, $, window)
 
     it "should automatically typecast elements by tag name", get (Element, $)->
       table = new Element('table')

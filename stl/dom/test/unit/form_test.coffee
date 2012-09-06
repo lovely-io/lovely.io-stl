@@ -3,9 +3,9 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../test_helper')
+{Test} = require('../../../../cli/lovely')
 
-Browser.respond "/form.html": """
+Test.set "/form.html": """
 <html>
   <head>
     <script src="/core.js"></script>
@@ -66,11 +66,9 @@ Browser.respond "/form.html": """
 
 describe "Form", ->
   get = (callback)->
-    (done)->
-      Browser.open "/form.html", ($, window)->
-        form = window.document.getElementById('test')
-        callback(new $.Form(form), $, window, window.document)
-        done()
+    Test.load module, "/form.html", ($, window)->
+      form = window.document.getElementById('test')
+      callback(new $.Form(form), $, window, window.document)
 
   describe "constructor", ->
 

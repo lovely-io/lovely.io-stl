@@ -3,9 +3,9 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../test_helper')
+{Test} = require('../../../../cli/lovely')
 
-Browser.respond "/node_list.html": """
+Test.set "/node_list.html", """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -23,10 +23,8 @@ Browser.respond "/node_list.html": """
 describe 'NodeList', ->
   describe "\b#constructor", ->
     get = (callback)->
-      (done)->
-        Browser.open "/node_list.html", ($, window)->
-          callback($.NodeList, $, window, window.document)
-          done()
+      Test.load module, "/node_list.html", ($, window)->
+        callback($.NodeList, $, window, window.document)
 
     it "should accept a list of raw dom-elements as an argument", get (NodeList, $, window, document)->
       element1 = document.getElementById('one')
@@ -44,15 +42,13 @@ describe 'NodeList', ->
 
   describe "DOM methods", ->
     get = (callback)->
-      (done)->
-        Browser.open "/node_list.html", ($, window)->
-          list = new $.NodeList([
-            window.document.getElementById('one'),
-            window.document.getElementById('two'),
-            window.document.getElementById('three')])
+      Test.load module, "/node_list.html", ($, window)->
+        list = new $.NodeList([
+          window.document.getElementById('one'),
+          window.document.getElementById('two'),
+          window.document.getElementById('three')])
 
-          callback(list, $, window, window.document)
-          done()
+        callback(list, $, window, window.document)
 
     it "should call the setter methods on every item on the list", get (list)->
       list.setClass('test')

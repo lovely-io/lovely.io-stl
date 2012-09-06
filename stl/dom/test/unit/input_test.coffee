@@ -3,9 +3,9 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../test_helper')
+{Test} = require('../../../../cli/lovely')
 
-Browser.respond "/input.html": """
+Test.set "/input.html", """
 <html>
   <head>
     <script src="/core.js"></script>
@@ -28,22 +28,16 @@ Browser.respond "/input.html": """
 
 describe "Input", ->
   get_Input = (callback)->
-    (done)->
-      Browser.open "/input.html", ($, window)->
-        callback($.Input, $, window, window.document)
-        done()
+    Test.load module, "/input.html", ($, window)->
+      callback($.Input, $, window, window.document)
 
   get_input = (callback)->
-    (done)->
-      Browser.open "/input.html", ($, window)->
-        callback(new $.Input(window.document.getElementById('input-name')), $, window, window.document)
-        done()
+    Test.load module, "/input.html", ($, window)->
+      callback(new $.Input(window.document.getElementById('input-name')), $, window, window.document)
 
   get_multiselect = (callback)->
-    (done)->
-      Browser.open "/input.html", ($, window)->
-        callback(new $.Input(window.document.getElementById('multi-select')), $, window, window.document)
-        done()
+    Test.load module, "/input.html", ($, window)->
+      callback(new $.Input(window.document.getElementById('multi-select')), $, window, window.document)
 
   describe "constructor", ->
 
@@ -133,17 +127,15 @@ describe "Input", ->
 
     describe "with multi-select", ->
       get = (callback)->
-        (done)->
-          Browser.open "/input.html", ($, window)->
-            input = new $.Input(type: 'select', multiple: true)
-            input.html """
-              <option value="one">One</option>
-              <option value="two" selected="true">Two</option>
-              <option value="three" selected="true">Three</option>
-              <option value="four">Four</option>
-            """
-            callback(input, $, window, window.document)
-            done()
+        Test.load module, "/input.html", ($, window)->
+          input = new $.Input(type: 'select', multiple: true)
+          input.html """
+            <option value="one">One</option>
+            <option value="two" selected="true">Two</option>
+            <option value="three" selected="true">Three</option>
+            <option value="four">Four</option>
+          """
+          callback(input, $, window, window.document)
 
       it "should assign a new value as an array", get (input)->
         input.value(['one', 'four'])

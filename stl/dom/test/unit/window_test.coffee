@@ -3,19 +3,13 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../test_helper')
-
-window = ->
-  load "/test.html", this, (dom)->
-    new dom.Window(this.window)
+{Test} = require('../../../../cli/lovely')
 
 
 describe 'Window', ->
   get = (callback)->
-    (done)->
-      Browser.open "/test.html", ($, window)->
-        callback(new $.Window(window), $, window)
-        done()
+    Test.load module, ($, window)->
+      callback(new $.Window(window), $, window)
 
   describe 'constructor', ->
 

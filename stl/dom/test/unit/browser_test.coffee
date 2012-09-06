@@ -3,7 +3,8 @@
 #
 # Copyright (C) 2011-2012
 #
-{Browser} = require('../test_helper')
+
+{Test} = require('../../../../cli/lovely')
 
 describe 'Browser', ->
 
@@ -16,9 +17,8 @@ describe 'Browser', ->
     MobileSafari: "Mozilla/5.0 (Linux; U; Android 2.2.1; fr-ch; A43 Build/FROYO) AppleWebKit/533.1" +
       " (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1"
 
+
   for name of user_agents
     do (name)->
-      it "should say it's '#{name}' for #{name} browser", (done)->
-        Browser.open "/test.html", userAgent: user_agents[name], ($)->
-          $.Browser.should.eql name
-          done()
+      it "should say it's '#{name}' for #{name} browser", Test.load module, userAgent: user_agents[name], ($)->
+        $.Browser.should.eql name

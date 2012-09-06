@@ -3,9 +3,9 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../../test_helper')
+{Test} = require('../../../../../cli/lovely')
 
-Browser.respond '/styles.html': """
+Test.set '/styles.html': """
   <html>
     <head>
       <script type="text/javascript">
@@ -29,14 +29,12 @@ Browser.respond '/styles.html': """
 
 describe "Element Styles", ->
   get = (callback)->
-    (done)->
-      Browser.open "/styles.html", ($, window)->
-        # HACK: hacking the zombie over due to an issue with computed styles in there
-        window.document.defaultView.getComputedStyle = (element) ->
-          color: '#884422', backgroundColor: '#224488'
+    Test.load module, "/styles.html", ($, window)->
+      # HACK: hacking the zombie over due to an issue with computed styles in there
+      window.document.defaultView.getComputedStyle = (element) ->
+        color: '#884422', backgroundColor: '#224488'
 
-        callback(new $.Element(window.document.getElementById('test')), $, window, window.document)
-        done()
+      callback(new $.Element(window.document.getElementById('test')), $, window, window.document)
 
   describe "#style", ->
 

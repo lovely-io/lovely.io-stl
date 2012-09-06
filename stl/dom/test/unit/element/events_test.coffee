@@ -3,9 +3,9 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../../test_helper')
+{Test} = require('../../../../../cli/lovely')
 
-Browser.respond "/events.html": """
+Test.set "/events.html", """
   <html>
     <head>
       <script src="/core.js"></script>
@@ -19,11 +19,9 @@ Browser.respond "/events.html": """
 
 describe "Element Events", ->
   get = (callback)->
-    (done)->
-      Browser.open "/events.html", ($, window, browser)->
-        element = new $.Element(window.document.getElementById('test'))
-        callback(element, $, window, window.document, browser)
-        done()
+    Test.load module, "/events.html", ($, window, browser)->
+      element = new $.Element(window.document.getElementById('test'))
+      callback(element, $, window, window.document, browser)
 
   describe "#on", ->
 

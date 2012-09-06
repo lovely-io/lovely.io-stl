@@ -3,14 +3,12 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Browser} = require('../test_helper')
+{Test} = require('../../../../cli/lovely')
 
 describe 'Event', ->
   get = (callback)->
-    (done)->
-      Browser.open "/test.html", ($, window)->
-        callback($.Event, $, window, window.document)
-        done()
+    Test.load module, ($, window)->
+      callback($.Event, $, window, window.document)
 
   describe "constructor", ->
 
