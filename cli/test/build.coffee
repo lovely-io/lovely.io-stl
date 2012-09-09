@@ -53,7 +53,7 @@ exports.bind = bind = (module)->
     src  = build(module)
 
     server.set "/#{pack.name}.js",   binds[module.filename] = src
-    server.set "/#{pack.name}.html", """
+    server.set "/#{pack.name}-auto-dummy.html", """
       <html>
         <head>
           <script src="/core.js"></script>
@@ -87,7 +87,7 @@ exports.load = (module, options, callback)->
   if typeof(options) is 'string'
     url = options
   else
-    url = "/#{pack.name}.html"
+    url = "/#{pack.name}-auto-dummy.html"
 
   (done)->
     server.get url, options, (browser)->
