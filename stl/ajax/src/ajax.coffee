@@ -160,11 +160,12 @@ class Ajax
   # @return {Ajax} this
   #
   cancel: ->
-    return @ if !@_ or @__canceled
+    return @ if @__canceled
 
-    @_.abort()
-    @_.onreadystatechange = ->
-    @_.canceled = true
+    if @_
+      @_.abort()
+      @_.onreadystatechange = ->
+      @_.canceled = true
 
     return @emit('cancel')
 

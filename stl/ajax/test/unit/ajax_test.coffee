@@ -1,11 +1,11 @@
 #
 # The 'Ajax' unit test
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert, server, load} = require('../test_helper')
+{Test, assert} = require('../../../../cli/lovely')
 
-server.respond
+Test.set
   '/ajax.html': """
     <html>
       <head>
@@ -16,57 +16,56 @@ server.respond
         <div id="spinner"></div>
       </body>
     </html>
-    """
+  """
 
   '/ajax-text.html': """
     <div>ajax-text</div>
-    """
+  """
 
-class FakeRequest
-  setRequestHeader: (name, value)->
-    @header or= {}
-    @header[name] = value
+describe "Ajax", ->
+  class FakeRequest
+    setRequestHeader: (name, value)->
+      @header or= {}
+      @header[name] = value
 
-  open: (method, url, async)->
-    @method = method
-    @url    = url
-    @async  = async
+    open: (method, url, async)->
+      @method = method
+      @url    = url
+      @async  = async
 
-  send: (params)->
-    @params = params
+    send: (params)->
+      @params = params
 
-Ajax = ->
-  load "/ajax.html", this, (Ajax)->
-    this.window.XMLHttpRequest = FakeRequest
-    Ajax
+  get = (callback)->
+    Test.load module, "/ajax.html", (Ajax, window)->
+      window.XMLHttpRequest = FakeRequest
+      callback(Ajax, window.Lovely.module('dom'), window)
 
-test_request = ->
-  load "/ajax.html", this, (Ajax)->
-    this.window.XMLHttpRequest = FakeRequest
-    new Ajax('/ajax-text.html', method: 'get')
+  test = (callback)->
+    Test.load module, "/ajax.html", (Ajax, window)->
+      window.XMLHttpRequest = FakeRequest
+      callback(new Ajax('/ajax-text.html', method: 'get'), Ajax, window.Lovely.module('dom'), window)
 
 
-describe "Ajax", module,
-  "constructor":
-    topic: Ajax
+  describe "\b#constructor", ->
 
-    "should create an instance of Ajax": (Ajax)->
+    it "should create an instance of Ajax", get (Ajax)->
       assert.instanceOf new Ajax(), Ajax
 
-    "should assign the 'url' attribute": (Ajax)->
+    it "should assign the 'url' attribute", get (Ajax)->
       ajax = new Ajax('/some.url')
       assert.same ajax.url, '/some.url'
 
-    "should merge the global and local attributes": (Ajax)->
+    it "should merge the global and local attributes", get (Ajax, $, window)->
       options =
         method:   'get'
         encoding: 'cp1251'
 
       ajax = new Ajax('/some.url', options)
 
-      assert.deepEqual ajax.options, this.Hash.merge(Ajax.Options, options)
+      assert.deepEqual ajax.options, window.Lovely.Hash.merge(Ajax.Options, options)
 
-    "should accept the event callbacks with the options": (Ajax)->
+    it "should accept the event callbacks with the options", get (Ajax)->
       call1 = ->
       call2 = ->
 
@@ -75,54 +74,46 @@ describe "Ajax", module,
       assert.isTrue ajax.ones('success', call1)
       assert.isTrue ajax.ones('failure', call2)
 
-  "#header":
-    topic: Ajax
+  describe "\b#header", ->
 
-    "\b('name')":
-      topic: (Ajax)->
-        ajax = new Ajax('/some.url')
-        ajax._ =
-          getResponseHeader: (key)->
-            "header data" if key is "the-key"
-        ajax
+    describe "\b('name')", ->
 
-      "should return a response header value": (ajax)->
+      it "should return a response header value", test (ajax)->
+        ajax._ = getResponseHeader: (key)->
+          "header data" if key is "the-key"
         assert.equal ajax.header("the-key"), "header data"
 
-      "should return 'undefined' if there is no request": (ajax)->
+      it "should return 'undefined' if there is no request", test (ajax)->
         ajax._ = null
         assert.isUndefined ajax.header("the-key")
 
-    "\b('name', 'value')":
-      topic: (Ajax)-> new Ajax('/some.url')
+    describe "\b('name', 'value')", ->
 
-      "should assign the header to be sent with the request": (ajax)->
+      it "should assign the header to be sent with the request", test (ajax)->
         ajax.header('my-header', 'my-data')
         assert.equal ajax.options.headers['my-header'], 'my-data'
 
-      "should return the ajax request itself back to the code": (ajax)->
+      it "should return the ajax request itself back to the code", test (ajax)->
         assert.same ajax.header('my-header', 'my-value'), ajax
 
-  "#successful()":
-    topic: test_request
+  describe "\b#successful()", ->
 
-    "should say 'true' if the request is successful": (ajax)->
+    it "should say 'true' if the request is successful", test (ajax)->
       ajax.status = 200
       assert.isTrue ajax.successful()
       ajax.status = 302
       assert.isTrue ajax.successful()
 
-    "should say 'false' if the request had failed": (ajax)->
+    it "should say 'false' if the request had failed", test (ajax)->
       ajax.status = 0
       assert.isFalse ajax.successful()
 
       ajax.status = 404
       assert.isFalse ajax.successful()
 
-  "#cancel()":
-    topic: test_request
+  describe "\b#cancel()", ->
 
-    "should call 'abort' on the XHR object": (ajax)->
+    it "should call 'abort' on the XHR object", test (ajax)->
       called = false
       ajax._ = abort: -> called = true
 
@@ -130,7 +121,7 @@ describe "Ajax", module,
 
       assert.isTrue called
 
-    "should emit the 'cancel' event": (ajax)->
+    it "should emit the 'cancel' event", test (ajax)->
       ajax.__canceled = false
 
       called = false
@@ -140,35 +131,33 @@ describe "Ajax", module,
 
       assert.isTrue called
 
-  "#emit('event-name')":
-    topic: test_request
+  describe "\b#emit('event-name')", ->
 
-    "should allow to emit events": (ajax)->
+    it "should allow to emit events", test (ajax)->
       called = false
       ajax.on 'something', -> called = true
       ajax.emit('something')
 
       assert.isTrue called
 
-    "should emit an 'ajax:event-name' event on current document": (ajax)->
+    it "should emit an 'ajax:event-name' event on current document", test (ajax, Ajax, $, window)->
       called = false
       event  = null
 
-      this.dom(this.document).on('ajax:test', (e)-> event = e; called = true)
+      $(window.document).on('ajax:test', (e)-> event = e; called = true)
 
       ajax.emit('test')
 
       assert.isTrue called
       assert.same   event.ajax, ajax
 
-    "should return the request object back to the code": (ajax)->
+    it "should return the request object back to the code", test (ajax)->
       assert.same ajax.emit('stuff'), ajax
 
 
-  "#send()":
-    topic: test_request
+  describe "\b#send()", ->
 
-    "should accept 'put' and 'delete' methods": (ajax)->
+    it "should accept 'put' and 'delete' methods", test (ajax)->
       for method in ['put', 'delete']
         ajax.options.method = method
         ajax.send()
@@ -177,22 +166,30 @@ describe "Ajax", module,
 
       ajax.options.method = 'post'
 
-    "should add the url-encoded header for url-encoded data": (ajax)->
+    it "should add the url-encoded header for url-encoded data", test (ajax)->
       ajax.options.params = 'a$a=b$b'
+      ajax.options.method = 'post'
       ajax.send()
+
       assert.equal ajax._.params, 'a%24a=b%24b'
 
-    "should assign all the headers to the XHR object": (ajax)->
+    it "should add the url-encoded data to the URL on a GET request", test (ajax)->
+      ajax.options.params = 'a$a=b$b'
+      ajax.send()
+
+      assert.equal ajax._.url, '/ajax-text.html?a%24a=b%24b'
+
+    it "should assign all the headers to the XHR object", test (ajax)->
       ajax.options.headers = one: 'first', two: 'second'
       ajax.send()
       assert.equal ajax._.header.one, 'first'
       assert.equal ajax._.header.two, 'second'
 
-    "should use XMLHttpRequest tunnel by default": (ajax)->
+    it "should use XMLHttpRequest tunnel by default", test (ajax)->
       ajax.send()
       assert.instanceOf ajax._, FakeRequest
 
-    "should emit 'create' event before sending the request": (ajax)->
+    it "should emit 'create' event before sending the request", test (ajax)->
       request = null
       opened  = null
       ajax.on('create', -> request = @_; opened = !!@_.method)
@@ -202,36 +199,34 @@ describe "Ajax", module,
       assert.isNotNull request
       assert.isFalse   opened
 
-    "should emit 'request' event after sending the request": (ajax)->
+    it.only "should emit 'request' event after sending the request", test (ajax)->
       sent = null
-      ajax.options.params = 'some=stuff'
-      ajax.on('request', -> sent = !!@_.params)
+      ajax.on('request', -> sent = true)
       ajax.send()
 
       assert.isTrue sent
 
-    "should return the request object itself back to the code": (ajax)->
+    it "should return the request object itself back to the code", test (ajax)->
       assert.same ajax.send(), ajax
 
 
 
-  "params processing":
-    topic: Ajax
+  describe "params processing", ->
 
-    "should send the global params": (Ajax)->
+    it "should send the global params", get (Ajax)->
       Ajax.Options.params = 'global=params'
       ajax = new Ajax()
       ajax.send()
       assert.equal ajax._.params, 'global=params'
 
-    "should send the options params": (Ajax)->
+    it "should send the options params", get (Ajax)->
       Ajax.Options.params = null
       ajax = new Ajax('/some.url', params: 'local=params')
       ajax.send()
       assert.equal ajax._.params, 'local=params'
 
-    "should extract and send Form values": (Ajax)->
-      form = new this.dom.Form(action: '/boo')
+    it "should extract and send Form values", get (Ajax, $)->
+      form = new $.Form(action: '/boo')
       ajax = new Ajax('/some.url', params: form)
 
       form.values = -> name1: 'value1', name2: 'value2'
@@ -239,7 +234,7 @@ describe "Ajax", module,
 
       assert.equal ajax._.params, 'name1=value1&name2=value2'
 
-    "should merge global and options params": (Ajax)->
+    it "should merge global and options params", get (Ajax)->
       Ajax.Options.params = 'global=params'
       ajax = new Ajax('/some.url', params: local: 'data')
 
@@ -248,7 +243,7 @@ describe "Ajax", module,
       assert.equal ajax._.params, 'global=params&local=data'
 
 
-    "should set the GET request params into the url": (Ajax)->
+    it "should set the GET request params into the url", get (Ajax)->
       Ajax.Options.params = null
       ajax = new Ajax('/some.url', method: 'get', params: 'some=data')
       ajax.send()
@@ -257,49 +252,47 @@ describe "Ajax", module,
 
 
 
-  "auto-handling text/javascript an text/json responses":
-    topic: test_request
+  describe "auto-handling text/javascript an text/json responses", ->
 
-    "should automatically eval the text/javascript responses in the global context": (ajax)->
+    it "should automatically eval the text/javascript responses in the global context", test (ajax, Ajax, $, window)->
       ajax.header = (name)-> 'text/javascript' if name is 'Content-type'
       ajax.responseText = "var test1='text/javascript test';"
 
-      ajax.emit('success')
+      ajax.emit('complete')
 
-      assert.equal this.window.test1, 'text/javascript test'
+      assert.equal window.test1, 'text/javascript test'
 
-    "should automatically parse the text/json responses": (ajax)->
+    it "should automatically parse the text/json responses", test (ajax)->
       ajax.header = (name)-> 'text/json' if name is 'Content-type'
       ajax.responseText = '{"some": "value"}'
 
-      ajax.emit('success')
+      ajax.emit('complete')
 
       assert.deepEqual ajax.responseJSON, some: 'value'
 
-    "should throw an error on a malformed json data": (ajax)->
+    it "should throw an error on a malformed json data", test (ajax)->
       ajax.header = (name)-> 'text/json' if name is 'Content-type'
       ajax.responseText = "malformed data"
 
       try
-        ajax.emit('success')
+        ajax.emit('complete')
         assert.isTrue false
       catch e
         assert.isTrue true
 
-    "should extract data from the X-JSON header": (ajax)->
+    it "should extract data from the X-JSON header", test (ajax)->
       ajax.header = (name)-> '{"header": "data"}' if name is 'X-JSON'
       ajax.responseText = 'some text'
-      ajax.emit('success')
+      ajax.emit('complete')
       assert.deepEqual ajax.headerJSON, header: 'data'
 
 
 
 
-  "spinners handling":
-    topic: Ajax
+  describe "spinners handling", ->
 
-    "should show the spinner when a request is created": (Ajax)->
-      spinner = this.dom('#spinner')[0].hide()
+    it "should show the spinner when a request is created", get (Ajax, $)->
+      spinner = $('#spinner')[0].hide()
 
       ajax = new Ajax('/some.url', spinner: '#spinner')
       ajax.emit('create')
@@ -307,24 +300,24 @@ describe "Ajax", module,
       assert.isTrue spinner.visible()
 
 
-    "should hide the spinner when a request is complete": (Ajax)->
-      spinner = this.dom('#spinner')[0].show()
+    it "should hide the spinner when a request is complete", get (Ajax, $)->
+      spinner = $('#spinner')[0].show()
 
       ajax = new Ajax('/some.url', spinner: '#spinner')
       ajax.emit('complete')
 
       assert.isTrue spinner.hidden()
 
-    "should hide the spinner when a request is canceled": (Ajax)->
-      spinner = this.dom('#spinner')[0].show()
+    it "should hide the spinner when a request is canceled", get (Ajax, $)->
+      spinner = $('#spinner')[0].show()
 
       ajax = new Ajax('/some.url', spinner: '#spinner')
       ajax.emit('cancel')
 
       assert.isTrue spinner.hidden()
 
-    "should not hide a global spinner until all requests are finished": (Ajax)->
-      spinner = this.dom('#spinner')[0].hide()
+    it "should not hide a global spinner until all requests are finished", get (Ajax, $, window)->
+      spinner = $('#spinner')[0].hide()
       Ajax.Options.spinner = '#spinner'
 
       ajax1 = new Ajax('/some.url')
