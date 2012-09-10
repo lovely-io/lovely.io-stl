@@ -21,11 +21,11 @@ assert.matches = assert.match
 
 assert.isTrue = (actual, message)->
   if actual isnt true
-    assert.fail(actual, true, message || "expected #{expected}, got #{actual}", "===", assert.isTrue)
+    assert.fail(actual, true, message || "expected to be true", "===", assert.isTrue)
 
 assert.isFalse = (actual, message)->
   if actual isnt false
-    assert.fail(actual, false, message || "expected #{expected}, got #{actual}", "===", assert.isFalse)
+    assert.fail(actual, false, message || "expected to be false", "===", assert.isFalse)
 
 
 assert.greater = (actual, expected, message)->
