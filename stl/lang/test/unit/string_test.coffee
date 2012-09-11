@@ -1,100 +1,104 @@
 #
 # The string extensions unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert} = require('../test_helper')
+Lovely = require('../../../../cli/lovely')
+{Test, assert} = Lovely
 
-describe "String extensions", module,
-  "#empty()":
-    "should return 'true' for an empty string": ->
+eval(Test.build(module))
+
+
+describe "String extensions", ->
+  describe "#empty()", ->
+    it "should  return 'true' for an empty string", ->
       assert.isTrue "".empty()
-    "should return 'false' for non-empty string": ->
+    it "should  return 'false' for non-empty string", ->
       assert.isFalse "boo".empty()
-    "should return 'false' for a string with blanks only":->
+    it "should  return 'false' for a string with blanks only", ->
       assert.isFalse " ".empty()
 
 
-  "#blank()":
-    "should return 'true' for an empty string": ->
+  describe "#blank()", ->
+    it "should  return 'true' for an empty string", ->
       assert.isTrue "".blank()
-    "should return 'true' for a string with blanks only": ->
+    it "should  return 'true' for a string with blanks only", ->
       assert.isTrue " \n\t".blank()
-    "should return 'false' for a non-blank string": ->
+    it "should  return 'false' for a non-blank string", ->
       assert.isFalse " boo ".blank()
 
 
-  "#trim()":
-    "should remove staring an ending spaces": ->
+  describe "#trim()", ->
+    it "should  remove staring an ending spaces", ->
       assert.equal "  boo  ".trim(), "boo"
 
-    "should leave a string as is if there are no trailing spaces":->
+    it "should  leave a string as is if there are no trailing spaces", ->
       assert.equal "boo".trim(), "boo"
 
 
-  "#stripTags()":
-    "should remove all the tags out of the string": ->
+  describe "#stripTags()", ->
+    it "should  remove all the tags out of the string", ->
       assert.equal "<b>boo</b> hoo<hr/>".stripTags(), "boo hoo"
 
 
-  "#camelize()":
-    "should convert an underscored string into a camelcased one":->
+  describe "#camelize()", ->
+    it "should  convert an underscored string into a camelcased one", ->
       assert.equal "_boo_hoo".camelize(), "BooHoo"
-    "should convert a dashed string into a camelized one":->
+    it "should  convert a dashed string into a camelized one", ->
       assert.equal "-boo-hoo".camelize(), "BooHoo"
 
-  "#underscored()":
-    "should convert a camelcazed string into an underscored one": ->
+  describe "#underscored()", ->
+    it "should  convert a camelcazed string into an underscored one", ->
       assert.equal "BooHoo".underscored(), "_boo_hoo"
 
-    "should convert a dashed string into an underscored one": ->
+    it "should  convert a dashed string into an underscored one", ->
       assert.equal "-boo-hoo".underscored(), "_boo_hoo"
 
-  "#dasherize()":
-    "should convert a camelized string into a dashed one": ->
+  describe "#dasherize()", ->
+    it "should  convert a camelized string into a dashed one", ->
       assert.equal "BooHoo".dasherize(), "-boo-hoo"
-    "should convert underscores into dashes": ->
+    it "should  convert underscores into dashes", ->
       assert.equal "_boo_hoo".dasherize(), "-boo-hoo"
 
 
-  "#includes(substring)":
-    "should return 'true' if a string includes a substring": ->
+  describe "#includes(substring)", ->
+    it "should  return 'true' if a string includes a substring", ->
       assert.isTrue "super-duper".includes('super')
       assert.isTrue "super-duper".includes('duper')
       assert.isTrue "super-duper".includes('er-du')
 
-    "should return 'false' if a string doesn't include given substring": ->
+    it "should  return 'false' if a string doesn't include given substring", ->
       assert.isFalse "super-duper".includes("uber")
 
 
-  "#endsWith(substring)":
-    "should return 'true' when the string ends with a substring": ->
+  describe "#endsWith(substring)", ->
+    it "should  return 'true' when the string ends with a substring", ->
       assert.isTrue "super-duper".endsWith("duper")
 
-    "should return 'false' when the string doesn't end with a substring": ->
+    it "should  return 'false' when the string doesn't end with a substring", ->
       assert.isFalse "super-duper".endsWith("super")
 
-  "#startsWith(substring)":
-    "should return 'true' when the string starts with a substring": ->
+  describe "#startsWith(substring)", ->
+    it "should  return 'true' when the string starts with a substring", ->
       assert.isTrue "super-duper".startsWith("super")
 
-    "should return 'false' when the string doesn't starts with a substring": ->
+    it "should  return 'false' when the string doesn't starts with a substring", ->
       assert.isFalse "super-duper".startsWith("duper")
 
 
-  "#toInt()":
-    "should convert a string into a number": ->
+  describe "#toInt()", ->
+    it "should  convert a string into a number", ->
       assert.same "123".toInt(), 123
 
-    "should convert a string into an integer with a custom base": ->
+    it "should  convert a string into an integer with a custom base", ->
       assert.same "ff".toInt(16), 255
 
-    "should return NaN for an inconvertible strings": ->
+    it "should  return NaN for an inconvertible strings", ->
       assert.isNaN "asdf".toInt()
 
-  "#toFloat()":
-    "should convert a string into a float number": ->
+  describe "#toFloat()", ->
+    it "should  convert a string into a float number", ->
       assert.same "12.3".toFloat(), 12.3
 
-    "should return NaN for an inconvertible strings": ->
+    it "should  return NaN for an inconvertible strings", ->
       assert.isNaN "asdf".toFloat()

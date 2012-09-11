@@ -1,14 +1,18 @@
 #
 # The Math extensions unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert} = require('../test_helper')
+Lovely = require('../../../../cli/lovely')
+{Test, assert} = Lovely
 
-describe "Math extensions", module,
+eval(Test.build(module))
 
-  "#random()":
-    "should return a random float between 0 and 1": ->
+
+describe "Math extensions", ->
+
+  describe "#random()", ->
+    it "should return a random float between 0 and 1", ->
       prev_random = null
 
       for i in [0..100]
@@ -21,8 +25,8 @@ describe "Math extensions", module,
 
         prev_random = random
 
-  "#random(limit)":
-    "should generate a random integer between 0 and the limit": ->
+  describe "#random(limit)", ->
+    it "should generate a random integer between 0 and the limit", ->
       for i in [0..100]
         random = Math.random(10)
 
@@ -30,8 +34,8 @@ describe "Math extensions", module,
         assert.isTrue   random <= 10
         assert.equal    Math.round(random), random # checking if it's an integer
 
-  "#random(min, max)":
-    "should generate a random integer between the min and max limits": ->
+  describe "#random(min, max)", ->
+    it "should generate a random integer between the min and max limits", ->
       for i in [0..100]
         random = Math.random(10, 20)
 

@@ -1,14 +1,18 @@
 #
 # The string extensions unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert} = require('../test_helper')
+Lovely = require('../../../../cli/lovely')
+{Test, assert} = Lovely
 
-describe "Function extensions", module,
+eval(Test.build(module))
 
-  "#bind(scope[, arg, ...])":
-    "should make a proxy function that will call the original in given scope":->
+
+describe "Function extensions", ->
+
+  describe "#bind(scope[, arg, ...])", ->
+    it "should make a proxy function that will call the original in given scope", ->
       scope    = null
       original = -> scope = @; return "value"
       object   = {}
@@ -18,22 +22,22 @@ describe "Function extensions", module,
       assert.equal   "value", proxy()
       assert.same    object,  scope
 
-    "should bypass any arguments into the original function": ->
+    it "should bypass any arguments into the original function", ->
       args     = null
       original = -> args = Lovely.A(arguments)
       proxy    = original.bind({})
 
       assert.deepEqual [1,2,3], proxy(1,2,3)
 
-    "should left curry any binded arguments": ->
+    it "should left curry any binded arguments", ->
       args     = null
       original = -> args = Lovely.A(arguments)
       proxy    = original.bind({}, 1, 2)
 
       assert.deepEqual [1,2,3], proxy(3)
 
-  "#curry(arg[, arg, ...])":
-    "should create a new proxy function that will call the original": ->
+  describe "#curry(arg[, arg, ...])", ->
+    it "should create a new proxy function that will call the original", ->
       called   = false
       original = -> called = true; "result"
       proxy    = original.curry(1,2,3)
@@ -42,15 +46,15 @@ describe "Function extensions", module,
       assert.equal   "result", proxy()
       assert.isTrue  called
 
-    "should left-curry additional arguments": ->
+    it "should left-curry additional arguments", ->
       args     = null
       original = -> args = Lovely.A(arguments)
       proxy    = original.curry(1,2)
 
       assert.deepEqual [1,2,3], proxy(3)
 
-  "#rcurry(arg[, arg, ..])":
-    "should create a new proxy function that will call the original": ->
+  describe "#rcurry(arg[, arg, ..])", ->
+    it "should create a new proxy function that will call the original", ->
       called   = false
       original = -> called = true; "result"
       proxy    = original.rcurry(1,2,3)
@@ -59,7 +63,7 @@ describe "Function extensions", module,
       assert.equal   "result", proxy()
       assert.isTrue  called
 
-    "should left-curry additional arguments": ->
+    it "should left-curry additional arguments", ->
       args     = null
       original = -> args = Lovely.A(arguments)
       proxy    = original.rcurry(1,2)
@@ -67,8 +71,8 @@ describe "Function extensions", module,
       assert.deepEqual [3,1,2], proxy(3)
 
 
-  "#delay(ms, [, arg, ...])":
-    "should initialize a delayed call": ->
+  describe "#delay(ms, [, arg, ...])", ->
+    it "should initialize a delayed call", ->
       stash = global.setTimeout
       args  = null
       global.setTimeout = -> args = Lovely.A(arguments); 12345
@@ -85,8 +89,8 @@ describe "Function extensions", module,
       global.setTimeout = stash
 
 
-  "#periodical(ms, [, arg, ...])":
-    "should initialize periodical calls": ->
+  describe "#periodical(ms, [, arg, ...])", ->
+    it "should initialize periodical calls", ->
       stash = global.setInterval
       args  = null
       global.setInterval = -> args = Lovely.A(arguments); 12345

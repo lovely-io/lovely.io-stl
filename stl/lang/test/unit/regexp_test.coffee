@@ -1,13 +1,17 @@
 #
 # The RegExp extensions unit tests
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{describe, assert} = require('../test_helper')
+Lovely = require('../../../../cli/lovely')
+{Test, assert} = Lovely
 
-describe "Math extensions", module,
-  ".escape(string)}":
-    "should escape all the special symbols in the string": ->
+eval(Test.build(module))
+
+
+describe "Math extensions", ->
+  describe ".escape(string)}", ->
+    it "should escape all the special symbols in the string", ->
       assert.equal(
         "\\.\\*\\+\\?\\^\\=\\!\\:\\$\\{\\}\\(\\)\\|\\[\\]\\/\\\\",
         RegExp.escape(".*+?^=!:${}()|[]/\\"))
