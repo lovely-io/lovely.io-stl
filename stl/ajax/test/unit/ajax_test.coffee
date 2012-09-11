@@ -199,7 +199,7 @@ describe "Ajax", ->
       assert.isNotNull request
       assert.isFalse   opened
 
-    it.only "should emit 'request' event after sending the request", test (ajax)->
+    it "should emit 'request' event after sending the request", test (ajax)->
       sent = null
       ajax.on('request', -> sent = true)
       ajax.send()
