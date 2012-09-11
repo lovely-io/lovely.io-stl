@@ -19,4 +19,5 @@ include 'src/i18n'
 include 'src/parse'
 include 'src/format'
 
-exports.version = '%{version}'
+exports = ext Date,
+  version: '%{version}'
