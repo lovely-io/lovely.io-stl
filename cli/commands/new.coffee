@@ -74,6 +74,57 @@ generate = (projectname, args) ->
   print " - src/#{filename}"
   fs.writeFileSync("#{directory}/src/#{filename}", patch_source(source))
 
+  print " - test/"
+  fs.mkdirSync("#{directory}/test", 0o0755)
+
+  filename = "#{placeholders.projectfile}_test.#{
+    if use_coffee then 'coffee' else 'js'
+  }"
+
+  source = if use_coffee then """
+  #
+  # Project's main unit test
+  #
+  # Copyright (C) %{year} %{username}
+  #
+  {Test, assert} = require('lovely')
+
+  describe "%{projectunit}", ->
+    %{projectunit} = null
+
+    before Test.load(module, (build)-> %{projectunit} = build)
+
+    it "should have a version", ->
+      assert.ok %{projectunit}.version
+
+
+  """ else """
+  /**
+   * Project's main unit test
+   *
+   * Copyright (C) %{year} %{username}
+   */
+  var Lovely = require('lovely');
+  var Test   = Lovely.Test;
+  var assert = Lovely.assert;
+
+  describe("%{projectunit}", function() {
+    var %{projectunit} = null;
+
+    before(Test.load(module, function(build) {
+      %{projectunit} = build;
+    }));
+
+    it("should have a version number", function() {
+      assert.ok(%{projectunit}.version);
+    });
+  });
+
+  """
+
+  print " - test/#{filename}"
+  fs.writeFileSync("#{directory}/test/#{filename}", patch_source(source))
+
   print " - build/"
   fs.mkdirSync("#{directory}/build", 0o0755)
 
