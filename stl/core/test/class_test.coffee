@@ -211,4 +211,18 @@ describe 'Class', ->
       k.should.be.instanceOf Klass2
       k.should.be.instanceOf Klass1
 
+  describe "'whenInherited' callback", ->
+    Klass1 = new Class
+      whenInherited: (NewKlass)->
+        NewKlass.patched = true
+        NewKlass.context = this
+
+    Klass2 = new Class(Klass1)
+
+    it "should receive the new class for patches", ->
+      (Klass2.patched is true).should.be.true
+
+    it "should run the callback in the context of the parent class", ->
+      (Klass2.context is Klass1).should.be.true
+
 

@@ -16,7 +16,6 @@ Class = (parent, params) ->
   Klass = params.constructor if `__hasProp.call(params, 'constructor')`
 
   if parent # handling the inheritance
-    #console.log(parent.toString())
     Super = ->
     Super.prototype = parent.prototype
     Klass.prototype = new Super()
@@ -24,6 +23,9 @@ Class = (parent, params) ->
     Klass.prototype.$super = ->
       this.$super = parent.prototype.$super
       parent.apply(this, arguments)
+
+    if typeof(parent::whenInherited) is 'function'
+      parent::whenInherited.call(parent, Klass)
 
   Klass.prototype.constructor = Klass  # instances class self-reference
 
