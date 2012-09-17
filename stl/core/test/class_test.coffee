@@ -158,6 +158,17 @@ describe 'Class', ->
         klass = new Klass()
         klass.prop.should.eql 'parent + child + constructor'
 
+  describe "class level attributes inheritance", ->
+    Klass1 = new Class
+      extend:
+        m1: {},
+        m2: []
+
+    Klass2 = new Class(Klass1)
+
+    it "should link all the class level attributes down to the subclass", ->
+      Klass2.m1.should.equal Klass1.m1
+      Klass2.m2.should.equal Klass1.m2
 
 
   describe 'new Class() with shared modules', ->

@@ -16,6 +16,9 @@ Class = (parent, params) ->
   Klass = params.constructor if `__hasProp.call(params, 'constructor')`
 
   if parent # handling the inheritance
+    for own name, value of parent
+      Klass[name] = value
+
     Super = ->
     Super.prototype = parent.prototype
     Klass.prototype = new Super()
