@@ -191,3 +191,24 @@ describe 'Class', ->
 
     it "should overload the method right in the class", ->
       new Klass().method().should.be.eql "original+overload"
+
+  describe "\b.inherit() method", ->
+    Klass1 = new Class
+      method1: ->
+
+    Klass2 = Klass1.inherit
+      method2: ->
+
+    it "should create a new class", ->
+      Klass2.should.be.a 'function'
+
+    it "should link correctly the parent class", ->
+      Klass2.__super__.should.equal Klass1
+
+    it "should make a correctly instanceable class", ->
+      k = new Klass2()
+
+      k.should.be.instanceOf Klass2
+      k.should.be.instanceOf Klass1
+
+

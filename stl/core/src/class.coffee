@@ -30,6 +30,7 @@ Class = (parent, params) ->
   # loading shared modules
   (Klass.include = Class.include).apply(Klass, ensure_Array(params.include || []))
   (Klass.extend  = Class.extend).apply( Klass, ensure_Array(params.extend  || []))
+  (Klass.inherit = Class.inherit)
 
   delete(params.extend)
   delete(params.include)
@@ -109,3 +110,12 @@ ext Class,
       ext(this, module)
 
     return this
+
+  #
+  # A shortcut for `new Class(Super, {defs..})`
+  #
+  # @param {Object} new class methods
+  # @return {Class} new
+  #
+  inherit: (methods)->
+    new Class(this, methods)
