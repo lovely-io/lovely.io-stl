@@ -4,7 +4,7 @@
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 
-{Test} = require('../../../../cli/lovely')
+{Test} = require('lovely')
 
 eval(core = Test.bind(module))
 Lovely = this.Lovely

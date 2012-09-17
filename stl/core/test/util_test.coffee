@@ -4,7 +4,7 @@
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 util   = require('util')
-{Test} = require('../../../../cli/lovely')
+{Test} = require('lovely')
 
 eval(Test.build(module))
 Lovely = this.Lovely
