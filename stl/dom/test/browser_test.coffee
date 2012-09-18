@@ -4,7 +4,7 @@
 # Copyright (C) 2011-2012
 #
 
-{Test} = require('../../../../cli/lovely')
+{Test} = require('lovely')
 
 describe 'Browser', ->
 

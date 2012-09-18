@@ -3,7 +3,7 @@
 #
 # Copyright (C) 2011-2012 Nikolay Nemshilov
 #
-{Test} = require('../../../../../cli/lovely')
+{Test} = require('lovely')
 
 Test.set "/events.html", """
   <html>
