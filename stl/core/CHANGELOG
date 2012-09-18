@@ -12,16 +12,16 @@
   * `Class#whenInherited` callback was added so you could nicely monkeypatch
      subclasses on fly
 
-         :javascript
-         var Klass1 = new Lovely.Class({
-           whenInherited: function(SubClass) {
-             SubClass.prototype.patched = true;
-           }
-         });
+        :javascript
+        var Klass1 = new Lovely.Class({
+          whenInherited: function(SubClass) {
+            SubClass.prototype.patched = true;
+          }
+        });
 
-         var Klass2 = new Lovely.Class(Klass1, {});
+        var Klass2 = new Lovely.Class(Klass1, {});
 
-         new Klass2().patched; // -> true
+        new Klass2().patched; // -> true
 
   * Subclasses now automatically inherit the class level properties
 
