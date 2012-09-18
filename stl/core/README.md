@@ -56,4 +56,4 @@ See the API docs
 
 This project is published under the terms of the `MIT` license.
 
-Copyright (C) 2011 Nikolay Nemshilov
+Copyright (C) 2011-2012 Nikolay Nemshilov

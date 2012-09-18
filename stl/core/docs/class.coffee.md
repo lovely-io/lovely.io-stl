@@ -16,7 +16,9 @@ Class = (parent, params) ->
   Klass = params.constructor if `__hasProp.call(params, 'constructor')`
 
   if parent # handling the inheritance
-    #console.log(parent.toString())
+    for own name, value of parent
+      Klass[name] = value
+
     Super = ->
     Super.prototype = parent.prototype
     Klass.prototype = new Super()
@@ -25,11 +27,15 @@ Class = (parent, params) ->
       this.$super = parent.prototype.$super
       parent.apply(this, arguments)
 
+    if typeof(parent::whenInherited) is 'function'
+      parent::whenInherited.call(parent, Klass)
+
   Klass.prototype.constructor = Klass  # instances class self-reference
 
   # loading shared modules
   (Klass.include = Class.include).apply(Klass, ensure_Array(params.include || []))
   (Klass.extend  = Class.extend).apply( Klass, ensure_Array(params.extend  || []))
+  (Klass.inherit = Class.inherit)
 
   delete(params.extend)
   delete(params.include)
@@ -112,4 +118,14 @@ Adds a class-level attributes
       ext(this, module)
 
     return this
+```
+
+A shortcut for `new Class(Super, {defs..})`
+
+@param {Object} new class methods
+@return {Class} new
+
+```coffee-aside
+  inherit: (methods)->
+    new Class(this, methods)
 ```
