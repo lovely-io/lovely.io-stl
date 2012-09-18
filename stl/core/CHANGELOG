@@ -1,3 +1,42 @@
+2012-09-18 Nikolay Nemshilov
+
+  * Version 1.2.0
+  * `Class.inherit` method was added
+
+        :javascript
+        var Klass1 = new Lovely.Class();
+        var Klass2 = Klass2.inherit({
+          method: function() {}
+        });
+
+  * `Class#whenInherited` callback was added so you could nicely monkeypatch
+     subclasses on fly
+
+         :javascript
+         var Klass1 = new Lovely.Class({
+           whenInherited: function(SubClass) {
+             SubClass.prototype.patched = true;
+           }
+         });
+
+         var Klass2 = new Lovely.Class(Klass1, {});
+
+         new Klass2().patched; // -> true
+
+  * Subclasses now automatically inherit the class level properties
+
+        :javascript
+        var Klass1 = new Lovely.Class({
+          extend: {
+            method: function() {}
+          }
+        });
+
+        var Klass2 = new Lovely.Class(Klass1, {});
+
+        Klass2.method === Klass1.method; // -> true
+
+
 2012-01-04 Nikolay Nemshilov
 
   * Version 1.1.0
