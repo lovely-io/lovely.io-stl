@@ -154,6 +154,11 @@ describe "Element Styles", ->
     it "should return the element itself back", get (element)->
       element.addClass('boo').should.equal element
 
+    it "should allow to set several classes", get (element)->
+      element._.className = 'one two'
+      element.addClass 'two three'
+      element._.className.should.equal 'one two three'
+
   describe "#removeClass('name')", ->
 
     it "should remove classes from the list", get (element)->
@@ -169,6 +174,11 @@ describe "Element Styles", ->
 
     it "should return the element itself back", get (element)->
       element.removeClass('boo').should.equal element
+
+    it "should allow to remove several classes", get (element)->
+      element._.className = 'one two three'
+      element.removeClass 'one three'
+      element._.className.should.equal 'two'
 
   describe "#toggleClass('name')", ->
 

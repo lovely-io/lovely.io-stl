@@ -1,3 +1,23 @@
+2012-09-18 Nikolay Nemshilov
+
+  * Version 1.3.0
+  * `STYLE` custom wrapper was added
+
+        :javascript
+        var style = new $.Style(html: "div{color: red}");
+        style.insertTo(document.body);
+
+  * `Element.addClass` and `Element#removeClass` now support multiple classes
+
+        :javascript
+        element.setClass('one two')
+        element.addClass('two three')
+        element.getClass() // -> 'one two three'
+
+        element.removeClass('one three')
+        element.getClass() // -> 'two'
+
+
 2012-01-04 Nikolay Nemshilov
 
   * Version 1.2.0
@@ -16,8 +36,8 @@
   * Version 1.1.0
   * `Search` -> `NodeList` refactoring
   * The empty by-id search fix
-  * CSS-search optimization
-  * Relative navigation with css-filters optimization
+  * CSS-search optimisation
+  * Relative navigation with css-filters optimisation
   * `Form#values` now returns a raw data structure
     if say you have a form like that
 
