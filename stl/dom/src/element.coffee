@@ -55,15 +55,16 @@ Element.include = (hash)->
 
   for name, method of hash
     do (name)->
-      NodeList.prototype[name] = ->
-        for element, i in @
-          result = element[name].apply(element, arguments)
-          return result if i is 0 and result isnt element
+      unless name of core.List.prototype
+        NodeList.prototype[name] = ->
+          for element, i in @
+            result = element[name].apply(element, arguments)
+            return result if i is 0 and result isnt element
 
-        # returning null if there are no items on the list
-        # in case the user asked for data, otherwise returning
-        # the search itself so that the user could chain the calls
-        return if @length is 0 then null else @
+          # returning null if there are no items on the list
+          # in case the user asked for data, otherwise returning
+          # the search itself so that the user could chain the calls
+          return if @length is 0 then null else @
 
 
 

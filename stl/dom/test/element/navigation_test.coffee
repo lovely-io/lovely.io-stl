@@ -141,7 +141,6 @@ describe "Element Navigation", ->
 
     it "should filter the result by the css-rule", ->
       result = element.children('.one')
-
       result.should.have.length 1
       result[0]._.should.equal document.querySelector('#one .one')
 
