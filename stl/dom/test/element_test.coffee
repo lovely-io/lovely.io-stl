@@ -5,7 +5,6 @@
 #
 {Test} = require('lovely')
 
-
 describe 'Element', ->
   $ = window = document = Element = MyElement = Table = null
 
@@ -39,11 +38,10 @@ describe 'Element', ->
 
 
   describe "inheritance usage", ->
-    before (done)->
+    before ->
       MyElement = new window.Lovely.Class $.Element,
         constructor: (tag, id, html) ->
           this.$super(tag, id: id, html: html)
-      done()
 
 
     it "should inherit the Element", ->
@@ -64,14 +62,12 @@ describe 'Element', ->
       element._.innerHTML.should.eql 'my-html'
 
   describe "dynamic typecasting", ->
-    before (done)->
+    before ->
       Table = new window.Lovely.Class $.Element,
         constructor: (one, two) ->
           this.$super(one, two)
 
       $.Wrapper.set 'table', Table
-
-      done()
 
     it "should automatically typecast elements by tag name", ->
       table = new Element('table')
@@ -91,5 +87,25 @@ describe 'Element', ->
 
       element.should.be.instanceOf $.Wrapper.get('table')
       element.should.be.instanceOf Element
+
+  describe "private wrappers casting method", ->
+    element = null
+
+    before ->
+      element    = document.createElement('div')
+      element.id = 'test'
+      document.body.appendChild(element)
+
+      MyElement = new window.Lovely.Class Element
+
+    it "should typecast the element into the specified wrapper", ->
+      cast = $('#test').cast(MyElement)
+      cast.should.be.instanceOf MyElement
+      cast._.should.equal element
+
+    it "should register the elements with the new typecast", ->
+      cast = $('#test').cast(MyElement)
+      $('#test')[0].should.equal cast
+
 
 
