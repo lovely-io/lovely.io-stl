@@ -38,6 +38,7 @@ exports.list = ->
 # @param {String} build
 #
 exports.save = (pack, build)->
+  lovelyrc = require('./lovelyrc')
   location = lovelyrc.base
   location[location.length - 1] == '/' || (location += '/')
   location += "packages/#{pack.name}/#{pack.version}"
