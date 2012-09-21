@@ -35,11 +35,11 @@ dasherize = (string)->
 dimensions_hash = (args) ->
   hash = {}
 
-  if args.length is 1
+  if args.length is 1 and isObject(args[0])
     hash = args[0]
   else
     hash.x = args[0] unless args[0] is null
-    hash.y = args[1] unless args[1] is null
+    hash.y = args[1] unless args[1] is null or args[1] is undefined
 
   hash
 

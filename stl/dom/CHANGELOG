@@ -17,6 +17,33 @@
         element.removeClass('one three')
         element.getClass() // -> 'two'
 
+  * `Element.cast` method was added for quick typecasting of elements into private dom-wrappers
+
+        :javascript
+        var MyElement = Element.inherit({
+          // private dom-wrapper
+        });
+
+        var element = $('#my-element').cast(MyElement);
+
+        element instanceof MyElement; // -> true
+
+    Basically it does the same as
+
+        :javascript
+        var element = $('#my-element')[0];
+
+        if (!(element instanceof MyElement)) {
+          element = new MyElement(element._);
+        }
+
+  * {Element} dimensions module now supports the sizes in plain numbers too
+
+        :js
+        element.size(100, 200);  // x, y numbers
+        element.size(100);       // x only
+        element.size(null, 200); // y only
+
 
 2012-01-04 Nikolay Nemshilov
 
