@@ -108,4 +108,25 @@ describe 'Element', ->
       $('#test')[0].should.equal cast
 
 
+  describe "\b.resolve(...) method", ->
+    element = null
 
+    before ->
+      element    = document.createElement('div')
+      element.id = 'test'
+      document.body.appendChild(element)
+      element    = $('#test')[0]
+
+    it "should resolve an element by a css rule", ->
+      Element.resolve('#test').should.equal element
+
+    it "should resolve an element from a raw dom-element reference", ->
+      Element.resolve(element._).should.equal element
+
+    it "should resolve an element from a dom.NodeList", ->
+      Element.resolve($('#test')).should.equal element
+
+    it "should return null for a non existing elements", ->
+      (Element.resolve('#non-existing-element') is null).should.be.true
+      (Element.resolve(undefined) is null).should.be.true
+      (Element.resolve(null) is null).should.be.true

@@ -67,6 +67,23 @@ Element.include = (hash)->
           return if @length is 0 then null else @
 
 
+#
+# Resolves any sort of element's reference into an {Element} instance
+#
+#     :js
+#     Element.resolve('#css-rule');
+#     Element.resolve(document.getElementById('my-element'));
+#     Element.resolve(new Element('div'));
+#     Element.resolve($('#css-rule'));
+#
+# @param {String|HTMLElement|dom.Element|dom.NodeList}
+# @return {Element} wrapper or `null`
+#
+Element.resolve = (element)->
+  element = $(element) if typeof(element) is 'string' or (element && element.nodeType is 1)
+  element = element[0] if element instanceof NodeList
+  return element || null
+
 
 # private
 # the dom-elements cache, for quicker instantiation

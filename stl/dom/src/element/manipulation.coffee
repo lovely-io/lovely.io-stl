@@ -107,10 +107,7 @@ Element.include
   # @return {Element} this
   #
   insertTo: (element, position) ->
-    element = $(element)[0] if typeof(element) is 'string'
-    element = wrap(element) unless element._
-
-    element.insert(@, position)
+    Element.resolve(element).insert(@, position)
 
     return @
 

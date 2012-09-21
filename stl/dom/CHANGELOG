@@ -50,6 +50,15 @@
         element.offset() // -> x: NNN, y: NNN
         element.offset(x: 100, y: 100) // sets the 'style.left' and 'style.top' directly
 
+  * {Element.resolve} method is added. this method tries to get an {Element} instance out of all sorts of element references, such as
+
+        :js
+        Element.resolve('#css-rule')
+        Element.resolve($('#css-rule'))
+        Element.resolve(new Element('div'))
+        Element.resolve(document.getElementById('some-id'))
+
+
 
 2012-01-04 Nikolay Nemshilov
 
