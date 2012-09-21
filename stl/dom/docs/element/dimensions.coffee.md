@@ -100,17 +100,47 @@ __NOTE__: if the element is in a relative positions space, this method
 
     else
       position = dimensions_hash(arguments)
-      offset   = x: 0, y: 0
-
-      for parent in this.parents()
-        if parent.style('position') in ['relative', 'absolute', 'fixed'] or parent._.tagName is 'HTML'
-          offset = parent.position()
-          break
+      offset   = this._.offsetParent || @document()._.documentElement
+      offset   = if offset then wrap(offset).position() else x: 0, y: 0 # fallback
 
       this._.style.left = position.x - offset.x + 'px' if 'x' of position
       this._.style.top  = position.y - offset.y + 'px' if 'y' of position
 
     return this
+```
+
+Handles the element's _relative_ position to it's offsetParent element
+
+    :js
+    element.offset()             // -> x: NNN, y:NNN
+    element.offset(x:NNN, y:NNN) // -> element self
+    element.offset(x:NNN)        // -> element self
+    element.offset(x, y)         // -> element self
+    element.offset(x, null)      // -> element self
+    element.offset(null, y)      // -> element self
+
+@param {Object|Number} relative position x:NNN, y:NNN or NNN x-position
+@param {Number} y-position in case of a two numbers call
+@return {Element|Object} this element of it's relative position
+
+```coffee-aside
+  offset: (position)->
+    if position is undefined
+      position = @position()
+      offset   = this._.offsetParent || @document()._.documentElement
+      offset   = if offset then wrap(offset).position() else x: 0, y: 0 # fallback
+
+      return {
+        x: position.x - offset.x
+        y: position.y - offset.y }
+
+    else
+      position = dimensions_hash(arguments)
+
+      @_.style.left = position.x + 'px' if 'x' of position
+      @_.style.top  = position.y + 'px' if 'y' of position
+
+      return @
 ```
 
 Checks if current element overlaps with the target position

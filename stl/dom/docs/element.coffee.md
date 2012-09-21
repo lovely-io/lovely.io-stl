@@ -57,16 +57,34 @@ Element.include = (hash)->
 
   for name, method of hash
     do (name)->
-      NodeList.prototype[name] = ->
-        for element, i in @
-          result = element[name].apply(element, arguments)
-          return result if i is 0 and result isnt element
+      unless name of core.List.prototype
+        NodeList.prototype[name] = ->
+          for element, i in @
+            result = element[name].apply(element, arguments)
+            return result if i is 0 and result isnt element
 
-        # returning null if there are no items on the list
-        # in case the user asked for data, otherwise returning
-        # the search itself so that the user could chain the calls
-        return if @length is 0 then null else @
+          # returning null if there are no items on the list
+          # in case the user asked for data, otherwise returning
+          # the search itself so that the user could chain the calls
+          return if @length is 0 then null else @
+```
 
+Resolves any sort of element's reference into an {Element} instance
+
+    :js
+    Element.resolve('#css-rule');
+    Element.resolve(document.getElementById('my-element'));
+    Element.resolve(new Element('div'));
+    Element.resolve($('#css-rule'));
+
+@param {String|HTMLElement|dom.Element|dom.NodeList}
+@return {Element} wrapper or `null`
+
+```coffee-aside
+Element.resolve = (element)->
+  element = $(element) if typeof(element) is 'string' or (element && element.nodeType is 1)
+  element = element[0] if element instanceof NodeList
+  return element || null
 
 
 # private

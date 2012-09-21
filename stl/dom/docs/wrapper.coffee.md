@@ -67,3 +67,20 @@ Basic constructor
     this._ = dom_unit
     Wrapper.Cache[uid(dom_unit)] = this
 ```
+
+Recast the raw dom unit into the new class
+
+@param {Function} new class
+@return {Object} of the new class
+
+```coffee-aside
+  cast: (Klass)->
+    if @ instanceof Klass
+      return @
+    else
+      new Klass(@_)
+
+
+NodeList::cast = (Klass)->
+  @[0].cast(Klass)
+```

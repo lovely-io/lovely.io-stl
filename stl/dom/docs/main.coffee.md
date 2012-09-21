@@ -17,6 +17,7 @@ include 'src/element/navigation'
 include 'src/element/manipulation'
 include 'src/document'
 include 'src/window'
+include 'src/style'
 include 'src/form'
 include 'src/input'
 include 'src/event'
@@ -35,6 +36,7 @@ Wrapper
   .set("select",   Input)
   .set("textarea", Input)
   .set("optgroup", Input)
+  .set("style",    Style)
 
 
 # exporting the main units
@@ -48,6 +50,7 @@ exports = ext $,
   Event:    Event
   Form:     Form
   Input:    Input
+  Style:    Style
   NodeList: NodeList
   eval:     global_eval
   uid:      uid

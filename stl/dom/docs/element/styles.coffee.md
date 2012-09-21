@@ -44,9 +44,14 @@ Adds the class name to the list
 
 ```coffee-aside
   addClass: (name) ->
-    testee = " #{this._.className} "
-    if testee.indexOf(" #{name} ") is -1
-      this._.className += (if testee is '  ' then '' else ' ') + name
+    if name.indexOf(' ') is -1
+      testee = " #{this._.className} "
+      if testee.indexOf(" #{name} ") is -1
+        @_.className += (if testee is '  ' then '' else ' ') + name
+    else
+      for name in name.split(' ')
+        @addClass(name)
+
     this
 ```
 
@@ -57,7 +62,13 @@ Removes the class name out of the list
 
 ```coffee-aside
   removeClass: (name) ->
-    this._.className = trim(" #{this._.className} ".replace(" #{name} ", ' '))
+    if name.indexOf(' ') is -1
+      @_.className = trim(" #{@_.className} ".replace(" #{name} ", ' '))
+
+    else
+      for name in name.split(' ')
+        @removeClass(name)
+
     this
 ```
 
