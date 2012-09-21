@@ -183,13 +183,66 @@ describe "Element dimensions", ->
 
     it "should correct the actual position for the nested positions space", ->
       element._.style.left = element._.style.top = '0px'
-      abs_el._.style.position = 'absolute'
+      element._.offsetParent = abs_el._
       abs_el._.getBoundingClientRect or= -> left: 100, top: 200
 
       element.position x: 500, y: 600
 
       element._.style.left.should.equal '400px'
       element._.style.top.should.equal  '400px'
+
+  describe "#offset()", ->
+
+    it "should return element's offset against it's offsetParent correctly", ->
+      element._.getBoundingClientRect = -> left: 0, top: 0
+
+      element._.offsetParent = null
+      element.offset().should.eql x: 0, y: 0
+
+      element._.offsetParent = abs_el._
+      element._.getBoundingClientRect  = -> left: 200, top: 400
+      abs_el._.getBoundingClientRect or= -> left: 100, top: 200
+      element.offset().should.eql x: 100, y: 200
+
+    it "should allow to set the offset as an x/y hash", ->
+      element._.style.left = element._.style.top = '0px'
+
+      element.offset(x: 55, y: 66)
+
+      element._.style.left.should.eql '55px'
+      element._.style.top.should.eql  '66px'
+
+    it "should allow to set the offset as one entry hash", ->
+      element._.style.left = element._.style.top = '0px'
+
+      element.offset x: 300
+
+      element._.style.left.should.equal '300px'
+      element._.style.top.should.equal  '0px'
+
+      element.offset y: 400
+
+      element._.style.left.should.equal '300px'
+      element._.style.top.should.equal  '400px'
+
+    it "should allow to set the offset in plain numbers", ->
+      element._.style.left = element._.style.top = '0px'
+
+      element.offset 500
+
+      element._.style.left.should.equal '500px'
+      element._.style.top.should.equal  '0px'
+
+      element.offset null, 600
+
+      element._.style.left.should.equal '500px'
+      element._.style.top.should.equal  '600px'
+
+    it "should return the element itself when used as a setter", ->
+      element.offset(x: 100).should.equal    element
+      element.offset(100).should.equal       element
+      element.offset(null, 100).should.equal element
+
 
 
   describe "#overlaps()", ->

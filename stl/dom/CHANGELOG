@@ -44,6 +44,12 @@
         element.size(100);       // x only
         element.size(null, 200); // y only
 
+  * {Element#offset} method was added, which returns/sets element's position _relative_ to it's `offsetParent` element
+
+        :js
+        element.offset() // -> x: NNN, y: NNN
+        element.offset(x: 100, y: 100) // sets the 'style.left' and 'style.top' directly
+
 
 2012-01-04 Nikolay Nemshilov
 
