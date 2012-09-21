@@ -150,6 +150,9 @@ minify = (directory)->
   # fixing the ugly `== 'string'` fuckups back to `=== 'string'`
   build  = build.replace(/(typeof [a-z]+)==("[a-z]+")/g, '$1===$2')
 
+  # dom module build fix to get back the 'Element' constructor name
+  build  = build.replace(/Element=new Class\(Wrapper,\{constructor:function [a-zA-Z]\(/, "Element=new Class(Wrapper,{constructor:function Element(")
+
   # getting back the constructor names
   build  = add_constructor_names(build, true)
 
