@@ -1,12 +1,12 @@
 {
   "name":        "ajax",
-  "version":     "1.1.2",
+  "version":     "1.1.4",
   "description": "Standard AJAX support module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/ajax",
   "tags":        "STL, Ajax",
   "dependencies": {
-    "dom":  "1.2.0"
+    "dom":  "1.4.0"
   }
 }
