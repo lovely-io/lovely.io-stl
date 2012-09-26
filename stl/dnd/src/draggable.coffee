@@ -111,7 +111,7 @@ draggable_calc_constraints = (element, options)->
 # @param {dom.Element} draggable
 #
 draggable_start = (event, element)->
-  return if event.which isnt 1 # triggered only by right click
+  return if event.which > 1 # triggered only by right click
 
   event.type = 'beforedragstart'
   element.emit event
