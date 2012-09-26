@@ -1,8 +1,13 @@
-2011-01-06 Nikolay Nemshilov
+2012-09-26 Nikolay Nemshilov
+
+  * Version 1.0.2
+  * Making it skip the right clicks on the draggable objects
+
+
+2012-01-06 Nikolay Nemshilov
 
   * Version 1.0.1
   * Touchscreen support added
-
 
 2011-08-30 Nikolay Nemshilov
 
