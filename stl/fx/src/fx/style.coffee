@@ -1,7 +1,7 @@
 #
 # A smooth styles processing base effect
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 class Fx.Style extends Fx
 
@@ -10,6 +10,8 @@ class Fx.Style extends Fx
   prepare: (style)->
     if @options.engine is 'css' and native_fx_prefix isnt null
       @render = ->
+      @_native_timer = true
+      bind_native_fx_timer(@, @element)
       native_fx_prepare.call(@, style)
     else
       keys   = style_keys(style)
@@ -52,10 +54,28 @@ for name in ['WebkitT', 'OT', 'MozT', 'MsT', 't']
     native_fx_prefix = name
     break
 
+
 native_fx_transition = native_fx_prefix     + 'ransition'
 native_fx_property   = native_fx_transition + 'Property'
 native_fx_duration   = native_fx_transition + 'Duration'
 native_fx_function   = native_fx_transition + 'TimingFunction'
+
+
+bind_native_fx_timer = (fx, element)->
+  event_name = native_fx_transition + 'End'
+  event_name = event_name[0].toLowerCase() + event_name.slice(1);
+
+  event_name = 'transitionend' if native_fx_prefix is 'MozT' or native_fx_prefix is 't'
+
+  callback = (event)->
+    if event.target is element and !fx.__finished
+      element.no event_name, callback # unbinding itself immediately
+      fx.__finished = true
+      fx.finish()
+      console.log('fuck')
+
+  element.on event_name, callback
+
 
 native_fx_prepare    = (style)->
   options       = @options
