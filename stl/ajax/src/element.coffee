@@ -18,6 +18,7 @@ Element.include
     @ajax = new Ajax(url, Hash.merge({method: 'get'}, options))
     @ajax.on('success', bind((event)->
       @update event.ajax.responseText
+      @emit 'ajax:update'
     , @))
     @ajax.send()
 
