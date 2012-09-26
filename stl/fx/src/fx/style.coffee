@@ -72,7 +72,6 @@ bind_native_fx_timer = (fx, element)->
       element.no event_name, callback # unbinding itself immediately
       fx.__finished = true
       fx.finish()
-      console.log('fuck')
 
   element.on event_name, callback
 
@@ -103,11 +102,6 @@ native_fx_prepare    = (style)->
     # setting the actual end styles
     setTimeout((->element.style(style)), 0)
   , 0
-
-
-# NOTE: OPERA's css-transitions are a bit jerky so we disable them by default
-Fx.Options.engine = if native_fx_prefix is null or Browser is 'Opera' then 'javascript' else 'css'
-
 
 
 #########################################################################
