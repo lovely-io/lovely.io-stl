@@ -90,9 +90,12 @@ generate = (projectname, args) ->
   {Test, assert} = require('lovely')
 
   describe "%{projectunit}", ->
-    %{projectunit} = null
+    %{projectunit} = window = document = null
 
-    before Test.load(module, (build)-> %{projectunit} = build)
+    before Test.load module, (build, win)->
+      %{projectunit} = build
+      window   = win
+      document = win.document
 
     it "should have a version", ->
       assert.ok %{projectunit}.version
@@ -109,10 +112,12 @@ generate = (projectname, args) ->
   var assert = Lovely.assert;
 
   describe("%{projectunit}", function() {
-    var %{projectunit} = null;
+    var %{projectunit}, window, document;
 
-    before(Test.load(module, function(build) {
+    before(Test.load(module, function(build, win) {
       %{projectunit} = build;
+      window   = win;
+      document = win.document;
     }));
 
     it("should have a version number", function() {
