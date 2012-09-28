@@ -13,11 +13,8 @@
 exports.list = ->
   fs       = require('fs')
   lovelyrc = require('./lovelyrc')
+  location = lovelyrc.base + "/packages/"
   list     = {}
-
-  location = lovelyrc.base
-  location[location.length - 1] == '/' || (location += '/')
-  location+= "packages/"
 
   for name in fs.readdirSync(location)
     if fs.statSync(location + name).isDirectory()
@@ -39,9 +36,7 @@ exports.list = ->
 #
 exports.save = (pack, build)->
   lovelyrc = require('./lovelyrc')
-  location = lovelyrc.base
-  location[location.length - 1] == '/' || (location += '/')
-  location += "packages/#{pack.name}/#{pack.version}"
+  location = lovelyrc.base + "/packages/#{pack.name}/#{pack.version}"
 
   system "rm -rf #{location}", ->
     system "mkdir -p #{location}", ->
