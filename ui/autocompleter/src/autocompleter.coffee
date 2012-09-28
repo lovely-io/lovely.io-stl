@@ -67,13 +67,14 @@ class Autocompleter extends UI.Menu
   # @return {Autocompleter} this
   #
   suggest: ->
+    search = '' + @input._.value
+
     if typeof(@options.src) is 'string'
       unless @ajax
-        value = '' + @input._.value
-        @ajax = new Ajax(@options.src.replace('{search}', value), method: @options.method)
+        @ajax = new Ajax(@options.src.replace('{search}', search), method: @options.method)
         @ajax.on 'complete', =>
           if @ajax.responseJSON
-            @update(@ajax.responseJSON, value).show()
+            @update(@ajax.responseJSON, search).show()
           else
             @hide()
 
@@ -82,7 +83,9 @@ class Autocompleter extends UI.Menu
         @ajax.send()
 
     else # assuming it's an array
-      console.log(@options.src)
+      @update core.L(@options.src).filter (item)->
+        item.toLowerCase().substr(0, search.length) is search.toLowerCase()
+      , search
 
     return @
 
@@ -95,10 +98,33 @@ class Autocompleter extends UI.Menu
   #
   update: (content, highlight)->
     if isArray(content) && highlight isnt undefined
+      highlight = String(highlight).toLowerCase()
+
       content = core.L(content).map (entry)->
-        "<a href='#'>#{entry}</a>"  # add highlight
+
+        if highlight && (index = entry.toLowerCase().indexOf(highlight)) isnt -1
+          entry = entry.substr(0, index) + '<strong>' +
+            entry.substr(index, index + highlight.length) + '</strong>' +
+            entry.substr(index + highlight.length)
+
+        "<a href='#'>#{entry}</a>"
 
       content = content.join("\n")
 
     @$super(content)
 
+  #
+  # Inserts the menu in DOM and shows it next to
+  # the input field
+  #
+  # @return {Autocompleter} self
+  #
+  show: ->
+    @style visibility: 'hidden', display: 'block'
+
+    @insertTo(@input, 'after').style(minWidth: @input.size().x + 'px')
+      .position(x: @input.position().x, y: @input.position().y + @input.size().y)
+
+    @style visibility: 'visible'
+
+    return @

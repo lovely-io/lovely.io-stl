@@ -55,3 +55,28 @@ describe "Autocompleter", ->
       a = new Autocompleter(i)
       a.options.src.should.equal 'some.url'
 
+
+  describe "#update", ->
+
+    it "should update the list with new items by a list of stuff", ->
+      autocompleter.update(['one', 'two', 'three'], 'something')
+      autocompleter.html().should.eql """
+      <a href="#">one</a>
+      <a href="#">two</a>
+      <a href="#">three</a>
+      """
+
+    it "should highlight matching substrings and ignore cases", ->
+      autocompleter.update(['Java', 'JavaScript', 'Ruby'], 'jav')
+      autocompleter.html().should.eql """
+      <a href="#"><strong>Jav</strong>a</a>
+      <a href="#"><strong>Jav</strong>aScript</a>
+      <a href="#">Ruby</a>
+      """
+
+    it "should still work with string content", ->
+      autocompleter.update('bla bla bla')
+      autocompleter.html().should.eql 'bla bla bla'
+
+    it "should return the autocompleter object back", ->
+      autocompleter.update(['stuff'], 'asdf').should.equal autocompleter
