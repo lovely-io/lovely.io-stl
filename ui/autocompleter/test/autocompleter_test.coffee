@@ -28,3 +28,24 @@ describe "Autocompleter", ->
 
     it "should build instances of Autocompleter", ->
       autocompleter.should.be.instanceOf Autocompleter
+
+    it "should assign the input field as a reference", ->
+      autocompleter.input.should.be.instanceOf $.Input
+      autocompleter.input._.should.be.equal    input
+
+    it "should make a reference for the autocompleter in the input wrapper", ->
+      autocompleter.input.autocompleter.should.equal autocompleter
+
+    it "should build a spinner widget", ->
+      autocompleter.spinner.should.be.instanceOf UI.Spinner
+
+    it "should set default options", ->
+      autocompleter.options.should.be.a('object')
+      autocompleter.options.src.should.equal Autocompleter.Options.src
+
+    it "should read data-autocompleter options from the input element", ->
+      i = document.createElement('input')
+      i.setAttribute('data-autocompleter-src', 'some.url')
+      a = new Autocompleter(i)
+      a.options.src.should.equal 'some.url'
+

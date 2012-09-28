@@ -5,18 +5,16 @@
     <link href="/shared.css" rel="stylesheet" type="text/css" />
     <script src="/core.js"></script>
     <script type="text/javascript">
-      Lovely(["autocompleter"], function(module) {
-        console.log(module.version);
+      Lovely(["autocompleter"], function(Autocompleter) {
+
       });
     </script>
-    <!--
-      NOTE: do not include anything else in here!
-        all the styles and builds will be handled
-        automatically by the development server
-    -->
   </head>
   <body>
     <h1>Autocompleter Demo</h1>
 
+    <p>
+      <input type="text" data-autocompleter-src="test/response.json?q={search}">
+    </p>
   </body>
 </html>
