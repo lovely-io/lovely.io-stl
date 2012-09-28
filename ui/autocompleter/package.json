@@ -3,5 +3,9 @@
   "version":     "0.0.0",
   "description": "My super lovely module",
   "author":      "Nikolay Nemshilov",
-  "license":     "MIT"
+  "license":     "MIT",
+  "dependencies" : {
+    "ui"  : "2.0.1",
+    "dom" : "1.4.0"
+  }
 }
