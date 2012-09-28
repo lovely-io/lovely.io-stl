@@ -1,0 +1,7 @@
+{
+  "name":        "autocompleter",
+  "version":     "0.0.0",
+  "description": "My super lovely module",
+  "author":      "Nikolay Nemshilov",
+  "license":     "MIT"
+}
