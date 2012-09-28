@@ -23,6 +23,12 @@ describe "Autocompleter", ->
   it "should be a subclass of the UI.Menu", ->
     Autocompleter.__super__.should.equal UI.Menu
 
+  it "should auto-initialize inputs with data-autocompleter attributes", ->
+    i = new $.Input().data('autocompleter', '{}')
+    i.insertTo(document.body)
+    i.focus()
+    i.autocompleter.should.be.instanceOf Autocompleter
+
 
   describe "#constructor", ->
 

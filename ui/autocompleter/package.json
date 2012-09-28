@@ -5,7 +5,8 @@
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
   "dependencies" : {
-    "ui"  : "2.0.1",
-    "dom" : "1.4.0"
+    "ui"   : "2.0.1",
+    "dom"  : "1.4.0",
+    "ajax" : "1.1.4"
   }
 }
