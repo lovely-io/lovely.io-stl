@@ -24,7 +24,7 @@ generate = (projectname, args) ->
 
   placeholders =
     projectname: projectname,
-    projectunit: projectname.replace(/(^|-)[a-z]/g, (m)-> m.toUpperCase())
+    projectunit: projectname.replace(/(^|-)([a-z])/g, (m,m1,m2)-> m2.toUpperCase())
     projectfile: projectname.replace(/\-/g, '_')
     year:        new Date().getFullYear(),
     username:    lovelyrc.name || "Vasily Pupkin"
@@ -90,12 +90,13 @@ generate = (projectname, args) ->
   {Test, assert} = require('lovely')
 
   describe "%{projectunit}", ->
-    %{projectunit} = window = document = null
+    %{projectunit} = window = document = $ = null
 
     before Test.load module, (build, win)->
       %{projectunit} = build
       window   = win
       document = win.document
+      $        = win.Lovely.module('dom')
 
     it "should have a version", ->
       assert.ok %{projectunit}.version
@@ -112,12 +113,13 @@ generate = (projectname, args) ->
   var assert = Lovely.assert;
 
   describe("%{projectunit}", function() {
-    var %{projectunit}, window, document;
+    var %{projectunit}, window, document, $;
 
     before(Test.load(module, function(build, win) {
       %{projectunit} = build;
       window   = win;
       document = win.document;
+      $        = win.Lovely.module('dom');
     }));
 
     it("should have a version number", function() {
