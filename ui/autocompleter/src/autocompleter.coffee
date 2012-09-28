@@ -11,6 +11,7 @@ class Autocompleter extends UI.Menu
       method:    'get'  # ajax requests default HTTP method
       minLength: 1      # min text length for the autocompleter to start working
       threshold: 200    # the user's typing pause length for the autocompleter to watch
+      highlight: true   # autohighlight matching entries
       cache:     true   # cache search results internally
 
   #
@@ -100,9 +101,9 @@ class Autocompleter extends UI.Menu
     if isArray(content) && highlight isnt undefined
       highlight = String(highlight).toLowerCase()
 
-      content = core.L(content).map (entry)->
+      content = core.L(content).map (entry)=>
 
-        if highlight && (index = entry.toLowerCase().indexOf(highlight)) isnt -1
+        if @options.highlight && highlight && (index = entry.toLowerCase().indexOf(highlight)) isnt -1
           entry = entry.substr(0, index) + '<strong>' +
             entry.substr(index, index + highlight.length) + '</strong>' +
             entry.substr(index + highlight.length)
