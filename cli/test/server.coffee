@@ -10,6 +10,7 @@ zombie   = require('zombie')
 server   = require('express')()
 lovelyrc = require('../lovelyrc')
 cache    = {}
+port     = 6789
 
 # making the development server
 base     = lovelyrc.base + "/packages"
@@ -20,6 +21,7 @@ server.get '/', (req, resp) ->
 
 server.get '/:name.js', (req, res)->
   name = req.params.name
+  host = "http://#{req.host}:#{port}"
 
   if match = name.match(/^(.+?)\-(\d+\.\d+\.\d+.*?)$/)
     name    = match[1]
@@ -75,7 +77,7 @@ exports.set = (defs, resp) ->
 #
 exports.get = (url, options, callback) ->
   if !server.active
-    server.listen(6789)
+    server.listen(port)
     server.active = true
 
   if !callback

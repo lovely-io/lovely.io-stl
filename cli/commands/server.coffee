@@ -13,8 +13,6 @@ exports.init = (args) ->
   lovelyrc = require('../lovelyrc')
   server   = express(express.bodyParser())
   port     = args[0] || lovelyrc.port || 3000
-  domain   = '127.0.0.1'
-  host     = "http://#{domain}:#{port}"
   base     = lovelyrc.base + "/packages"
   minify   = false
 
@@ -25,6 +23,7 @@ exports.init = (args) ->
   #
   server.all '/:module.js', (req, res) ->
     module = req.params.module
+    host   = "http://#{req.host}:#{port}"
 
     if module == pack.name || module == 'main'
       src  = if minify then source.minify() else source.compile()
@@ -118,7 +117,7 @@ exports.init = (args) ->
 
   server.listen(port)
 
-  print "Listening: #{host}\n"+
+  print "Listening: http://127.0.0.1:#{port}\n"+
     "Press Ctrl+C to hung up".grey
 
 
