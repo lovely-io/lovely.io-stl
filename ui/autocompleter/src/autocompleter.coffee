@@ -6,7 +6,7 @@
 class Autocompleter extends UI.Menu
   include: core.Options
   extend:
-    Options: # global options
+    Options: # default options
       src:       []     # an url to the search query or an Array of
       method:    'get'  # ajax requests default HTTP method
       minLength: 1      # min text length for the autocompleter to start working
@@ -126,6 +126,18 @@ class Autocompleter extends UI.Menu
     @insertTo(@input, 'after').style(minWidth: @input.size().x + 'px')
       .position(x: @input.position().x, y: @input.position().y + @input.size().y)
 
-    @style visibility: 'visible'
+    @style display: 'none', visibility: 'visible'
 
-    return @
+    Autocompleter.current = @constructor.current = @
+
+    Element::show.call(@, 'slide', duration: 200)
+
+  #
+  # hides the autocompleter menu
+  #
+  # @return {Autocompleter} this
+  #
+  hide: ->
+    Autocompleter.current = @constructor.current = null
+
+    Element::hide.call(@, 'slide', duration: 100)
