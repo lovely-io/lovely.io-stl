@@ -128,9 +128,7 @@ class Autocompleter extends UI.Menu
 
     @style display: 'none', visibility: 'visible'
 
-    Autocompleter.current = @constructor.current = @
-
-    Element::show.call(@, 'slide', duration: 200)
+    @$super('slide', duration: 200)
 
   #
   # hides the autocompleter menu
@@ -138,6 +136,4 @@ class Autocompleter extends UI.Menu
   # @return {Autocompleter} this
   #
   hide: ->
-    Autocompleter.current = @constructor.current = null
-
-    Element::hide.call(@, 'slide', duration: 100)
+    @$super('slide', duration: 100)
