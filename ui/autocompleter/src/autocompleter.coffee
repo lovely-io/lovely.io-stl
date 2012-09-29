@@ -41,6 +41,10 @@ class Autocompleter extends UI.Menu
 
     @setOptions(opts)
 
+    @on 'pick', (event)->
+      @input.value(event.link.text())
+      @emit 'complete', text: event.link.text()
+
     return @
 
   #
@@ -75,7 +79,7 @@ class Autocompleter extends UI.Menu
         @ajax = new Ajax(@options.src.replace('{search}', search), method: @options.method)
         @ajax.on 'complete', =>
           if @ajax.responseJSON
-            @update(@ajax.responseJSON, search).show()
+            @update(@ajax.responseJSON, search).showAt(@input)
           else
             @hide()
 
@@ -87,6 +91,8 @@ class Autocompleter extends UI.Menu
       @update core.L(@options.src).filter (item)->
         item.toLowerCase().substr(0, search.length) is search.toLowerCase()
       , search
+
+      @showAt(@input)
 
     return @
 
@@ -113,27 +119,3 @@ class Autocompleter extends UI.Menu
       content = content.join("\n")
 
     @$super(content)
-
-  #
-  # Inserts the menu in DOM and shows it next to
-  # the input field
-  #
-  # @return {Autocompleter} self
-  #
-  show: ->
-    @style visibility: 'hidden', display: 'block'
-
-    @insertTo(@input, 'after').style(minWidth: @input.size().x + 'px')
-      .position(x: @input.position().x, y: @input.position().y + @input.size().y)
-
-    @style display: 'none', visibility: 'visible'
-
-    @$super('slide', duration: 200)
-
-  #
-  # hides the autocompleter menu
-  #
-  # @return {Autocompleter} this
-  #
-  hide: ->
-    @$super('slide', duration: 100)
