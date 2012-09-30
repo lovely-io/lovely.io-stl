@@ -71,7 +71,7 @@ class Menu extends Element
   # @return {Menu} this
   #
   show: ->
-    Menu.current = @constructor.current = @$super().emit('show')
+    Menu.current = @constructor.current = @$super.apply(@, arguments).emit('show')
 
   #
   # Making the menu element to get removed out of the DOM
@@ -80,7 +80,7 @@ class Menu extends Element
   #
   hide: ->
     Menu.current = @constructor.current = null
-    @$super().emit('hide')
+    @$super.apply(@, arguments).emit('hide')
 
   #
   # Selects the next link on the menu
