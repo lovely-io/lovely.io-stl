@@ -7,15 +7,15 @@ class Icon extends Element
   #
   # Basic constructor
   #
-  # @param {Object|String} options or icon name
+  # @param {String} icon name/type
+  # @param {Object} html options if necessary
   # @return {Icon} self
   #
-  constructor: (options)->
+  constructor: (name, options)->
     options or= {}
-    options   = {name: options} if typeof(options) is 'string'
-    options['class'] = 'lui-icon-' + options.name if options.name
-
-    delete(options.name)
+    options['class'] or= ''
+    options['class'] += ' ' if options['class'] isnt ''
+    options['class'] += 'lui-icon-'+ name
 
     super('i', options)
 
