@@ -138,6 +138,25 @@ Element.include
       return @
 
   #
+  # Returns the correct offsetParent element from where the element
+  # gets it's relative positions space
+  #
+  # __NOTE:__ this method performs sequential check for the `style`
+  # property on the parent elements instead of going directly to
+  # the `offsetParent` element to avoid porblems with margings
+  # between the BODY and HTML elements
+  #
+  # @return {Element} offset parent
+  #
+  offsetParent: ->
+    for parent in this.parents()
+      if parent.style('position') in ['relative', 'absolute', 'fixed']
+        return parent
+
+    return wrap(@document()._.documentElement)
+
+
+  #
   # Checks if current element overlaps with the target position
   #
   # @param {Object|Number} x:NNN, y:NNN position or NNN x-position

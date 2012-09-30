@@ -244,6 +244,16 @@ describe "Element dimensions", ->
       element.offset(null, 100).should.equal element
 
 
+  describe "#offsetParent()", ->
+    before ->
+      abs_el._.style.position = 'absolute'
+
+    it "should return the correct offsetParent for an element inside of an absolutely positioned element", ->
+      element.offsetParent().should.equal abs_el
+
+    it "should return the HTML element as a fallback", ->
+      abs_el.offsetParent().should.equal $('html')[0]
+
 
   describe "#overlaps()", ->
     before ->
