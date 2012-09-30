@@ -100,8 +100,7 @@ __NOTE__: if the element is in a relative positions space, this method
 
     else
       position = dimensions_hash(arguments)
-      offset   = this._.offsetParent || @document()._.documentElement
-      offset   = if offset then wrap(offset).position() else x: 0, y: 0 # fallback
+      offset   = @offsetParent().position()
 
       this._.style.left = position.x - offset.x + 'px' if 'x' of position
       this._.style.top  = position.y - offset.y + 'px' if 'y' of position
@@ -127,8 +126,7 @@ Handles the element's _relative_ position to it's offsetParent element
   offset: (position)->
     if position is undefined
       position = @position()
-      offset   = this._.offsetParent || @document()._.documentElement
-      offset   = if offset then wrap(offset).position() else x: 0, y: 0 # fallback
+      offset   = @offsetParent().position()
 
       return {
         x: position.x - offset.x
@@ -141,6 +139,25 @@ Handles the element's _relative_ position to it's offsetParent element
       @_.style.top  = position.y + 'px' if 'y' of position
 
       return @
+```
+
+Returns the correct offsetParent element from where the element
+gets it's relative positions space
+
+__NOTE:__ this method performs sequential check for the `style`
+property on the parent elements instead of going directly to
+the `offsetParent` element to avoid porblems with margings
+between the BODY and HTML elements
+
+@return {Element} offset parent
+
+```coffee-aside
+  offsetParent: ->
+    for parent in this.parents()
+      if parent.style('position') in ['relative', 'absolute', 'fixed']
+        return parent
+
+    return wrap(@document()._.documentElement)
 ```
 
 Checks if current element overlaps with the target position

@@ -1,3 +1,10 @@
+2012-09-30 Nikolay Nemshilov
+
+  * Version 1.4.1
+  * `Element#offsetParent()` method added. It returns the correct `offsetParent` wrapper for the element
+  * `Element#position(something)` fix for the cases when the element in a nested positions space
+  * `Element#offset()` fix in case of the HTML tag having paddings
+
 2012-09-21 Nikolay Nemshilov
 
   * Version 1.4.0
