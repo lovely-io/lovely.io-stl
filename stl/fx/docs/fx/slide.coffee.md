@@ -26,9 +26,17 @@ class Fx.Slide extends Fx.Twin
 
     element_style.overflow = 'hidden'
 
+    # figuring the actual element styles for it's sizes
+    # to avoid problems with paddings and border sizes
+    element_size = element.size()
+    element.size(element_size)
+    element_size =
+      x: parseInt(element.style('width'))
+      y: parseInt(element.style('height'))
+
     end_style = fx_slide_prepare_styles(
       element_style,
-      element.size(),
+      element_size,
       @options.direction,
       @direction)
 
@@ -45,6 +53,11 @@ fx_slide_prepare_styles = (element_style, size, direction, how)->
 
   if how is 'out'
     style[if vertical then 'height' else 'width'] = '0px'
+
+    if vertical
+      element_style.height = size.y + 'px'
+    else
+      element_style.width = size.y + 'px'
 
     if to_right
       style.marginLeft = margin_left + size.x+'px'

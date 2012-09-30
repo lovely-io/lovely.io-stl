@@ -219,7 +219,9 @@ Initializes the fx rendering timer
 @return void
 
 ```coffee-aside
-Fx_start_timer = (fx, options)->
+Fx_start_timer = (fx)->
+  return     if fx._native_timer # native CSS3 transitions don't need it
+
   options    = fx.options
   duration   = Fx.Durations[options.duration] || options.duration
   steps      = Math.ceil(duration / 1000 * options.fps)
