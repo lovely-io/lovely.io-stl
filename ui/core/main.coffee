@@ -12,6 +12,7 @@ fx       = require('fx')
 $        = dom
 A        = core.A
 ext      = core.ext
+Hash     = core.Hash
 isObject = core.isObject
 Class    = core.Class
 Event    = dom.Event
@@ -22,6 +23,7 @@ Input    = dom.Input
 
 # glue in the files
 include 'src/util'
+include 'src/options'
 include 'src/event'
 include 'src/element'
 include 'src/button'
@@ -34,6 +36,7 @@ include 'src/menu'
 # export your objects in the module
 ext exports,
   version: '%{version}'
+  Options: Options
   Button:  Button
   Icon:    Icon
   Spinner: Spinner
