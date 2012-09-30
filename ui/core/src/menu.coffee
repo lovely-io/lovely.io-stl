@@ -20,8 +20,11 @@ class Menu extends Element
   # @return {Menu} this
   #
   constructor: (options)->
-    if element = raw_element(options)
-      @$super element
+    options = options[0] if options instanceof dom.NodeList
+    options = options._  if options instanceof Element
+
+    if options && options.nodeType is 1
+      @$super options
     else
       @$super 'nav', options
 
