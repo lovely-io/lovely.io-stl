@@ -96,8 +96,7 @@ Element.include
 
     else
       position = dimensions_hash(arguments)
-      offset   = this._.offsetParent || @document()._.documentElement
-      offset   = if offset then wrap(offset).position() else x: 0, y: 0 # fallback
+      offset   = @offsetParent().position()
 
       this._.style.left = position.x - offset.x + 'px' if 'x' of position
       this._.style.top  = position.y - offset.y + 'px' if 'y' of position
@@ -122,8 +121,7 @@ Element.include
   offset: (position)->
     if position is undefined
       position = @position()
-      offset   = this._.offsetParent || @document()._.documentElement
-      offset   = if offset then wrap(offset).position() else x: 0, y: 0 # fallback
+      offset   = @offsetParent().position()
 
       return {
         x: position.x - offset.x

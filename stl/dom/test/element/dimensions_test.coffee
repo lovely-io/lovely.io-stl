@@ -183,7 +183,7 @@ describe "Element dimensions", ->
 
     it "should correct the actual position for the nested positions space", ->
       element._.style.left = element._.style.top = '0px'
-      element._.offsetParent = abs_el._
+      abs_el._.style.position = 'absolute'
       abs_el._.getBoundingClientRect or= -> left: 100, top: 200
 
       element.position x: 500, y: 600
@@ -196,10 +196,10 @@ describe "Element dimensions", ->
     it "should return element's offset against it's offsetParent correctly", ->
       element._.getBoundingClientRect = -> left: 0, top: 0
 
-      element._.offsetParent = null
+      abs_el._.style.position = 'static'
       element.offset().should.eql x: 0, y: 0
 
-      element._.offsetParent = abs_el._
+      abs_el._.style.position = 'absolute'
       element._.getBoundingClientRect  = -> left: 200, top: 400
       abs_el._.getBoundingClientRect or= -> left: 100, top: 200
       element.offset().should.eql x: 100, y: 200
