@@ -4,8 +4,12 @@
 # Copyright (C) 2012 Nikolay Nemshilov
 #
 class Spinner extends Element
+  include: Options
   extend:
-    DEFAULT_SIZE: 4
+    Options:
+      size:   5
+      type:   'cicular'
+      rotate: true
 
   #
   # Default constructor
@@ -17,28 +21,25 @@ class Spinner extends Element
   # @return {Spinner} self
   #
   constructor: (options)->
-    options = merge_options(options, {class: 'lui-spinner'})
-    options.html = build_spinner_divs(options.size)
-    delete(options.size)
-
-    super('div', options)
-    move_spinner(@)
+    @$super 'div', @setOptions(options)
+    @addClass 'lui-spinner'
+    @html build_spinner_divs(@)
 
 
 
 
 # builds the spinner
-build_spinner_divs = (size)->
-  size or= Spinner.DEFAULT_SIZE; i = 1; html = ''
-  while i < size
+build_spinner_divs = (spinner)->
+  i = 1; html = ''
+
+  while i < spinner.options.size - 1
     html += '<div></div>'; i += 1
 
-  html + '<div class="lui-spinner-current"></div>'
+  html += '<div class="lui-spinner-current"></div>'
 
-move_spinner = (spinner)->
   window.setInterval ->
     dot = spinner.first('.lui-spinner-current')
     (dot.nextSibling() || spinner.first()).radioClass('lui-spinner-current')
   , 300
 
-  return spinner
+  return html
