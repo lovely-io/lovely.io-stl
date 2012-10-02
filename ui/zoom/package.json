@@ -1,12 +1,12 @@
 {
   "name":        "zoom",
-  "version":     "1.1.0",
+  "version":     "1.1.1",
   "description": "Lightweight images zoom widget",
   "author":      "Nikolay Nemshilov",
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/ui/zoom",
   "license":     "MIT",
   "tags":        "UI, zoom",
   "dependencies": {
-    "ui" : "2.0.0"
+    "ui" : "2.1.1"
   }
 }
