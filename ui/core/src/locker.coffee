@@ -13,7 +13,7 @@ class Locker extends Element
   #
   constructor: (options)->
     options = merge_options(options, class: 'lui-locker')
-    spinner_size = options.size || 5
+    spinner_size = options.size || Spinner.Options.size
     delete(options.size)
     super('div', options)
     @insert(@spinner = new Spinner(size: spinner_size, class: 'lui-inner'))

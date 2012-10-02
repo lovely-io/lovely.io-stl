@@ -14,12 +14,21 @@
             new UI.Icon(type).insertTo('#icons-demo');
           });
 
+
           new UI.Spinner().insertTo('#spinners-demo');
-          new UI.Spinner({size: 3}).insertTo('#spinners-demo');
+          new UI.Spinner({size: 6}).insertTo('#spinners-demo');
           new UI.Spinner({size: 8, 'class': 'green'}).insertTo('#spinners-demo');
 
+          new UI.Spinner({rotate: false}).insertTo('#no-rotate-spinners-demo');
+          new UI.Spinner({rotate: false, size: 6}).insertTo('#no-rotate-spinners-demo');
+          new UI.Spinner({rotate: false, size: 8, 'class': 'green'}).insertTo('#no-rotate-spinners-demo');
+
+          new UI.Spinner({type: 'flat'}).insertTo('#flat-spinners-demo');
+          new UI.Spinner({type: 'flat', size: 3}).insertTo('#flat-spinners-demo');
+          new UI.Spinner({type: 'flat', size: 8, 'class': 'green'}).insertTo('#flat-spinners-demo');
+
           new UI.Locker().insertTo('#locker-demo');
-          new UI.Locker({size: 4}).insertTo('#tight-space-locker');
+          new UI.Locker().insertTo('#tight-space-locker');
 
           $('#modal-demo1').on('click', function(event) { event.stop();
             new UI.Modal({html: "HTML Hello World!"}).show();
@@ -56,11 +65,14 @@
       .lui-button {
         margin-bottom: .25em;
       }
-      #icons-demo .lui-icon {
-        margin-right: .25em;
-      }
-      #spinners-demo .lui-spinner {
+      #icons-demo *[class^=lui-icon] {
         margin-right: .5em;
+      }
+      #spinners-demo .lui-spinner, #no-rotate-spinners-demo .lui-spinner, #flat-spinners-demo .lui-spinner {
+        margin-right: .5em;
+      }
+      .lui-spinner.green div {
+        background-color: green;
       }
       #locker-demo {
         position: relative;
@@ -160,6 +172,12 @@
     <h2>Spinners</h2>
     <p>
       <div id="spinners-demo"></div>
+    </p>
+    <p>
+      <div id="no-rotate-spinners-demo"></div>
+    </p>
+    <p>
+      <div id="flat-spinners-demo"></div>
     </p>
 
     <h2>Simple Locker</h2>

@@ -143,7 +143,8 @@
     width:          .5em
     height:         100%
     border:         none
-    background:     rgba(0,0,0,.2)
+    background:     rgba(0,0,0,.6)
+    opacity:        0.25
     margin:         0
     padding:        0
     margin-right:    .2em
@@ -159,7 +160,101 @@
       margin-right: 0
 
     &.lui-spinner-current
-      background: rgba(0,0,0,.7)
+      opacity: 1
+
+  &.lui-spinner-circular
+    border: none
+    width:  4em
+    height: 4em
+
+    div
+      position: absolute
+      height:   25%
+      width:    16%
+      max-width: 20%
+      left:     50%
+      bottom:   50%
+      margin-left: -7.5%
+      border-radius: 25%
+      -webkit-transform-origin: bottom center
+      -moz-transform-origin:    bottom center
+      -ms-transform-origin:     bottom center
+      -o-transform-origin:      bottom center
+      transform-origin:         bottom center
+
+    &.lui-spinner-rotate
+      -webkit-animation-name:            lui-spinner-rotate
+      -webkit-animation-iteration-count: infinite
+      -webkit-animation-timing-function: linear
+      -moz-animation-name:               lui-spinner-rotate
+      -moz-animation-iteration-count:    infinite
+      -moz-animation-timing-function:    linear
+      -ms-animation-name:                lui-spinner-rotate
+      -ms-animation-iteration-count:     infinite
+      -ms-animation-timing-function:     linear
+      -o-animation-name:                 lui-spinner-rotate
+      -o-animation-iteration-count:      infinite
+      -o-animation-timing-function:      linear
+      animation-name:                    lui-spinner-rotate
+      animation-iteration-count:         infinite
+      animation-timing-function:         linear
+
+      div
+        background: rgba(0,0,0,0.5)
+
+        &:nth-last-child(1)
+          opacity: 1
+        &:nth-last-child(2)
+          opacity: .85
+        &:nth-last-child(3)
+          opacity: .7
+        &:nth-last-child(4)
+          opacity: .55
+        &:nth-last-child(5)
+          opacity: .4
+
+
+
+@-webkit-keyframes lui-spinner-rotate
+  from
+    -webkit-transform: rotate(0deg)
+  to
+    -webkit-transform: rotate(360deg)
+
+@-moz-keyframes lui-spinner-rotate
+  from
+    -moz-transform: rotate(0deg)
+  to
+    -moz-transform: rotate(360deg)
+
+@-ms-keyframes lui-spinner-rotate
+  from
+    -ms-transform: rotate(0deg)
+  to
+    -ms-transform: rotate(360deg)
+
+@-o-keyframes lui-spinner-rotate
+  from
+    -o-transform: rotate(0deg)
+  to
+    -o-transform: rotate(360deg)
+
+@keyframes lui-spinner-rotate
+  from
+    -webkit-transform: rotate(0deg)
+    -moz-transform:    rotate(0deg)
+    -ms-transform:     rotate(0deg)
+    -o-transform:      rotate(0deg)
+    transform:         rotate(0deg)
+  to
+    -webkit-transform: rotate(360deg)
+    -moz-transform:    rotate(360deg)
+    -ms-transform:     rotate(360deg)
+    -o-transform:      rotate(360deg)
+    transform:         rotate(360deg)
+
+
+
 
 
 // generic area locker
@@ -193,14 +288,8 @@
   > .lui-spinner
     border:     none
     background: none
-    max-width:  90%
-    height:     auto
-    width:      auto
-
-    div
-      height:     1.25em
-      width: 1.25em
-      border-radius: .25em
+    max-height:  60%
+    max-width:   60%
 
 // the modal locker styles
 

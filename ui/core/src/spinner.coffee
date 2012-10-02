@@ -7,9 +7,10 @@ class Spinner extends Element
   include: Options
   extend:
     Options:
-      size:   5
-      type:   'cicular'
-      rotate: true
+      size:   5          # lines size
+      type:   'circular' # spinner type, use 'flat' if you want a flat line of bars
+      rotate: true       # if you want the spinner to be rotated with CSS3 when possible
+      speed:  300        # animation speed
 
   #
   # Default constructor
@@ -21,25 +22,37 @@ class Spinner extends Element
   # @return {Spinner} self
   #
   constructor: (options)->
-    @$super 'div', @setOptions(options)
-    @addClass 'lui-spinner'
-    @html build_spinner_divs(@)
+    @$super('div', @setOptions(options))
+    @addClass('lui-spinner')
+    @build()
 
+  #
+  # Builds the spinner's internals
+  #
+  # @return {Spinner} this
+  #
+  build: ->
+    @_.innerHTML =  '<div class="lui-spinner-current"></div>'; i=1
+    while i < @options.size
+      @_.innerHTML += '<div></div>'; i++
 
+    # rotating lines for a circular spinner
+    if css_transform && @options.type is 'circular'
+      @addClass('lui-spinner-circular')
+      @find('div').forEach (div, i)=>
+        div._.style.width = (100 / @options.size) + '%'
+        div._.style[css_transform] = 'rotate('+Math.round(360/@options.size*i)+'deg) translate(0,-80%) skew(0deg, 20deg)'
 
+    # kicking in CSS3 rotation if needed
+    if css_transform && css_animation && @options.type is 'circular' && @options.rotate
+      @_.style[css_animation+"Duration"] = @options.speed * 4 + 'ms'
+      @addClass('lui-spinner-rotate')
 
-# builds the spinner
-build_spinner_divs = (spinner)->
-  i = 1; html = ''
+    # fallback spinning in JavaScript for flat spinners
+    if !css_transform or !css_animation or @options.type isnt 'circular' or !@options.rotate
+      window.setInterval =>
+        dot = @first('.lui-spinner-current')
+        (dot.nextSibling() || @first()).radioClass('lui-spinner-current')
+      , @options.speed
 
-  while i < spinner.options.size - 1
-    html += '<div></div>'; i += 1
-
-  html += '<div class="lui-spinner-current"></div>'
-
-  window.setInterval ->
-    dot = spinner.first('.lui-spinner-current')
-    (dot.nextSibling() || spinner.first()).radioClass('lui-spinner-current')
-  , 300
-
-  return html
+    return @
