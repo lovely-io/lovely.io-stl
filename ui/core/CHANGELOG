@@ -1,3 +1,36 @@
+2012-10-02 Nikolay Nemshilov
+
+  * Version 2.1.1
+  * `UI.Spinner` was reworked and now provides a fancy CSS3 based circular spinners by default.
+    The old flat ones are also available through options
+
+        :js
+        new UI.Spinner();             // -> circular spinner
+        new UI.Spinner(type: 'flat'); // -> the old style flat spinner
+
+  * `UI.Options` mixin module was added. unlike the `core.Options` mixin, this one
+    allows you to specify widget and HTML options in one hash, plus it reads the `data-widget-name`
+    attributes from dom elements
+
+        :coffee
+        MyWidget = Element.inherit
+          include: UI.Options
+          extend:
+            Options: # global options
+              something: 'something'
+
+          constructor: (options)->
+            options = @setOptions(options)
+
+            super 'div', options
+
+        my_widget = new MyWidget(id: 'my-id', something: 'new something')
+
+  * `UI.Menu` unit `#show` and `#hide` methods now can accept the usual fx-name arguments
+  * Standard lovely.io testing coverage
+  * FF font assets serving fixes
+  * Package dependencies update
+
 2012-07-02 Nikolay Nemshilov
 
   * Version 2.0.1
