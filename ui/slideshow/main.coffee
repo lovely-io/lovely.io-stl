@@ -18,11 +18,13 @@ Icon    = UI.Icon
 # glue in your files
 include 'src/slideshow'
 include 'src/controls'
+include 'src/engine'
 
 # export your objects in the module
 exports = ext Slideshow,
   version:  '%{version}'
   Controls: Controls
+  Engine:   Engine
 
 
 # instantiating all the lists on ready
