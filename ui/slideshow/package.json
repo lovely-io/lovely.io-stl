@@ -7,6 +7,6 @@
   "license":     "MIT",
   "tags":        "UI, slideshow",
   "dependencies": {
-    "ui" : "2.0.0"
+    "ui" : "2.1.1"
   }
 }

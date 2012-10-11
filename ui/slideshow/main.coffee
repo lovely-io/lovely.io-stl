@@ -12,20 +12,19 @@ UI      = require('ui')
 # local variables assignments
 ext     = core.ext
 Class   = core.Class
-Options = core.Options
 Element = $.Element
 Icon    = UI.Icon
 
 # glue in your files
 include 'src/slideshow'
+include 'src/controls'
 
 # export your objects in the module
 exports = ext Slideshow,
-  version: '%{version}'
+  version:  '%{version}'
+  Controls: Controls
 
 
 # instantiating all the lists on ready
 $ ->
-  $('.lui-slideshow').forEach (list)->
-    unless list instanceof Slideshow
-      new Slideshow(list)
+  $('.lui-slideshow').forEach('cast', Slideshow)

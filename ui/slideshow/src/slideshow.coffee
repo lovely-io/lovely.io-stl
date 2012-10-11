@@ -4,7 +4,7 @@
 # Copyright (C) 2012 Nikolay Nemshilov
 #
 class Slideshow extends Element
-  include: Options
+  include: UI.Options
   extend:
     Options:
       fxDuration: 'normal'
@@ -23,18 +23,11 @@ class Slideshow extends Element
   # @return {Slideshow} this
   #
   constructor: (element, options)->
-    @$super(element._).setOptions(@data('slideshow'))
+    element = Element.resolve(element)._
 
-    @controls = new Element('div', {class: 'lui-slideshow-controls'}).append(
-      @prev_button = new Icon('circle-arrow-left').on('click', => @previous()),
-      @next_button = new Icon('circle-arrow-right').on('click', => @next()),
-      @pager       = new Element('div', class: 'lui-slideshow-pager'))
+    @$super(element, @setOptions(options, 'slideshow', element))
 
-    if typeof(window.ontouchstart) isnt 'undefined'
-      @prev_button.remove(); @next_button.remove();
-
-    @pager.delegate('a', click: (e)=> e.stop(); @slideTo(e.target.data('index')))
-    @pager.remove() unless @options.showPager
+    @controls = new Controls(@options).insertTo(@)
 
     @on
       mouseenter: =>
@@ -61,7 +54,7 @@ class Slideshow extends Element
           @next()
           @__touchstart = x_position
 
-    @append(@controls).slideTo(0)
+    @slideTo(0)
     @play() if @options.autoplay
 
     return @
@@ -136,10 +129,10 @@ class Slideshow extends Element
         item._.className = ''
 
 
-    @prev_button[if @hasPrevious() then 'removeClass' else 'addClass']('lui-disabled')
-    @next_button[if @hasNext()     then 'removeClass' else 'addClass']('lui-disabled')
+    @controls.prev_button[if @hasPrevious() then 'removeClass' else 'addClass']('lui-disabled')
+    @controls.next_button[if @hasNext()     then 'removeClass' else 'addClass']('lui-disabled')
 
-    @_rebuild_pager()
+    @controls._rebuild_pager(@)
 
   #
   # Starts auto-play mode
@@ -221,18 +214,3 @@ class Slideshow extends Element
     @__clone.style(display: 'none')
 
     return result
-
-  # rebuilds the pagination element
-  _rebuild_pager: ->
-    html = for item, index in @items()
-      attr = if index is @currentIndex then ' class="lui-slideshow-pager-current"' else ''
-      """<a href="" data-index="#{index}"#{attr}>&bull;</a>"""
-
-    @pager.html(html.join(''))
-
-
-
-
-
-
-
