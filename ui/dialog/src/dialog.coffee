@@ -4,7 +4,7 @@
 # Copyright (C) 2012 Nikolay Nemshilov
 #
 class Dialog extends Modal
-  include: core.Options
+  include: UI.Options
   extend:
     Options: # default options
       nolock:      false
@@ -25,10 +25,7 @@ class Dialog extends Modal
   # @return {Dialog} this
   #
   constructor: (options)->
-    @setOptions(options or= {})
-    delete(options[key]) for key of Dialog.Options when key isnt 'nolock'
-
-    @$super(options).addClass('lui-dialog')
+    @$super(@setOptions(options)).addClass('lui-dialog')
 
     @append """
       <header>
