@@ -5,20 +5,26 @@
 #
 class Controls extends Element
 
-  constructor: (options)->
+  #
+  # Constructor, builds the control elements
+  #
+  # @param {Slideshow} reference
+  # @return {Controls} this
+  #
+  constructor: (slideshow)->
     super 'div', class: 'lui-slideshow-controls'
 
-    @prev_button = new Icon('circle-arrow-left').on('click', => @previous())
-    @next_button = new Icon('circle-arrow-right').on('click', => @next())
+    @prev_button = new Icon('circle-arrow-left', on: click: -> slideshow.previous())
+    @next_button = new Icon('circle-arrow-right', on: click: -> slideshow.next())
     @pager       = new Element('div', class: 'lui-slideshow-pager')
 
     @append(@prev_button, @next_button, @pager)
 
-    if typeof(window.ontouchstart) isnt 'undefined'
-      @prev_button.remove(); @next_button.remove();
+    if typeof(window.ontouchstart) isnt 'undefined' or !slideshow.options.showButtons
+      slideshow.addClass('lui-slideshow-no-buttons')
 
-    @pager.delegate('a', click: (e)=> e.stop(); @slideTo(e.target.data('index')))
-    @pager.remove() unless options.showPager
+    @pager.delegate('a', click: (e)-> e.stop(); slideshow.slideTo(e.target.data('index')))
+    slideshow.addClass('lui-slideshow-no-pager') unless slideshow.options.showPager
 
     return @
 

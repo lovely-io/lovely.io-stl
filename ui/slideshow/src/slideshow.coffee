@@ -8,10 +8,11 @@ class Slideshow extends Element
   extend:
     Options:
       fxDuration: 'normal'
-      showPager:  true
-      autoplay:   false
-      delay:      4000
-      loop:       true
+      showButtons: true
+      showPager:   true
+      autoplay:    false
+      delay:       4000
+      loop:        true
 
   currentIndex: null
 
@@ -27,7 +28,7 @@ class Slideshow extends Element
 
     @$super(element, @setOptions(options, 'slideshow', element))
 
-    @controls = new Controls(@options).insertTo(@)
+    @controls = new Controls(@).insertTo(@)
 
     @on
       mouseenter: =>
