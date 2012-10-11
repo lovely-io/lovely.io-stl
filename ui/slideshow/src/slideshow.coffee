@@ -129,11 +129,9 @@ class Slideshow extends Element
       else
         item._.className = ''
 
+    @controls.updateStatus(@)
 
-    @controls.prev_button[if @hasPrevious() then 'removeClass' else 'addClass']('lui-disabled')
-    @controls.next_button[if @hasNext()     then 'removeClass' else 'addClass']('lui-disabled')
-
-    @controls._rebuild_pager(@)
+    return @
 
   #
   # Starts auto-play mode

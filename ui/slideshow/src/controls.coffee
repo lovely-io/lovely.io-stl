@@ -29,10 +29,20 @@ class Controls extends Element
     return @
 
 
-  # rebuilds the pagination element
-  _rebuild_pager: (slideshow)->
+  #
+  # Updates the status of the controls
+  #
+  # @param {Slideshow} reference
+  # @return {Controls} this
+  #
+  updateStatus: (slideshow)->
+    @prev_button[if slideshow.Previous() then 'removeClass' else 'addClass']('lui-disabled')
+    @next_button[if slideshow.hasNext()  then 'removeClass' else 'addClass']('lui-disabled')
+
     html = for item, index in slideshow.items()
       attr = if index is slideshow.currentIndex then ' class="lui-slideshow-pager-current"' else ''
       """<a href="" data-index="#{index}"#{attr}>&bull;</a>"""
 
     @pager.html(html.join(''))
+
+    return @
