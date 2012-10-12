@@ -20,7 +20,7 @@ css_prefixes  = 'WebkitA MozA msA OA a'.split(' ')
 css_animation = false
 
 while (css_prefix = css_prefixes.pop())
-  if document.body.style[css_prefix + 'nimation'] isnt undefined
+  if document.documentElement.style[css_prefix + 'nimation'] isnt undefined
     css_animation = css_prefix + 'nimation'
     break
 
@@ -28,6 +28,6 @@ css_prefixes = 'WebkitT MozT msT OT t'.split(' ')
 css_transform = false
 
 while (css_prefix = css_prefixes.pop())
-  if document.body.style[css_prefix + 'ransform'] isnt undefined
+  if document.documentElement.style[css_prefix + 'ransform'] isnt undefined
     css_transform = css_prefix + 'ransform'
     break
