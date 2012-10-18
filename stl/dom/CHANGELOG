@@ -1,7 +1,8 @@
 2012-10-18 Nikolay Nemshilov
 
   * Version 1.5.0
-  * Navigation calls optimization
+  * Various navigation calls optimisation
+  * `Element#on` calls optimisation
 
 2012-09-30 Nikolay Nemshilov
 
