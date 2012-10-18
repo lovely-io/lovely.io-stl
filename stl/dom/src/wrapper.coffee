@@ -60,7 +60,7 @@ class Wrapper
   #
   constructor: (dom_unit) ->
     this._ = dom_unit
-    Wrapper.Cache[uid(dom_unit)] = this
+    Wrapper_Cache[uid(dom_unit)] = this
 
   #
   # Recast the raw dom unit into the new class
@@ -78,3 +78,5 @@ class Wrapper
 NodeList::cast = (Klass)->
   @[0].cast(Klass)
 
+Wrapper_Cache = Wrapper.Cache
+Wrapper_Cache[undefined] = false

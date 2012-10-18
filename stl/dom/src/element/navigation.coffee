@@ -13,7 +13,7 @@ Element.include
   #
   find: (css_rule, needs_raw)->
     result = @_.querySelectorAll(css_rule||'*')
-    if needs_raw then result else new NodeList(result)
+    if needs_raw is true then result else new NodeList(result, true)
 
   #
   # Finds the _first_ matching sub-element, or just the first
