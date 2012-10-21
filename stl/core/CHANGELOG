@@ -1,3 +1,31 @@
+2012-10-21 Nikolay Nemshilov
+
+  * Version 1.4.0
+  * `Event` module methods optimisation
+  * Making all the classes to be subclasses of the `Lovely.Class`
+
+        :coffee
+        Klass = new Lovely.Class()
+        new Klass() instanceof Lovely.Class # -> true
+
+  * Making `Hash#merge` not break the `Lovely.Class` instances
+  * Enabling the local modules definition. This feature allows you to define
+    local in-code modules which won't be loaded from anywhere
+
+        :coffee
+        Lovely ['local-module~'], (LocalModule)->
+          # some code
+
+        Lovely 'local-module', ['dom', 'ajax'], ($, Ajax)->
+          # some code
+          return version: '0.0.0'
+
+    __NOTE__: use the `~` marker in the local module names to let `Lovely` know
+    that you want it just to wait or the module to be defined somewhere in your
+    code instead of trying to load it by name from the server
+
+
+
 2012-09-18 Nikolay Nemshilov
 
   * Version 1.2.0
