@@ -58,6 +58,11 @@ describe 'Options', ->
     it 'should overwrite defaults with custom options', ->
       new Simple(one: 'new').options.should.eql one: 'new', another: 'one'
 
+    it "should not screw with the Lovely.Class instances", ->
+      Klass = new Class()
+      klass = new Klass()
+      new Simple(one: klass).options.one.should.equal klass
+
 
   describe 'with inheritance', ->
 

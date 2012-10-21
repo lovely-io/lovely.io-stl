@@ -164,7 +164,7 @@ Hash.include
       object = object._ if object instanceof Hash
 
       for own key, value of object
-        data[key] = if isObject(value) then Hash.merge(
+        data[key] = if isObject(value) && !(value instanceof Class) then Hash.merge(
           (if key of data then data[key] else {}), value
         ) else object[key]
 
