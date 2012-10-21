@@ -179,6 +179,27 @@ Test.set
   });
   """
 
+  "/local-modules.html" : """
+  <html><head>
+    <script src="/core.js"></script>
+    <script src="/local-modules/module1.js"></script>
+    <script src="/local-modules/module2.js"></script>
+  </head></html>
+  """
+
+  "/local-modules/module1.js" : """
+  Lovely(['local-module~'], function(LocalModule) {
+    alert('Done!');
+  })
+  """
+
+  "/local-modules/module2.js" : """
+  Lovely('local-module', ['module1'], function() {
+    alert('Initializing local-module');
+    return { version: '0.0.0' };
+  })
+  """
+
 describe 'Lovely AMD', ->
   it 'should find itself by a short name', ->
     Lovely.module('core').should.equal Lovely
@@ -256,4 +277,19 @@ describe 'Lovely AMD', ->
         'Version 2.0.0'
       ]
       done()
+
+  it "should just wait on the ~ marked modules", (done)->
+    Test.get '/local-modules.html', (browser)->
+      browser.alerts.should.eql [
+        'Initializing: module3',
+        'Initializing: module4',
+        'Received: module3',
+        'Received: module4',
+        'Initializing: module1',
+        'Initializing local-module',
+        'Done!'
+      ]
+      done()
+
+
 
