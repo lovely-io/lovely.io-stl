@@ -26,7 +26,7 @@ describe 'Class', ->
       Klass.should.be.equal Klass.prototype.constructor
 
     it 'should not have anything besides those names', ->
-      (key for key of Klass.prototype).should.eql ['getName', 'setName']
+      (key for key of Klass.prototype).should.eql ['constructor', 'getName', 'setName']
 
     it 'should allow to make instances of it', ->
       new Klass().should.be.instanceOf Klass
@@ -36,6 +36,9 @@ describe 'Class', ->
       klass.setName 'boo-hoo'
       klass.getName().should.eql 'boo-hoo'
 
+    it "should refere Lovely.Class as the default parent", ->
+      Klass.__super__.should.equal Class
+      new Klass().should.be.instanceOf Class
 
 
   describe 'new Class({initialize: ...})', ->
