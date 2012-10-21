@@ -27,25 +27,28 @@ Events =
   # @return {Class} this
   #
   on: ->
-    args     = A(arguments)
-    events   = args.shift()
-    callback = args.shift()
-    callback = this[callback] if typeof(callback) is 'string'
+    args     = Array_slice.call(arguments, 2)
+    events   = arguments[0]
+    callback = arguments[1]
+    by_name  = false
 
-    this._listeners is null && (this._listeners = [])
+    if typeof(callback) is 'string'
+      callback = this[callback]
+      by_name  = true
 
-    switch typeof(events)
-      when 'string'
-        for event in events.split(',')
-          this._listeners.push
-            e: event     # event name
-            c: callback  # callback function reference
-            a: args      # remaining arguments list
-            n: typeof(arguments[1]) is 'string' # a marker if the callback was specified as a method-name
+    listeners = if @_listeners is null then (@_listeners = []) else @_listeners
 
-      when 'object'
-        for event of events
-          this.on event, events[event]
+    if typeof(events) is 'string'
+      for event in events.split(',')
+        listeners.push
+          e: event     # event name
+          c: callback  # callback function reference
+          a: args      # remaining arguments list
+          n: by_name   # a marker if the callback was specified as a method-name
+
+    else if typeof(events) is 'object'
+      for event of events
+        @on event, events[event]
 
     this
 
@@ -62,32 +65,32 @@ Events =
   # @return {Class} this
   #
   no: ->
-    args     = A(arguments)
-    events   = args.shift()
-    callback = args.shift()
+    args     = Array_slice.call(arguments, 2)
+    events   = arguments[0]
+    callback = arguments[1]
     callback = this[callback] if typeof(callback) is 'string'
 
-    this._listeners is null && (this._listeners = [])
+    listeners = if @_listeners is null then (@_listeners = []) else @_listeners
 
     switch typeof(events)
       when 'string'
         for event in events.split(',')
           index = 0
-          while index < this._listeners.length
-            this._listeners.splice index--, 1 if this._listeners[index].e is
-              event and (this._listeners[index].c is callback or callback is undefined)
+          while index < listeners.length
+            listeners.splice index--, 1 if listeners[index].e is
+              event and (listeners[index].c is callback or callback is undefined)
             index++
 
       when 'function'
         index = 0
-        while index < this._listeners.length
-          if this._listeners[index].c is events
-            this._listeners.splice index--, 1
+        while index < listeners.length
+          if listeners[index].c is events
+            listeners.splice index--, 1
           index++
 
       when 'object'
         for event of events
-          this.no event, events[event]
+          @no event, events[event]
 
     this
 
@@ -107,28 +110,28 @@ Events =
   # @return {boolean} check result
   #
   ones: ->
-    result   = no
-    args     = A(arguments)
-    events   = args.shift()
-    callback = args.shift()
+    result   = 0
+    args     = Array_slice.call(arguments, 2)
+    events   = arguments[0]
+    callback = arguments[1]
     callback = this[callback] if typeof(callback) is 'string'
 
-    this._listeners is null && (this._listeners = [])
+    listeners = if @_listeners is null then (@_listeners = []) else @_listeners
 
     switch typeof(events)
       when 'string'
         for event in events.split(',')
-          for entry in this._listeners
+          for entry in listeners
             result |= entry.e is event and (
               entry.c is callback or callback is undefined)
 
       when 'function'
-        for entry in this._listeners
+        for entry in listeners
           result |= entry.c is events
 
       when 'object'
         for event of events
-          result |= this.ones event, events[event]
+          result |= @ones event, events[event]
 
     result is 1 # converting to boolean after the `|=` operations
 
