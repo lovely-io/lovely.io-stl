@@ -79,8 +79,13 @@ Element.include = (hash)->
 # @return {Element} wrapper or `null`
 #
 Element.resolve = (element)->
-  element = $(element) if typeof(element) is 'string' or (element && element.nodeType is 1)
-  element = element[0] if element instanceof NodeList
+  if typeof(element) is 'string'
+    element = $(element)[0]
+  else if element instanceof NodeList
+    element = element[0]
+  else if `element != null && element.nodeType === 1`
+    return wrap(element)
+
   return element || null
 
 
