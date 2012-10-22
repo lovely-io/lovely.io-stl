@@ -1,6 +1,6 @@
 {
   "name":        "core",
-  "version":     "1.2.0",
+  "version":     "1.4.0",
   "description": "Lovely IO main module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
