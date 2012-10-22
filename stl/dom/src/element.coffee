@@ -15,8 +15,7 @@ class Element extends Wrapper
   constructor: (element, options)->
     # making a dom-element by the tag-name
     if typeof(element) is 'string'
-      element = if element of elements_cache then elements_cache[element]
-      else (elements_cache[element] = document.createElement(element))
+      element = elements_cache[element] || (elements_cache[element] = document.createElement(element))
       element = element.cloneNode(false)
 
     # handling dynamic typecasting
