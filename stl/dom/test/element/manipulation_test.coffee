@@ -168,6 +168,23 @@ describe "Element Manipulations", ->
       window.test1.should.equal 'test-1'
       window.test2.should.equal 'test-2'
 
+    it "should cut out all the scripts when it updates an element", get (element)->
+      element.update """
+        bla bla bla
+        <script>
+        //<![CDATA[
+          Lovely(['dom'], function($) {
+            $('#opinions a.add').emit('click');
+          });
+        //]]>
+        </script>
+      """
+
+      element._.innerHTML.should.equal """
+        bla bla bla
+
+      """
+
     it "should return the element itself back", get (element)->
       element.update('text').should.equal element
 

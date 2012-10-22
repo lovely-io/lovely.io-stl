@@ -3,6 +3,7 @@
   * Version 1.5.0
   * Various navigation calls optimisation
   * `Element#on` calls optimisation
+  * `Element#update` fix for string content with embedded `SCRIPT` tags in it
 
 2012-09-30 Nikolay Nemshilov
 

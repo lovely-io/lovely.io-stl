@@ -49,7 +49,7 @@ extract_scripts = (content) ->
   scripts = ""
 
   content = content.replace /<script[^>]*>([\s\S]*?)<\/script>/img,
-    (match, source)-> scripts += source + "\n"
+    (match, source)-> scripts += source + "\n"; return ''
 
   [content, scripts]
 
