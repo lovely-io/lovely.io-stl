@@ -1,6 +1,6 @@
 {
   "name":        "dom",
-  "version":     "1.4.1",
+  "version":     "1.4.2",
   "description": "Standard DOM manipulation module",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",

@@ -1,6 +1,6 @@
-2012-10-18 Nikolay Nemshilov
+2012-10-22 Nikolay Nemshilov
 
-  * Version 1.5.0
+  * Version 1.4.2
   * Various navigation calls optimisation
   * `Element#on` calls optimisation
   * `Element#update` fix for string content with embedded `SCRIPT` tags in it
