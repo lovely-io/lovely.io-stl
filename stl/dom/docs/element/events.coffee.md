@@ -92,7 +92,8 @@ Element_make_listeners = (instance) ->
   # hijacking the Array#push method to attach
   # the actual dom event-listeners
   list.push = (hash) ->
-    if hash.e in ['mouseenter', 'mouseleave']
+    e = hash.e
+    if e is 'mouseenter' or e is 'mouseleave'
       # MouseIO module handles those events on itsown
       mouseio_activate()
       hash.r = hash.e
@@ -102,8 +103,8 @@ Element_make_listeners = (instance) ->
       hash.r = hash.e
 
       # adjusting the real event name for the current browser
-      hash.r = 'rightclick'     if hash.e is 'contextmenu' and Browser is 'Konqueror'
-      hash.r = 'DOMMouseScroll' if hash.e is 'mousewheel'  and Browser is 'Gecko'
+      hash.r = 'rightclick'     if e is 'contextmenu' and Browser is 'Konqueror'
+      hash.r = 'DOMMouseScroll' if e is 'mousewheel'  and Browser is 'Gecko'
 
       # making the event handler wrapper, basically it wraps
       # the event and calls the original function in a correct context
@@ -116,7 +117,7 @@ Element_make_listeners = (instance) ->
       # attaching the actual event listener
       instance._.addEventListener(hash.r, hash.w, false)
 
-    Array.prototype.push.call(this, hash)
+    this[this.length] = hash
 
 
   # hijacking the Array#splice method to remove

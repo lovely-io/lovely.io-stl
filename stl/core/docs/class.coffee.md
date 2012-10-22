@@ -6,36 +6,39 @@ Copyright (C) 2011-2012 Nikolay Nemshilov
 Class = (parent, params) ->
   unless isFunction(parent)
     params = parent
-    parent = null
+    parent = Class
 
   params or= {}
-  Klass = ->
-    if   this.$super is undefined then this
-    else this.$super.apply(this, arguments)
 
-  Klass = params.constructor if `__hasProp.call(params, 'constructor')`
+  if `__hasProp.call(params, 'constructor')`
+    Klass = params.constructor
+  else
+    Klass = ->
+      if @$super is undefined then return @
+      else @$super.apply(@, arguments)
 
-  if parent # handling the inheritance
+  Super           = ->
+  Super.prototype = parent.prototype
+  Klass.prototype = new Super()
+
+  unless parent is Class
     for own name, value of parent
       Klass[name] = value
 
-    Super = ->
-    Super.prototype = parent.prototype
-    Klass.prototype = new Super()
-    Klass.__super__ = parent
     Klass.prototype.$super = ->
       this.$super = parent.prototype.$super
       parent.apply(this, arguments)
 
-    if typeof(parent::whenInherited) is 'function'
+    if isFunction(parent::whenInherited)
       parent::whenInherited.call(parent, Klass)
 
+  Klass.__super__ = parent
   Klass.prototype.constructor = Klass  # instances class self-reference
 
   # loading shared modules
   (Klass.include = Class.include).apply(Klass, ensure_Array(params.include || []))
   (Klass.extend  = Class.extend).apply( Klass, ensure_Array(params.extend  || []))
-  (Klass.inherit = Class.inherit)
+  Klass.inherit  = Class.inherit
 
   delete(params.extend)
   delete(params.include)

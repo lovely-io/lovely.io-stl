@@ -82,8 +82,8 @@ Calling 'mouseleave' for all currently active elements on the page
 ```coffee-aside
 mouseio_reset = (e)->
   for element, id in mouseio_index
-    if element && id of Wrapper.Cache
-      mouseio_emit e, Wrapper.Cache[id]._, false
+    if element && id of Wrapper_Cache
+      mouseio_emit e, Wrapper_Cache[id]._, false
 
   return #nothing
 ```

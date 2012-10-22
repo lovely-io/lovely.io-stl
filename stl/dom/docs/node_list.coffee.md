@@ -41,18 +41,19 @@ class NodeList extends core.List
 Basic constructor
 
 @param {Iterable} raw dom nodes list
+@param {Boolean} marker if there are raw items only on the list
 @return {NodeList} this
 
 ```coffee-aside
-  constructor: (raw_list)->
-    `for (var i=0, l=this.length=raw_list.length, key; i < l; i++) {
-      if ('_' in raw_list[i]) {
-        this[i] = raw_list[i];
-      } else {
-        key = uid(raw_list[i]);
-        this[i] = key in Wrapper.Cache ? Wrapper.Cache[key] : new Element(raw_list[i]);
-      }
-    }`
+  constructor: (raw_list, raw_only)->
+    if raw_only is true
+      `for (var i=0, l=this.length=raw_list.length, key; i < l; i++) {
+        this[i] = Wrapper_Cache[raw_list[i][UID_KEY]] || new Element(raw_list[i]);
+      }`
+    else
+      `for (var i=0, l=this.length=raw_list.length, key; i < l; i++) {
+        this[i] = raw_list[i] instanceof Element ? raw_list[i] : (Wrapper_Cache[raw_list[i][UID_KEY]] || new Element(raw_list[i]));
+      }`
 
     return this
 ```

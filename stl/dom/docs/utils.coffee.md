@@ -49,7 +49,7 @@ extract_scripts = (content) ->
   scripts = ""
 
   content = content.replace /<script[^>]*>([\s\S]*?)<\/script>/img,
-    (match, source)-> scripts += source + "\n"
+    (match, source)-> scripts += source + "\n"; return ''
 
   [content, scripts]
 
@@ -82,10 +82,7 @@ Generates an UID for a raw dom-unit
 
 ```coffee-aside
 uid = (node) ->
-  unless UID_KEY of node
-    node[UID_KEY] = UID_NUM++
-
-  node[UID_KEY]
+  node[UID_KEY] or (node[UID_KEY] = UID_NUM++)
 ```
 
 a quick local dom-wrapping interface
@@ -96,10 +93,9 @@ a quick local dom-wrapping interface
 ```coffee-aside
 wrap = (value) ->
   unless `value == null` or value instanceof Wrapper
-    key = uid(value) # trying to use an existing wrapper
-
-    if key of Wrapper.Cache
-      value = Wrapper.Cache[key]
+    key = value[UID_KEY]
+    if key && key of Wrapper_Cache
+      value = Wrapper_Cache[key]
     else if value.nodeType is 1
       value = new Element(value)
     else if value.nodeType is 9

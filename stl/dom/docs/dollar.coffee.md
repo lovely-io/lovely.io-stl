@@ -31,7 +31,7 @@ $ = (value, context) ->
   switch typeof(value)
     when 'string'
 
-      if /^#[^ \.\[:]+$/i.test(value) # quick by-id search
+      if /^#[^ \.\[:]+$/.test(value) # quick by-id search
         value = document.getElementById(value.substr(1))
         value = if value is null then [] else [value]
       else if value[0] is '<' # '<div>boo hoo</div>' to node-list conversion
@@ -42,9 +42,9 @@ $ = (value, context) ->
         else if !(context instanceof Wrapper)
           context = wrap(context)
 
-        value = context.find(value, true)
+        return context.find(value)
 
-      value = new NodeList(value)
+      value = new NodeList(value, true)
 
     when 'function' then value = current_Document.on('ready', value)
     when 'object'   then value = wrap(value)

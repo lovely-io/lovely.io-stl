@@ -16,8 +16,7 @@ Basic constructor
   constructor: (element, options)->
     # making a dom-element by the tag-name
     if typeof(element) is 'string'
-      element = if element of elements_cache then elements_cache[element]
-      else (elements_cache[element] = document.createElement(element))
+      element = elements_cache[element] || (elements_cache[element] = document.createElement(element))
       element = element.cloneNode(false)
 
     # handling dynamic typecasting
@@ -82,8 +81,13 @@ Resolves any sort of element's reference into an {Element} instance
 
 ```coffee-aside
 Element.resolve = (element)->
-  element = $(element) if typeof(element) is 'string' or (element && element.nodeType is 1)
-  element = element[0] if element instanceof NodeList
+  if typeof(element) is 'string'
+    element = $(element)[0]
+  else if element instanceof NodeList
+    element = element[0]
+  else if `element != null && element.nodeType === 1`
+    return wrap(element)
+
   return element || null
 
 

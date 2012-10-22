@@ -49,7 +49,7 @@ Lovely = ->
       # stripping out the '../' and './' things to get the clean module name
       module = modules[i] = modules[i].replace(/^[\.\/]+/, '')
 
-      if !(find_module(module) or find_module(module, Lovely.loading))
+      if !(find_module(module) or find_module(module, Lovely.loading)) and module.indexOf('~') is -1
         script = document.createElement('script')
 
         script.src    = url.replace(/([^:])\/\//g, '$1/')
@@ -112,6 +112,8 @@ modules_load_listener_for = (modules, callback, name)->
 
       delete(Lovely.loading[name])
 
+      check_all_waiting_loaders() # double checking in case of local modules
+
     return true # successfully loaded everything
 ```
 
@@ -124,6 +126,7 @@ Searches for an already loaded module
 ```coffee-aside
 find_module = (module, registry)->
   registry = registry || Lovely.modules
+  module   = module.replace(/~/g, '')
   version  = (module.match(/\-\d+\.\d+\.\d+.*$/) || [''])[0]
   name     = module.substr(0, module.length - version.length)
   version  = version.substr(1)
