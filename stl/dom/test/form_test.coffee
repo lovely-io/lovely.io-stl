@@ -145,6 +145,16 @@ describe "Form", ->
     it "should return 'null' of there is no such field", get (form)->
       (form.input('non-existing') is undefined).should.be.true
 
+    it "should return a NodeList for radio fields", get (form, $, window, document)->
+      fields = form.input('who')
+
+      fields.should.be.instanceof $.NodeList
+
+      fields.should.have.length 2
+
+      fields[0]._.should.equal document.getElementById('radio-1')
+      fields[1]._.should.equal document.getElementById('radio-2')
+
   describe '\b#focus()', ->
 
     it "should try to put the focus on the first input field", get (form)->

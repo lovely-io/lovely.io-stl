@@ -59,7 +59,13 @@ Form.include
   # @return {Input} field
   #
   input: (name)->
-    @first "*[name=\"#{name}\"]"
+    inputs = @find "*[name=\"#{name}\"]"
+
+    if inputs.length isnt 0 && inputs[0]._.type is 'radio'
+      inputs
+    else
+      inputs[0]
+
 
   #
   # Focuses on the first input element on the form (if any)

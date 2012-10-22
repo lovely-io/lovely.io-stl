@@ -4,6 +4,7 @@
   * Various navigation calls optimisation
   * `Element#on` calls optimisation
   * `Element#update` fix for string content with embedded `SCRIPT` tags in it
+  * `Form#input` now returns a `NodeList` for radio buttons
 
 2012-09-30 Nikolay Nemshilov
 
