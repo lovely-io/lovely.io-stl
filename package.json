@@ -1,6 +1,6 @@
 {
   "name":        "lovely",
-  "version":     "1.6.4",
+  "version":     "1.6.5",
   "description": "The Next Generation Front-Side Development Platform",
   "author":      "Nikolay Nemshilov <nemshilov@gmail.com>",
   "license": {
@@ -12,9 +12,10 @@
     "url":  "https://github.com/MadRabbit/lovely.io"
   },
   "dependencies": {
-    "uglify-js":     "=1.3.3",
-    "express":       ">=3.0.0rc4",
-    "coffee-script": ">=1.3.3",
+    "mocha":         ">=1.7.0",
+    "uglify-js":     "=1.3.4",
+    "express":       ">=3.0.2",
+    "coffee-script": ">=1.4.0",
     "sass":          ">=0.5.0",
     "stylus":        ">=0.29.0"
   },
