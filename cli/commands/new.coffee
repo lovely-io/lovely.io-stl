@@ -45,6 +45,7 @@ generate = (projectname, args) ->
   for filename in fs.readdirSync(project_tpl)
     if suitable(filename)
       source = fs.readFileSync("#{project_tpl}/#{filename}").toString()
+      filename = '.gitignore' if filename is 'gitignore'
 
       print " - #{filename}"
       fs.writeFileSync("#{directory}/#{filename}", patch_source(source))
