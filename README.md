@@ -25,7 +25,7 @@ Lovely IO console tools work with `node.js` and available via the `npm` service
 npm install -g lovely
 ```
 
-After that you'll need to run the following
+After that, you'll need to run the following
 
 ```
 lovely bootstrap
@@ -33,6 +33,14 @@ lovely bootstrap
 
 That will create all the necessary files and directories and auto-install all
 the `STL` packages in your `~/.lovely/` folder.
+
+Also, add the following into your `~/.bash_profile` or `~/.bashrc` file
+
+```
+export NODE_PATH=/usr/local/share/npm/lib/node_modules:$NODE_PATH
+```
+
+This will allow `lovely test` command work correctly
 
 ## Uninstalling
 
