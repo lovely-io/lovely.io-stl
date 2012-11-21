@@ -76,18 +76,19 @@ exports.init = (args) ->
     content_type = (name)->
       extension = (name || '').split('.')
       switch extension[extension.length - 1]
-        when 'css'  then return 'text/css'
-        when 'js'   then return 'text/javascript'
-        when 'ico'  then return 'image/icon'
-        when 'png'  then return 'image/png'
-        when 'jpg'  then return 'image/jpg'
-        when 'gif'  then return 'image/gif'
-        when 'swf'  then return 'application/x-shockwave-flash'
-        when 'eot'  then return "application/vnd.ms-fontobject"
-        when 'ttf'  then return "application/x-font-ttf"
-        when 'woff' then return "application/x-font-woff"
-        when 'json' then return "application/json"
-        else             return 'text/html'
+        when 'css'    then return 'text/css'
+        when 'js'     then return 'text/javascript'
+        when 'coffee' then return 'text/javascript'
+        when 'ico'    then return 'image/icon'
+        when 'png'    then return 'image/png'
+        when 'jpg'    then return 'image/jpg'
+        when 'gif'    then return 'image/gif'
+        when 'swf'    then return 'application/x-shockwave-flash'
+        when 'eot'    then return "application/vnd.ms-fontobject"
+        when 'ttf'    then return "application/x-font-ttf"
+        when 'woff'   then return "application/x-font-woff"
+        when 'json'   then return "application/json"
+        else               return 'text/html'
 
     if req.method is 'POST'
       console.log("\n POST:     ", JSON.stringify(req.body).grey)
@@ -95,24 +96,28 @@ exports.init = (args) ->
     if filename = file_in(process.cwd())
       console.log("") if filename.substr(filename.length-4) is 'html'
       console.log(" Sending:   "+ "/#{filename} (#{content_type(filename)})".grey)
-      data = fs.readFileSync("#{process.cwd()}/#{filename}")
+      filepath = "#{process.cwd()}/#{filename}"
 
     else if filename = file_in("#{lovelyrc.base}/packages")
       console.log(" Sending:   "+ "/#{filename} -> ~/.lovely/packages/#{filename}".grey)
-      data = fs.readFileSync("#{lovelyrc.base}/packages/#{filename}")
+      filepath = "#{lovelyrc.base}/packages/#{filename}"
 
     else if filename = file_in(shared)
       console.log("") if filename.substr(filename.length-4) is 'html'
       console.log(" Sending:   "+ "/#{filename} -> ~/.lovely/server/#{filename}".grey)
-      data = fs.readFileSync("#{shared}/#{filename}")
+      filepath = "#{shared}/#{filename}"
 
     else
       console.log("\n Sending:   "+ "404 Error".red + " /#{req.params[0]} is not found".grey)
-      data = fs.readFileSync("#{shared}/404.html")
+      filepath = "#{shared}/404.html"
+
+    content = fs.readFileSync(filepath).toString()
+    if /\.coffee$/.test(filename)
+      content  = require('coffee-script').compile(content, {bare: true})
 
     res.charset = 'utf-8'
     res.header('Content-Type', content_type(filename))
-    res.send data
+    res.send content
 
 
   server.listen(port)
