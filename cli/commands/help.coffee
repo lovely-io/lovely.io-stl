@@ -44,7 +44,7 @@ exports.help = (args) ->
   Usage: lovely <command>
 
   Where <command> is one of:
-      #{commands_list_in_batches(65).join("\n    ")}
+      #{commands_list_in_batches(50).join("\n    ")}
 
   Help usage: lovely help <command>
 
