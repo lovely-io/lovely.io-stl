@@ -75,12 +75,25 @@ for color, nums of styles
 
 
 #
+# The CLI arguments aliases and shortcuts
+#
+shortcuts =
+  's'         : 'server'
+  'b'         : 'build'
+  '-h'        : 'help'
+  '--help'    : 'help'
+  '-v'        : 'version'
+  '--version' : 'version'
+
+
+#
 # Kiks in the CLI commands handling
 #
 # @param {Array} of arguments
 #
 exports.init = (args) ->
   args[0] or= 'help'
+  args[0] = shortcuts[args[0]] if args[0] of shortcuts
 
   filename = "#{__dirname}/commands/#{args[0]}.coffee"
 
