@@ -10,13 +10,11 @@ options  = {}; # a local copy fo the options
 params   =
   user:   'your lovely.io username'
   name:   'your full name (for code generators)'
-  email:  'your email address'
   base:   'local lovely packages library location'
   host:   'the main lovely.io hosting location'
   auth:   'lovely.io authentication key'
   port:   'development server default port'
-  secret: 'lovely.io authentication token'
-  langs:  'languages to be used in new projects'
+  lang:   'languages to be used in new projects'
 
 
 #
@@ -47,7 +45,7 @@ save_options = ->
   str = "# Lovely IO config (auto-generated)\n\n"
 
   for key, value of options
-      str += "#{key.ljust(6)} = #{value} ".ljust(48) + "# #{params[key]}\n"
+      str += "#{key} = #{value} ".ljust(48) + "# #{params[key]}\n"
 
   require('fs').writeFileSync(location, str)
 
