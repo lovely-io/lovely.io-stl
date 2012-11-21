@@ -49,7 +49,7 @@ String.prototype.ljust = (length, filler) ->
   cur_len  = str.length
 
   while cur_len < length
-    str += filler.grey
+    str += if filler is ' ' then filler else filler.grey
     cur_len += 1
 
   str

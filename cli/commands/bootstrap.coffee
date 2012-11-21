@@ -28,10 +28,11 @@ bootstrap = (base_dir) ->
   if fs.existsSync("#{home_dir}/.lovelyrc")
     print " » " + "Already exists".yellow
   else
-    lovelyrc.base = base_dir
-    lovelyrc.host = 'http://lovely.io'
-    lovelyrc.port = '3000'
-    lovelyrc.name = 'Vasily Pupkin'
+    lovelyrc.base  = base_dir
+    lovelyrc.host  = 'http://lovely.io'
+    lovelyrc.port  = '3000'
+    lovelyrc.name  = 'Vasily Pupkin'
+    lovelyrc.langs = 'coffee,sass'
 
 
   print "Copying shared server content"

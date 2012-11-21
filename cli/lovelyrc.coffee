@@ -16,6 +16,7 @@ params   =
   auth:   'lovely.io authentication key'
   port:   'development server default port'
   secret: 'lovely.io authentication token'
+  langs:  'languages to be used in new projects'
 
 
 #
@@ -46,7 +47,7 @@ save_options = ->
   str = "# Lovely IO config (auto-generated)\n\n"
 
   for key, value of options
-      str += "#{key} = #{value} ".ljust(48) + "# #{params[key]}\n"
+      str += "#{key.ljust(6)} = #{value} ".ljust(48) + "# #{params[key]}\n"
 
   require('fs').writeFileSync(location, str)
 

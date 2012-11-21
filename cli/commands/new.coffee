@@ -18,9 +18,11 @@ placeholders = {}
 generate = (projectname, args) ->
   directory    = "#{process.cwd()}/#{projectname}"
   project_tpl  = "#{__dirname}/../project_tpl"
-  use_coffee   = args.indexOf('--js')     == -1
-  use_stylus   = args.indexOf('--stylus') != -1
-  use_sass     = !use_stylus && args.indexOf('--css') == -1
+  use_coffee   = args.indexOf('--js')     is   -1 && lovelyrc.langs.indexOf('js')     is   -1
+  use_sass     = args.indexOf('--css')    is -1   && lovelyrc.langs.indexOf('css')    is   -1
+  use_stylus   = args.indexOf('--stylus') isnt -1 && lovelyrc.langs.indexOf('stylus') isnt -1
+  use_sass     = !use_stylus && use_sass
+
 
   placeholders =
     projectname: projectname,
