@@ -111,9 +111,9 @@ exports.init = (args) ->
       console.log("\n Sending:   "+ "404 Error".red + " /#{req.params[0]} is not found".grey)
       filepath = "#{shared}/404.html"
 
-    content = fs.readFileSync(filepath).toString()
+    content = fs.readFileSync(filepath)
     if /\.coffee$/.test(filename)
-      content  = require('coffee-script').compile(content, {bare: true})
+      content  = require('coffee-script').compile(content.toString(), {bare: true})
 
     res.charset = 'utf-8'
     res.header('Content-Type', content_type(filename))
