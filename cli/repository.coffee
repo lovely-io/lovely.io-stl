@@ -43,17 +43,17 @@ exports.save = (pack, build)->
       fs = require('fs')
 
       fs.mkdirSync("#{location}/images", 0o0755)
-      build = build.replace /('|")([^'"]+\.(gif|png|jpg|jpeg|svg|swf|eot|ttf|woff))\1/g,
+      build = build.replace /('|")(([^'"]+\.(gif|png|jpg|jpeg|svg|swf|eot|ttf|woff))|(\/assets\/[a-z0-9]+))\1/g,
       (match, q, url)->
-        if url.indexOf('http://') > -1
+        if url.indexOf('http://') > -1 or url.indexOf('/assets/') is 0
           url = url.replace(/http:\/\/[^\/]+/, '')
 
           do (url)->
             # downloading the image
-            require('../hosting').download url,
-              "#{location}/images/#{url.replace(/^\/[^\/]+\/[^\/]+\//, '')}"
+            require('./hosting').download url,
+              "#{location}/images/#{url.replace(/^\/[^\/]+\/[^\/]+\//, '').replace('/assets/', '')}"
 
-          url = "images/#{url.replace(/^\/[^\/]+\/[^\/]+\//, '')}"
+          url = "images/#{url.replace(/^\/[^\/]+\/[^\/]+\//, '').replace('/assets/', '')}"
 
         else
           # copying over a local file

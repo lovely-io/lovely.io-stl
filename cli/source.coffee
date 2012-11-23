@@ -213,7 +213,7 @@ inline_css = (directory) ->
     // embedded css-styles
     (function() {
       var style = document.createElement('style');
-      var rules = document.createTextNode("#{style}");
+      var rules = document.createTextNode("#{style}".replace(/url\\("\\//g, 'url("'+ Lovely.hostUrl));
 
       style.type = 'text/css';
       document.getElementsByTagName('head')[0].appendChild(style);
