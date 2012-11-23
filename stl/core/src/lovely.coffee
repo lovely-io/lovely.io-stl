@@ -32,7 +32,7 @@ Lovely = ->
 
   for name, i in modules
     if name of Lovely.bundle
-        modules[i] = "#{name}-#{Lovely.bundle[name]}"
+      modules[i] = "#{name}-#{Lovely.bundle[name]}"
 
   check_modules_load = modules_load_listener_for(modules, callback, current)
 
@@ -154,6 +154,6 @@ find_host_url = ->
 
     for script in scripts
       if (match = (script.getAttribute('src') || '').match(re))
-        return match[1]
+        return Lovely.hostUrl = match[1]
 
   Lovely.hostUrl
