@@ -108,6 +108,7 @@ compile = (directory)->
     module_name+= "-#{options.version}" if options.version
     source = """
       Lovely("#{module_name}", [#{"'#{name}'" for name in dependencies}], function() {
+        var undefined = [][0];
         #{source.replace(/(\n)/g, "$1  ")}
 
         #{if source.indexOf('var exports = {};') > -1 then "return exports;" else ""}
