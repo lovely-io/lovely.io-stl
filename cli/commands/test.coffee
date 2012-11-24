@@ -52,4 +52,9 @@ exports.help = (args)->
       lovely test
       lovely test -R nyan
 
+  Options:
+    -R --reporter   name    #{'# reporter name dot,nyan,spec,etc anything mocha supports'.grey}
+    -u --ui         name    #{'# ui type tdd,bdd. see mocha docs for more info'.grey}
+    -m --minify             #{'# if you want to run tests agains fully minified version'.grey}
+
   """

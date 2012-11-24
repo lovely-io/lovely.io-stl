@@ -41,7 +41,8 @@ moddir  = (module)->
 # Simply bilds the module source and returns it as a string
 #
 exports.build = build = (module)->
-  builds[module.filename] or= source.compile(moddir(module))
+  method = if process.argv.indexOf('--minify') > -1 then 'minify' else 'compile'
+  builds[module.filename] or= source[method](moddir(module))
 
 
 #
