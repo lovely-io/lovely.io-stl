@@ -136,7 +136,8 @@ compile = (directory)->
 minify = (directory)->
   source = compile(directory)
   ugly   = require('uglify-js')
-  build  = ugly.parser.parse(source)
+  build  = ugly.parse(source)
+  output = ugly.OutputStream()
   except = ['Class']
 
   # extracting the exported class names so they didn't get mangled
@@ -144,18 +145,22 @@ minify = (directory)->
     for name in match[0].match(/[^a-zA-Z0-9_$][A-Z][a-zA-Z0-9_$]+/g) || []
       except.push(name.substr(1)) if except.indexOf(name.substr(1)) is -1
 
-  build  = ugly.uglify.ast_mangle(build, except: except)
-  build  = ugly.uglify.ast_squeeze(build)
-  build  = ugly.uglify.gen_code(build)
+  build.figure_out_scope()
+  build = build.transform(new ugly.Compressor(warnings: false))
 
-  # fixing the ugly `== 'string'` fuckups back to `=== 'string'`
-  build  = build.replace(/(typeof [a-z]+)==("[a-z]+")/g, '$1===$2')
+  build.figure_out_scope()
+  build.compute_char_frequency()
+  build.mangle_names(except: except)
 
-  # dom module build fix to get back the 'Element' constructor name
-  build  = build.replace(/Element=new Class\(Wrapper,\{constructor:function [a-zA-Z]\(/, "Element=new Class(Wrapper,{constructor:function Element(")
+  build.print(output)
+
+  build = output.get()
+
+  # fixing the ugly `'string'==` fuckups back to `'string' === `
+  build  = build.replace(/("[a-z]+")(\!|=)=(typeof [a-z_$]+)/g, '$1$2==$3')
 
   # getting back the constructor names
-  build  = add_constructor_names(build, true)
+  build  = add_constructor_names(build)
 
   # copying the header over
   (source.match(/\/\*[\s\S]+?\*\/\s/m) || [''])[0] + build
