@@ -84,7 +84,7 @@ exports.get = (url, options, callback) ->
     callback = options
     options  = {}
 
-  browser = new zombie.Browser(options)
+  browser = new zombie(options)
 
   browser.alerts = []
   browser.onalert (message) ->
