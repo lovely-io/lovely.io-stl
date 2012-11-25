@@ -39,7 +39,7 @@ describe 'Element', ->
 
   describe "inheritance usage", ->
     before ->
-      MyElement = new window.Lovely.Class $.Element,
+      MyElement = Element.inherit
         constructor: (tag, id, html) ->
           this.$super(tag, id: id, html: html)
 
@@ -63,7 +63,7 @@ describe 'Element', ->
 
   describe "dynamic typecasting", ->
     before ->
-      Table = new window.Lovely.Class $.Element,
+      Table = Element.inherit
         constructor: (one, two) ->
           this.$super(one, two)
 
@@ -96,7 +96,7 @@ describe 'Element', ->
       element.id = 'test'
       document.body.appendChild(element)
 
-      MyElement = new window.Lovely.Class Element
+      MyElement = Element.inherit({})
 
     it "should typecast the element into the specified wrapper", ->
       cast = $('#test').cast(MyElement)

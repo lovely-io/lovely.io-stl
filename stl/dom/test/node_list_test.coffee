@@ -21,12 +21,18 @@ Test.set "/node_list.html", """
 
 
 describe 'NodeList', ->
-  describe "\b#constructor", ->
-    get = (callback)->
-      Test.load module, "/node_list.html", ($, window)->
-        callback($.NodeList, $, window, window.document)
+  NodeList = $ = window = document = null
 
-    it "should accept a list of raw dom-elements as an argument", get (NodeList, $, window, document)->
+  before Test.load module, "/node_list.html", (dom, win)->
+    $        = dom
+    NodeList = $.NodeList
+    window   = win
+    document = win.document
+
+
+  describe "\b#constructor", ->
+
+    it "should accept a list of raw dom-elements as an argument", ->
       element1 = document.getElementById('one')
       element2 = document.getElementById('two')
 
@@ -41,25 +47,24 @@ describe 'NodeList', ->
 
 
   describe "DOM methods", ->
-    get = (callback)->
-      Test.load module, "/node_list.html", ($, window)->
-        list = new $.NodeList([
-          window.document.getElementById('one'),
-          window.document.getElementById('two'),
-          window.document.getElementById('three')])
+    list = null
 
-        callback(list, $, window, window.document)
+    before ->
+      list = new $.NodeList([
+        document.getElementById('one'),
+        document.getElementById('two'),
+        document.getElementById('three')])
 
-    it "should call the setter methods on every item on the list", get (list)->
+    it "should call the setter methods on every item on the list", ->
       list.setClass('test')
       list.map('getClass').toArray().should.eql ['test', 'test', 'test']
 
-    it "should return search itself back to the code by default", get (list)->
+    it "should return search itself back to the code by default", ->
       list.addClass('test').should.equal list
 
-    it "should return the result of the first element when calls a getter method", get (list)->
+    it "should return the result of the first element when calls a getter method", ->
       list.attr('id').should.eql 'one'
 
-    it "should return 'null' back when the NodeList is empty", get (list, $)->
+    it "should return 'null' back when the NodeList is empty", ->
       (new $.NodeList([]).addClass('test') is null).should.be.true
 

@@ -18,20 +18,24 @@ Test.set "/events.html", """
   """
 
 describe "Element Events", ->
-  get = (callback)->
-    Test.load module, "/events.html", ($, window, browser)->
-      element = new $.Element(window.document.getElementById('test'))
-      callback(element, $, window, window.document, browser)
+  $ = element = window = document = browser = null
+
+  before Test.load module, '/events.html', (dom, win, bro)->
+    $        = dom
+    browser  = bro
+    window   = win
+    document = win.document
+    element  = new $.Element(document.getElementById('test'))
 
   describe "#on", ->
 
-    it "should attach event listeners", get (element)->
+    it "should attach event listeners", ->
       callback = ->
       element.on('click', callback)
       element.ones('click', callback).should.be.true
 
 
-    it "should actually listen to the events", get (element, $, window, document, browser)->
+    it "should actually listen to the events", ->
       event    = null
       context  = null
 
@@ -44,7 +48,7 @@ describe "Element Events", ->
       event.target.should.equal element
       context.should.equal      element
 
-    it "should handle calls by name", get (element, $, window, document, browser)->
+    it "should handle calls by name", ->
       element.setClass('')
       element.on('click', 'setClass', 'call-by-name')
 
@@ -52,7 +56,7 @@ describe "Element Events", ->
 
       element._.className.should.equal 'call-by-name'
 
-    it "should stop event when the callback returns 'false'", get (element, $, window, document, browser)->
+    it "should stop event when the callback returns 'false'", ->
       event = null
       element.no('click').on('click', (e) -> event = e; false)
 
@@ -61,13 +65,13 @@ describe "Element Events", ->
       event.stopped.should.be.true
 
 
-    it "should return the element itself back", get (element)->
+    it "should return the element itself back", ->
       element.on('click', ->).should.equal element
 
 
   describe "#no", ->
 
-    it "should remove event listener", get (element, $, window, document, browser)->
+    it "should remove event listener", ->
       event = null
       element.on('click', (e)-> event)
 
@@ -77,13 +81,13 @@ describe "Element Events", ->
 
       (event is null).should.be.true
 
-    it "should return element itself back to the code", get (element)->
+    it "should return element itself back to the code", ->
       element.no('click').should.equal element
 
 
   describe "#ones", ->
 
-    it "should return 'true' for registered events", get (element)->
+    it "should return 'true' for registered events", ->
       callback = ->
       element.on('click', callback)
 
@@ -91,7 +95,7 @@ describe "Element Events", ->
       element.ones('click', callback).should.be.true
 
 
-    it "should return 'false' for unregistered events", get (element)->
+    it "should return 'false' for unregistered events", ->
       callback = ->
       element.on('click', callback)
 
@@ -101,7 +105,7 @@ describe "Element Events", ->
 
   describe "#emit", ->
 
-    it "should emit an event on an element", get (element, $)->
+    it "should emit an event on an element", ->
       event = null
       element.on('click', (e) -> event = e)
       element.emit('click')
@@ -110,7 +114,7 @@ describe "Element Events", ->
       event.type.should.equal    'click'
       event.target.should.equal  element
 
-    it "should attach any sort of event properties", get (element)->
+    it "should attach any sort of event properties", ->
       event = null
       element.on('click', (e) -> event = e)
       element.emit('click', attr1: 1, attr2: 2)
@@ -119,7 +123,7 @@ describe "Element Events", ->
       event.attr2.should.eql 2
 
 
-    it "should bypass the event to it's parent", get (element, $, window, document)->
+    it "should bypass the event to it's parent", ->
       event1 = null
       event2 = null
       body   = new $.Element(document.body)
@@ -133,7 +137,7 @@ describe "Element Events", ->
       event1.should.equal         event2
 
 
-    it "should not bypass the event if it was stopped", get (element, $, window, document)->
+    it "should not bypass the event if it was stopped", ->
       event1 = null
       event2 = null
       body   = new $.Element(document.body)
@@ -147,7 +151,7 @@ describe "Element Events", ->
       (event2 is null).should.be.true
 
 
-    it "should change the 'currentTarget' property as the event bubbles", get (element, $, window, document)->
+    it "should change the 'currentTarget' property as the event bubbles", ->
       current1 = null
       current2 = null
       body     = new $.Element(document.body)
@@ -162,5 +166,5 @@ describe "Element Events", ->
       current2.should.equal body
 
 
-    it "should return the element itself back to the code", get (element)->
+    it "should return the element itself back to the code", ->
       element.emit('click').should.equal element

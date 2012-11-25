@@ -6,13 +6,17 @@
 {Test} = require('lovely')
 
 describe 'Event', ->
-  get = (callback)->
-    Test.load module, ($, window)->
-      callback($.Event, $, window, window.document)
+  $ = Event = window = document = null
+
+  before Test.load module, (dom, win)->
+    $        = dom
+    Event    = $.Event
+    window   = win
+    document = win.document
 
   describe "constructor", ->
 
-    it "should copy properties from a raw dom-event", get (Event)->
+    it "should copy properties from a raw dom-event", ->
       raw =
         type:     'check'
         pageX:    222
@@ -37,7 +41,7 @@ describe 'Event', ->
       event.shiftKey.should.equal raw.shiftKey
 
 
-    it "should wrap the target elements", get (Event, $, window, document)->
+    it "should wrap the target elements", ->
       target  = document.createElement('div')
       related = document.createElement('div')
       current = document.createElement('div')
@@ -55,7 +59,7 @@ describe 'Event', ->
       event.currentTarget._.should.equal current
       event.relatedTarget._.should.equal related
 
-    it "should handle the webkit text-node triggered events", get (Event, $, window, document)->
+    it "should handle the webkit text-node triggered events", ->
       text    = document.createTextNode('boo')
       element = document.createElement('div')
       element.appendChild(text)
@@ -64,14 +68,14 @@ describe 'Event', ->
 
       event.target._.should.equal element
 
-    it "should allow to create events just by name", get (Event)->
+    it "should allow to create events just by name", ->
       event = new Event('my-event')
 
       event.should.be.instanceOf Event
       event.type.should.equal    'my-event'
       event._.should.eql         type: 'my-event'
 
-    it "should copy custom properties to the custom events", get (Event)->
+    it "should copy custom properties to the custom events", ->
       event = new Event('my-event', myProperty: 'my-value')
 
       event.myProperty.should.equal 'my-value'
@@ -83,7 +87,7 @@ describe 'Event', ->
 
   describe "#stopPropagation()", ->
 
-    it "should call 'stopPropagation()' on raw event when available", get (Event)->
+    it "should call 'stopPropagation()' on raw event when available", ->
       raw   = type: 'click', stopPropagation: -> @called = true
       event = new Event(raw)
 
@@ -92,20 +96,20 @@ describe 'Event', ->
       raw.called.should.be.true
       (raw.cancelBubble is undefined).should.be.true
 
-    it "should set the @stopped = true property", get (Event)->
+    it "should set the @stopped = true property", ->
       event = new Event('my-event')
 
       event.stopPropagation()
 
       event.stopped.should.be.true
 
-    it "should return the event itself back", get (Event)->
+    it "should return the event itself back", ->
       event = new Event('my-event')
       event.stopPropagation().should.equal event
 
   describe "#preventDefault()", ->
 
-    it "should call 'preventDefault()' on a raw event when available", get (Event)->
+    it "should call 'preventDefault()' on a raw event when available", ->
       raw   = type: 'click', preventDefault: -> @called = true
       event = new Event(raw)
 
@@ -114,13 +118,13 @@ describe 'Event', ->
       raw.called.should.be.true
       (raw.returnValue is undefined).should.be.true
 
-    it "should return the event itself back to the code", get (Event)->
+    it "should return the event itself back to the code", ->
       event = new Event('my-event')
       event.preventDefault().should.equal event
 
   describe "#stop()", ->
 
-    it "should call 'preventDefault' and 'stopPropagation' methods", get (Event)->
+    it "should call 'preventDefault' and 'stopPropagation' methods", ->
       event = new Event('my-event')
       event.stopPropagation = -> @stopped   = true; return @
       event.preventDefault  = -> @prevented = true; return @
@@ -130,34 +134,34 @@ describe 'Event', ->
       event.stopped.should.be.true
       event.prevented.should.be.true
 
-    it "should return event itself back to the code", get (Event)->
+    it "should return event itself back to the code", ->
       event = new Event('my-event')
       event.stop().should.equal event
 
 
   describe "#position()", ->
 
-    it "should return the event's position in a standard x:NNN, y:NNN hash", get (Event)->
+    it "should return the event's position in a standard x:NNN, y:NNN hash", ->
       event = new Event pageX: 222, pageY: 444
 
       event.position().should.eql x: 222, y: 444
 
   describe "#offset()", ->
 
-    it "should return event's relative position in a standard x:NNN, y:NNN hash", get (Event, $)->
+    it "should return event's relative position in a standard x:NNN, y:NNN hash", ->
       target = new $.Element('div')
       target.position = -> x: 200, y: 300
       event  = new Event type: 'click', target: target, pageX: 250, pageY: 360
 
       event.offset().should.eql x: 50, y: 60
 
-    it "should return 'null' if target is not an element", get (Event, $, window, document)->
+    it "should return 'null' if target is not an element", ->
       event = new Event type: 'click', target: new $.Document(document)
 
       (event.offset() is null).should.be.true
 
   describe "#find('css-rule')", ->
 
-    it "should return 'null' if there is no 'target' property", get (Event)->
+    it "should return 'null' if there is no 'target' property", ->
       event = new Event('my-event')
       (event.find('something') is null).should.be.true

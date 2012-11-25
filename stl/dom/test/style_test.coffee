@@ -8,7 +8,8 @@
 describe 'Style', ->
   $ = Element = Style = null
 
-  before Test.load(module, (obj)-> $ = obj; Element = $.Element; Style = $.Style)
+  before Test.load module, (dom)->
+    $ = dom; Element = $.Element; Style = $.Style
 
   it "should be registered as a dom-wrapper", ->
     $.Wrapper.get('style').should.equal Style
