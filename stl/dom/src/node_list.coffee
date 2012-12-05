@@ -55,3 +55,16 @@ class NodeList extends core.List
       }`
 
     return this
+
+  #
+  # Syntax sugar for elements existance checks
+  #
+  #     if $('#my-element').exists()
+  #       console.log("Awesome!")
+  #     else
+  #       console.log("Bumer :/")
+  #
+  # @return {Boolean} check result
+  #
+  exists: ->
+    @length isnt 0

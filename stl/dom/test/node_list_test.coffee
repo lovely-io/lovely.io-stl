@@ -68,3 +68,16 @@ describe 'NodeList', ->
     it "should return 'null' back when the NodeList is empty", ->
       (new $.NodeList([]).addClass('test') is null).should.be.true
 
+  describe "\b#exists()", ->
+
+    it "should return 'false' for empty lists", ->
+      list = new NodeList([])
+      list.exists().should.be.false
+
+    it "should return 'true' for non-empty lists", ->
+      list = new NodeList([document.getElementById('one')])
+      list.exists().should.be.true
+
+
+
+
