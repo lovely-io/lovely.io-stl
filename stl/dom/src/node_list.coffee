@@ -1,28 +1,24 @@
 #
 # DOM-collections handling interface
 #
-#     :coffee
 #     new NodeList([raw1, raw2, raw3])
 #
 # {NodeList} is a subclass of the {core.List} which is a
 # subclass of plain {Array}, so you can simply iterate
 # through it
 #
-#     :coffee
 #     for element in new NodeList([e1, e2, e3])
 #       element.addClass('boo-hoo')
 #
 # You also can use any JavaScript 1.8 methods with it
 # on any browser
 #
-#     :coffee
 #     new NodeList([e1,..]).filter (item)->
 #       item.hasClas('boo-hoo')
 #
 # And you can make calls-by-name which are allowed by the
 # {core.List} unit
 #
-#     :coffee
 #     new NodeList([e1, e2, ...])
 #       .filter('hasClass', 'boo-hoo')
 #       .each('removeClass', 'trololo')
