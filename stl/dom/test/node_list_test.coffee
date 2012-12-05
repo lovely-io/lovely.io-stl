@@ -45,6 +45,11 @@ describe 'NodeList', ->
       search[0]._.should.equal element1
       search[1]._.should.equal element2
 
+    it "should make an empty list when called without arguments", ->
+      list = new NodeList()
+      list.length.should.equal 0
+      (list[0] is undefined).should.be.true
+
 
   describe "DOM methods", ->
     list = null

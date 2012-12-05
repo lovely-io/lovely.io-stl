@@ -50,6 +50,7 @@ class NodeList extends core.List
         this[i] = Wrapper_Cache[raw_list[i][UID_KEY]] || new Element(raw_list[i]);
       }`
     else
+      raw_list = [] if raw_list is undefined
       `for (var i=0, l=this.length=raw_list.length, key; i < l; i++) {
         this[i] = raw_list[i] instanceof Element ? raw_list[i] : (Wrapper_Cache[raw_list[i][UID_KEY]] || new Element(raw_list[i]));
       }`
