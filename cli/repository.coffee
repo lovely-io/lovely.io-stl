@@ -45,10 +45,8 @@ exports.save = (pack, build)->
       fs.mkdirSync("#{location}/images", 0o0755)
       build = build.replace /('|")(([^'"]+\.(gif|png|jpg|jpeg|svg|swf|eot|ttf|woff))|([^'"]*\/assets\/[a-z0-9]+))\1/g,
       (match, q, url)->
-        console.log(url)
         if url.indexOf('http://') is 0 or url.indexOf('/assets/') is 0
           url = url.replace(/http:\/\/[^\/]+/, '')
-          console.log(url)
 
           do (url)->
             # downloading the image
