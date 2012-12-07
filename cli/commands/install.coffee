@@ -23,11 +23,18 @@ local_install = ->
 #
 # Makes a package installation from the hosting app
 #
-remote_install = (args)->
+remote_install = (names)->
   hosting = require('../hosting')
   repo    = require('../repository')
 
-  sout "» Downloading the package from the server".ljust(61)
+  if args = names[0].match(/^(.+)\-(\d+\.\d+\.\d+)$/)
+    args  = [args[1], args[2]]
+  else
+    args  = [names[0], undefined]
+
+  names.shift()
+
+  sout "» Downloading #{args[0].magenta} "+ "package from the server".ljust(61 - 15 - args[0].length)
   hosting.get_package args[0], args[1], (pack, build)->
     sout "Done\n".green
 
@@ -42,6 +49,8 @@ remote_install = (args)->
     sout "» Saving the package in ~/.lovely/packages/#{pack.name} ".ljust(61)
     repo.save(pack, build)
     sout "Done\n".green
+
+    remote_install(names) if names.length > 0
 
 
 #
@@ -66,7 +75,7 @@ exports.help = (args) ->
   Install a lovely package
 
   Usage:
-      lovely install <package-name>[ <version>]
+      lovely install <package-name>[-<version>] ...
 
   To install your own package locally, run:
       lovely install
