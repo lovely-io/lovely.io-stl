@@ -1,7 +1,7 @@
 #
 # Package files parser/validator
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2012 Nikolay Nemshilov
 #
 
 
@@ -20,7 +20,7 @@ validate = (data) ->
   data.license     || errors.push("miss the 'license' field")
 
   data.version.match(/^\d+\.\d+\.\d+$/) ||
-    errors.push("'version' should match the 'd+.d+.d+' format")
+    errors.push("'version' should match the '\d+.\d+.\d+' format")
 
   if errors.length
     print "Failed to parse the 'package.json' file:\n".red +
@@ -31,13 +31,15 @@ validate = (data) ->
 # Reads the package data out fo the given dreictory
 #
 exports.read = read = (directory) ->
+  fs          = require('fs')
   directory or= process.cwd()
 
-  data = require("fs").readFileSync("#{directory}/package.json")
-  data = JSON.parse(data.toString())
+  for name in ['lovely', 'package']
+    if fs.existsSync("#{directory}/#{name}.json")
+      data = fs.readFileSync("#{directory}/#{name}.json")
+      data = JSON.parse(data.toString())
 
-  validate(data)
-
+  if data then validate(data) else print_error("could not find package.json or lovely.json files in this directory")
   data
 
 #
