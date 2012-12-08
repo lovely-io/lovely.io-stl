@@ -177,6 +177,10 @@ build_style = (style, format)->
     require('stylus').render style, (err, css) ->
       if err then console.log(err) else style = css
 
+  if format is 'scss'
+    require('node-sass').render style, (err, css)->
+      if err then console.log(err) else style = css
+
   return style
 
 
@@ -187,7 +191,7 @@ build_style = (style, format)->
 # @return {String} inlined css
 #
 inline_css = (directory) ->
-  for format in ['css', 'sass', 'styl']
+  for format in ['css', 'sass', 'styl', 'scss']
     if fs.existsSync("#{directory}/main.#{format}")
       style = fs.readFileSync("#{directory}/main.#{format}").toString()
       break

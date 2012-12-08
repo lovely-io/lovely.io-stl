@@ -19,9 +19,10 @@ generate = (projectname, args) ->
   directory    = "#{process.cwd()}/#{projectname}"
   project_tpl  = "#{__dirname}/../project_tpl"
   use_coffee   = args.indexOf('--js')     is   -1 && lovelyrc.lang.indexOf('js')     is   -1
-  use_sass     = args.indexOf('--css')    is -1   && lovelyrc.lang.indexOf('css')    is   -1
-  use_stylus   = args.indexOf('--stylus') isnt -1 && lovelyrc.lang.indexOf('stylus') isnt -1
-  use_sass     = !use_stylus && use_sass
+  use_sass     = args.indexOf('--css')    is -  1 && lovelyrc.lang.indexOf('css')    is   -1
+  use_scss     = args.indexOf('--scss')   isnt -1 || lovelyrc.lang.indexOf('scss')   isnt -1
+  use_stylus   = args.indexOf('--stylus') isnt -1 || lovelyrc.lang.indexOf('stylus') isnt -1
+  use_sass     = !use_scss && !use_stylus && use_sass
 
 
   placeholders =
@@ -37,12 +38,12 @@ generate = (projectname, args) ->
 
   # just checking if the file should be copied over
   suitable = (filename) ->
-    ((use_coffee and filename != 'main.js')      or
-    (!use_coffee and filename != 'main.coffee')) and
-    ((use_stylus and filename != 'main.css' and filename != 'main.sass') or
-    (!use_stylus and filename != 'main.styl'))   and
-    ((use_sass   and filename != 'main.css' and filename != 'main.styl') or
-    (!use_sass   and filename != 'main.sass'))
+    switch filename.split('.').pop()
+      when 'js'     then return !use_coffee
+      when 'coffee' then return  use_coffee
+      when 'sass'   then return  use_sass
+      when 'scss'   then return  use_scss
+      when 'stylus' then return  use_stylus
 
   for filename in fs.readdirSync(project_tpl)
     if suitable(filename)
@@ -180,6 +181,7 @@ exports.help = (args) ->
   Options:
       --js         use JavaScript for scripting
       --css        use CSS for styles
+      --scss       use SCSS for styles
       --stylus     use Stylus for styles
 
   """
