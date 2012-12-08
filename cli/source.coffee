@@ -167,6 +167,20 @@ minify = (directory)->
 
 
 #
+# Converts various formats into vanilla CSS
+#
+# @param {String} original code
+# @param {String} format 'sass', 'scss', 'styl', 'css'
+#
+build_style = (style, format)->
+  if format in ['sass', 'styl']
+    require('stylus').render style, (err, css) ->
+      if err then console.log(err) else style = css
+
+  return style
+
+
+#
 # Embedds the styles as an inline javascript
 #
 # @param {String} package directory root
@@ -176,19 +190,12 @@ inline_css = (directory) ->
   for format in ['css', 'sass', 'styl']
     if fs.existsSync("#{directory}/main.#{format}")
       style = fs.readFileSync("#{directory}/main.#{format}").toString()
+      break
 
   return "" if !style
 
-  # converting from various formats
-  if format is 'sass'
-    style = require('sass').render(style)
-  else if format is 'styl'
-    require('stylus').render style, (err, src) ->
-      if err then console.log(err) else style = src
-
-
   # minfigying the stylesheets
-  style = style
+  style = build_style(style, format)
 
   # preserving IE hacks
   .replace(/\/\*\\\*\*\/:/g, '_ie8_s:')
@@ -233,5 +240,6 @@ inline_css = (directory) ->
 
   """
 
-exports.compile = compile
-exports.minify  = minify
+exports.compile  = compile
+exports.minify   = minify
+exports.style    = build_style

@@ -78,7 +78,7 @@ exports.init = (args) ->
       switch extension[extension.length - 1]
         when 'css'    then return 'text/css'
         when 'sass'   then return 'text/css'
-        when 'styl'   then return 'text/styl'
+        when 'styl'   then return 'text/css'
         when 'js'     then return 'text/javascript'
         when 'coffee' then return 'text/javascript'
         when 'ico'    then return 'image/icon'
@@ -115,12 +115,11 @@ exports.init = (args) ->
 
     content = fs.readFileSync(filepath)
     if /\.coffee$/.test(filename)
-      content = require('coffee-script').compile(content.toString(), {bare: true})
+      require('coffee-script').compile(content.toString(), {bare: true})
     if /\.sass$/.test(filename)
-      content = require('sass').render(content.toString())
+      content = source.style(content.toString(), 'sass')
     if /\.styl$/.test(filename)
-      require('stylus').render content.toString(), (err, src) ->
-        if err then console.log(err) else content = src
+      content = source.style(content.toString(), 'styl')
 
     res.charset = 'utf-8'
     res.header('Content-Type', content_type(filename))

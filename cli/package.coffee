@@ -39,7 +39,7 @@ exports.read = read = (directory) ->
       data = fs.readFileSync("#{directory}/#{name}.json")
       data = JSON.parse(data.toString())
 
-  if data then validate(data) else print_error("could not find package.json or lovely.json files in this directory")
+  data && validate(data)
   data
 
 #
