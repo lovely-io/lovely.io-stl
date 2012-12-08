@@ -1,27 +1,30 @@
 html, body {
-  font-family: Trebuchet MS;
-  font-size: 11pt;
-  margin: 0;
+  font-family: Verdana, Helvetica;
+  font-size:   14px;
+  margin:      0;
 }
 html {
-  padding: 0 10em;
-  background: #DDD;
-  height: 100%;
+  padding:    0 10em;
+  background: #eee;
+  height:     100%;
 }
 body {
-  padding: 0 2em;
-  background: white;
-  min-height: 100%;
+  padding:       0 2em;
+  background:    white;
+  min-height:    100%;
+  border:        1px solid #ddd;
+  border-top:    none;
+  border-bottom: none;
 }
-h1, h2, h3, h4 {
-  font-family: Georgia;
-  color: #333;
+h1, h2, h3, h4, label, dd {
+  font-family: Trebuchet MS;
+  color:       #444;
 }
 
 h1 {
-  margin: 0;
-  padding: 0;
-  padding-top: .8em;
+  margin:          0;
+  padding:         0;
+  padding-top:    .8em;
   padding-bottom: .5em;
 }
 h2 {
@@ -29,11 +32,11 @@ h2 {
 }
 p.white-space {
   display: block;
-  height: 10em;
-  margin: 0;
+  height:  10em;
+  margin:  0;
   padding: 0;
 }
 tt {
   font-family: "Courier New";
-  background: #ddd;
+  background:  #ddd;
 }
