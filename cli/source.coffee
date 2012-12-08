@@ -11,19 +11,21 @@ fs   = require('fs')
 # Preconverts coffe-script into javascript
 #
 # @param {String} CoffeeScript
+# @param {String} patch
 # @return {String} JavaScript
 #
-convert_from_coffee = (source)->
-  # hijacking the Coffee's class definitions and converting them in our classes
-  source = source.replace /(\n\s*)class\s+([^\s]+)(\s+extends\s+([^\s]+))?/g,
-    (match, start, Klass, smth, Super)->
-      if !Super then "#{start}#{Klass} = new Class"
-      else "#{start}#{Klass} = new Class #{Super},"
+convert_from_coffee = (source, patch)->
+  if patch
+    # hijacking the Coffee's class definitions and converting them in our classes
+    source = source.replace /(\n\s*)class\s+([^\s]+)(\s+extends\s+([^\s]+))?/g,
+      (match, start, Klass, smth, Super)->
+        if !Super then "#{start}#{Klass} = new Class"
+        else "#{start}#{Klass} = new Class #{Super},"
 
-  # replacing teh Coffee's 'super' calls with our own class calls
-  source = source.replace /([^\w$\.])super(\(|\s)(.*?)([\)\n;])/g,
-    (match, start, b1, params, b2)->
-      "#{start}this.$super(#{params});"
+    # replacing teh Coffee's 'super' calls with our own class calls
+    source = source.replace /([^\w$\.])super(\(|\s)(.*?)([\)\n;])/g,
+      (match, start, b1, params, b2)->
+        "#{start}this.$super(#{params});"
 
   # building the basic scripts
   source = require('coffee-script').compile(source, {bare: true})
@@ -48,6 +50,26 @@ add_constructor_names = (source)->
       else match.toString()
 
 #
+# Assembles the main source file and converts it into javascript
+#
+# @param {String} original coffeescript
+# @param {String} format name
+# @param {Boolean} patch for Lovely.IO module
+# @return {String} piece of javascript
+#
+assemble = (source, format, directory, patch)->
+  directory or= process.cwd()
+
+  # inserting the related files
+  source = source.replace /(\n([ \t]*))include[\(| ]+['"](.+?)['"][\)]*/mg,
+    (m, start, spaces, filename) ->
+      start + fs.readFileSync("#{directory}/#{filename}.#{format}")
+      .toString().replace(/($|\n)/g, '$1'+spaces) + "\n\n"
+
+  if format is 'coffee' then convert_from_coffee(source, patch) else source
+
+
+#
 # Builds the actual source code of the current project
 #
 # @param {String} package directory root
@@ -57,18 +79,11 @@ compile = (directory)->
   directory or= process.cwd()
 
   options = require('./package').read(directory)
-  format  = fs.existsSync("#{directory}/main.coffee")
-  format  = if format then 'coffee' else 'js'
+  format  = if fs.existsSync("#{directory}/main.coffee") then 'coffee' else 'js'
   source  = fs.readFileSync("#{directory}/main.#{format}").toString()
 
-  # inserting the related files
-  source = source.replace /(\n([ \t]*))include[\(| ]+['"](.+?)['"][\)]*/mg,
-    (m, start, spaces, filename) ->
-      start + fs.readFileSync("#{directory}/#{filename}.#{format}")
-      .toString().replace(/($|\n)/g, '$1'+spaces) + "\n\n"
-
-  # converting coffee into javascript if needed
-  source = convert_from_coffee(source) if format is 'coffee'
+  # assembling the file with others
+  source  = assemble(source, format, directory, true)
 
   # adding the class names to the constructor functions
   source = add_constructor_names(source)
@@ -244,6 +259,7 @@ inline_css = (directory) ->
 
   """
 
+exports.assemble = assemble
 exports.compile  = compile
 exports.minify   = minify
 exports.style    = build_style

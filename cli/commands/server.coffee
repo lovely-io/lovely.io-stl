@@ -116,7 +116,7 @@ exports.init = (args) ->
 
     content = fs.readFileSync(filepath)
     if /\.coffee$/.test(filename)
-      require('coffee-script').compile(content.toString(), {bare: true})
+      content = source.assemble(content.toString(), 'coffee')
     if /\.sass$/.test(filename)
       content = source.style(content.toString(), 'sass')
     if /\.styl$/.test(filename)
