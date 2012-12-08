@@ -268,7 +268,7 @@ inline_css = (directory, not_lovely) ->
     // embedded css-styles
     (function() {
       var style = document.createElement('style');
-      var rules = document.createTextNode("#{style}")#{if not_lovely then '' else ".replace(/url\\(\"\\//g, 'url(\"'+ Lovely.hostUrl)"};
+      var rules = document.createTextNode("#{style}"#{if not_lovely then '' else ".replace(/url\\(\"\\//g, 'url(\"'+ Lovely.hostUrl)"});
 
       style.type = 'text/css';
       document.getElementsByTagName('head')[0].appendChild(style);
