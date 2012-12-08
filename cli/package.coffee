@@ -19,8 +19,8 @@ validate = (data) ->
   data.author      || errors.push("miss the 'author' field")
   data.license     || errors.push("miss the 'license' field")
 
-  data.version.match(/^\d+\.\d+\.\d+$/) ||
-    errors.push("'version' should match the '\d+.\d+.\d+' format")
+  data.version && (data.version.match(/^\d+\.\d+\.\d+$/) ||
+    errors.push("'version' should match the '\d+.\d+.\d+' format"))
 
   if errors.length
     print "Failed to parse the 'package.json' file:\n".red +

@@ -61,7 +61,7 @@ assemble = (source, format, directory, patch)->
   directory or= process.cwd()
 
   # inserting the related files
-  source = source.replace /(\n([ \t]*))include[\(| ]+['"](.+?)['"][\)]*/mg,
+  source = source.replace /(\n([ \t]*))include[\(| ]+['"](.+?)['"](\);|\))?/mg,
     (m, start, spaces, filename) ->
       start + fs.readFileSync("#{directory}/#{filename}.#{format}")
       .toString().replace(/($|\n)/g, '$1'+spaces) + "\n\n"
@@ -73,12 +73,14 @@ assemble = (source, format, directory, patch)->
 # Builds the actual source code of the current project
 #
 # @param {String} package directory root
+# @param {Boolean} vanilla (non lovely.io) module build
+# @param {Boolean} send `true` if you don't want the styles to be emebedded in the build
 # @return {String} raw source code
 #
-compile = (directory)->
+compile = (directory, vanilla, no_style)->
   directory or= process.cwd()
 
-  options = require('./package').read(directory)
+  options = require('./package').read(directory, vanilla) || {}
   format  = if fs.existsSync("#{directory}/main.coffee") then 'coffee' else 'js'
   source  = fs.readFileSync("#{directory}/main.#{format}").toString()
 
@@ -91,8 +93,27 @@ compile = (directory)->
   # adding the package dependencies
   source = source.replace('%{version}', options.version)
 
+  # vanilla, no lovely.io builds
+  if vanilla || !options.name
+    if options.name
+      header = "/**\n * #{options.name}"
+      header += " v#{options.version}" if options.version
+      header += "\n *\n * #{options.description}" if options.description
+      header += "\n *\n * Copyright (C) #{new Date().getFullYear()} #{options.author}" if options.author
+      header += "\n */\n"
+    else
+      header = ""
+
+
+    return header + """
+    (function (undefined) {
+      #{source.replace(/(\n)/g, '$1  ')}
+    }).apply(this);
+    #{if no_style then '' else inline_css(directory, true)}
+    """
+
   # creating a standard AMD layout
-  if options.name is 'core' # core doesn't use AMD
+  else if options.name is 'core' # core doesn't use AMD
     source = """
     (function(undefined) {
       var global = this;
@@ -108,7 +129,7 @@ compile = (directory)->
         if options.dependencies and options.dependencies[module]
           module += "-#{options.dependencies[module]}"
         dependencies.push(module) unless module is 'core' # default core shouldn't be on the list
-        return "#{start}this.Lovely.module('#{module}')"
+        return "#{start}Lovely.module('#{module}')"
 
     # adding the 'exports' object
     if /[^a-z0-9_\-\.]exports[^a-z0-9\_\-]/i.test(source)
@@ -128,7 +149,7 @@ compile = (directory)->
 
         #{if source.indexOf('var exports = {};') > -1 then "return exports;" else ""}
       });
-      #{inline_css(directory)}
+      #{if no_style then '' else inline_css(directory)}
       """
 
   # creating a standard header block
@@ -146,10 +167,12 @@ compile = (directory)->
 # Minifies the source code
 #
 # @param {String} package directory root
+# @param {Boolean} vanilla (non lovely.io) module build
+# @param {Boolean} send `true` if you don't want the styles to be emebedded in the build
 # @return {String} minified source code
 #
-minify = (directory)->
-  source = compile(directory)
+minify = (directory, vanilla, no_style)->
+  source = compile(directory, vanilla, no_style)
   ugly   = require('uglify-js')
   build  = ugly.parse(source)
   output = ugly.OutputStream()
@@ -205,7 +228,7 @@ build_style = (style, format)->
 # @param {String} package directory root
 # @return {String} inlined css
 #
-inline_css = (directory) ->
+inline_css = (directory, not_lovely) ->
   for format in ['css', 'sass', 'styl', 'scss']
     if fs.existsSync("#{directory}/main.#{format}")
       style = fs.readFileSync("#{directory}/main.#{format}").toString()
@@ -245,7 +268,7 @@ inline_css = (directory) ->
     // embedded css-styles
     (function() {
       var style = document.createElement('style');
-      var rules = document.createTextNode("#{style}".replace(/url\\("\\//g, 'url("'+ Lovely.hostUrl));
+      var rules = document.createTextNode("#{style}")#{if not_lovely then '' else ".replace(/url\\(\"\\//g, 'url(\"'+ Lovely.hostUrl)"};
 
       style.type = 'text/css';
       document.getElementsByTagName('head')[0].appendChild(style);

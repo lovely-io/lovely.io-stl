@@ -6,19 +6,34 @@
 exports.init = (args) ->
   fs       = require('fs')
   source   = require('../source')
-  location = process.cwd()
   pack     = require('../package')
+  vanilla  = args.indexOf('--vanilla')   isnt -1
+  no_style = args.indexOf('--no-styles') isnt -1 || args.indexOf('--no-style') isnt -1
+  location = process.cwd()
+  filename = location + "/build/"
 
-  location +=  "/build/"
-  fs.existsSync(location) || fs.mkdirSync(location, 0o0755)
+  sout "» Compiling: #{pack.name || ''}".ljust(32)
 
-  location += pack.name;
-  fs.writeFileSync(location + "-src.js", source.compile())
-  fs.writeFileSync(location + ".js",     source.minify())
+  fs.existsSync(filename) || fs.mkdirSync(filename, 0o0755)
 
-  system("gzip -c #{location}.js > #{location}.js.gz")
+  filename += pack.name || 'result';
+  fs.writeFileSync(filename + "-src.js", source.compile(location, vanilla, no_style))
+  fs.writeFileSync(filename + ".js",     source.minify(location, vanilla, no_style))
 
-  print "» Compiling: #{pack.name}".ljust(32) + " Done".green
+  system("gzip -c #{filename}.js > #{filename}.js.gz")
+
+  print " Done".green
+
+  if no_style # dumping styles in a separated file
+    sout "» Converting styles: #{pack.name || ''}".ljust(32)
+
+    for format in ['css', 'sass', 'styl', 'scss']
+      if fs.existsSync("#{location}/main.#{format}")
+        style = fs.readFileSync("#{location}/main.#{format}").toString()
+        fs.writeFileSync(filename + ".css", source.style(style, format))
+        print " Done".green
+        break
+
 
 
 exports.help = (args) ->
@@ -27,5 +42,9 @@ exports.help = (args) ->
 
   Usage:
       lovely build
+
+  Options:
+      --vanilla      vanilla (non lovely.io) module build
+      --no-styles    dump styles in a separated file
 
   """
