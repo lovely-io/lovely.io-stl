@@ -88,29 +88,7 @@ Element.include
     else @clear().insert(content)
 
     return @
-
-  #
-  # Appends the argument elements to this element
-  #
-  # @param {String|Element} content
-  # ....
-  # @return {Element} this
-  #
-  append: (first) ->
-    @insert if typeof(first) is "string" then A(arguments).join('') else arguments
-
-  #
-  # Inserts this element into the given one at given position
-  #
-  # @param {Element|HTMLElement|String} destination or '#element-id' string
-  # @param {String} optional position
-  # @return {Element} this
-  #
-  insertTo: (element, position) ->
-    Element.resolve(element).insert(@, position)
-
-    return @
-
+    
   #
   # Inserts the given content into the given position
   #
@@ -136,6 +114,29 @@ Element.include
     global_eval(scripts)
 
     return @
+    
+  #
+  # Inserts this element into the given one at given position
+  #
+  # @param {Element|HTMLElement|String} destination or '#element-id' string
+  # @param {String} optional position
+  # @return {Element} this
+  #
+  insertTo: (element, position) ->
+    Element.resolve(element).insert(@, position)
+
+    return @
+    
+  #
+  # Appends the argument elements to this element
+  #
+  # @param {String|Element} content
+  # ....
+  # @return {Element} this
+  #
+  append: (first) ->
+    @insert if typeof(first) is "string" then A(arguments).join('') else arguments
+
 
 
 
