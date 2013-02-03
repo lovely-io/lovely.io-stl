@@ -19,10 +19,11 @@ generate = (projectname, args) ->
   directory    = "#{process.cwd()}/#{projectname}"
   project_tpl  = "#{__dirname}/../project_tpl"
   use_coffee   = args.indexOf('--js')     is   -1 && lovelyrc.lang.indexOf('js')     is   -1
-  use_sass     = args.indexOf('--css')    is -  1 && lovelyrc.lang.indexOf('css')    is   -1
+  use_sass     = args.indexOf('--css')    is   -1 && lovelyrc.lang.indexOf('css')    is   -1
   use_scss     = args.indexOf('--scss')   isnt -1 || lovelyrc.lang.indexOf('scss')   isnt -1
   use_stylus   = args.indexOf('--stylus') isnt -1 || lovelyrc.lang.indexOf('stylus') isnt -1
   use_sass     = !use_scss && !use_stylus && use_sass
+  use_css      = !use_sass && !use_scss   && !use_stylus
 
 
   placeholders =
@@ -43,7 +44,8 @@ generate = (projectname, args) ->
       when 'coffee' then return  use_coffee
       when 'sass'   then return  use_sass
       when 'scss'   then return  use_scss
-      when 'stylus' then return  use_stylus
+      when 'styl'   then return  use_stylus
+      when 'css'    then return  use_css
       else               return  true
 
   for filename in fs.readdirSync(project_tpl)
