@@ -154,13 +154,10 @@ Element_insert =
       target.insertBefore(content, target.firstChild)
 
   after: (target, content)->
-    parent  = target.parentNode
-    sibling = target.nextSibling
-
-    if sibling is null
-      parent.appendChild(content)
+    if target.nextSibling is null
+      target.parentNode.appendChild(content)
     else
-      parent.insertBefore(content, sibling)
+      target.parentNode.insertBefore(content, target.nextSibling)
 
   before: (target, content)->
     target.parentNode.insertBefore(content, target)
