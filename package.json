@@ -12,13 +12,13 @@
     "url":  "https://github.com/MadRabbit/lovely.io"
   },
   "dependencies": {
-    "mocha":         ">=1.7.4",
-    "uglify-js":     "=2.2.2",
-    "express":       ">=3.0.4",
+    "mocha":         ">=1.8.1",
+    "uglify-js":     "=2.2.4",
+    "express":       ">=3.1.0",
     "zombie":        ">=1.4.1",
     "coffee-script": ">=1.4.0",
-    "node-sass":     ">=0.2.5",
-    "stylus":        ">=0.31.0"
+    "node-sass":     ">=0.2.6",
+    "stylus":        ">=0.32.0"
   },
   "bin":  "./bin/lovely",
   "main": "./cli/lovely.coffee"
