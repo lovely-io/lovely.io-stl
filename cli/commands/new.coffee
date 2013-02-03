@@ -44,6 +44,7 @@ generate = (projectname, args) ->
       when 'sass'   then return  use_sass
       when 'scss'   then return  use_scss
       when 'stylus' then return  use_stylus
+      else               return  true
 
   for filename in fs.readdirSync(project_tpl)
     if suitable(filename)
