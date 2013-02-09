@@ -22,4 +22,4 @@ See the API docs for the actual usage information
 
 This module is published under the terms of the `MIT` License
 
-Copyright (C) 2011-2012 Nikolay Nemshilov
+Copyright (C) 2011-2013 Nikolay Nemshilov
