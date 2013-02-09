@@ -1,7 +1,7 @@
 #
 # This file handles the dom-element manipulation
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
 Element.include
 
@@ -103,7 +103,7 @@ Element.include
     if typeof(content) isnt 'object'
       [content, scripts] = extract_scripts(''+content)
 
-    content  = content._ if content._
+    content  = content._ if `content._ != null`
     content  = Element_create_fragment(
       (if position in ['bottom', 'top'] then element
       else element.parentNode), content
@@ -111,7 +111,7 @@ Element.include
 
     Element_insert[position](element, content)
 
-    global_eval(scripts)
+    global_eval(scripts) if scripts isnt null
 
     return @
     
