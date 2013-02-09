@@ -1,6 +1,6 @@
 This file handles the dom-element manipulation
 
-Copyright (C) 2011 Nikolay Nemshilov
+Copyright (C) 2011-2013 Nikolay Nemshilov
 
 ```coffee-aside
 Element.include
@@ -98,15 +98,31 @@ Replaces the element content
     return @
 ```
 
-Appends the argument elements to this element
+Inserts the given content into the given position
 
-@param {String|Element} content
-....
+@param {String|Element|Iterable} content
+@param {String} optional position 'bottom'/'top'/'before'/'after'/'instead'
 @return {Element} this
 
 ```coffee-aside
-  append: (first) ->
-    @insert if typeof(first) is "string" then A(arguments).join('') else arguments
+  insert: (content, position) ->
+    element  = @_
+    position = 'bottom' if position is undefined
+
+    if typeof(content) isnt 'object'
+      [content, scripts] = extract_scripts(''+content)
+
+    content  = content._ if `content._ != null`
+    content  = Element_create_fragment(
+      (if position in ['bottom', 'top'] then element
+      else element.parentNode), content
+    ) if content.nodeType is undefined
+
+    Element_insert[position](element, content)
+
+    global_eval(scripts) if scripts isnt null
+
+    return @
 ```
 
 Inserts this element into the given one at given position
@@ -122,31 +138,16 @@ Inserts this element into the given one at given position
     return @
 ```
 
-Inserts the given content into the given position
+Appends the argument elements to this element
 
-@param {String|Element|Iterable} content
-@param {String} optional position 'bottom'/'top'/'before'/'after'/'instead'
+@param {String|Element} content
+....
 @return {Element} this
 
 ```coffee-aside
-  insert: (content, position) ->
-    element  = @_
-    position = 'bottom' if position is undefined
+  append: (first) ->
+    @insert if typeof(first) is "string" then A(arguments).join('') else arguments
 
-    if typeof(content) isnt 'object'
-      [content, scripts] = extract_scripts(''+content)
-
-    content  = content._ if content._
-    content  = Element_create_fragment(
-      (if position in ['bottom', 'top'] then element
-      else element.parentNode), content
-    ) if content.nodeType is undefined
-
-    Element_insert[position](element, content)
-
-    global_eval(scripts)
-
-    return @
 
 
 
@@ -165,13 +166,10 @@ Element_insert =
       target.insertBefore(content, target.firstChild)
 
   after: (target, content)->
-    parent  = target.parentNode
-    sibling = target.nextSibling
-
-    if sibling is null
-      parent.appendChild(content)
+    if target.nextSibling is null
+      target.parentNode.appendChild(content)
     else
-      parent.insertBefore(content, sibling)
+      target.parentNode.insertBefore(content, target.nextSibling)
 
   before: (target, content)->
     target.parentNode.insertBefore(content, target)

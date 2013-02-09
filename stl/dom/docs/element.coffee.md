@@ -1,6 +1,6 @@
 Defines the basic dom-element wrapper
 
-Copyright (C) 2011 Nikolay Nemshilov
+Copyright (C) 2011-2013 Nikolay Nemshilov
 
 ```coffee-aside
 class Element extends Wrapper
@@ -28,12 +28,12 @@ Basic constructor
     if `options != null`
       for key of options
         switch key
-          when 'id'    then this._.id        = options[key]
-          when 'html'  then this._.innerHTML = options[key]
-          when 'class' then this._.className = options[key]
-          when 'style' then this.style         options[key]
-          when 'on'    then this.on            options[key]
-          else              this.attr     key, options[key]
+          when 'id'    then @_.id        = options[key]
+          when 'html'  then @_.innerHTML = options[key]
+          when 'class' then @_.className = options[key]
+          when 'style' then @style         options[key]
+          when 'on'    then @on            options[key]
+          else              @attr     key, options[key]
 
     return this
 ```
@@ -81,7 +81,9 @@ Resolves any sort of element's reference into an {Element} instance
 
 ```coffee-aside
 Element.resolve = (element)->
-  if typeof(element) is 'string'
+  if element instanceof Element
+    return element
+  else if typeof(element) is 'string'
     element = $(element)[0]
   else if element instanceof NodeList
     element = element[0]
