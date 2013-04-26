@@ -1,6 +1,6 @@
 {
   "name":        "lovely",
-  "version":     "1.8.4",
+  "version":     "2.0.0",
   "description": "The next generation front-side development platform",
   "author":      "Nikolay Nemshilov <nemshilov@gmail.com>",
   "license": {
@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "mocha":         "~1.9.0",
-    "should":        "~1.2.2",
+    "chai":          "~1.5.0",
     "uglify-js":     "~2.2.5",
     "express":       "~3.2.0",
-    "zombie":        "=2.0.0-alpha12",
+    "zombie":        "=2.0.0-alpha14",
     "coffee-script": "~1.6.2",
     "node-sass":     "~0.4.1",
     "stylus":        "~0.32.1"

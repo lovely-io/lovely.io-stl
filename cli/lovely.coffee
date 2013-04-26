@@ -12,18 +12,21 @@ source = require('./source')
 eval(source.compile(__dirname + "/../stl/core/"))
 module.exports = this.Lovely
 
-
 #
 # Defining the development tools initialization
 # so that it didn't bother until the code actually
 # called the `Lovely.Test` property
 #
-Test = null
 module.exports.__defineGetter__ 'Test', ->
-  Test or= require('./test/core')
+  require('./test/core')
 
-#
-# Deffering access to the patched asserts library
-#
+
+# Deffering access to the chai libs
 module.exports.__defineGetter__ 'assert', ->
-  require('./test/assert')
+  require('chai').assert
+
+module.exports.__defineGetter__ 'should', ->
+  require('chai').should
+
+module.exports.__defineGetter__ 'expect', ->
+  require('chai').expect
