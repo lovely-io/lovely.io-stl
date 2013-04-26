@@ -1,9 +1,9 @@
 #
 # The Element dom-manipulations module unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 Test.set "/manipulations.html": """
   <html>
@@ -235,7 +235,7 @@ describe "Element Manipulations", ->
 
     it "should return the element itself back", ->
       dummy = new $.Element('div', html: 'dummy')
-      dummy.insertTo('#test').should.be.same dummy
+      dummy.insertTo('#test').should.be.equal dummy
 
 
   describe "#insert(...)", ->

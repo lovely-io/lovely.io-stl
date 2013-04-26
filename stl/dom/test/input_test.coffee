@@ -1,9 +1,9 @@
 #
 # The `Input` unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 Test.set "/input.html", """
 <html>
@@ -99,7 +99,7 @@ describe "Input", ->
       form = input.form()
 
       form.should.be.instanceOf $.Form
-      form._.should.be.same     document.getElementById('test-form')
+      form._.should.be.equal     document.getElementById('test-form')
 
 
   describe '\b#value()', ->

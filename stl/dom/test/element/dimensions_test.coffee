@@ -1,9 +1,9 @@
 #
 # Element dimensions API tests
 #
-# Copyright (C) 2012 Nikolay Nemshilov
+# Copyright (C) 2012-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 
 Test.set "/dimensions.html", """

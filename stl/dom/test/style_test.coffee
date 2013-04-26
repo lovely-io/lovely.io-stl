@@ -1,9 +1,9 @@
 #
 # The `$.Style` custom wrapper tests
 #
-# Copyright (C) 2012 Nikolay Nemshilov
+# Copyright (C) 2012-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 describe 'Style', ->
   $ = Element = Style = null

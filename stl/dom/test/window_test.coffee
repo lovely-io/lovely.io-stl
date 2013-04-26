@@ -1,9 +1,9 @@
 #
 # The `Window` wrapper unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 
 describe 'Window', ->
@@ -42,7 +42,7 @@ describe 'Window', ->
   describe '#window', ->
 
     it "should return itself with this method", ->
-      window.window().should.be.same window
+      window.window().should.be.equal window
 
   describe '#size', ->
 
@@ -119,4 +119,4 @@ describe 'Window', ->
         pos_y.should.eql 400
 
       it "should return the window reference back", ->
-        window.scrolls(x:100).should.be.same window
+        window.scrolls(x:100).should.be.equal window

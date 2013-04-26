@@ -1,10 +1,10 @@
 #
 # The $.Browser hash tests
 #
-# Copyright (C) 2011-2012
+# Copyright (C) 2011-2013
 #
 
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 describe 'Browser', ->
 

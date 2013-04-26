@@ -1,9 +1,9 @@
 #
 # The `$` function unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 Test.set "/dollar.html": """
   <html>
@@ -45,7 +45,7 @@ describe '$', ->
       search.should.be.instanceOf    $.NodeList
       search.should.have.length 1
       search[0].should.be.instanceOf $.Element
-      search[0]._.should.be.same     document.getElementById('one')
+      search[0]._.should.be.equal     document.getElementById('one')
 
     it "should correctly find elements by class name", ->
       search = $('.one')
@@ -55,9 +55,9 @@ describe '$', ->
       search[0].should.be.instanceOf $.Element
       search[1].should.be.instanceOf $.Element
       search[2].should.be.instanceOf $.Element
-      search[0]._.should.be.same document.querySelector('#one   .one')
-      search[1]._.should.be.same document.querySelector('#two   .one')
-      search[2]._.should.be.same document.querySelector('#three .one')
+      search[0]._.should.be.equal document.querySelector('#one   .one')
+      search[1]._.should.be.equal document.querySelector('#two   .one')
+      search[2]._.should.be.equal document.querySelector('#three .one')
 
 
     it "should correctly find elements in a context", ->
@@ -65,8 +65,8 @@ describe '$', ->
 
       search.should.be.instanceOf $.NodeList
       search.should.have.length 2
-      search[0]._.should.be.same document.querySelector('#one .one')
-      search[1]._.should.be.same document.querySelector('#one .two')
+      search[0]._.should.be.equal document.querySelector('#one .one')
+      search[1]._.should.be.equal document.querySelector('#one .two')
 
 
     it "should accept dom-wrappers as the context", ->
@@ -75,8 +75,8 @@ describe '$', ->
 
       search.should.be.instanceOf $.NodeList
       search.should.have.length   2
-      search[0]._.should.be.same document.querySelector('#two .one')
-      search[1]._.should.be.same document.querySelector('#two .two')
+      search[0]._.should.be.equal document.querySelector('#two .one')
+      search[1]._.should.be.equal document.querySelector('#two .two')
 
 
     it 'should return an empty list when nothing found by id', ->
@@ -114,12 +114,12 @@ describe '$', ->
       win = $(window)
 
       win.should.be.instanceOf $.Window
-      win._.should.be.same window
+      win._.should.be.equal window
 
     it 'should return the same window wrapper back', ->
       win = $(window)
 
-      $(win).should.be.same win
+      $(win).should.be.equal win
 
   describe 'document wrapping', ->
 
@@ -127,12 +127,12 @@ describe '$', ->
       doc = $(document)
 
       doc.should.be.instanceOf $.Document
-      doc._.should.be.same document
+      doc._.should.be.equal document
 
     it 'should return the same wrapper if already wrapped', ->
       doc = $(document)
 
-      $(doc).should.be.same doc
+      $(doc).should.be.equal doc
 
   describe 'element wrapping', ->
 
@@ -141,10 +141,10 @@ describe '$', ->
       element = $(div)
 
       element.should.be.instanceOf $.Element
-      element._.should.be.same div
+      element._.should.be.equal div
 
     it 'should return the same wrapper if an element is already wrapped', ->
       div = document.getElementById('one')
       element = $(div)
 
-      $(element).should.be.same element
+      $(element).should.be.equal element

@@ -1,9 +1,9 @@
 #
 # The Element common methods section unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 Test.set "/commons.html", """
   <html>
@@ -163,7 +163,7 @@ describe 'Element Commons', ->
       win = element.window()
 
       win.should.be.instanceOf $.Window
-      win._.should.be.same     window
+      win._.should.be.equal     window
 
   describe "#data()", ->
 

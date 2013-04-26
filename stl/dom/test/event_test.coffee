@@ -1,9 +1,9 @@
 #
 # The `Event` unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 describe 'Event', ->
   $ = Event = window = document = null

@@ -1,9 +1,9 @@
 #
 # The `Form` unit test
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 Test.set "/form.html": """
 <html>
@@ -80,7 +80,7 @@ describe "Form", ->
       form.should.be.instanceOf Form
 
     it "should refer to the raw dom-element correctly", ->
-      form._.should.be.same document.getElementById('test')
+      form._.should.be.equal document.getElementById('test')
 
     it "should allow to create new forms programmatically", ->
       f = new Form(action: '/some.url', method: 'post')
@@ -173,7 +173,7 @@ describe "Form", ->
       focus.should.be.true
 
     it "should return the form itself back to the code", ->
-      form.focus().should.be.same form
+      form.focus().should.be.equal form
 
   describe "\b#blur()", ->
 
@@ -227,7 +227,7 @@ describe "Form", ->
       ]
 
     it "should return the form itself back to the code", ->
-      form.disable().should.be.same form
+      form.disable().should.be.equal form
 
   describe "\b#enable()", ->
 
@@ -254,7 +254,7 @@ describe "Form", ->
       ]
 
     it "should return the form itself back to the code", ->
-      form.enable().should.be.same form
+      form.enable().should.be.equal form
 
   describe "\b#values()", ->
 
@@ -311,7 +311,7 @@ describe "Form", ->
       called.should.be.true
 
     it "should return the form itself back to the code", ->
-      form.reset().should.be.same form
+      form.reset().should.be.equal form
 
   describe 'NodeList extension', ->
 
