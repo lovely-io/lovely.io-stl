@@ -1,7 +1,7 @@
 #
 # The standard lovely CLI testing utils
 #
-# Copyright (C) 2012
+# Copyright (C) 2012-2013
 #
 
 # exporting the server API

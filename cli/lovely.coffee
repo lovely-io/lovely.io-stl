@@ -1,8 +1,9 @@
 #
 # NodeJS lovely API
 #
+# Copyright (C) 2012-2013 Nikolay Nemshilov
+#
 source = require('./source')
-
 
 #
 # building the core package
@@ -26,7 +27,7 @@ module.exports.__defineGetter__ 'assert', ->
   require('chai').assert
 
 module.exports.__defineGetter__ 'should', ->
-  require('chai').should
+  require('chai').should()
 
 module.exports.__defineGetter__ 'expect', ->
   require('chai').expect

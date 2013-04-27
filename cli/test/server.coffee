@@ -1,11 +1,11 @@
 #
 # The test server code lives here
 #
-# Copyright (C) 2012 Nikolay Nemshilov
+# Copyright (C) 2012-2013 Nikolay Nemshilov
 #
 
 fs       = require('fs')
-should   = require('should')
+chai     = require('chai')
 zombie   = require('zombie')
 server   = require('express')()
 lovelyrc = require('../lovelyrc')
@@ -75,6 +75,7 @@ exports.set = (defs, resp) ->
 # @param {Object} browser options
 # @param {Function} vows async callback
 #
+using_should = null
 exports.get = (url, options, callback) ->
   if !server.active
     server.listen(port)
@@ -93,11 +94,13 @@ exports.get = (url, options, callback) ->
   browser.visit 'http://localhost:6789' + url, (err, browser) ->
     throw err if err
     browser.wait ->
+      # patching the in-browser Object.prototype, so that the chai.js worked in there
+      using_should is null && (using_should = !!true['should'])
 
-      # patching the in-browser Object.prototype, so that the should.js worked in there
-      Object.defineProperty browser.window.getGlobal().Object.prototype, 'should',
-        set: ->
-        get: -> new should.Assertion(Object(@).valueOf())
-        configurable: true
+      if using_should
+        Object.defineProperty browser.window.getGlobal().Object.prototype, 'should',
+          set: ->
+          get: -> new chai.Assertion(@)
+          configurable: true
 
       callback(browser)
