@@ -71,7 +71,6 @@ describe "Element Navigation", ->
       search = element.find('.one, .two', true)
 
       search.should.not.be.instanceOf $.NodeList
-      search.should.be.instanceOf     Array
       search.should.have.length       2
       search[0].should.equal document.querySelector('#one .one')
       search[1].should.equal document.querySelector('#one .two')

@@ -41,7 +41,7 @@ describe "Element Events", ->
 
       element.on('click', (e) -> event = e; context = @)
 
-      browser.fire 'click', element._
+      browser.fire element._, 'click'
 
       event.should.be.instanceOf $.Event
 
@@ -52,7 +52,7 @@ describe "Element Events", ->
       element.setClass('')
       element.on('click', 'setClass', 'call-by-name')
 
-      browser.fire 'click', element._
+      browser.fire element._, 'click'
 
       element._.className.should.equal 'call-by-name'
 
@@ -60,7 +60,7 @@ describe "Element Events", ->
       event = null
       element.no('click').on('click', (e) -> event = e; false)
 
-      browser.fire 'click', element._
+      browser.fire element._, 'click'
 
       event.stopped.should.be.true
 
@@ -77,7 +77,7 @@ describe "Element Events", ->
 
       element.no('click')
 
-      browser.fire 'click', element._
+      browser.fire element._, 'click'
 
       (event is null).should.be.true
 

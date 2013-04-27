@@ -8,10 +8,6 @@
 Test.set '/styles.html': """
   <html>
     <head>
-      <script type="text/javascript">
-        // HACK: due zombie issue with the styles
-        document.documentElement.style.cssFloat = 'none';
-      </script>
       <script src="/core.js"></script>
       <script src="/dom.js"></script>
       <style>
@@ -35,10 +31,6 @@ describe "Element Styles", ->
     window   = win
     document = win.document
     element  = new $.Element(document.getElementById('test'))
-
-    # HACK: hacking the zombie over due to an issue with computed styles in there
-    window.document.defaultView.getComputedStyle = (element) ->
-      color: '#884422', backgroundColor: '#224488'
 
   describe "#style", ->
 
