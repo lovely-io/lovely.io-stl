@@ -7,6 +7,6 @@
   "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/ajax",
   "tags":        "STL, Ajax",
   "dependencies": {
-    "dom":  "1.4.0"
+    "dom":  "1.4.3"
   }
 }
