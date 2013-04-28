@@ -1,9 +1,9 @@
 #
 # The string extensions unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-Lovely = require('../../../../cli/lovely')
+Lovely = require('lovely')
 {Test, assert} = Lovely
 
 eval(Test.build(module))
@@ -18,9 +18,9 @@ describe "Function extensions", ->
       object   = {}
       proxy    = original.bind(object)
 
-      assert.notSame object,  proxy
+      assert.notStrictEqual object,  proxy
       assert.equal   "value", proxy()
-      assert.same    object,  scope
+      assert.strictEqual    object,  scope
 
     it "should bypass any arguments into the original function", ->
       args     = null
@@ -42,7 +42,7 @@ describe "Function extensions", ->
       original = -> called = true; "result"
       proxy    = original.curry(1,2,3)
 
-      assert.notSame original, proxy
+      assert.notStrictEqual original, proxy
       assert.equal   "result", proxy()
       assert.isTrue  called
 
@@ -59,7 +59,7 @@ describe "Function extensions", ->
       original = -> called = true; "result"
       proxy    = original.rcurry(1,2,3)
 
-      assert.notSame original, proxy
+      assert.notStrictEqual original, proxy
       assert.equal   "result", proxy()
       assert.isTrue  called
 

@@ -1,9 +1,9 @@
 #
 # The Array extensions unit tests
 #
-# Copyright (C) 2011-2102 Nikolay Nemshilov
+# Copyright (C) 2011-2103 Nikolay Nemshilov
 #
-Lovely = require('../../../../cli/lovely')
+Lovely = require('lovely')
 {Test, assert} = Lovely
 
 eval(Test.build(module))
@@ -30,7 +30,7 @@ describe "Array extensions", ->
       array = [1,2,3]
       clean = array.clean()
 
-      assert.same      array, clean
+      assert.strictEqual      array, clean
       assert.deepEqual array, []
 
   describe "#clone()", ->
@@ -38,7 +38,7 @@ describe "Array extensions", ->
       original = [1,2,3]
       clone    = original.clone()
 
-      assert.notSame   clone, original
+      assert.notStrictEqual   clone, original
       assert.deepEqual clone, original
 
     it "should use the List class when cloned in there", ->
@@ -72,7 +72,7 @@ describe "Array extensions", ->
 
       for i in [0..100]
         rand = array.random()
-        assert.includes array, rand
+        assert.include array, rand
 
 
   describe "#includes(item)", ->
@@ -92,7 +92,7 @@ describe "Array extensions", ->
 
     it "should return the array itself back to the code", ->
       array = [1,2,3]
-      assert.same array.walk((i)->i*2), array
+      assert.strictEqual array.walk((i)->i*2), array
 
 
   describe "#reject(callback, scope)", ->
@@ -101,7 +101,7 @@ describe "Array extensions", ->
       result = array.reject((i)-> i > 3)
 
       assert.deepEqual result, [1,2,3]
-      assert.notSame   result, array
+      assert.notStrictEqual   result, array
 
     it "should not wreak the List#reject calls by name", ->
       list = new Lovely.List(['a', ' ', 'b', 'c'])
@@ -115,7 +115,7 @@ describe "Array extensions", ->
       result = array.without(2,5)
 
       assert.deepEqual result, [1,3,4]
-      assert.notSame   result, array
+      assert.notStrictEqual   result, array
 
   describe "#compact()", ->
     it "should create a new array without 'null' and 'undefined' values", ->
@@ -123,7 +123,7 @@ describe "Array extensions", ->
       result = array.compact()
 
       assert.deepEqual result, [0, '', ' ', 'null', 'undefined', false]
-      assert.notSame   result, array
+      assert.notStrictEqual   result, array
 
   describe "#flatten()", ->
     it "should flatten down a multi-dimensional array", ->
@@ -131,7 +131,7 @@ describe "Array extensions", ->
       result = array.flatten()
 
       assert.deepEqual  result, [0,1,2,3,4]
-      assert.notSame    result, array
+      assert.notStrictEqual    result, array
       assert.instanceOf result, Array
 
     it "should work with Lovely.List instances", ->
@@ -139,7 +139,7 @@ describe "Array extensions", ->
       result = list.flatten()
 
       assert.instanceOf result, Lovely.List
-      assert.notSame    result, list
+      assert.notStrictEqual    result, list
       assert.deepEqual  result.toArray(), [0,1,2,3,4]
 
 
@@ -149,7 +149,7 @@ describe "Array extensions", ->
       result = array.merge([3,4])
 
       assert.deepEqual result, [1,2,3,4]
-      assert.same      result, array
+      assert.strictEqual      result, array
 
     it "should skip items that are already on the list", ->
       assert.deepEqual [1,2,3].merge([2,3,4]), [1,2,3,4]
@@ -161,7 +161,7 @@ describe "Array extensions", ->
       result = array.uniq()
 
       assert.deepEqual result, [1,2,3]
-      assert.notSame   result, array
+      assert.notStrictEqual   result, array
 
     it "should work with Lovely.List instances", ->
       list   = new Lovely.List([1,1,2,3,3,2,1])
@@ -169,7 +169,7 @@ describe "Array extensions", ->
 
       assert.instanceOf result, Lovely.List
       assert.deepEqual  result.toArray(), [1,2,3]
-      assert.notSame    result, list
+      assert.notStrictEqual    result, list
 
 
   describe "#shuffle()", ->
@@ -177,24 +177,24 @@ describe "Array extensions", ->
       array  = [1,2,3,4,5]
       result = array.shuffle()
 
-      assert.notSame      result, array
+      assert.notStrictEqual      result, array
       assert.equal        result.length, array.length
       assert.notDeepEqual result, array
 
       for item in result
-        assert.includes array, item
+        assert.include array, item
 
     it "should work with Lovely.List instances", ->
       list   = new Lovely.List([1,2,3,4,5])
       result = list.shuffle()
 
       assert.instanceOf   result, Lovely.List
-      assert.notSame      result, list
+      assert.notStrictEqual      result, list
       assert.equal        result.length,    list.length
       assert.notDeepEqual result.toArray(), list.toArray()
 
       for item in result
-        assert.includes list.toArray(), item
+        assert.include list.toArray(), item
 
 
   describe "#sort()", ->
@@ -202,14 +202,14 @@ describe "Array extensions", ->
       array  = ['b', 'a', 'c']
       result = array.sort()
 
-      assert.same      result, array
+      assert.strictEqual      result, array
       assert.deepEqual result, ['a', 'b', 'c']
 
     it "should sort numbers as numbers", ->
       array   = [3,4,1,2]
       result  = array.sort()
 
-      assert.same      result, array
+      assert.strictEqual      result, array
       assert.deepEqual result, [1,2,3,4]
 
   describe "#min()", ->

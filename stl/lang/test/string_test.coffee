@@ -1,9 +1,9 @@
 #
 # The string extensions unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-Lovely = require('../../../../cli/lovely')
+Lovely = require('lovely')
 {Test, assert} = Lovely
 
 eval(Test.build(module))
@@ -88,17 +88,17 @@ describe "String extensions", ->
 
   describe "#toInt()", ->
     it "should  convert a string into a number", ->
-      assert.same "123".toInt(), 123
+      assert.strictEqual "123".toInt(), 123
 
     it "should  convert a string into an integer with a custom base", ->
-      assert.same "ff".toInt(16), 255
+      assert.strictEqual "ff".toInt(16), 255
 
     it "should  return NaN for an inconvertible strings", ->
-      assert.isNaN "asdf".toInt()
+      assert.ok isNaN("asdf".toInt())
 
   describe "#toFloat()", ->
     it "should  convert a string into a float number", ->
-      assert.same "12.3".toFloat(), 12.3
+      assert.strictEqual "12.3".toFloat(), 12.3
 
     it "should  return NaN for an inconvertible strings", ->
-      assert.isNaN "asdf".toFloat()
+      assert.ok isNaN("asdf".toFloat())

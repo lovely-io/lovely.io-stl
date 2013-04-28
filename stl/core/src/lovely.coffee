@@ -70,7 +70,7 @@ modules_load_listeners = []
 # Checks all the awaiting module loaders in the registery
 #
 check_all_waiting_loaders = ->
-  global.setTimeout ->
+  setTimeout ->
     clean_list = []
     for listener, i in modules_load_listeners
       unless listener() # if not yet loaded
