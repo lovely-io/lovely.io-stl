@@ -1,14 +1,14 @@
 #
 # The UI.Icon unit tests
 #
-# Copyright (C) 2012 Nikolay Nemshilov
+# Copyright (C) 2012-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 describe "UI.Icon", ->
   UI = Icon = icon = Element = null
 
-  before Test.load module, (build, window)->
+  before Test.load (build, window)->
     UI      = build
     Icon    = UI.Icon
     icon    = new Icon('name')

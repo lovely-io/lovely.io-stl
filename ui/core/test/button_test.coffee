@@ -1,14 +1,14 @@
 #
 # The UI.Button unit tests
 #
-# Copyright (C) 2012 Nikolay Nemshilov
+# Copyright (C) 2012-2013 Nikolay Nemshilov
 #
 {Test} = require('lovely')
 
 describe 'UI.Button', ->
   UI = Button = button = $ = null
 
-  before Test.load module, (build, win)->
+  before Test.load (build, win)->
     UI     = build
     Button = UI.Button
     button = new Button('some text')

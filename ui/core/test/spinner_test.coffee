@@ -1,15 +1,15 @@
 #
 # The spinner uint tests
 #
-# Copyright (C) 2012 Nikolay Nemshilov
+# Copyright (C) 2012-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 describe "UI.Spinner", ->
 
   Spinner = spinner = document = null
 
-  before Test.load module, (UI, window)->
+  before Test.load (UI, window)->
     Spinner  = UI.Spinner
     spinner  = new Spinner()
     document = window.document
