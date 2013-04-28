@@ -1,9 +1,9 @@
 #
 # The i18n test
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test, assert} = require('../../../../cli/lovely')
+{Test, assert} = require('lovely')
 
 
 describe "Dates i18n", ->
@@ -18,7 +18,7 @@ describe "Dates i18n", ->
     monthsShort: 'Янв Фев Мар Апр Май Инь Иль Авг Сен Окт Ноя Дек'
 
 
-  before Test.load(module, (obj)->
+  before Test.load module, (obj)->
     Date = obj
 
     original = Date.i18n
@@ -27,7 +27,6 @@ describe "Dates i18n", ->
     date.setFullYear(2011)
     date.setMonth(7)
     date.setDate(18)
-  )
 
 
   describe "dates formatting", ->
