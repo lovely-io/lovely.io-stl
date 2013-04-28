@@ -1,7 +1,7 @@
 {
   "name":        "lovely",
-  "version":     "2.0.0",
-  "description": "The next generation front-side development platform",
+  "version":     "1.9.0",
+  "description": "The next-gen front-side development platform",
   "author":      "Nikolay Nemshilov <nemshilov@gmail.com>",
   "license": {
     "type": "MIT",
