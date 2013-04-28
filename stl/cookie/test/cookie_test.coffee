@@ -1,26 +1,21 @@
 #
 # The Cookie unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test, assert} = require('../../../../cli/lovely')
+{Test, assert} = require('lovely')
 
 describe "Cookie", ->
-  Cookie = null
-  cookie = null
+  Cookie = cookie = null
 
   assert.cookie = (value)->
     assert.equal cookie, value
 
-  before Test.load(module, (obj)->
-    Cookie = obj
-    Cookie.Options.document = {}
-    Cookie.Options.document.__defineSetter__ 'cookie', (value)->
-      cookie = value
-
-    Cookie.Options.document.__defineGetter__ 'cookie', -> cookie
-  )
-
+  before Test.load module, (build, win)->
+    Cookie   = build
+    Object.defineProperty win.document, 'cookie',
+      set: (val)-> cookie = val
+      get: -> cookie
 
   describe "\b#set(name, value)", ->
 
