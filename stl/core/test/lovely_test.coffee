@@ -1,10 +1,10 @@
 #
 # The modules loading/defining interface tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
 
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 eval(core = Test.bind(module))
 Lovely = this.Lovely

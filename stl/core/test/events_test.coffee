@@ -1,9 +1,9 @@
 #
 # The events handling interface unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 eval(Test.build(module))
 Lovely = this.Lovely
@@ -95,7 +95,7 @@ describe 'Events',
       object = dummy.no('event')
 
       it "should return the same object back", ->
-        object.should.be.same dummy
+        object.should.be.equal dummy
 
       it "should stop listening to the event", ->
         object.ones('event').should.be.false

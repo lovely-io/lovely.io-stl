@@ -1,9 +1,9 @@
 #
 # The `Hash` unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 eval(Test.build(module))
 Lovely = this.Lovely
@@ -122,10 +122,10 @@ describe 'Hash', ->
     it "should skip prototype key-value pairs", ->
       data   = a: 1, b:2
       result = new Hash(new Foo(data)).map (key, value, hash) ->
-        [key, value, hash]
+        [key, value]
 
       result.should.eql [
-        ['a', 1, data], ['b', 2, data]
+        ['a', 1], ['b', 2]
       ]
 
   describe '\b#filter(callback)', ->

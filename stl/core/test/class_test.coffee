@@ -1,9 +1,9 @@
 #
 # The `Class` unit tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 eval(Test.build(module))
 Class = this.Lovely.Class
@@ -183,15 +183,15 @@ describe 'Class', ->
       extend:  ext
 
     it "should extend the class-level with the 'extend' module", ->
-      Klass.a.should.be.same ext.a
-      Klass.b.should.be.same ext.b
+      Klass.a.should.be.equal ext.a
+      Klass.b.should.be.equal ext.b
 
       Klass.should.not.have.keys(['c'])
       Klass.should.not.have.keys(['d'])
 
     it "should extend the prototype with the 'include' module", ->
-      Klass.prototype.c.should.be.same inc.c
-      Klass.prototype.d.should.be.same inc.d
+      Klass.prototype.c.should.be.equal inc.c
+      Klass.prototype.d.should.be.equal inc.d
 
       Klass.prototype.should.not.have.keys(['a'])
       Klass.prototype.should.not.have.keys(['b'])

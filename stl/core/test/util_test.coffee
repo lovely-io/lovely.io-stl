@@ -1,10 +1,10 @@
 #
 # Utility function tests
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
 util   = require('util')
-{Test} = require('lovely')
+{Test,should} = require('lovely')
 
 eval(Test.build(module))
 Lovely = this.Lovely
@@ -40,7 +40,7 @@ describe 'Core Utils', ->
       c = ext(a, b)
 
       c.should.eql     {a:1, b:2}
-      c.should.be.same a
+      c.should.be.equal a
 
     it "should accept 'null' as the second argument", ->
       ext({a: 1}, null).should.eql {a: 1}
@@ -54,7 +54,7 @@ describe 'Core Utils', ->
 
       ext(o1, o2)
 
-      o1.prototype.should.not.be.same o2.prototype
+      o1.prototype.should.not.be.equal o2.prototype
 
 
   describe "bind", ->
@@ -70,19 +70,19 @@ describe 'Core Utils', ->
       it "should execute the original in the prebinded context", ->
         callback()
 
-        result.context.should.be.same context
+        result.context.should.be.equal context
         result.args.should.eql        []
 
       it "should execute the original even when called in a different context", ->
         callback.apply other: 'context'
 
-        result.context.should.be.same context
+        result.context.should.be.equal context
         result.args.should.eql        []
 
       it "should bypass the arguments to the original function", ->
         callback(1,2,3)
 
-        result.context.should.be.same context
+        result.context.should.be.equal context
         result.args.should.eql        [1,2,3]
 
     describe '\b(context, arg1, arg2,..)', ->
@@ -91,13 +91,13 @@ describe 'Core Utils', ->
       it "should pass the prebinded arguments into the original function", ->
         callback()
 
-        result.context.should.be.same context
+        result.context.should.be.equal context
         result.args.should.eql        [1,2,3]
 
       it "should handle additional arguments if specified", ->
         callback(4,5,6)
 
-        result.context.should.be.same context
+        result.context.should.be.equal context
         result.args.should.eql        [1,2,3,4,5,6]
 
 
