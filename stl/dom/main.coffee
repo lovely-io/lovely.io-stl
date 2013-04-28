@@ -25,6 +25,7 @@ include 'src/event/delegation'
 include 'src/event/mouseio'
 include 'src/event/focusio'
 include 'src/event/ready'
+include 'src/casting'
 include 'src/dollar'
 
 
