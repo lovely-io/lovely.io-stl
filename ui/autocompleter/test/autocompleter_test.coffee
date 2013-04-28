@@ -8,7 +8,7 @@
 describe "Autocompleter", ->
   Autocompleter = window = document = input = $ = UI = autocompleter = null
 
-  before Test.load module, (build, win)->
+  before Test.load (build, win)->
     Autocompleter = build
     $             = win.Lovely.module('dom')
     UI            = win.Lovely.module('ui')

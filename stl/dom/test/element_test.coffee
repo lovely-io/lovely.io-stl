@@ -8,11 +8,11 @@
 describe 'Element', ->
   $ = window = document = Element = MyElement = Table = null
 
-  before Test.load(module, (dom, win)->
+  before Test.load (dom, win)->
     $        = dom
     window   = win
     document = win.document
-    Element  = $.Element)
+    Element  = $.Element
 
 
   describe "direct instance", ->

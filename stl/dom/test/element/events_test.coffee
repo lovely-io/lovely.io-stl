@@ -20,7 +20,7 @@ Test.set "/events.html", """
 describe "Element Events", ->
   $ = element = window = document = browser = null
 
-  before Test.load module, '/events.html', (dom, win, bro)->
+  before Test.load '/events.html', (dom, win, bro)->
     $        = dom
     browser  = bro
     window   = win

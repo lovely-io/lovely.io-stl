@@ -18,8 +18,8 @@ describe "Dates i18n", ->
     monthsShort: 'Янв Фев Мар Апр Май Инь Иль Авг Сен Окт Ноя Дек'
 
 
-  before Test.load module, (obj)->
-    Date = obj
+  before Test.load (build)->
+    Date = build
 
     original = Date.i18n
 

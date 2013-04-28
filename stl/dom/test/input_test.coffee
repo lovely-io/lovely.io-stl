@@ -29,7 +29,7 @@ Test.set "/input.html", """
 describe "Input", ->
   $ = input = select = Input = window = document = null
 
-  before Test.load module, "/input.html", (dom, win)->
+  before Test.load "/input.html", (dom, win)->
     $        = dom
     Input    = $.Input
     window   = win

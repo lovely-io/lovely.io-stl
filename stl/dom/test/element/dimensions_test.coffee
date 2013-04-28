@@ -27,7 +27,7 @@ Test.set "/dimensions.html", """
 describe "Element dimensions", ->
   $ = window = document = element = abs_el = rel_el = null
 
-  before Test.load(module, "/dimensions.html", (dom, win)->
+  before Test.load "/dimensions.html", (dom, win)->
     $        = dom
     window   = win
     document = win.document
@@ -40,7 +40,7 @@ describe "Element dimensions", ->
     document.documentElement.clientLeft            or= 0
     document.documentElement.clientTop             or= 0
     document.documentElement.getBoundingClientRect or= -> left: 0, top: 0
-    element._.getBoundingClientRect                or= -> left: 0, top: 0)
+    element._.getBoundingClientRect                or= -> left: 0, top: 0
 
 
   describe "#size()", ->

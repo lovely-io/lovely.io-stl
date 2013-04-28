@@ -32,7 +32,7 @@ Test.set "/dollar.html": """
 describe '$', ->
   $ = window = document = null
 
-  before Test.load module, '/dollar.html', (dom, win)->
+  before Test.load '/dollar.html', (dom, win)->
     $        = dom
     window   = win
     document = win.document

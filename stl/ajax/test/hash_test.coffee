@@ -9,7 +9,7 @@
 describe "Hash extensions", ->
   Hash = null
 
-  before Test.load module, (Ajax, window)->
+  before Test.load (Ajax, window)->
     Hash = window.Lovely.Hash
 
   describe ".fromQueryString('data')", ->

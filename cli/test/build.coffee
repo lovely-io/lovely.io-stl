@@ -1,6 +1,8 @@
 #
 # The test modules building tools
 #
+# Copyright (C) 2012-2013 Nikolay Nemshilov
+#
 
 fs      = require('fs')
 path    = require('path')
@@ -8,68 +10,27 @@ server  = require('./server')
 source  = require('../source')
 packge  = require('../package')
 
-dirs    = {}
-builds  = {}
-binds   = {}
-packs   = {}
+cur_dir = process.cwd()
+packg   = packge.read(cur_dir)
+method  = if process.argv.indexOf('--minify') > -1 then 'minify' else 'compile'
+build   = source[method](cur_dir)
 
-#
-# reads package.json definitions from a module reference
-#
-packg = (module)->
-  packs[module.filename] or= packge.read(moddir(module))
+server.set "/#{packg.name}.js", build
+server.set "/#{packg.name}-auto-dummy.html", """
+  <html>
+    <head>
+      <script src="/core.js"></script>
+      <script type="text/javascript">
+        Lovely(['#{packg.name}'], function() {});
+      </script>
+    </head>
+    <body>
+      Dummy page for: '#{packg.name}'
+    </body>
+  </html>
+"""
 
-
-#
-# Resolves the module main working directory
-#
-moddir  = (module)->
-  unless module.filename of dirs
-    dirname = path.dirname(module.filename)
-
-    while dirname != '/'
-      if fs.existsSync("#{dirname}/package.json")
-        dirs[module.filename] = dirname
-        break
-
-      dirname = path.join(dirname, '..')
-
-  dirs[module.filename]
-
-
-#
-# Simply bilds the module source and returns it as a string
-#
-exports.build = build = (module)->
-  method = if process.argv.indexOf('--minify') > -1 then 'minify' else 'compile'
-  builds[module.filename] or= source[method](moddir(module))
-
-
-#
-# Bind the built module to the server along with a dummy page for it's test
-#
-exports.bind = bind = (module)->
-  unless module.filename of binds
-    pack = packg(module)
-    src  = build(module)
-
-    server.set "/#{pack.name}.js",   binds[module.filename] = src
-    server.set "/#{pack.name}-auto-dummy.html", """
-      <html>
-        <head>
-          <script src="/core.js"></script>
-          <script type="text/javascript">
-            Lovely(['#{pack.name}'], function() {});
-          </script>
-        </head>
-        <body>
-          Dummy page for: '#{pack.name}'
-        </body>
-      </html>
-    """
-
-  binds[module.filename]
-
+exports.build = build
 
 #
 # Creates a callback for the mocha `before` calls
@@ -77,20 +38,18 @@ exports.bind = bind = (module)->
 # page, extracts the module object and returns it
 # in the callback function
 #
-exports.load = (module, options, callback)->
+exports.load = (options, callback)->
   if !callback
     callback = options
     options  = {}
 
-  pack = packg(module)
-  src  = bind(module)
-
   if typeof(options) is 'string'
-    url = options
+    url     = options
+    options = {}
   else
-    url = "/#{pack.name}-auto-dummy.html"
+    url = "/#{packg.name}-auto-dummy.html"
 
   (done)->
     server.get url, options, (browser)->
-      callback(browser.window.Lovely.module(pack.name), browser.window, browser)
+      callback(browser.window.Lovely.module(packg.name), browser.window, browser)
       done()

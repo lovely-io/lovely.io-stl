@@ -21,7 +21,7 @@ Test.set "/manipulations.html": """
 describe "Element Manipulations", ->
   $ = element = window = document = null
 
-  beforeEach Test.load module, '/manipulations.html', (dom, win)->
+  beforeEach Test.load '/manipulations.html', (dom, win)->
     $        = dom
     window   = win
     document = win.document

@@ -26,7 +26,7 @@ Test.set '/styles.html': """
 describe "Element Styles", ->
   $ = element = window = document = null
 
-  before Test.load module, '/styles.html', (dom, win)->
+  before Test.load '/styles.html', (dom, win)->
     $        = dom
     window   = win
     document = win.document

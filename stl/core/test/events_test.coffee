@@ -5,7 +5,7 @@
 #
 {Test,should} = require('lovely')
 
-eval(Test.build(module))
+eval(Test.build)
 Lovely = this.Lovely
 
 

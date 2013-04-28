@@ -8,7 +8,7 @@
 describe 'Style', ->
   $ = Element = Style = null
 
-  before Test.load module, (dom)->
+  before Test.load (dom)->
     $ = dom; Element = $.Element; Style = $.Style
 
   it "should be registered as a dom-wrapper", ->

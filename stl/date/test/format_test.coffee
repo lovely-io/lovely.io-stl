@@ -8,7 +8,7 @@
 describe "Date formatting", ->
   Date = date = null
 
-  before Test.load module, (build)->
+  before Test.load (build)->
     Date = build
     date = new Date()
     date.setFullYear(2011)

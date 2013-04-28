@@ -5,7 +5,7 @@
 #
 {Test,should} = require('lovely')
 
-eval(Test.build(module))
+eval(Test.build)
 Class = this.Lovely.Class
 
 describe 'Class', ->

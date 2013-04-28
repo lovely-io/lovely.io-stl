@@ -99,7 +99,7 @@ generate = (projectname, args) ->
   describe "%{projectunit}", ->
     %{projectunit} = window = document = $ = null
 
-    before Test.load module, (build, win)->
+    before Test.load (build, win)->
       %{projectunit} = build
       window   = win
       document = win.document
@@ -122,7 +122,7 @@ generate = (projectname, args) ->
   describe("%{projectunit}", function() {
     var %{projectunit}, window, document, $;
 
-    before(Test.load(module, function(build, win) {
+    before(Test.load(function(build, win) {
       %{projectunit} = build;
       window   = win;
       document = win.document;

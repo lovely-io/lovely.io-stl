@@ -21,7 +21,7 @@ Test.set "/commons.html", """
 describe 'Element Commons', ->
   $ = element = window = document = null
 
-  before Test.load module, '/commons.html', (dom, win)->
+  before Test.load '/commons.html', (dom, win)->
     $        = dom
     window   = win
     document = win.document

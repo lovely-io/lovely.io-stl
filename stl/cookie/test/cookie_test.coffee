@@ -11,7 +11,7 @@ describe "Cookie", ->
   assert.cookie = (value)->
     assert.equal cookie, value
 
-  before Test.load module, (build, win)->
+  before Test.load (build, win)->
     Cookie   = build
     Object.defineProperty win.document, 'cookie',
       set: (val)-> cookie = val

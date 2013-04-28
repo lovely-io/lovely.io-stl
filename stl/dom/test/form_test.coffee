@@ -67,7 +67,7 @@ Test.set "/form.html": """
 describe "Form", ->
   $ = form = Form = window = document = null
 
-  before Test.load module, '/form.html', (dom, win)->
+  before Test.load '/form.html', (dom, win)->
     $        = dom
     Form     = $.Form
     window   = win

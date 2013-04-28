@@ -9,7 +9,7 @@
 describe "Document", ->
   $ = Document = window = document = null
 
-  before Test.load module, (dom, win)->
+  before Test.load (dom, win)->
     $        = dom
     window   = win
     Document = $.Document

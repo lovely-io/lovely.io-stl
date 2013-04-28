@@ -8,7 +8,7 @@
 describe "Date.parse", ->
   Date = null
 
-  before Test.load(module, (obj)-> Date = obj)
+  before Test.load((build)-> Date = build)
 
   describe "year parsing", ->
     it "should parse %Y", ->

@@ -39,7 +39,7 @@ class FakeRequest
 describe "Ajax", ->
   Ajax = ajax = window = document = $ = null
 
-  before Test.load module, "/ajax.html", (mod, win)->
+  before Test.load "/ajax.html", (mod, win)->
     Ajax   = mod
     window = win
     window.XMLHttpRequest = FakeRequest

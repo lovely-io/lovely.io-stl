@@ -34,7 +34,7 @@ describe "Element Navigation", ->
   $ = window = document = element = null
 
   get = (css_rule)->
-    before Test.load module, "/navigation.html", (dom, win)->
+    before Test.load "/navigation.html", (dom, win)->
       $        = dom
       window   = win
       document = win.document

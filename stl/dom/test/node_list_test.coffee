@@ -23,7 +23,7 @@ Test.set "/node_list.html", """
 describe 'NodeList', ->
   NodeList = $ = window = document = null
 
-  before Test.load module, "/node_list.html", (dom, win)->
+  before Test.load "/node_list.html", (dom, win)->
     $        = dom
     NodeList = $.NodeList
     window   = win

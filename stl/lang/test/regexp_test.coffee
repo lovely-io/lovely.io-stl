@@ -6,7 +6,7 @@
 Lovely = require('lovely')
 {Test, assert} = Lovely
 
-eval(Test.build(module))
+eval(Test.build)
 
 
 describe "Math extensions", ->

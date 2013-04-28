@@ -9,7 +9,7 @@
 describe 'Window', ->
   $ = window = Window = raw_window = null
 
-  before Test.load module, (build, raw_win)->
+  before Test.load (build, raw_win)->
     $          = build
     Window     = $.Window
     window     = new Window(raw_win)

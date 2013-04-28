@@ -20,5 +20,5 @@ describe 'Browser', ->
 
   for name of user_agents
     do (name)->
-      it "should say it's '#{name}' for #{name} browser", Test.load module, userAgent: user_agents[name], ($)->
+      it "should say it's '#{name}' for #{name} browser", Test.load userAgent: user_agents[name], ($)->
         $.Browser.should.eql name

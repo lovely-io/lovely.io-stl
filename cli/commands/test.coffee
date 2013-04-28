@@ -34,6 +34,10 @@ exports.init = (args) ->
   reporter = find_arg(args, '-R', '--reporter') || 'dot'
   ui       = find_arg(args, '-u', '--ui')       || 'bdd'
 
+  process.argv.push('--minify') if args.indexOf('-m') > -1
+  if process.argv.indexOf('--minify') > -1
+    print "Running the tests against the minified version".yellow
+
   mocha    = new Mocha
     ui:       ui
     reporter: reporter
@@ -63,6 +67,6 @@ exports.help = (args)->
   Options:
     -R --reporter   name    #{'# reporter name dot,nyan,spec,etc anything mocha supports'.grey}
     -u --ui         name    #{'# ui type tdd,bdd. see mocha docs for more info'.grey}
-    -m --minify             #{'# if you want to run tests agains fully minified version'.grey}
+    -m --minify             #{'# if you want to run tests against fully minified version'.grey}
 
   """
