@@ -1,7 +1,7 @@
 #
 # The console commands front interface.
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
 
 #
@@ -94,6 +94,7 @@ shortcuts =
 exports.init = (args) ->
   args[0] or= 'help'
   args[0] = shortcuts[args[0]] if args[0] of shortcuts
+  args.unshift('test')         if args[0].substr(0,5) is 'test/'
 
   filename = "#{__dirname}/commands/#{args[0]}.coffee"
 

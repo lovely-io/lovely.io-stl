@@ -1,7 +1,7 @@
 #
 # A little wrapper over mocha to help with running tests
 #
-# Copyright (C) 2012 Nikolay Nemshilov
+# Copyright (C) 2012-2013 Nikolay Nemshilov
 #
 
 find_arg = ->
@@ -25,6 +25,7 @@ read_dir = (name, files=[])->
 
 
 exports.init = (args) ->
+  single   = false
   test_dir = 'test'
   fs       = require('fs')
   path     = require('path')
@@ -37,8 +38,14 @@ exports.init = (args) ->
     ui:       ui
     reporter: reporter
 
-  read_dir(test_dir).forEach (file)->
-    mocha.addFile(file)
+  for arg in args
+    if arg.substr(0,5) is 'test/'
+      mocha.addFile(arg)
+      single = true
+
+  unless single
+    read_dir(test_dir).forEach (file)->
+      mocha.addFile(file)
 
   mocha.run(process.exit)
 
@@ -51,6 +58,7 @@ exports.help = (args)->
   Usage:
       lovely test
       lovely test -R nyan
+      lovely test/smth_test.coffee
 
   Options:
     -R --reporter   name    #{'# reporter name dot,nyan,spec,etc anything mocha supports'.grey}
