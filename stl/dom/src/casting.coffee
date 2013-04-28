@@ -36,14 +36,3 @@ ext Wrapper,
   remove: (tag)->
     delete Wrapper.Tags[tag.toUpperCase()]
     Wrapper
-
-  #
-  # Tries to find a suitable dom-wrapper
-  # for the element. Used by {Element}
-  # to perform dynamic typecasting
-  #
-  # @param {HTMLElement} element
-  # @return {Wrapper} suitable wrapper or `undefined`
-  #
-  Cast: (element) ->
-    Wrapper.Tags[element.tagName]

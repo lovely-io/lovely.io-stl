@@ -19,7 +19,7 @@ class Element extends Wrapper
       element = element.cloneNode(false)
 
     # handling dynamic typecasting
-    cast = Wrapper.Cast(element) if @constructor is Element
+    cast = Wrapper.Tags[element.tagName] if @constructor is Element
     return new cast(element, options) if cast isnt undefined
 
     Wrapper.call(this, element)
