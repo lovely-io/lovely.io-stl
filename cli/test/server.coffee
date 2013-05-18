@@ -91,16 +91,14 @@ exports.get = (url, options, callback) ->
   browser.onalert (message) ->
     browser.alerts.push(message)
 
-  browser.visit 'http://localhost:6789' + url, (err, browser) ->
-    throw err if err
-    browser.wait ->
-      # patching the in-browser Object.prototype, so that the chai.js worked in there
-      using_should is null && (using_should = !!true['should'])
+  browser.visit 'http://localhost:6789' + url, ->
+    # patching the in-browser Object.prototype, so that the chai.js worked in there
+    using_should is null && (using_should = !!true['should'])
 
-      if using_should
-        Object.defineProperty browser.window.getGlobal().Object.prototype, 'should',
-          set: ->
-          get: -> new chai.Assertion(@)
-          configurable: true
+    if using_should
+      Object.defineProperty browser.window.getGlobal().Object.prototype, 'should',
+        set: ->
+        get: -> new chai.Assertion(@)
+        configurable: true
 
-      callback(browser)
+    callback(browser)
