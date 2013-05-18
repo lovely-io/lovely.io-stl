@@ -30,7 +30,14 @@ describe "Element Styles", ->
     $        = dom
     window   = win
     document = win.document
-    element  = new $.Element(document.getElementById('test'))
+    element  = document.getElementById('test')
+    style    = element.style
+    element  = new $.Element(element)
+
+    # FIXME: zombie.js/jsdom don't process calculated styles correclty
+    # so we just assign them directly in here for now
+    style.color = '#884422'
+    style.backgroundColor = '#224488'
 
   describe "#style", ->
 

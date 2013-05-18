@@ -1,7 +1,7 @@
 #
 # The DOM management module for Lovely IO
 #
-# Copyright (C) 2011 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
 
 include 'src/utils'

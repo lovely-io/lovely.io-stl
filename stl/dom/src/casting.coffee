@@ -1,5 +1,7 @@
 #
 # The `Wrapper` auto-casting extensions
+# we keep them in a separated file so that
+# they weren't copied over to the actual wrappers
 #
 # Copyright (C) 2013 Nikolay Nemshilov
 #
@@ -36,3 +38,9 @@ ext Wrapper,
   remove: (tag)->
     delete Wrapper.Tags[tag.toUpperCase()]
     Wrapper
+
+  #
+  # Finds appropriate wrapper for the raw-dom element
+  #
+  find: (element)->
+    Wrapper.Tags[element.tagName] || Element

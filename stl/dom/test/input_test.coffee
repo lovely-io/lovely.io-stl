@@ -54,14 +54,6 @@ describe "Input", ->
       i._.tagName.should.eql 'TEXTAREA'
       i._.name.should.eql    'boo'
 
-    it "should be dynamically used with the 'Element' constructor", ->
-      i = new $.Element('input', type: 'radio', name: 'boo')
-
-      i.should.be.instanceOf Input
-      i._.tagName.should.eql 'INPUT'
-      i._.type.should.eql    'radio'
-      i._.name.should.eql    'boo'
-
     it "should create input[type=text] by default", ->
       i = new Input(name: 'test')
 

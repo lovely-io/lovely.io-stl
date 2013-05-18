@@ -89,13 +89,6 @@ describe "Form", ->
       f._.action.should.equal '/some.url'
       f._.method.should.equal 'post'
 
-    it "should be dynamically used with the 'Element' constructor", ->
-      f = new $.Element('form', action: '/some.url')
-
-      f.should.be.instanceOf   Form
-      f._.tagName.should.eql   'FORM'
-      f._.action.should.equal  '/some.url'
-
   describe "\b#elements()", ->
 
     it "should return the list of all the form elements", ->

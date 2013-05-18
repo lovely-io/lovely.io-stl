@@ -29,7 +29,7 @@
 #       to access the raw dom element, use the standard
 #       `_` property. `list[0]._`
 #
-# Copyright (C) 2011-2012 Nikolay Nemshilov
+# Copyright (C) 2011-2013 Nikolay Nemshilov
 #
 class NodeList extends core.List
 
@@ -42,13 +42,13 @@ class NodeList extends core.List
   #
   constructor: (raw_list, raw_only)->
     if raw_only is true
-      `for (var i=0, l=this.length=raw_list.length, key; i < l; i++) {
-        this[i] = Wrapper_Cache[raw_list[i][UID_KEY]] || new Element(raw_list[i]);
+      `for (var i=0, l=this.length=raw_list.length; i < l; i++) {
+        this[i] = wrap_element(raw_list[i]);
       }`
     else
       raw_list = [] if raw_list is undefined
-      `for (var i=0, l=this.length=raw_list.length, key; i < l; i++) {
-        this[i] = raw_list[i] instanceof Element ? raw_list[i] : (Wrapper_Cache[raw_list[i][UID_KEY]] || new Element(raw_list[i]));
+      `for (var i=0, l=this.length=raw_list.length; i < l; i++) {
+        this[i] = raw_list[i] instanceof Element ? raw_list[i] : wrap_element(raw_list[i]);
       }`
 
     return this

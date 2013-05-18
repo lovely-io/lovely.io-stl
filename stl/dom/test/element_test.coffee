@@ -61,33 +61,6 @@ describe 'Element', ->
       element._.id.should.eql        'my-id'
       element._.innerHTML.should.eql 'my-html'
 
-  describe "dynamic typecasting", ->
-    before ->
-      Table = Element.inherit
-        constructor: (one, two) ->
-          this.$super(one, two)
-
-      $.Wrapper.set 'table', Table
-
-    it "should automatically typecast elements by tag name", ->
-      table = new Element('table')
-
-      table.should.be.instanceOf Table
-      table.should.be.instanceOf $.Element
-
-    it "should bypass the attributes in place", ->
-      table = new Element('table', id: 'my-id', class: 'my-class')
-
-      table._.id.should.eql        'my-id'
-      table._.className.should.eql 'my-class'
-
-    it "should work with raw dom-elements as well", ->
-      raw_dom = document.createElement('table')
-      element = new Element(raw_dom)
-
-      element.should.be.instanceOf $.Wrapper.get('table')
-      element.should.be.instanceOf Element
-
   describe "private wrappers casting method", ->
     element = null
 

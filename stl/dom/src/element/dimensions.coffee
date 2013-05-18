@@ -151,7 +151,7 @@ Element.include
       if parent.style('position') in ['relative', 'absolute', 'fixed']
         return parent
 
-    return wrap(@document()._.documentElement)
+    wrap(@document()._.documentElement)
 
 
   #

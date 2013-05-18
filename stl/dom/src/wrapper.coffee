@@ -30,8 +30,8 @@ class Wrapper
       new Klass(@_)
 
 
-NodeList::cast = (Klass)->
-  @[0].cast(Klass)
+NodeList.prototype.cast = (Klass)->
+  @length > 0 && @[0].cast(Klass)
 
 Wrapper_Cache = {}
 Wrapper_Cache[undefined] = false
