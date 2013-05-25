@@ -1,6 +1,7 @@
 # Table
 
 Table is the standard tables specific dom wrapper extension
+for the [lovely.io](http://lovely.io) project
 
 ```javascript
 Lovely(['dom', 'table'], function($, Table) {

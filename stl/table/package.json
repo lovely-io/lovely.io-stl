@@ -4,7 +4,7 @@
   "description": "Tables specific DOM wrapper with extra features",
   "author":      "Nikolay Nemshilov",
   "license":     "MIT",
-  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/dom",
+  "home_url":    "https://github.com/MadRabbit/lovely.io/tree/master/stl/table",
   "tags":        "STL, DOM",
   "dependencies": {
     "dom" : "1.4.3"
