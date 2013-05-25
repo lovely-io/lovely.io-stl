@@ -1,3 +1,8 @@
+2013-05-25 Nikolay Nemshilov
+
+  * Version 1.4.4
+  * Elements type-casting and resolving procedures reworked for better flexibility and speed
+
 2013-02-10 Nikolay Nemshilov
 
   * Version 1.4.3
