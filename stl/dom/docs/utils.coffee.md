@@ -1,6 +1,6 @@
 Just a bunch of local utility functions
 
-Copyright (C) 2011 Nikolay Nemshilov
+Copyright (C) 2011-2013 Nikolay Nemshilov
 
 ```coffee-aside
 core     = require('core')
@@ -95,15 +95,24 @@ wrap = (value) ->
   unless `value == null` or value instanceof Wrapper
     key = value[UID_KEY]
     if key && key of Wrapper_Cache
-      value = Wrapper_Cache[key]
+      return Wrapper_Cache[key]
     else if value.nodeType is 1
-      value = new Element(value)
+      return wrap_element(value)
     else if value.nodeType is 9
-      value = new Document(value)
+      return new Document(value)
     else if `value.target != null`
-      value = new Event(value)
+      return new Event(value)
     else if `value.window != null && value.window === value.window.window`
-      value = new Window(value)
+      return new Window(value)
 
   return value
+```
+
+Quick dom-elements only wrapping
+
+__NOTE__: element must exist and must nodeType 1 !
+
+```coffee-aside
+wrap_element = (element)->
+  Wrapper_Cache[element[UID_KEY]] || new (Wrapper.find(element))(element)
 ```

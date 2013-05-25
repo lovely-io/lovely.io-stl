@@ -19,10 +19,6 @@ Basic constructor
       element = elements_cache[element] || (elements_cache[element] = document.createElement(element))
       element = element.cloneNode(false)
 
-    # handling dynamic typecasting
-    cast = Wrapper.Cast(element) if @constructor is Element
-    return new cast(element, options) if cast isnt undefined
-
     Wrapper.call(this, element)
 
     if `options != null`

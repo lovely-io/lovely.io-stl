@@ -1,6 +1,6 @@
 The DOM management module for Lovely IO
 
-Copyright (C) 2011 Nikolay Nemshilov
+Copyright (C) 2011-2013 Nikolay Nemshilov
 
 ```coffee-aside
 
@@ -25,6 +25,7 @@ include 'src/event/delegation'
 include 'src/event/mouseio'
 include 'src/event/focusio'
 include 'src/event/ready'
+include 'src/casting'
 include 'src/dollar'
 
 

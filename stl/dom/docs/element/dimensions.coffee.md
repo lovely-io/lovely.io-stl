@@ -157,7 +157,7 @@ between the BODY and HTML elements
       if parent.style('position') in ['relative', 'absolute', 'fixed']
         return parent
 
-    return wrap(@document()._.documentElement)
+    wrap(@document()._.documentElement)
 ```
 
 Checks if current element overlaps with the target position
