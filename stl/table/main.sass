@@ -1,0 +1,31 @@
+//
+// Tables main sass file
+//
+// Here should be your HTML structure
+//
+// Copyright (C) 2013 Nikolay Nemshilov
+//
+
+table
+  th[data-sort]
+    cursor: pointer
+
+    &:after
+      display:     inline-block
+      vertical-align: baseline
+      font-size:   1.2em
+      line-height: .5em
+      content:     '▾'
+      margin-left: .6em
+      opacity:    .25
+
+    &:hover:after, &.asc:after, &.desc:after
+      opacity: 1
+
+    &.desc:after
+      -webkit-transform: rotate(180deg)
+      -moz-transform:    rotate(180deg)
+      -ms-transform:     rotate(180deg)
+      -o-transform:      rotate(180deg)
+      transform:         rotate(180deg)
+

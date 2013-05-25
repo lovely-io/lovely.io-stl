@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tables Demo</title>
+    <link href="/shared.css" rel="stylesheet" type="text/css" />
+    <script src="/core.js"></script>
+    <script type="text/javascript">
+      Lovely(["table"], function(Table) {
+
+      });
+    </script>
+    <style>
+      table, tr, td, th {
+        border: 1px solid #ddd;
+        border-collapse: collapse;
+      }
+
+      td, th {
+        padding: .5em 1em;
+        text-align: left;
+        vertical-align: center;
+      }
+
+      th {
+        background-color: #f8f8f8;
+      }
+
+      tbody tr:nth-child(2n) {
+        background-color: #fafafa;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Table Demo</h1>
+
+    <table id="test">
+      <thead>
+        <tr>
+          <th data-sort="name">Name</th>
+          <th data-sort="date">Released In</th>
+          <th data-sort="osom">Osomeness</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>lovely.io</td><td>2012</td><td data-value="10">Totes</td></tr>
+        <tr><td>right.js</td><td>2009</td><td data-value="8">Oh, yes</td></tr>
+        <tr><td>jQuery</td><td>2006</td><td data-value="1">Meh...</td></tr>
+        <tr><td>dojo</td><td>2004</td><td data-value="4">Kinda</td></tr>
+      </tbody>
+    </table>
+  </body>
+</html>
